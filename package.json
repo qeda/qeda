@@ -1,0 +1,33 @@
+{
+  "name": "QEDA",
+  "version": "0.0.1",
+  "description": "QEDA — a tool for creating libraries of electronic components",
+  "main": "lib/qeda.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qeda/qeda.git"
+  },
+  "keywords": [
+    "EDA",
+    "schematics",
+    "PCB",
+    "electronics",
+    "library",
+  ],
+  "author": "Noviga",
+  "homepage": "http://qeda.org",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qeda/qeda/issues"
+  },
+  "scripts": {
+    "prepublish": "coffee -o lib -c src/",
+    "postpublish": "rm -rf lib"
+  },
+  "devDependencies": {
+    "coffee-script": ">=1.0.1"
+  },
+  "dependencies": {
+  }
+}
+
