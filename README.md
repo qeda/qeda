@@ -1,7 +1,7 @@
 QEDA
 ====
 
-QEDA is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematics (with various styles) and land patterns (conforming to IPC-7351 standard) for PCB.
+QEDA is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematics and land patterns for PCB (conforming to IPC-7351 standard).
 
 Attention
 =========
