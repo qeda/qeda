@@ -1,4 +1,4 @@
-class qeda
+class Qeda
   constructor: () ->
 
   mixin = (fields) =>
@@ -10,5 +10,6 @@ class qeda
         this::[name]()
 
   mixin require './mixins/element'
+  mixin require './mixins/kicad'
 
-module.exports = qeda
+module.exports = Qeda

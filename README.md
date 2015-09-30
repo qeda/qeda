@@ -19,9 +19,9 @@ Generating KiCad library
 [first.coffee](./examples/first/first.coffee):
 
 ```coffeescript
-qeda = require 'qeda'
+Qeda = require 'qeda'
 
-lib = new qeda
+lib = new Qeda
 lib.add 'TI/ISO721' # Adding Texas Instruments' ISO721
 lib.add 'TI/ISO722' # Adding Texas Instruments' ISO722
 lib.generateKicad 'ti_iso'
@@ -30,7 +30,7 @@ lib.generateKicad 'ti_iso'
 Creating custom element
 -----------------------
 
-[library/iso721_custom.json](./examples/second/library/iso721_custom.json):
+[library/iso721-custom.json](./examples/second/library/iso721-custom.json):
 
 ```json
 {
@@ -64,10 +64,10 @@ Creating custom element
 [second.coffee](./examples/second/second.coffee):
 
 ```coffeescript
-qeda = require 'qeda'
+Qeda = require 'qeda'
 
-lib = new qeda
-lib.add 'iso721_custom'
+lib = new Qeda
+lib.add 'iso721-custom'
 lib.generateKicad 'ti_iso721_custom'
 ```
 

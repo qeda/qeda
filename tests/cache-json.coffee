@@ -1,7 +1,7 @@
 rm = require 'rm-r'
-qeda = require '../src/qeda'
+Qeda = require '../src/qeda'
 
 rm.file './library/ti/iso721.json'
 
-lib = new qeda
+lib = new Qeda
 lib.add 'TI/ISO721'

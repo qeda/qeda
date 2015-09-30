@@ -2,6 +2,7 @@ fs = require 'fs'
 mkdirp = require 'mkdirp'
 path = require 'path'
 request = require 'sync-request'
+QedaElement = require '../qeda-element'
 
 module.exports =
   _initElements: () ->
@@ -20,6 +21,5 @@ module.exports =
         console.error "Loading '#{element}': Error (#{res.statusCode})"
         process.exit 1
 
-     data = JSON.parse fs.readFileSync(localFile)
-     @elements.push data
-     console.log data
+    description = JSON.parse fs.readFileSync(localFile)
+    @elements.push (new QedaElement description)

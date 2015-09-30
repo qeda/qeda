@@ -1,5 +1,5 @@
-QEDA = require 'QEDA'
+Qeda = require 'qeda'
 
-lib = new QEDA
+lib = new Qeda
 lib.add 'iso721_custom'
 lib.generateKicad 'ti_iso721_custom'
