@@ -1,6 +1,6 @@
 {
-  "name": "QEDA",
-  "version": "0.0.1",
+  "name": "qeda",
+  "version": "0.0.0",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "repository": {
@@ -12,7 +12,7 @@
     "schematics",
     "PCB",
     "electronics",
-    "library",
+    "library"
   ],
   "author": "Noviga",
   "homepage": "http://qeda.org",
@@ -25,9 +25,12 @@
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {
-    "coffee-script": ">=1.0.1"
+    "coffee-script": ">=1.10.0",
+    "gulp": ">=3.9.0",
+    "rm-r": ">=1.0.0"
   },
   "dependencies": {
+    "mkdirp": ">=0.5.0",
+    "sync-request": ">=2.0.0"
   }
 }
-

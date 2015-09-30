@@ -11,7 +11,7 @@ The project is under active development. Not recommended for use.
 Examples
 ========
 
-Examples below are written on CoffeScript but one can use JavaScript.
+Examples below are written on CoffeeScript but one can use JavaScript.
 
 Generating KiCad library
 ------------------------
@@ -19,11 +19,12 @@ Generating KiCad library
 [first.coffee](./examples/first/first.coffee):
 
 ```coffeescript
-QEDA = require 'QEDA'
+qeda = require 'qeda'
 
-lib = new QEDA
-lib.add 'ti/iso721'
-lib.generateKicad 'ti_iso721'
+lib = new qeda
+lib.add 'TI/ISO721' # Adding Texas Instruments' ISO721
+lib.add 'TI/ISO722' # Adding Texas Instruments' ISO722
+lib.generateKicad 'ti_iso'
 ```
 
 Creating custom element
@@ -35,7 +36,8 @@ Creating custom element
 {
   "name": "ISO721",
   "description": "Single Channel High-Speed Digital Isolator",
-  "pins": {
+
+  "pinout": {
     "Vcc1": [1, 3],
     "IN"  : 2,
     "GND1": 4,
@@ -43,6 +45,9 @@ Creating custom element
     "Vcc2": 8,
     "GND2": [5, 7]
   },
+  "power": ["Vcc1", "GND1", "Vcc2", "Vcc2"],
+  "input": ["IN"],
+  "output": ["OUT"],
 
   "package": ["SOP8", "SOIC8"],
   "SOP8": {
@@ -59,9 +64,9 @@ Creating custom element
 [second.coffee](./examples/second/second.coffee):
 
 ```coffeescript
-QEDA = require 'QEDA'
+qeda = require 'qeda'
 
-lib = new QEDA
+lib = new qeda
 lib.add 'iso721_custom'
 lib.generateKicad 'ti_iso721_custom'
 ```
