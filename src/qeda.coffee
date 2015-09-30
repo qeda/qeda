@@ -1,6 +1,14 @@
 class Qeda
-  constructor: () ->
+  #
+  # Constructor
+  #
+  constructor: ->
+    @symbolStyle = 'default'
+    @patternStyle = 'default'
 
+  #
+  # Mixin definition
+  #
   mixin = (fields) =>
     for name, field of fields
       this::[name] = field
@@ -11,5 +19,11 @@ class Qeda
 
   mixin require './mixins/element'
   mixin require './mixins/kicad'
+
+  setSymbolStyle: (style) ->
+    @symbolStyle = style.toLowerCase()
+
+  setPatternStyle: (style) ->
+    @patternStyle = style.toLowerCase()
 
 module.exports = Qeda

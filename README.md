@@ -1,7 +1,7 @@
 QEDA
 ====
 
-QEDA is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematics (with various styles) and land patterns (conforming to IPC-7351 statdard) for PCB.
+QEDA is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematics (with various styles) and land patterns (conforming to IPC-7351 standard) for PCB.
 
 Attention
 =========
@@ -49,12 +49,14 @@ Creating custom element
   "input": ["IN"],
   "output": ["OUT"],
 
+  "symbol": "IC2",
+
   "package": ["SOP8", "SOIC8"],
   "SOP8": {
-    "ipc": "SOP254P1040X485-8"
+    "pattern": "SOP254P1040X485-8"
   },
   "SOIC8": {
-    "ipc": "SOIC127P600X175-8"
+    "pattern": "SOIC127P600X175-8"
   },
 
   "datasheet": "http://www.ti.com/lit/ds/symlink/iso721.pdf"
@@ -67,7 +69,7 @@ Creating custom element
 Qeda = require 'qeda'
 
 lib = new Qeda
-lib.add 'iso721-custom'
+lib.add 'ISO721-Custom'
 lib.generateKicad 'ti_iso721_custom'
 ```
 

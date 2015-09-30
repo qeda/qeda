@@ -14,12 +14,14 @@
   "input": ["IN"],
   "output": ["OUT"],
 
+  "symbol": "IC2",
+
   "package": ["SOP8", "SOIC8"],
   "SOP8": {
-    "ipc": "SOP254P1040X485-8"
+    "pattern": "SOP254P1040X485-8"
   },
   "SOIC8": {
-    "ipc": "SOIC127P600X175-8"
+    "pattern": "SOIC127P600X175-8"
   },
 
   "datasheet": "http://www.ti.com/lit/ds/symlink/iso721.pdf"

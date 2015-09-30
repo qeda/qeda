@@ -6,6 +6,13 @@ QedaElement = require '../qeda-element'
 
 module.exports =
   _initElements: () ->
+    @symbolDefs = [
+      { regexp: /IC2/, handler: 'ic2' },
+    ]
+    @patternDefs = [
+      { regexp: /SOP(\d+)P(\d+)X(\d+)-(\d+)/, handler: 'sm/soic' },
+      { regexp: /SOIC(\d+)P(\d+)X(\d+)-(\d+)/, handler: 'sm/soic' }
+    ]
     @elements = []
 
   add: (element) ->
@@ -22,4 +29,9 @@ module.exports =
         process.exit 1
 
     description = JSON.parse fs.readFileSync(localFile)
-    @elements.push (new QedaElement description)
+    newElement = new QedaElement this, description
+    @elements.push newElement
+    return newElement
+
+  addPatternDefinition: (regexp, handler) ->
+    @patternDefs.push regexp:regexp, handler: handler
