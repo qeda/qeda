@@ -7,7 +7,7 @@ QedaElement = require '../qeda-element'
 module.exports =
   _initElements: () ->
     @symbolDefs = [
-      { regexp: /IC2/, handler: 'ic2' },
+      { regexp: /DIL(\d+)/, handler: 'dil' },
     ]
     @patternDefs = [
       { regexp: /SOP(\d+)P(\d+)X(\d+)-(\d+)/, handler: 'sm/soic' },
@@ -15,7 +15,7 @@ module.exports =
     ]
     @elements = []
 
-  add: (element) ->
+  load: (element) ->
     elementJson = element.toLowerCase() + '.json'
     localFile = './library/' + elementJson
     unless fs.existsSync localFile
@@ -27,9 +27,24 @@ module.exports =
       else
         console.error "Loading '#{element}': Error (#{res.statusCode})"
         process.exit 1
+    def = JSON.parse fs.readFileSync(localFile)
+    # TODO: JSON Schema validation
+    if def.base?
+      baseElement = def.base
+      delete def.base
+      if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
+      baseDef = @load baseElement
+      if baseDef.abstract then delete baseDef.abstract
+      @mergeObjects baseDef, def
+      def = baseDef
+    return def
 
-    description = JSON.parse fs.readFileSync(localFile)
-    newElement = new QedaElement this, description
+  add: (element) ->
+    def = @load element
+    if def.abstract
+      console.error "'#{element}': Cannot add abstract component, use it only as base for others"
+      process.exit 1
+    newElement = new QedaElement this, def
     @elements.push newElement
     return newElement
 

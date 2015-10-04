@@ -6,12 +6,12 @@ QEDA is a Node.js library aimed to simplify creating libraries of electronic com
 Attention
 =========
 
-The project is under active development. Not recommended for use.
+**The project is under active development. Not recommended for use yet.**
 
 Examples
 ========
 
-Examples below are written on CoffeeScript but one can use JavaScript.
+Example below is written on CoffeeScript but one can use vanilla JavaScript.
 
 Generating KiCad library
 ------------------------
@@ -22,56 +22,51 @@ Generating KiCad library
 Qeda = require 'qeda'
 
 lib = new Qeda
-lib.add 'TI/ISO721' # Adding Texas Instruments' ISO721
-lib.add 'TI/ISO722' # Adding Texas Instruments' ISO722
-lib.generateKicad 'ti_iso'
+lib.add 'TI/ISO721' # Adding Texas Instruments ISO721
+lib.add 'TI/ISO722' # Adding Texas Instruments ISO722
+lib.genetateKicad 'ti_iso'
 ```
 
-Creating custom element
------------------------
+This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to your custom library. Last string is to generate components library in KiCad format (schematics symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
 
-[library/iso721-custom.json](./examples/second/library/iso721-custom.json):
+_API will be documented soon._
+
+Component description
+---------------------
+
+Any electronic component is described by JSON file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.add` method (without `./library/` prefix and `.json` suffix).
+
+Description example:
 
 ```json
 {
-  "name": "ISO721",
-  "description": "Single Channel High-Speed Digital Isolator",
+  "name": "Dummy",
 
   "pinout": {
-    "Vcc1": [1, 3],
-    "IN"  : 2,
-    "GND1": 4,
-    "OUT" : 6,
-    "Vcc2": 8,
-    "GND2": [5, 7]
+    "DIN":  1,
+    "DOUT": 2,
+    "Vcc":  [3, 4],
+    "GND":  [5, 6],
+    "NC":   [7, 8]
   },
-  "power": ["Vcc1", "GND1", "Vcc2", "Vcc2"],
-  "input": ["IN"],
-  "output": ["OUT"],
+  "power": ["Vcc", "GND"],
+  "input": "DIN",
+  "output": "DOUT",
+  "void": "NC",
 
-  "symbol": "IC2",
-
-  "package": ["SOP8", "SOIC8"],
-  "SOP8": {
-    "pattern": "SOP254P1040X485-8"
+  "schematics": {
+    "symbol": "DIL8",
+    "showPinNumbers" : true,
+    "showPinNames" : true
   },
-  "SOIC8": {
+
+  "package": {
     "pattern": "SOIC127P600X175-8"
-  },
-
-  "datasheet": "http://www.ti.com/lit/ds/symlink/iso721.pdf"
+  }
 }
 ```
 
-[second.coffee](./examples/second/second.coffee):
-
-```coffeescript
-Qeda = require 'qeda'
-
-lib = new Qeda
-lib.add 'ISO721-Custom'
-lib.generateKicad 'ti_iso721_custom'
-```
+_Available JSON fields will be documented soon._
 
 License
 =======

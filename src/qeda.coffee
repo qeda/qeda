@@ -20,6 +20,16 @@ class Qeda
   mixin require './mixins/element'
   mixin require './mixins/kicad'
 
+  #
+  # Merge two objects
+  #
+  mergeObjects: (dest, src) ->
+    for k, v of src
+      if typeof v is 'object' and dest.hasOwnProperty k
+        @mergeObjects dest[k], v
+      else
+        dest[k] = v
+
   setSymbolStyle: (style) ->
     @symbolStyle = style.toLowerCase()
 
