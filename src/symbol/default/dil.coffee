@@ -1,5 +1,4 @@
 module.exports = (symbol, pinCount) ->
-  symbol.refDes = 'U'
   leftPin =
     length: 2
     orientation: 'left'

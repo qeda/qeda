@@ -3,6 +3,7 @@ class Qeda
   # Constructor
   #
   constructor: ->
+    @elementStyle = 'default'
     @symbolStyle = 'default'
     @patternStyle = 'default'
 
@@ -29,6 +30,12 @@ class Qeda
         @mergeObjects dest[k], v
       else
         dest[k] = v
+
+  setElementStyle: (style) ->
+    style = style.toLowerCase()
+    @elementStyle = style
+    if @symbolStyle is 'default' or style is 'default' then @symbolStyle = style
+    if @patternStyle is 'default' or style is 'default' then @patternStyle = style
 
   setSymbolStyle: (style) ->
     @symbolStyle = style.toLowerCase()
