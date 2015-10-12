@@ -7,6 +7,9 @@ module.exports = (symbol, pinCount) ->
     length: 2
     orientation: 'right'
 
+  width = 6
+  symbol.setAttribute 'refDes', x: width/2, y: 0, halign: 'center', valign: 'top'
+
   step = 1
 
   for i in [1..pinCount/2]

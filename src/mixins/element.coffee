@@ -15,6 +15,24 @@ module.exports =
     ]
     @elements = []
 
+  #
+  #
+  #
+  add: (element) ->
+    def = @load element
+    if def.abstract
+      console.error "'#{element}': Cannot add abstract component, use it only as base for others"
+      process.exit 1
+    newElement = new QedaElement this, def
+    @elements.push newElement
+    return newElement
+
+  #
+  #
+  #
+  addPatternDefinition: (regexp, handler) ->
+    @patternDefs.push regexp:regexp, handler: handler
+
   load: (element) ->
     elementJson = element.toLowerCase() + '.json'
     localFile = './library/' + elementJson
@@ -39,14 +57,23 @@ module.exports =
       def = baseDef
     return def
 
-  add: (element) ->
-    def = @load element
-    if def.abstract
-      console.error "'#{element}': Cannot add abstract component, use it only as base for others"
-      process.exit 1
-    newElement = new QedaElement this, def
-    @elements.push newElement
-    return newElement
+  #
+  #
+  #
+  setElementStyle: (style) ->
+    style = style.toLowerCase()
+    @elementStyle = style
+    if @symbolStyle is 'default' or style is 'default' then @symbolStyle = style
+    if @patternStyle is 'default' or style is 'default' then @patternStyle = style
 
-  addPatternDefinition: (regexp, handler) ->
-    @patternDefs.push regexp:regexp, handler: handler
+  #
+  #
+  #
+  setPatternStyle: (style) ->
+    @patternStyle = style.toLowerCase()
+
+  #
+  #
+  #
+  setSymbolStyle: (style) ->
+    @symbolStyle = style.toLowerCase()

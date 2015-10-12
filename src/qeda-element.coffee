@@ -11,7 +11,7 @@ class QedaElement
   constructor: (@lib, def) ->
     @mergeObjects this, def
 
-    @refDes = 'E' # Should be overriden in symbol or pattern handler
+    @refDes = 'REF' # Should be overriden in styling script
     @symbol = new QedaSymbol this
     @patterns = []
 

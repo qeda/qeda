@@ -1,11 +1,18 @@
+KicadGenerator = require './kicad-generator'
+
 class Qeda
   #
   # Constructor
   #
-  constructor: ->
+  constructor: (settings = {}) ->
     @elementStyle = 'default'
     @symbolStyle = 'default'
     @patternStyle = 'default'
+    @symbol =
+      units: 'mm'
+      gridSize: 5
+      textSize: 1
+    @mergeObjects this, settings
 
   #
   # Mixin definition
@@ -19,7 +26,33 @@ class Qeda
         this::[name]()
 
   mixin require './mixins/element'
-  mixin require './mixins/kicad'
+
+  #
+  # Calculate patterns' dimensions according to settings
+  #
+  calculatePatterns: (units = 'mm') ->
+    k = 1
+    if units is 'mil' then k = 100/2.54
+
+  #
+  # Calculate symbols' dimensions according to settings
+  #
+  calculateSymbols: (units = 'mm') ->
+    k = 1
+    if @symbol.units is 'mm' and units is 'mil'
+      k = 100/2.54
+    else if @symbol.units is 'mil' and units is 'mm'
+      k = 2.54/100
+    @symbol.gridSize *= k
+    @symbol.textSize = Math.round(@symbol.textSize * @symbol.gridSize)
+    #for e in @elements
+
+  #
+  # Generate library in KiCad format
+  #
+  generateKicad: (name) ->
+    kicad = new KicadGenerator(this)
+    kicad.generate name
 
   #
   # Merge two objects
@@ -30,17 +63,5 @@ class Qeda
         @mergeObjects dest[k], v
       else
         dest[k] = v
-
-  setElementStyle: (style) ->
-    style = style.toLowerCase()
-    @elementStyle = style
-    if @symbolStyle is 'default' or style is 'default' then @symbolStyle = style
-    if @patternStyle is 'default' or style is 'default' then @patternStyle = style
-
-  setSymbolStyle: (style) ->
-    @symbolStyle = style.toLowerCase()
-
-  setPatternStyle: (style) ->
-    @patternStyle = style.toLowerCase()
 
 module.exports = Qeda
