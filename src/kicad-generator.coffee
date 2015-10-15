@@ -3,8 +3,6 @@ mkdirp = require 'mkdirp'
 
 class KicadGenerator
   constructor: (@library) ->
-    @library.calculateSymbols 'mil'
-    @library.calculatePatterns 'mm'
 
   generate: (name) ->
     dir = './kikad'
@@ -41,7 +39,7 @@ class KicadGenerator
       when 'center' then 'C'
       when 'bottom' then 'B'
       else 'T'
-    obj.size = @library.symbol.textSize
+    obj.size = Math.round @library.symbol.textSize
     obj
 
 module.exports = KicadGenerator
