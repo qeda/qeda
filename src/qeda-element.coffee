@@ -37,7 +37,7 @@ class QedaElement
       else if typeof p is 'string'
         if @[p]? then @addPattern @[p]
 
-    handler = require "./element/#{@lib.elementStyle}.coffee"
+    handler = require "./element/#{@lib.elementStyle}"
     handler this
 
   #

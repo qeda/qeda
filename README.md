@@ -8,6 +8,11 @@ Attention
 
 **The project is under active development. Not recommended for use yet.**
 
+Installation
+============
+
+    npm install qeda
+
 Examples
 ========
 
@@ -28,7 +33,7 @@ lib = new Qeda.Library
 
 lib.add 'TI/ISO721' # Adding Texas Instruments ISO721
 lib.add 'TI/ISO722' # Adding Texas Instruments ISO722
-lib.genetateKicad 'ti_iso'
+lib.generateKicad 'ti_iso'
 ```
 
 This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to your custom library. Last string is to generate components library in KiCad format (schematics symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
