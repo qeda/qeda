@@ -16,11 +16,10 @@ class QedaElement
     @patterns = []
 
     @pins = []
-    for pin of @pinout
-      unless Array.isArray @pinout[pin] then @pinout[pin] = [@pinout[pin]]
-      for pinNum in @pinout[pin]
-        @pins[pinNum] =
-          name: pin
+    for pinName of @pinout
+      pinNumbers = if Array.isArray @pinout[pinName] then @pinout[pinName] else [@pinout[pinName]]
+      for pinNumber in pinNumbers
+        @pins[pinNumber] = @_pinObj pinNumber, pinName
 
     unless Array.isArray @package
       @package = [@package]
@@ -39,7 +38,7 @@ class QedaElement
   calculate: (gridSize) ->
     @_calculated ?= false
     if @_calculated then return
-    
+
     # Apply symbol handler
     if @schematics?.symbol?
       for def in @lib.symbolDefs
@@ -83,5 +82,17 @@ class QedaElement
   #
   pinDef: (pinNum) ->
     @pins[pinNum]
+
+  _pinObj: (number, name) ->
+    obj =
+      name: name
+      number: number
+
+    properties = ['ground', 'input', 'inverted', 'output', 'power']
+    for property in properties
+      if @[property]?
+        pins = if Array.isArray @[property] then @[property] else [@[property]]
+        obj[property] = (pins.indexOf(name) isnt -1)
+    obj
 
 module.exports = QedaElement

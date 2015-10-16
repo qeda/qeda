@@ -14,28 +14,31 @@ class KicadGenerator
     fd = fs.openSync "#{dir}/#{name}.lib", 'w'
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
     fs.writeSync fd, '#encoding utf-8\n'
-    for e in @library.elements
-      symbol = e.symbol
-      symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
-      refObj = @_shapeObj symbol.attribute('refDes')
-      nameObj = @_shapeObj symbol.attribute('name')
-      fs.writeSync fd, "#\n# #{e.name}\n#\n"
-      showPinNumbers = if e.schematics?.showPinNumbers then 'Y' else 'N'
-      showPinNames = if e.schematics?.showPinNames then 'Y' else 'N'
-      pinNameSpace = Math.round @library.symbol.pinNameSpace
-      fs.writeSync fd, "DEF #{e.name} #{e.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} 1 L N\n"
-      fs.writeSync fd, "F0 \"#{e.refDes}\" #{refObj.x} #{refObj.y} #{refObj.size} H V #{refObj.halign} #{refObj.valign}NN\n"
-      fs.writeSync fd, "F1 \"#{e.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.size} H V #{nameObj.halign} #{nameObj.valign}NN\n"
-      fs.writeSync fd, "DRAW\n"
-      for shape in e.symbol.shapes
-        shapeObj = @_shapeObj shape
-        switch shapeObj.type
-          when 'pin' then fs.writeSync fd, "X #{shapeObj.name} #{shapeObj.number} #{shapeObj.x} #{shapeObj.y} #{shapeObj.length} #{shapeObj.orientation} #{shapeObj.sizeNum} #{shapeObj.sizeName} 1 1 U\n"
-          when 'rectangle' then fs.writeSync fd, "S #{shapeObj.x} #{shapeObj.y} #{shapeObj.x + shapeObj.width} #{shapeObj.y + shapeObj.height} 1 1 0 N\n"
-      fs.writeSync fd, "ENDDRAW\n"
-      fs.writeSync fd, "ENDDEF\n"
+    for element in @library.elements
+      @_generateSymbol fd, element
     fs.closeSync fd
     console.log "Generating KiCad library '#{name}.lib': OK"
+
+  _generateSymbol: (fd, element) ->
+    symbol = element.symbol
+    symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
+    refObj = @_shapeObj symbol.attributes['refDes']
+    nameObj = @_shapeObj symbol.attributes['name']
+    fs.writeSync fd, "#\n# #{element.name}\n#\n"
+    showPinNumbers = if element.schematics?.showPinNumbers then 'Y' else 'N'
+    showPinNames = if element.schematics?.showPinNames then 'Y' else 'N'
+    pinNameSpace = Math.round @library.symbol.pinNameSpace
+    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} 1 L N\n"
+    fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.size} H V #{refObj.halign} #{refObj.valign}NN\n"
+    fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.size} H V #{nameObj.halign} #{nameObj.valign}NN\n"
+    fs.writeSync fd, "DRAW\n"
+    for shape in element.symbol.shapes
+      shapeObj = @_shapeObj shape
+      switch shapeObj.kind
+        when 'pin' then fs.writeSync fd, "X #{shapeObj.name} #{shapeObj.number} #{shapeObj.x} #{shapeObj.y} #{shapeObj.length} #{shapeObj.orientation} #{shapeObj.sizeNum} #{shapeObj.sizeName} 1 1 U\n"
+        when 'rectangle' then fs.writeSync fd, "S #{shapeObj.x} #{shapeObj.y} #{shapeObj.x + shapeObj.width} #{shapeObj.y + shapeObj.height} 1 1 0 N\n"
+    fs.writeSync fd, "ENDDRAW\n"
+    fs.writeSync fd, "ENDDEF\n"
 
   _shapeObj: (shape) ->
     obj = shape or {}

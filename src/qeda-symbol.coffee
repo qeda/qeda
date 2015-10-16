@@ -7,38 +7,30 @@ class QedaSymbol
     @attributes = []
 
   #
-  #
+  # Add attribute object
   #
   addAttribute: (key, attribute) ->
-    shape =
-      type: 'attribute'
-    for own prop of attribute
-      shape[prop] = attribute[prop]
-    @shapes.push shape
-    @attributes[key] = shape
+    @attributes[key] = @addShape 'attribute',  attribute
 
   #
   # Add pin object
   #
   addPin: (pin) ->
-    shape =
-      type: 'pin'
-    for own prop of pin
-      shape[prop] = pin[prop]
-    @shapes.push shape
+    @addShape 'pin', pin
 
+  #
+  # Add rectangle object
+  #
   addRectangle: (rectangle) ->
-    shape =
-      type: 'rectangle'
-    for own prop of rectangle
-      shape[prop] = rectangle[prop]
-    @shapes.push shape
+    @addShape 'rectangle', rectangle
 
-  #
-  # Get attribute
-  #
-  attribute: (key) ->
-    @attributes[key]
+  addShape: (kind, shape) ->
+    obj =
+      kind: kind
+    for own prop of shape
+      obj[prop] = shape[prop]
+    @shapes.push obj
+    obj
 
   #
   # Convert inner units to physical (mm, mil etc.)
@@ -62,8 +54,8 @@ class QedaSymbol
   #
   # Get pin definition
   #
-  pinDef: (pinNum) ->
-    @element.pinDef pinNum
+  pin: (number) ->
+    @element.pins[number]
 
 
 module.exports = QedaSymbol

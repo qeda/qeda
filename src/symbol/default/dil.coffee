@@ -19,28 +19,24 @@ module.exports = (symbol, pinCount) ->
     valign: 'top'
 
   # Pins on left side
-  pin =
-    length: pinLen
-    orientation: 'right'
   y = 0
   for i in [1..pinCount/2]
-    pinDef = symbol.pinDef i
+    pin = symbol.pin i
     pin.x = 0
     pin.y = y
-    pin.name = pinDef.name
-    pin.number = i
+    pin.length = pinLen
+    pin.orientation = 'right'
     symbol.addPin pin
     y += step
 
   # Pins on right side
-  pin.orientation = 'left'
   y -= step
   for i in [(pinCount/2 + 1)..pinCount]
-    pinDef = symbol.pinDef i
+    pin = symbol.pin i
     pin.x = width + 2*pinLen
     pin.y = y
-    pin.name = pinDef.name
-    pin.number = i
+    pin.length = pinLen
+    pin.orientation = 'left'
     symbol.addPin pin
     y -= step
 
@@ -50,3 +46,4 @@ module.exports = (symbol, pinCount) ->
     y: -step
     width: width
     height: height + step
+    filled: 'foreground'
