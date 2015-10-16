@@ -1,28 +1,52 @@
 module.exports = (symbol, pinCount) ->
-  leftPin =
-    length: 2
-    orientation: 'left'
-
-  rightPin =
-    length: 2
-    orientation: 'right'
-
   step = 2
-  width = 6
-  height =  Math.round(step * pinCount/2)
-  symbol.setAttribute 'refDes', x: width/2, y: 0, halign: 'center', valign: 'top'
-  symbol.setAttribute 'name', x: width/2, y: height, halign: 'center', valign: 'bottom'
+  width = 20
+  pinLen = 4
 
+  height =  Math.round(step * pinCount/2)
+
+  # Attributes
+  symbol.addAttribute 'refDes',
+    x: pinLen  + width/2
+    y: - (step + 1)
+    halign: 'center'
+    valign: 'bottom'
+
+  symbol.addAttribute 'name',
+    x: pinLen + width/2
+    y: height + 1
+    halign: 'center'
+    valign: 'top'
+
+  # Pins on left side
+  pin =
+    length: pinLen
+    orientation: 'right'
+  y = 0
   for i in [1..pinCount/2]
     pinDef = symbol.pinDef i
-    leftPin.x = 0
-    leftPin.y = (i - 1) * step
-    leftPin.name = pinDef.name
-    symbol.addPin leftPin
+    pin.x = 0
+    pin.y = y
+    pin.name = pinDef.name
+    pin.number = i
+    symbol.addPin pin
+    y += step
 
+  # Pins on right side
+  pin.orientation = 'left'
+  y -= step
+  for i in [(pinCount/2 + 1)..pinCount]
+    pinDef = symbol.pinDef i
+    pin.x = width + 2*pinLen
+    pin.y = y
+    pin.name = pinDef.name
+    pin.number = i
+    symbol.addPin pin
+    y -= step
 
-  #for i in [pinCount/2..(pinCount-1)]
-  #  element.setPos 10, i * step
-  #  element.addPin rightPin
-
-  #element.
+  # Rectangle
+  symbol.addRectangle
+    x: pinLen
+    y: -step
+    width: width
+    height: height + step

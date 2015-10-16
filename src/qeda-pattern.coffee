@@ -2,7 +2,7 @@
 # Class for footprint pattern
 #
 class QedaPattern
-  constructor: (@element) ->
+  constructor: (@element, @name) ->
 
   #
   # Set current layer

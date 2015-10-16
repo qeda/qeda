@@ -22,13 +22,6 @@ class QedaElement
         @pins[pinNum] =
           name: pin
 
-    if @schematics?.symbol?
-      for s in @lib.symbolDefs
-        cap = s.regexp.exec @schematics.symbol
-        if cap
-          handler = require "./symbol/#{@lib.symbolStyle}/#{s.handler}"
-          handler(@symbol, cap[1..]...)
-
     unless Array.isArray @package
       @package = [@package]
     for p in @package
@@ -39,6 +32,33 @@ class QedaElement
 
     handler = require "./element/#{@lib.elementStyle}"
     handler this
+
+  #
+  # Calculate actual layouts
+  #
+  calculate: (gridSize) ->
+    @_calculated ?= false
+    if @_calculated then return
+    
+    # Apply symbol handler
+    if @schematics?.symbol?
+      for def in @lib.symbolDefs
+        cap = def.regexp.exec @schematics.symbol
+        if cap
+          handler = require "./symbol/#{@lib.symbolStyle}/#{def.handler}"
+          handler(@symbol, cap[1..]...)
+
+    @symbol.calculate gridSize
+
+    # Apply pattern handlers
+    for pattern in @patterns
+      for def in @lib.patternDefs
+        cap = def.regexp.exec pattern.name
+        if cap
+          handler = require "./pattern/#{@lib.patternStyle}/#{def.handler}"
+          handler(pattern, cap[1..]...)
+
+    @_calculated = true
 
   #
   # Merge two objects
@@ -56,14 +76,11 @@ class QedaElement
   addPattern: (packageDef) ->
     unless packageDef.pattern?
       return
-    pattern = new QedaPattern this
-    for p in @lib.patternDefs
-      cap = p.regexp.exec packageDef.pattern
-      if cap
-        handler = require "./pattern/#{@lib.patternStyle}/#{p.handler}"
-        handler(pattern, cap[1..]...)
-    @patterns.push pattern
+    @patterns.push(new QedaPattern this, packageDef.pattern)
 
+  #
+  # Return pin definition
+  #
   pinDef: (pinNum) ->
     @pins[pinNum]
 
