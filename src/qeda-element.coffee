@@ -11,7 +11,7 @@ class QedaElement
   constructor: (@lib, def) ->
     @mergeObjects this, def
 
-    @refDes = 'REF' # Should be overriden in styling script
+    @refDes = 'REF' # Should be overriden in element handler
     @symbol = new QedaSymbol this
     @patterns = []
 
@@ -79,11 +79,8 @@ class QedaElement
     @patterns.push(new QedaPattern this, packageDef.pattern)
 
   #
-  # Return pin definition
+  # Generate pin object
   #
-  pinDef: (pinNum) ->
-    @pins[pinNum]
-
   _pinObj: (number, name) ->
     obj =
       name: name

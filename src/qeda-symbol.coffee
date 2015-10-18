@@ -2,6 +2,9 @@
 # Class for schematics symbol
 #
 class QedaSymbol
+  #
+  # Constructor
+  #
   constructor: (@element) ->
     @shapes = []
     @attributes = []
@@ -24,6 +27,9 @@ class QedaSymbol
   addRectangle: (rectangle) ->
     @addShape 'rectangle', rectangle
 
+  #
+  # Add arbitrary shape object
+  #
   addShape: (kind, shape) ->
     obj =
       kind: kind
