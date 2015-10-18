@@ -86,11 +86,12 @@ class QedaElement
       name: name
       number: number
 
-    features = ['ground', 'in', 'inverted', 'out', 'power']
-    for feature in features
-      if @pinFeatures[feature]?
-        pins = if Array.isArray @pinFeatures[feature] then @pinFeatures[feature] else [@pinFeatures[feature]]
-        obj[feature] = (pins.indexOf(name) isnt -1)
+    if @properties?
+      props = ['ground', 'in', 'inverted', 'out', 'power']
+      for prop in props
+        if @properties[prop]?
+          pins = if Array.isArray @properties[prop] then @properties[prop] else [@properties[prop]]
+          obj[prop] = (pins.indexOf(name) isnt -1)
     obj
 
 module.exports = QedaElement

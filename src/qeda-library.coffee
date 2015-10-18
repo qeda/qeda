@@ -93,7 +93,7 @@ class QedaLibrary
       if baseDef.abstract then delete baseDef.abstract
       @mergeObjects baseDef, def
       def = baseDef
-    return def
+    def
 
   #
   # Merge two objects
@@ -106,7 +106,7 @@ class QedaLibrary
         dest[k] = v
 
   #
-  #
+  # Change element style
   #
   setElementStyle: (style) ->
     style = style.toLowerCase()
@@ -115,13 +115,13 @@ class QedaLibrary
     if @patternStyle is 'default' or style is 'default' then @patternStyle = style
 
   #
-  #
+  # Change pattern style
   #
   setPatternStyle: (style) ->
     @patternStyle = style.toLowerCase()
 
   #
-  #
+  # Change symbol style
   #
   setSymbolStyle: (style) ->
     @symbolStyle = style.toLowerCase()

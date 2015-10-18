@@ -53,7 +53,7 @@ class QedaSymbol
     @_calculated = true
 
   #
-  #
+  # Flip vertically
   #
   invertVertical: ->
     for shape in @shapes
