@@ -43,7 +43,7 @@ _API will be documented soon._
 Component description
 ---------------------
 
-Any electronic component is described by JSON file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.add` method (without `./library/` prefix and `.json` suffix).
+Any electronic component is described by JSON file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.json` suffix).
 
 Description example:
 
@@ -58,15 +58,19 @@ Description example:
     "GND":  [5, 6],
     "NC":   [7, 8]
   },
-  "power": ["Vcc", "GND"],
-  "input": "DIN",
-  "output": "DOUT",
-  "void": "NC",
+
+  "pinFeatures": {
+    "power": "Vcc",
+    "ground": "GND",
+    "in": ["DIN", "Vcc"],
+    "out": "DOUT",
+    "nc": "NC"
+  },
 
   "schematics": {
     "symbol": "DIL8",
-    "showPinNumbers" : true,
-    "showPinNames" : true
+    "showPinNumbers": true,
+    "showPinNames": true
   },
 
   "package": {

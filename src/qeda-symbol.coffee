@@ -46,16 +46,12 @@ class QedaSymbol
       if shape.height? then shape.height *= gridSize
     @_calculated = true
 
+  #
+  #
+  #
   invertVertical: ->
     for shape in @shapes
       if shape.y? then shape.y *= -1
       if shape.height? then shape.height *= -1
-
-  #
-  # Get pin definition
-  #
-  pin: (number) ->
-    @element.pins[number]
-
 
 module.exports = QedaSymbol

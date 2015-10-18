@@ -29,15 +29,16 @@ class QedaElement
       else if typeof p is 'string'
         if @[p]? then @addPattern @[p]
 
-    handler = require "./element/#{@lib.elementStyle}"
-    handler this
-
   #
   # Calculate actual layouts
   #
   calculate: (gridSize) ->
     @_calculated ?= false
     if @_calculated then return
+
+    # Apply elemend wide handler
+    handler = require "./element/#{@lib.elementStyle}"
+    handler this
 
     # Apply symbol handler
     if @schematics?.symbol?
@@ -88,11 +89,11 @@ class QedaElement
       name: name
       number: number
 
-    properties = ['ground', 'input', 'inverted', 'output', 'power']
-    for property in properties
-      if @[property]?
-        pins = if Array.isArray @[property] then @[property] else [@[property]]
-        obj[property] = (pins.indexOf(name) isnt -1)
+    features = ['ground', 'in', 'inverted', 'out', 'power']
+    for feature in features
+      if @pinFeatures[feature]?
+        pins = if Array.isArray @pinFeatures[feature] then @pinFeatures[feature] else [@pinFeatures[feature]]
+        obj[feature] = (pins.indexOf(name) isnt -1)
     obj
 
 module.exports = QedaElement
