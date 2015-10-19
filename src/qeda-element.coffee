@@ -52,6 +52,13 @@ class QedaElement
 
     # Apply pattern handlers
     for pattern in @patterns
+      if pattern.package?.outline?
+        outline = pattern.package.outline
+        for def in @lib.outlineDefs
+          cap = def.regexp.exec outline
+          if cap
+            handler = require "./outline/#{def.handler}"
+            handler(pattern.package, cap[1..]...)
       for def in @lib.patternDefs
         cap = def.regexp.exec pattern.name
         if cap
@@ -76,7 +83,7 @@ class QedaElement
   addPattern: (packageDef) ->
     unless packageDef.pattern?
       return
-    @patterns.push(new QedaPattern this, packageDef.pattern)
+    @patterns.push(new QedaPattern this, packageDef)
 
   #
   # Generate pin object

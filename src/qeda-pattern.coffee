@@ -5,7 +5,8 @@ class QedaPattern
   #
   # Constructor
   #
-  constructor: (@element, @name) ->
+  constructor: (@element, @package) ->
+    @name = @package.pattern
     @shapes = []
 
   #
@@ -25,5 +26,14 @@ class QedaPattern
     @shapes.push obj
     obj
 
+  #
+  # Merge two objects
+  #
+  mergeObjects: (dest, src) ->
+    for k, v of src
+      if typeof v is 'object' and dest.hasOwnProperty k
+        @mergeObjects dest[k], v
+      else
+        dest[k] = v
 
 module.exports = QedaPattern

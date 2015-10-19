@@ -47,7 +47,6 @@ class KicadGenerator
       patObj = @_patternObj shape
       switch patObj.kind
         when 'pad' then fs.writeSync fd, "  (pad #{patObj.name} #{patObj.type} #{patObj.shape} (at #{patObj.x} #{patObj.y}) (size #{patObj.width} #{patObj.height}))\n"
-      #console.log shape
     fs.writeSync fd, ")\n" # module
 
   #

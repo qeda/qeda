@@ -28,6 +28,9 @@ class QedaLibrary
       { regexp: /SOP(\d+)P(\d+)X(\d+)-(\d+)/, handler: 'sm/soic' },
       { regexp: /SOIC(\d+)P(\d+)X(\d+)-(\d+)/, handler: 'sm/soic' }
     ]
+    @outlineDefs = [
+      { regexp: /JEDEC-(.*)/, handler: 'jedec' }
+    ]
     @elements = []
 
   #

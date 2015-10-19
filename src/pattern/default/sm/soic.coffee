@@ -4,6 +4,8 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
   height /= 100.0
   pinCount *= 1
 
+  pack = pattern.package
+
   pad =
     type: 'smd'
     layer: 'top'
