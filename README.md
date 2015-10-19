@@ -73,7 +73,7 @@ Description example:
     "showPinNames": true
   },
 
-  "package": {
+  "housing": {
     "pattern": "SOIC127P600X175-8",
     "outline": "JEDEC-MS-012AA"
   }

@@ -5,8 +5,8 @@ class QedaPattern
   #
   # Constructor
   #
-  constructor: (@element, @package) ->
-    @name = @package.pattern
+  constructor: (@element, @housing) ->
+    @name = @housing.pattern
     @shapes = []
 
   #

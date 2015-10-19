@@ -21,13 +21,13 @@ class QedaElement
       for pinNumber in pinNumbers
         @pins[pinNumber] = @_pinObj pinNumber, pinName
 
-    unless Array.isArray @package
-      @package = [@package]
-    for p in @package
-      if typeof p is 'object'
-        @addPattern p
-      else if typeof p is 'string'
-        if @[p]? then @addPattern @[p]
+    unless Array.isArray @housing
+      @housing = [@housing]
+    for h in @housing
+      if typeof h is 'object'
+        @addPattern h
+      else if typeof h is 'string'
+        if @[h]? then @addPattern @[h]
 
   #
   # Calculate actual layouts
@@ -52,13 +52,13 @@ class QedaElement
 
     # Apply pattern handlers
     for pattern in @patterns
-      if pattern.package?.outline?
-        outline = pattern.package.outline
+      if pattern.housing?.outline?
+        outline = pattern.housing.outline
         for def in @lib.outlineDefs
           cap = def.regexp.exec outline
           if cap
             handler = require "./outline/#{def.handler}"
-            handler(pattern.package, cap[1..]...)
+            handler(pattern.housing, cap[1..]...)
       for def in @lib.patternDefs
         cap = def.regexp.exec pattern.name
         if cap
@@ -80,10 +80,10 @@ class QedaElement
   #
   # Add pattern
   #
-  addPattern: (packageDef) ->
-    unless packageDef.pattern?
+  addPattern: (housing) ->
+    unless housing.pattern?
       return
-    @patterns.push(new QedaPattern this, packageDef)
+    @patterns.push(new QedaPattern this, housing)
 
   #
   # Generate pin object
