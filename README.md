@@ -59,7 +59,7 @@ Description example:
     "NC":   [7, 8]
   },
 
-  "pinFeatures": {
+  "properties": {
     "power": "Vcc",
     "ground": "GND",
     "in": ["DIN", "Vcc"],
@@ -74,7 +74,8 @@ Description example:
   },
 
   "package": {
-    "pattern": "SOIC127P600X175-8"
+    "pattern": "SOIC127P600X175-8",
+    "standard": "JEDEC-MS-012AA"
   }
 }
 ```
