@@ -12,8 +12,9 @@ class QedaSymbol
   #
   # Add attribute object
   #
-  addAttribute: (key, attribute) ->
-    @attributes[key] = @addShape 'attribute',  attribute
+  addAttribute: (name, attribute) ->
+    attribute.name = name
+    @attributes[name] = @addShape 'attribute',  attribute
 
   #
   # Add pin object

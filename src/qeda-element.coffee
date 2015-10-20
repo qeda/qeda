@@ -13,6 +13,7 @@ class QedaElement
 
     @refDes = 'REF' # Should be overriden in element handler
     @symbol = new QedaSymbol this
+    @symbol.settings = @lib.symbol
     @patterns = []
 
     @pins = []
@@ -28,6 +29,16 @@ class QedaElement
         @addPattern h
       else if typeof h is 'string'
         if @[h]? then @addPattern @[h]
+
+  #
+  # Add pattern
+  #
+  addPattern: (housing) ->
+    unless housing.pattern?
+      return
+    pattern = new QedaPattern this, housing
+    pattern.settings = @lib.pattern
+    @patterns.push pattern
 
   #
   # Calculate actual layouts
@@ -59,6 +70,7 @@ class QedaElement
           if cap
             handler = require "./outline/#{def.handler}"
             handler(pattern.housing, cap[1..]...)
+      @_convertDimensions pattern.housing
       for def in @lib.patternDefs
         cap = def.regexp.exec pattern.name
         if cap
@@ -78,12 +90,16 @@ class QedaElement
         dest[k] = v
 
   #
-  # Add pattern
+  # Make dimensions more convenient
   #
-  addPattern: (housing) ->
-    unless housing.pattern?
-      return
-    @patterns.push(new QedaPattern this, housing)
+  _convertDimensions: (housing) ->
+    for key, value of housing
+      if Array.isArray(value) and value.length > 0
+        min = value[0]
+        max = if value.length > 1 then value[1] else min
+        nom = (max + min) / 2
+        tol = max - min
+        housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
 
   #
   # Generate pin object

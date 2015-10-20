@@ -15,10 +15,24 @@ class QedaLibrary
     @symbolStyle = 'default'
     @patternStyle = 'default'
     @symbol =
-      textSize: 1.4 # Grid units
-      pinNameSpace: 1 # Grid units
       units: 'mm'
       gridSize: 2.5 # mm
+      fontSize: # Grid units
+        default: 1
+        refDes: 1
+        name: 1
+        pinNumber: 1
+        pinName: 1
+      lineWidth: # Grid units
+        default: 0.02
+      space: # Grid units
+        pinName: 1
+    @pattern =
+      densityLevel: 'N' # Nominal
+      tolerance:
+        default: 0.1
+        fabrication: 0.1
+        placement: 0.2
     @mergeObjects this, settings
 
     @symbolDefs = [
@@ -57,8 +71,13 @@ class QedaLibrary
   calculate: ->
     @_calculated ?= false
     if @_calculated then return
-    @symbol.textSize *= @symbol.gridSize
-    @symbol.pinNameSpace *= @symbol.gridSize
+    for prop of @symbol.fontSize
+      @symbol.fontSize[prop] *= @symbol.gridSize
+    for prop of @symbol.lineWidth
+      @symbol.lineWidth[prop] *= @symbol.gridSize
+    for prop of @symbol.space
+      @symbol.space[prop] *= @symbol.gridSize
+
     for e in @elements
       e.calculate @symbol.gridSize
     @_calculated = true

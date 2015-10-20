@@ -7,7 +7,7 @@ module.exports = (symbol, pinCount) ->
 
   # Attributes
   symbol.addAttribute 'refDes',
-    x: pinLen  + width/2
+    x: pinLen + width/2
     y: - (step + 0.5)
     halign: 'center'
     valign: 'bottom'
