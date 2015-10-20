@@ -31,16 +31,26 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
   Smax = Smin + Stol
 
   Cl = Ltol
-  Cs = Stol
+  Cs = 0 # Stol # ???
   Cw = housing.leadWidth.tol
   Zmax = Lmin + 2*Jt + Math.sqrt(Cl*Cl + F*F + P*P)
   Gmin = Smax - 2*Jh - Math.sqrt(Cs*Cs + F*F + P*P)
   Xmax = Wmin + 2*Js + Math.sqrt(Cw*Cw + F*F + P*P)
 
-  padWidth = ((Zmax - Gmin)/2).toFixed(3)
-  padHeight = Xmax.toFixed(3)
-  padSpace = ((Zmax + Gmin)/2).toFixed(3)
+  sizeRoundoff = settings.roundoff.size
+  placeRoundoff = settings.roundoff.place
 
+  padWidth = (Zmax - Gmin)/2
+  padHeight = Xmax
+  padSpace = (Zmax + Gmin)/2
+
+  padWidth =  (Math.ceil(padWidth  / sizeRoundoff)  * sizeRoundoff ).toFixed(2)
+  padHeight = (Math.ceil(padHeight / sizeRoundoff)  * sizeRoundoff ).toFixed(2)
+  padSpace =  (Math.ceil(padSpace  / placeRoundoff) * placeRoundoff).toFixed(2)
+
+  console.log pattern.name
+  console.log "Stol=#{Stol}"
+  console.log "Z=#{Zmax}, G=#{Gmin}"
   console.log "#{padWidth}x#{padHeight}, #{padSpace}"
 
   pad =

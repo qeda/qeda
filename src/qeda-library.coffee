@@ -31,8 +31,11 @@ class QedaLibrary
       densityLevel: 'N' # Nominal
       tolerance:
         default: 0.1
-        fabrication: 0.1
-        placement: 0.2
+        fabrication: 0.05
+        placement: 0.05
+      roundoff:
+        place: 0.10
+        size: 0.05
     @mergeObjects this, settings
 
     @symbolDefs = [
