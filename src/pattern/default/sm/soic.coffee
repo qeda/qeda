@@ -62,7 +62,6 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
   pad =
     type: 'smd'
     layer: 'top'
-    shape: 'oval'
     width: padWidth
     height: padHeight
 
@@ -73,7 +72,7 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
     pad.name = num++
     pad.x = (-padSpace/2).toFixed(3)
     pad.y = y.toFixed(3)
-    if i is 1 then pad.shape = 'rectangle'
+    pad.shape =  if i is 1 then 'rectangle' else 'oval'
     pattern.addPad pad
     y += pitch
 

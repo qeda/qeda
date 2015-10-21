@@ -1,12 +1,12 @@
-QEDA
-====
+QEDA.js
+=======
 
-QEDA is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematics and land patterns for PCB (conforming to IPC-7351 standard).
+QEDA.js is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematic and land patterns for PCB (conforming to IPC-7351 standard).
 
 Attention
 =========
 
-**The project is under active development. Not recommended for use in production yet.**
+**The project is under active development. Not recommended for use in production.**
 
 Installation
 ============
@@ -36,7 +36,7 @@ lib.add 'TI/ISO722' # Adding Texas Instruments ISO722
 lib.generateKicad 'ti_iso'
 ```
 
-This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to your custom library. Last string is to generate components library in KiCad format (schematics symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
+This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to your custom library. Last string is to generate components library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
 
 _API will be documented soon._
 
