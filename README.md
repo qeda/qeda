@@ -6,7 +6,7 @@ QEDA is a Node.js library aimed to simplify creating libraries of electronic com
 Attention
 =========
 
-**The project is under active development. Not recommended for use yet.**
+**The project is under active development. Not recommended for use in production yet.**
 
 Installation
 ============
