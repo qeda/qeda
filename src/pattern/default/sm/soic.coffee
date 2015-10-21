@@ -16,42 +16,48 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
   Lmin = housing.leadSpan.min
   Lmax = housing.leadSpan.max
   Ltol = housing.leadSpan.tol
+  Tmin = housing.leadLength.min
   Tmax = housing.leadLength.max
   Ttol = housing.leadLength.tol
   Wmin = housing.leadWidth.min
+  Wmax = housing.leadWidth.max
+  Wtol = housing.leadWidth.tol
 
   F = settings.tolerance.fabrication
-  P = settings.tolerance.placement
+  P = 2*settings.tolerance.placement
   Jt = toe[settings.densityLevel]
   Jh = heel[settings.densityLevel]
   Js = side[settings.densityLevel]
 
-  Stol = Math.sqrt(Ltol*Ltol + 2*Ttol*Ttol)
   Smin = Lmin - 2*Tmax
-  Smax = Smin + Stol
+  Smax = Lmax - 2*Tmin
+  Stol = Ltol + 2*Ttol
+  StolRms = Math.sqrt(Ltol*Ltol + 2*Ttol*Ttol)
+  SmaxRms = Smax - (Stol - StolRms)/2
 
   Cl = Ltol
-  Cs = 0 # Stol # ???
-  Cw = housing.leadWidth.tol
-  Zmax = Lmin + 2*Jt + Math.sqrt(Cl*Cl + F*F + P*P)
-  Gmin = Smax - 2*Jh - Math.sqrt(Cs*Cs + F*F + P*P)
-  Xmax = Wmin + 2*Js + Math.sqrt(Cw*Cw + F*F + P*P)
+  Cs = StolRms
+  Cw = Wtol
+  Zmax = Lmin    + 2*Jt + Math.sqrt(Cl*Cl + F*F + P*P)
+  Gmin = SmaxRms - 2*Jh - Math.sqrt(Cs*Cs + F*F + P*P)
+  Xmax = Wmin    + 2*Js + Math.sqrt(Cw*Cw + F*F + P*P)
+
+  # Trim pads when under body extend
+  if Gmin < housing.bodyWidth.nom then Gmin = housing.bodyWidth.nom
 
   sizeRoundoff = settings.roundoff.size
   placeRoundoff = settings.roundoff.place
 
-  padWidth = (Zmax - Gmin)/2
+  padWidth = (Zmax - Gmin) / 2
   padHeight = Xmax
-  padSpace = (Zmax + Gmin)/2
+  padSpace = (Zmax + Gmin) / 2
 
-  padWidth =  (Math.ceil(padWidth  / sizeRoundoff)  * sizeRoundoff ).toFixed(2)
-  padHeight = (Math.ceil(padHeight / sizeRoundoff)  * sizeRoundoff ).toFixed(2)
-  padSpace =  (Math.ceil(padSpace  / placeRoundoff) * placeRoundoff).toFixed(2)
+  padWidth  = (Math.ceil( padWidth   / sizeRoundoff ) * sizeRoundoff ).toFixed(2)
+  padHeight = (Math.ceil( padHeight  / sizeRoundoff ) * sizeRoundoff ).toFixed(2)
+  padSpace  = (Math.round(padSpace   / placeRoundoff) * placeRoundoff).toFixed(2)
 
-  console.log pattern.name
-  console.log "Stol=#{Stol}"
-  console.log "Z=#{Zmax}, G=#{Gmin}"
-  console.log "#{padWidth}x#{padHeight}, #{padSpace}"
+  #console.log pattern.name
+  #console.log "#{padWidth}x#{padHeight}, space#{padSpace}"
 
   pad =
     type: 'smd'
@@ -67,6 +73,7 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
     pad.name = num++
     pad.x = (-padSpace/2).toFixed(3)
     pad.y = y.toFixed(3)
+    if i is 1 then pad.shape = 'rectangle'
     pattern.addPad pad
     y += pitch
 
