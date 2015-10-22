@@ -8,6 +8,19 @@ Attention
 
 **The project is under active development. Not recommended for use in production.**
 
+Features
+========
+
+* Downloading component definitions from global repository
+* Generating schematic symbols:
+  - Dual-in-line
+* Borrowing packages dimensions from standards:
+  - JEDEC (partially)
+* Land pattern calculation according to IPC-7351:
+  - SOP (and SOIC)
+* Generating libraries:
+  - KiCad format
+
 Installation
 ============
 
@@ -82,7 +95,58 @@ Description example:
 
 _Available JSON fields will be documented soon._
 
+
 License
 =======
 
 Source code is licensed under [MIT license](http://opensource.org/licenses/MIT).
+
+Coming soon
+===========
+
+* [ ] Multipart component support
+* [ ] Generating schematic symbols:
+  - [ ] Quad
+  - [ ] GOST
+* [ ] Generating libraries:
+  - [ ] Eagle XML format
+* [ ] SMD land pattern calculation:
+  - [ ] BGA
+  - [ ] CFP
+  - [ ] CGA
+  - [ ] CQFP
+  - [ ] QFP
+  - [ ] Chip
+  - [ ] Chip array
+  - [ ] Crystal
+  - [ ] DFN
+  - [ ] LGA
+  - [ ] LCC
+  - [ ] MELF
+  - [ ] Molded body
+  - [ ] Oscillator
+  - [ ] PLCC
+  - [ ] QFN
+  - [ ] QFP
+  - [ ] SOD
+  - [ ] SODFL
+  - [ ] SOJ
+  - [ ] SON
+  - [ ] SOTFL
+  - [ ] SOT23
+  - [ ] SOT143
+  - [ ] SOT223
+  - [ ] TO
+* [ ] Through-hole land pattern calculation:
+  - [ ] Axial lead
+  - [ ] DIP
+  - [ ] DIL Socket
+  - [ ] Mounting holes
+  - [ ] Oscillator
+  - [ ] PGA
+  - [ ] Radial lead
+  - [ ] SIP
+  - [ ] Test point
+  - [ ] TO (Flange mount)
+  - [ ] TO (Cylindrical)
+  - [ ] Wire
