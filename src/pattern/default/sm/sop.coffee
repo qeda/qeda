@@ -42,37 +42,38 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
   Gmin = SmaxRms - 2*Jh - Math.sqrt(Cs*Cs + F*F + P*P)
   Xmax = Wmin    + 2*Js + Math.sqrt(Cw*Cw + F*F + P*P)
 
-  # Trim pads when under body extend
-  if Gmin < housing.bodyWidth.nom then Gmin = housing.bodyWidth.nom
+  # Trim pads when they extend under body
+  defaultShape = 'oval'
+  if Gmin < housing.bodyWidth.nom
+    Gmin = housing.bodyWidth.nom
+    defaultShape = 'rectangle'
 
   sizeRoundoff = settings.roundoff.size
   placeRoundoff = settings.roundoff.place
 
   padWidth = (Zmax - Gmin) / 2
   padHeight = Xmax
-  padSpace = (Zmax + Gmin) / 2
+  padDistance = (Zmax + Gmin) / 2
 
-  padWidth  = (Math.ceil( padWidth   / sizeRoundoff ) * sizeRoundoff ).toFixed(2)
-  padHeight = (Math.ceil( padHeight  / sizeRoundoff ) * sizeRoundoff ).toFixed(2)
-  padSpace  = (Math.round(padSpace   / placeRoundoff) * placeRoundoff).toFixed(2)
-
-  #console.log pattern.name
-  #console.log "#{padWidth}x#{padHeight}, space#{padSpace}"
+  padWidth    = (Math.ceil( padWidth    / sizeRoundoff ) * sizeRoundoff )
+  padHeight   = (Math.ceil( padHeight   / sizeRoundoff ) * sizeRoundoff )
+  padDistance = (Math.round(padDistance / placeRoundoff) * placeRoundoff)
 
   pad =
     type: 'smd'
-    layer: 'top'
     width: padWidth
     height: padHeight
+
+  pattern.setLayer 'top'
 
   # Pads on the left side
   y = -pitch * (pinCount/4 - 0.5)
   num = 1
   for i in [1..pinCount/2]
     pad.name = num++
-    pad.x = (-padSpace/2).toFixed(3)
-    pad.y = y.toFixed(3)
-    pad.shape =  if i is 1 then 'rectangle' else 'oval'
+    pad.x = (-padDistance/2)
+    pad.y = y
+    pad.shape =  if i is 1 then 'rectangle' else defaultShape
     pattern.addPad pad
     y += pitch
 
@@ -80,7 +81,40 @@ module.exports = (pattern, pitch, span, height, pinCount) ->
   y -= pitch
   for i in [(pinCount/2 + 1)..pinCount]
     pad.name = num++
-    pad.x = (padSpace/2).toFixed(3)
-    pad.y = y.toFixed(3)
+    pad.x = (padDistance/2)
+    pad.y = y
     pattern.addPad pad
     y -= pitch
+
+  # Silkscreen
+  pattern.setLayer 'topSilkscreen'
+  lineWidth = settings.lineWidth.silkscreen
+  pattern.setLineWidth lineWidth
+  # Rectangle
+  rectWidth = housing.bodyWidth.nom
+  padSpace = padDistance - padWidth - 2*settings.clearance.padToSilk - lineWidth
+  if rectWidth >= padSpace then rectWidth = padSpace
+  bodyHeight = housing.bodyLength.nom
+  pattern.addRectangle { x: -rectWidth/2, y: -bodyHeight/2, width: rectWidth, height: bodyHeight }
+  # First pin keys
+  x = -rectWidth/4
+  y = -bodyHeight/2 + rectWidth/4
+  r = rectWidth/4 - 2*lineWidth
+  pattern.addCircle { x: x, y: y, radius: r }
+  r = lineWidth
+  x = (-padDistance/2)
+  y = -pitch*(pinCount/4 - 0.5) - padHeight/2 - r - settings.clearance.padToSilk
+  pattern.addCircle { x: x, y: y, radius: r/2, lineWidth: r }
+
+  # Assembly
+  pattern.setLayer 'topAssembly'
+  pattern.setLineWidth settings.lineWidth.assembly
+  bodyWidth = housing.bodyWidth.nom
+  leadLength = housing.leadLength.nom
+  pattern.addRectangle { x: -bodyWidth/2, y: -bodyHeight/2, width: bodyWidth, height: bodyHeight }
+  y = -pitch * (pinCount/4 - 0.5)
+  num = 1
+  for i in [1..pinCount/2]
+    pattern.addLine { x1: -bodyWidth/2, y1: y, x2: -bodyWidth/2 - leadLength, y2: y }
+    pattern.addLine { x1: bodyWidth/2, y1: y, x2: bodyWidth/2 + leadLength, y2: y }
+    y += pitch

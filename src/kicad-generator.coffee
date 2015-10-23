@@ -1,5 +1,6 @@
 fs = require 'fs'
 mkdirp = require 'mkdirp'
+sprintf = require('sprintf-js').sprintf
 
 #
 # Generator of library in KiCad format
@@ -9,7 +10,7 @@ class KicadGenerator
   # Constructor
   #
   constructor: (@library) ->
-
+    @f = "%.#{@library.pattern.decimals}f"
   #
   # Generate symbol library and footprint files
   #
@@ -46,7 +47,21 @@ class KicadGenerator
     for shape in pattern.shapes
       patObj = @_patternObj shape
       switch patObj.kind
-        when 'pad' then fs.writeSync fd, "  (pad #{patObj.name} #{patObj.type} #{patObj.shape} (at #{patObj.x} #{patObj.y}) (size #{patObj.width} #{patObj.height}))\n"
+        when 'circle'
+          fs.writeSync(fd,
+            sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n",
+            patObj.x, patObj.y, patObj.x, patObj.y + patObj.radius, patObj.layer, patObj.lineWidth)
+          )
+        when 'line'
+          fs.writeSync(fd,
+            sprintf("  (fp_line (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n"
+            patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
+          )
+        when 'pad'
+          fs.writeSync(fd,
+            sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s))\n"
+            patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
+          )
     fs.writeSync fd, ")\n" # module
 
   #
@@ -79,6 +94,16 @@ class KicadGenerator
   _patternObj: (shape) ->
     obj = shape
     if obj.shape is 'rectangle' then obj.shape = 'rect'
+    obj.layer = switch obj.layer
+      when 'top'
+        if obj.kind is 'pad' then 'F.Cu F.Paste F.Mask' else 'F.Cu'
+      when 'topSilkscreen' then 'F.SilkS'
+      when 'topAssembly' then 'F.Fab'
+      when 'bottom'
+        if obj.kind is 'pad' then 'B.Cu B.Paste B.Mask' else 'B.Cu'
+      when 'bottomSilkscreen' then 'B.SilkS'
+      when 'bottomAssembly' then 'B.Fab'
+      else 'F.Cu'
     obj
 
   #

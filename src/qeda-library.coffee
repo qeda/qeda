@@ -29,6 +29,7 @@ class QedaLibrary
         pinName: 1
     @pattern =
       densityLevel: 'N' # Nominal
+      decimals: 3
       tolerance:
         default: 0.1
         fabrication: 0.05
@@ -36,6 +37,12 @@ class QedaLibrary
       roundoff:
         place: 0.10
         size: 0.05
+      clearance:
+        padToSilk: 0.2
+      lineWidth:
+        default: 0.2
+        silkscreen: 0.2
+        assembly: 0.1
     @mergeObjects this, settings
 
     @symbolDefs = [

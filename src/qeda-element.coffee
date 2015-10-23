@@ -8,12 +8,12 @@ class QedaElement
   #
   # Constructor
   #
-  constructor: (@lib, def) ->
-    @mergeObjects this, def
+  constructor: (@library, definition) ->
+    @mergeObjects this, definition
 
     @refDes = 'REF' # Should be overriden in element handler
     @symbol = new QedaSymbol this
-    @symbol.settings = @lib.symbol
+    @symbol.settings = @library.symbol
     @patterns = []
 
     @pins = []
@@ -37,7 +37,7 @@ class QedaElement
     unless housing.pattern?
       return
     pattern = new QedaPattern this, housing
-    pattern.settings = @lib.pattern
+    pattern.settings = @library.pattern
     @patterns.push pattern
 
   #
@@ -48,15 +48,15 @@ class QedaElement
     if @_calculated then return
 
     # Apply elemend wide handler
-    handler = require "./element/#{@lib.elementStyle}"
+    handler = require "./element/#{@library.elementStyle}"
     handler this
 
     # Apply symbol handler
     if @schematics?.symbol?
-      for def in @lib.symbolDefs
+      for def in @library.symbolDefs
         cap = def.regexp.exec @schematics.symbol
         if cap
-          handler = require "./symbol/#{@lib.symbolStyle}/#{def.handler}"
+          handler = require "./symbol/#{@library.symbolStyle}/#{def.handler}"
           handler(@symbol, cap[1..]...)
 
     @symbol.calculate gridSize
@@ -65,19 +65,22 @@ class QedaElement
     for pattern in @patterns
       if pattern.housing?.outline?
         outline = pattern.housing.outline
-        for def in @lib.outlineDefs
+        for def in @library.outlineDefs
           cap = def.regexp.exec outline
           if cap
             handler = require "./outline/#{def.handler}"
             handler(pattern.housing, cap[1..]...)
       @_convertDimensions pattern.housing
-      for def in @lib.patternDefs
+      for def in @library.patternDefs
         cap = def.regexp.exec pattern.name
         if cap
-          handler = require "./pattern/#{@lib.patternStyle}/#{def.handler}"
+          handler = require "./pattern/#{@library.patternStyle}/#{def.handler}"
           handler(pattern, cap[1..]...)
-
     @_calculated = true
+
+
+  isFloat: (n) ->
+    Number(n) and (n % 1 isnt 0)
 
   #
   # Merge two objects

@@ -8,12 +8,39 @@ class QedaPattern
   constructor: (@element, @housing) ->
     @name = @housing.pattern
     @shapes = []
+    @layer = 'top'
+    @lineWidth = 0
+
+  #
+  # Add circle object
+  #
+  addCircle: (circle) ->
+    @addShape 'circle', circle
+
+  #
+  # Add circle object
+  #
+  addLine: (line) ->
+    @addShape 'line', line
 
   #
   # Add pad object
   #
   addPad: (pad) ->
     @addShape 'pad', pad
+
+  #
+  # Add rectangle object
+  #
+  addRectangle: (rectangle) ->
+    x1 = rectangle.x
+    y1 = rectangle.y
+    x2 = rectangle.x + rectangle.width
+    y2 = rectangle.y + rectangle.height
+    @addLine { x1: x1, y1: y1, x2: x2, y2: y1 }
+    @addLine { x1: x2, y1: y1, x2: x2, y2: y2 }
+    @addLine { x1: x1, y1: y2, x2: x2, y2: y2 }
+    @addLine { x1: x1, y1: y1, x2: x1, y2: y2 }
 
   #
   # Add arbitrary shape object
@@ -23,6 +50,8 @@ class QedaPattern
       kind: kind
     for own prop of shape
       obj[prop] = shape[prop]
+    obj.layer ?= @layer
+    obj.lineWidth ?= @lineWidth
     @shapes.push obj
     obj
 
@@ -35,5 +64,18 @@ class QedaPattern
         @mergeObjects dest[k], v
       else
         dest[k] = v
+
+  #
+  # Set current layer
+  #
+  setLayer: (layer) ->
+    @layer = layer
+
+  #
+  # Set current line width
+  #
+  setLineWidth: (lineWidth) ->
+    @lineWidth = lineWidth
+
 
 module.exports = QedaPattern
