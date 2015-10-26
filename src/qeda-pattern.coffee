@@ -10,6 +10,15 @@ class QedaPattern
     @shapes = []
     @layer = 'top'
     @lineWidth = 0
+    @type = 'smd'
+    @attributes = {}
+
+  #
+  # Add attribute object
+  #
+  addAttribute: (name, attribute) ->
+    attribute.name = name
+    @attributes[name] = @addShape 'attribute',  attribute
 
   #
   # Add circle object
@@ -27,6 +36,7 @@ class QedaPattern
   # Add pad object
   #
   addPad: (pad) ->
+    if pad.type isnt 'smd' then @type = 'through-hole'
     @addShape 'pad', pad
 
   #
@@ -54,6 +64,12 @@ class QedaPattern
     obj.lineWidth ?= @lineWidth
     @shapes.push obj
     obj
+
+  #
+  # Add text object
+  #
+  addText: (text) ->
+    @addShape 'text',  text
 
   #
   # Merge two objects

@@ -43,10 +43,20 @@ class KicadGenerator
   #
   _generatePattern: (fd, pattern) ->
     fs.writeSync fd, "(module #{pattern.name} (layer F.Cu)\n"
-    fs.writeSync fd, "  (attr smd)\n"
+    if pattern.type is 'smd' then fs.writeSync fd, "  (attr smd)\n"
     for shape in pattern.shapes
       patObj = @_patternObj shape
       switch patObj.kind
+        when 'attribute'
+          fs.writeSync(fd,
+            sprintf("  (fp_text %s %s (at #{@f} #{@f}) (layer %s)\n",
+            patObj.name, patObj.text, patObj.x, patObj.y, patObj.layer)
+          )
+          fs.writeSync(fd,
+            sprintf("    (effects (font (size #{@f} #{@f}) (thickness #{@f})))\n",
+            patObj.fontSize, patObj.fontSize, patObj.lineWidth)
+          )
+          fs.writeSync fd, "  )"
         when 'circle'
           fs.writeSync(fd,
             sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n",
@@ -79,6 +89,10 @@ class KicadGenerator
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} 1 L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} H V #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} H V #{nameObj.halign} #{nameObj.valign}NN\n"
+    fs.writeSync fd, "$FPLIST\n"
+    for pattern in element.patterns
+      fs.writeSync fd, "  #{pattern.name}\n"
+    fs.writeSync fd, "$ENDFPLIST\n"
     fs.writeSync fd, "DRAW\n"
     for shape in element.symbol.shapes
       symObj = @_symbolObj shape
@@ -104,6 +118,17 @@ class KicadGenerator
       when 'bottomSilkscreen' then 'B.SilkS'
       when 'bottomAssembly' then 'B.Fab'
       else 'F.Cu'
+    if obj.kind is 'attribute'
+      switch obj.name
+        when 'refDes'
+          obj.name = 'reference'
+          obj.text = 'REF**'
+          obj.fontSize ?= @library.pattern.fontSize.refDes
+        when 'value'
+          obj.fontSize ?= @library.pattern.fontSize.value
+        else
+          obj.name = 'user'
+          obj.fontSize ?= @library.pattern.fontSize.default
     obj
 
   #

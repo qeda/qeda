@@ -7,31 +7,31 @@ module.exports = (symbol, pinCount) ->
 
   # Attributes
   symbol.addAttribute 'refDes',
-    x: pinLen + width/2
-    y: - (step + 0.5)
+    x: 0
+    y: -height/2 - step/2 - 0.5
     halign: 'center'
     valign: 'bottom'
 
   symbol.addAttribute 'name',
-    x: pinLen + width/2
-    y: height + 0.5
+    x: 0
+    y: height/2 + step/2 + 0.5
     halign: 'center'
     valign: 'top'
 
   # Rectangle
   symbol.addRectangle
-    x: pinLen
-    y: -step
+    x: -width/2
+    y: -height/2 - step/2
     width: width
     height: height + step
     fill: 'foreground'
 
   # Pins on the left side
-  y = 0
+  y = -step * pinCount/4 + step/2
   for i in [1..pinCount/2]
     pin = symbol.element.pins[i]
     unless pin? then continue
-    pin.x = 0
+    pin.x = -width/2 - pinLen
     pin.y = y
     pin.length = pinLen
     pin.orientation = 'right'
@@ -43,7 +43,7 @@ module.exports = (symbol, pinCount) ->
   for i in [(pinCount/2 + 1)..pinCount]
     pin = symbol.element.pins[i]
     unless pin? then continue
-    pin.x = width + 2*pinLen
+    pin.x = width/2 + pinLen
     pin.y = y
     pin.length = pinLen
     pin.orientation = 'left'

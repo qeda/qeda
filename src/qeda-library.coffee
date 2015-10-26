@@ -43,6 +43,10 @@ class QedaLibrary
         default: 0.2
         silkscreen: 0.2
         assembly: 0.1
+      fontSize: # mm
+        default: 1
+        refDes: 1
+        value: 1
     @mergeObjects this, settings
 
     @symbolDefs = [
