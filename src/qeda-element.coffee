@@ -52,9 +52,9 @@ class QedaElement
     handler this
 
     # Apply symbol handler
-    if @schematics?.symbol?
+    if @schematic?.symbol?
       for def in @library.symbolDefs
-        cap = def.regexp.exec @schematics.symbol
+        cap = def.regexp.exec @schematic.symbol
         if cap
           handler = require "./symbol/#{@library.symbolStyle}/#{def.handler}"
           handler(@symbol, cap[1..]...)

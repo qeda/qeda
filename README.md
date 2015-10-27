@@ -1,7 +1,7 @@
 QEDA.js
 =======
 
-QEDA.js is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematic and land patterns for PCB (conforming to IPC-7351 standard).
+QEDA.js is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematic and land patterns for PCB.
 
 Attention
 =========
@@ -80,7 +80,7 @@ Description example:
     "nc": "NC"
   },
 
-  "schematics": {
+  "schematic": {
     "symbol": "DIL8",
     "showPinNumbers": true,
     "showPinNames": true
@@ -104,49 +104,48 @@ Source code is licensed under [MIT license](http://opensource.org/licenses/MIT).
 Coming soon
 ===========
 
-* [ ] Multipart component support
-* [ ] Generating schematic symbols:
-  - [ ] Quad
-  - [ ] GOST
-* [ ] Generating libraries:
-  - [ ] Eagle XML format
-* [ ] SMD land pattern calculation:
-  - [ ] BGA
-  - [ ] CFP
-  - [ ] CGA
-  - [ ] CQFP
-  - [ ] QFP
-  - [ ] Chip
-  - [ ] Chip array
-  - [ ] Crystal
-  - [ ] DFN
-  - [ ] LGA
-  - [ ] LCC
-  - [ ] MELF
-  - [ ] Molded body
-  - [ ] Oscillator
-  - [ ] PLCC
-  - [ ] QFN
-  - [ ] QFP
-  - [ ] SOD
-  - [ ] SODFL
-  - [ ] SOJ
-  - [ ] SON
-  - [ ] SOTFL
-  - [ ] SOT23
-  - [ ] SOT143
-  - [ ] SOT223
-  - [ ] TO
-* [ ] Through-hole land pattern calculation:
-  - [ ] Axial lead
-  - [ ] DIP
-  - [ ] DIL Socket
-  - [ ] Mounting holes
-  - [ ] Oscillator
-  - [ ] PGA
-  - [ ] Radial lead
-  - [ ] SIP
-  - [ ] Test point
-  - [ ] TO (Flange mount)
-  - [ ] TO (Cylindrical)
-  - [ ] Wire
+* Multipart component support
+* Generating schematic symbols:
+  - Quad
+  - GOST
+* Generating libraries:
+  - Eagle XML format
+* SMD land pattern calculation:
+  - BGA
+  - CFP
+  - CGA
+  - CQFP
+  - Chip
+  - Chip array
+  - Crystal
+  - DFN
+  - LGA
+  - LCC
+  - MELF
+  - Molded body
+  - Oscillator
+  - PLCC
+  - QFN
+  - QFP
+  - SOD
+  - SODFL
+  - SOJ
+  - SON
+  - SOTFL
+  - SOT23
+  - SOT143
+  - SOT223
+  - TO
+* Through-hole land pattern calculation:
+  - Axial lead
+  - DIP
+  - DIL Socket
+  - Mounting holes
+  - Oscillator
+  - PGA
+  - Radial lead
+  - SIP
+  - Test point
+  - TO (Flange mount)
+  - TO (Cylindrical)
+  - Wire
