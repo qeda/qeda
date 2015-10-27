@@ -83,8 +83,8 @@ class KicadGenerator
     refObj = @_symbolObj symbol.attributes['refDes']
     nameObj = @_symbolObj symbol.attributes['name']
     fs.writeSync fd, "#\n# #{element.name}\n#\n"
-    showPinNumbers = if element.schematics?.showPinNumbers then 'Y' else 'N'
-    showPinNames = if element.schematics?.showPinNames then 'Y' else 'N'
+    showPinNumbers = if element.schematic?.showPinNumbers then 'Y' else 'N'
+    showPinNames = if element.schematic?.showPinNames then 'Y' else 'N'
     pinNameSpace = Math.round @library.symbol.space.pinName
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} 1 L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} H V #{refObj.halign} #{refObj.valign}NN\n"
