@@ -51,7 +51,7 @@ class QedaLibrary
 
     @symbolDefs = [
       { regexp: /DIL(\d+)/, handler: 'dil' },
-      { regexp: /MultiDIL/, handler: 'multidil' }
+      { regexp: /QUAD/, handler: 'quad' }
     ]
     @patternDefs = [
       { regexp: /QFP(\d+)P(\d+)X(\d+)X(\d+)-(\d+)/, handler: 'sm/qfp' }

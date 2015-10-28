@@ -19,6 +19,14 @@ class QedaElement
 
     @pins = []
     @groups = []
+
+    # Grid-array row letters
+    @_letters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
+    last = @_letters.length - 1
+    for i in [1..last]
+      for j in [i..last]
+        @_letters.push @_letters[i] + @_letters[j]
+
     for pinName of @pinout
       pinNumbers = @_pinNumbers @pinout[pinName]
       @groups[pinName] = pinNumbers
@@ -129,9 +137,9 @@ class QedaElement
           unless cap
             numbers.push sub
           else
-            for i in [cap[1]..cap[3]] # TODO: Improve
+            for i in [@_letters.indexOf(cap[1])..@_letters.indexOf(cap[3])] # TODO: Improve
               for j in [cap[2]..cap[4]]
-                numbers.push i + j
+                numbers.push @_letters[i] + j
     numbers
 
   #
