@@ -3,7 +3,6 @@ Qeda = require '../src/qeda'
 
 rm.dir './library'
 
-
 lib = new Qeda.Library
 lib.add 'TI/ISO721'
 lib.add 'TI/ISO722'

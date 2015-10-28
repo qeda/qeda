@@ -8,4 +8,4 @@ module.exports = (pattern, pitch, span1, span2, height, pinCount) ->
   housing = pattern.housing
   settings = pattern.settings
 
-  console.log housing
+  #console.log housing

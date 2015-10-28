@@ -12,13 +12,11 @@ class QedaElement
     @mergeObjects this, definition
 
     @refDes = 'REF' # Should be overriden in element handler
-    @symbol = new QedaSymbol this
-    @symbol.settings = @library.symbol
-    @symbols = []
-    @patterns = []
+    @symbols = [] # Array of symbols (one for single part or several for multi-part)
+    @patterns = [] # Array of possible land patterns
 
-    @pins = []
-    @groups = []
+    @pins = [] # Array of pin objects
+    @groups = [] # Array of pin groups
 
     # Grid-array row letters
     @_letters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
@@ -27,6 +25,7 @@ class QedaElement
       for j in [i..last]
         @_letters.push @_letters[i] + @_letters[j]
 
+    # Create pin objects
     for pinName of @pinout
       pinNumbers = @_pinNumbers @pinout[pinName]
       @groups[pinName] = pinNumbers
@@ -36,6 +35,27 @@ class QedaElement
         else
           @pins[pinNumber].name += ' / ' + pinName
 
+    # Forming groups
+    for key, value of @group
+      @groups[key] = @_concatenateGroups value
+
+    # Multi-part element
+    i = 1
+    while @schematic['part' + i]?
+      symbol = new QedaSymbol this, @schematic['part' + i]
+      @symbols.push new QedaSymbol(this, @schematic['part' + i])
+      ++i
+
+    # Single-part element
+    if @symbols.length is 0
+      part = []
+      if @group?
+        part.push key for key of @group
+      else
+        part.push key for key of @pinout
+      @symbols.push new QedaSymbol(this, part)
+
+    # Create land patterns
     unless Array.isArray @housing
       @housing = [@housing]
     for h in @housing
@@ -50,9 +70,7 @@ class QedaElement
   addPattern: (housing) ->
     unless housing.pattern?
       return
-    pattern = new QedaPattern this, housing
-    pattern.settings = @library.pattern
-    @patterns.push pattern
+    @patterns.push new QedaPattern(this, housing)
 
   #
   # Calculate actual layouts
@@ -65,17 +83,19 @@ class QedaElement
     handler = require "./element/#{@library.elementStyle}"
     handler this
 
-    # Apply symbol handler
-    if @schematic?.symbol?
-      for def in @library.symbolDefs
-        cap = def.regexp.exec @schematic.symbol
-        if cap
-          handler = require "./symbol/#{@library.symbolStyle}/#{def.handler}"
-          handler(@symbol, cap[1..]...)
+    # Symbols processing
+    for symbol in @symbols
+      # Apply symbol handler
+      if @schematic?.symbol?
+        for def in @library.symbolDefs
+          cap = def.regexp.exec @schematic.symbol
+          if cap
+            handler = require "./symbol/#{@library.symbolStyle}/#{def.handler}"
+            handler(symbol, cap[1..]...)
+      # Calculate symbol dimensions
+      symbol.calculate gridSize
 
-    @symbol.calculate gridSize
-
-    # Apply pattern handlers
+    # Pattern processing
     for pattern in @patterns
       if pattern.housing?.outline?
         outline = pattern.housing.outline
@@ -108,6 +128,12 @@ class QedaElement
       else
         dest[k] = v
 
+  _concatenateGroups: (groups) ->
+    result = []
+    unless Array.isArray groups then groups = [groups]
+    for group in groups
+      result = result.concat @groups[group]
+    result
   #
   # Make dimensions more convenient
   #
@@ -151,7 +177,7 @@ class QedaElement
       number: number
 
     if @properties?
-      props = ['ground', 'in', 'inverted', 'out', 'power']
+      props = ['bidir', 'ground', 'in', 'inverted', 'out', 'power']
       for prop in props
         if @properties[prop]?
           pins = if Array.isArray @properties[prop] then @properties[prop] else [@properties[prop]]

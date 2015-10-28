@@ -7,6 +7,7 @@ class QedaPattern
   #
   constructor: (@element, @housing) ->
     @name = @housing.pattern
+    @settings = @element.library.pattern
     @shapes = []
     @layer = 'top'
     @lineWidth = 0

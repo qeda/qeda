@@ -78,7 +78,7 @@ class KicadGenerator
   # Write symbol entry to library file
   #
   _generateSymbol: (fd, element) ->
-    symbol = element.symbol
+    symbol = element.symbols[0]
     symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
     refObj = @_symbolObj symbol.attributes['refDes']
     nameObj = @_symbolObj symbol.attributes['name']
@@ -86,7 +86,7 @@ class KicadGenerator
     showPinNumbers = if element.schematic?.showPinNumbers then 'Y' else 'N'
     showPinNames = if element.schematic?.showPinNames then 'Y' else 'N'
     pinNameSpace = Math.round @library.symbol.space.pinName
-    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} 1 L N\n"
+    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} H V #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} H V #{nameObj.halign} #{nameObj.valign}NN\n"
     fs.writeSync fd, "$FPLIST\n"
@@ -94,11 +94,14 @@ class KicadGenerator
       fs.writeSync fd, "  #{pattern.name}\n"
     fs.writeSync fd, "$ENDFPLIST\n"
     fs.writeSync fd, "DRAW\n"
-    for shape in element.symbol.shapes
-      symObj = @_symbolObj shape
-      switch symObj.kind
-        when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSizeNum} #{symObj.fontSizeName} 1 1 #{symObj.type}#{symObj.shape}\n"
-        when 'rectangle' then fs.writeSync fd, "S #{symObj.x} #{symObj.y} #{symObj.x + symObj.width} #{symObj.y + symObj.height} 1 1 0 #{symObj.fillStyle}\n"
+    i = 1
+    for symbol in element.symbols
+      for shape in symbol.shapes
+        symObj = @_symbolObj shape
+        switch symObj.kind
+          when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSizeNum} #{symObj.fontSizeName} #{i} 1 #{symObj.type}#{symObj.shape}\n"
+          when 'rectangle' then fs.writeSync fd, "S #{symObj.x} #{symObj.y} #{symObj.x + symObj.width} #{symObj.y + symObj.height} #{i} 1 0 #{symObj.fillStyle}\n"
+      ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
 
