@@ -14,13 +14,19 @@ class QedaElement
     @refDes = 'REF' # Should be overriden in element handler
     @symbol = new QedaSymbol this
     @symbol.settings = @library.symbol
+    @symbols = []
     @patterns = []
 
     @pins = []
+    @groups = []
     for pinName of @pinout
-      pinNumbers = if Array.isArray @pinout[pinName] then @pinout[pinName] else [@pinout[pinName]]
+      pinNumbers = @_pinNumbers @pinout[pinName]
+      @groups[pinName] = pinNumbers
       for pinNumber in pinNumbers
-        @pins[pinNumber] = @_pinObj pinNumber, pinName
+        unless @pins[pinNumber]?
+          @pins[pinNumber] = @_pinObj pinNumber, pinName
+        else
+          @pins[pinNumber].name += ' / ' + pinName
 
     unless Array.isArray @housing
       @housing = [@housing]
@@ -78,7 +84,9 @@ class QedaElement
           handler(pattern, cap[1..]...)
     @_calculated = true
 
-
+  #
+  # Check whether number is float
+  #
   isFloat: (n) ->
     Number(n) and (n % 1 isnt 0)
 
@@ -103,6 +111,28 @@ class QedaElement
         nom = (max + min) / 2
         tol = max - min
         housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
+
+  #
+  # Convert pin numbers definition to array
+  #
+  _pinNumbers: (inputs) ->
+    numbers = []
+    unless Array.isArray inputs then inputs = [inputs]
+    for input in inputs
+      if typeof input is 'number'
+        numbers.push input.toString()
+      else if typeof input is 'string'
+        input = input.replace /\s+/g, ''
+        subs = input.split ','
+        for sub in subs
+          cap = /([A-Z]*)(\d+)\.{2,3}([A-Z]*)(\d+)/.exec sub
+          unless cap
+            numbers.push sub
+          else
+            for i in [cap[1]..cap[3]] # TODO: Improve
+              for j in [cap[2]..cap[4]]
+                numbers.push i + j
+    numbers
 
   #
   # Generate pin object
