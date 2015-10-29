@@ -34,9 +34,6 @@ class QedaLibrary
         default: 0.1
         fabrication: 0.05
         placement: 0.05
-      roundoff:
-        place: 0.10
-        size: 0.05
       clearance:
         padToSilk: 0.2
       lineWidth:
