@@ -17,6 +17,7 @@ Features
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
 * Land pattern calculation according to IPC-7351:
+  - QFP
   - SOP (and SOIC)
 * Generating libraries:
   - KiCad format
@@ -81,7 +82,7 @@ Description example:
   },
 
   "schematic": {
-    "symbol": "DIL8",
+    "symbol": "QUAD",
     "showPinNumbers": true,
     "showPinNames": true
   },
@@ -126,7 +127,6 @@ Coming soon
   - Oscillator
   - PLCC
   - QFN
-  - QFP
   - SOD
   - SODFL
   - SOJ

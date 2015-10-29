@@ -1,4 +1,4 @@
-GullWing = require './common/gull-wing'
+gullwing = require './common/gullwing'
 
 module.exports = (pattern, pitch, span, height, leadCount) ->
   pitch /= 100.0
@@ -13,7 +13,7 @@ module.exports = (pattern, pitch, span, height, leadCount) ->
   housing.leadCount ?= leadCount
 
   # Calculation according to IPC-7351
-  dims = GullWing.calculate pattern
+  dims = gullwing.calculate pattern
 
   # Trim pads when they extend under body
   defaultShape = 'oval'
@@ -22,7 +22,7 @@ module.exports = (pattern, pitch, span, height, leadCount) ->
     defaultShape = 'rectangle'
 
   # Calculate pad dimensions
-  padDims = GullWing.pad dims, pattern
+  padDims = gullwing.pad dims, pattern
   padWidth = padDims.width
   padHeight = padDims.height
   padDistance = padDims.distance
@@ -62,8 +62,8 @@ module.exports = (pattern, pitch, span, height, leadCount) ->
   rectWidth = housing.bodyWidth.nom
   padSpace = padDistance - padWidth - 2*settings.clearance.padToSilk - lineWidth
   if rectWidth >= padSpace then rectWidth = padSpace
-  bodyHeight = housing.bodyLength.nom
-  pattern.addRectangle { x: -rectWidth/2, y: -bodyHeight/2, width: rectWidth, height: bodyHeight }
+  bodyLength = housing.bodyLength.nom
+  pattern.addRectangle { x: -rectWidth/2, y: -bodyLength/2, width: rectWidth, height: bodyLength }
   # First pin keys
   r = 0.25
   x = (-padDistance - padWidth)/2 + r
@@ -73,13 +73,13 @@ module.exports = (pattern, pitch, span, height, leadCount) ->
   shift = rectWidth/2 - r
   if shift > 0.5 then shift = 0.5
   x = -rectWidth/2 + r + shift
-  y = -bodyHeight/2 + r + shift
+  y = -bodyLength/2 + r + shift
   pattern.addCircle { x: x, y: y, radius: r/2, lineWidth: r }
   # RefDes
   fontSize = settings.fontSize.refDes
   pattern.addAttribute 'refDes',
     x: 0
-    y: -bodyHeight/2 - fontSize/2 - 2*lineWidth
+    y: -bodyLength/2 - fontSize/2 - 2*lineWidth
     halign: 'center'
     valign: 'center'
 
@@ -89,10 +89,9 @@ module.exports = (pattern, pitch, span, height, leadCount) ->
   bodyWidth = housing.bodyWidth.nom
   leadLength = housing.leadLength.nom
   # Body
-  pattern.addRectangle { x: -bodyWidth/2, y: -bodyHeight/2, width: bodyWidth, height: bodyHeight }
+  pattern.addRectangle { x: -bodyWidth/2, y: -bodyLength/2, width: bodyWidth, height: bodyLength }
   # Leads
   y = -pitch * (leadCount/4 - 0.5)
-  num = 1
   for i in [1..leadCount/2]
     pattern.addLine { x1: -bodyWidth/2, y1: y, x2: -bodyWidth/2 - leadLength, y2: y }
     pattern.addLine { x1: bodyWidth/2, y1: y, x2: bodyWidth/2 + leadLength, y2: y }
@@ -102,13 +101,13 @@ module.exports = (pattern, pitch, span, height, leadCount) ->
   shift = bodyWidth/2 - r
   if shift > 0.5 then shift = 0.5
   x = -bodyWidth/2 + r + shift
-  y = -bodyHeight/2 + r + shift
+  y = -bodyLength/2 + r + shift
   pattern.addCircle { x: x, y: y, radius: r}
   # Value
   fontSize = settings.fontSize.value
   pattern.addAttribute 'value',
     text: pattern.name
     x: 0
-    y: bodyHeight/2 + fontSize/2 + 0.5
+    y: bodyLength/2 + fontSize/2 + 0.5
     halign: 'center'
     valign: 'center'
