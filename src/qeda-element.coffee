@@ -16,7 +16,7 @@ class QedaElement
     @patterns = [] # Array of possible land patterns
 
     @pins = [] # Array of pin objects
-    @groups = [] # Array of pin groups
+    @pinGroups = [] # Array of pin groups
 
     # Grid-array row letters
     @_letters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
@@ -28,32 +28,27 @@ class QedaElement
     # Create pin objects
     for pinName of @pinout
       pinNumbers = @_pinNumbers @pinout[pinName]
-      @groups[pinName] = pinNumbers
+      @pinGroups[pinName] = pinNumbers
       for pinNumber in pinNumbers
         unless @pins[pinNumber]?
           @pins[pinNumber] = @_pinObj pinNumber, pinName
         else
-          @pins[pinNumber].name += ' / ' + pinName
+          @pins[pinNumber].name += '/' + pinName
 
     # Forming groups
-    for key, value of @group
-      @groups[key] = @_concatenateGroups value
+    for key, value of @groups
+      @pinGroups[key] = @_concatenateGroups value
 
-    # Multi-part element
-    i = 1
-    while @schematic['part' + i]?
-      symbol = new QedaSymbol this, @schematic['part' + i]
-      @symbols.push new QedaSymbol(this, @schematic['part' + i])
-      ++i
-
-    # Single-part element
-    if @symbols.length is 0
+    if @parts? # Multi-part element
+      for name, part of @parts
+        @symbols.push new QedaSymbol(this, name, part)
+    else # Single-part element
       part = []
-      if @group?
-        part.push key for key of @group
+      if @groups?
+        part.push key for key of @groups
       else
         part.push key for key of @pinout
-      @symbols.push new QedaSymbol(this, part)
+      @symbols.push new QedaSymbol(this, @name, part)
 
     # Create land patterns
     unless Array.isArray @housing
@@ -132,8 +127,10 @@ class QedaElement
     result = []
     unless Array.isArray groups then groups = [groups]
     for group in groups
-      result = result.concat @groups[group]
+      pinGroup = @pinGroups[group]
+      if pinGroup? then result = result.concat pinGroup
     result
+
   #
   # Make dimensions more convenient
   #
@@ -177,7 +174,7 @@ class QedaElement
       number: number
 
     if @properties?
-      props = ['bidir', 'ground', 'in', 'inverted', 'out', 'power']
+      props = ['bidir', 'ground', 'in', 'inverted', 'out', 'passive', 'power']
       for prop in props
         if @properties[prop]?
           pins = if Array.isArray @properties[prop] then @properties[prop] else [@properties[prop]]

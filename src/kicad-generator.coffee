@@ -78,8 +78,9 @@ class KicadGenerator
   # Write symbol entry to library file
   #
   _generateSymbol: (fd, element) ->
+    for symbol in element.symbols
+      symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
     symbol = element.symbols[0]
-    symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
     refObj = @_symbolObj symbol.attributes['refDes']
     nameObj = @_symbolObj symbol.attributes['name']
     fs.writeSync fd, "#\n# #{element.name}\n#\n"

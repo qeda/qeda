@@ -5,11 +5,30 @@ class QedaSymbol
   #
   # Constructor
   #
-  constructor: (@element, @part) ->
+  constructor: (@element, @name, @part) ->
     @settings = @element.library.symbol
     @schematic = @element.schematic
     @shapes = []
     @attributes = []
+    sides = ['left', 'right', 'top', 'bottom']
+    for side in sides
+      @[side] = []
+      if @schematic[side]?
+        groups = @schematic[side]
+        unless Array.isArray groups then groups = [groups]
+        for group in groups
+          pinGroup = @element.pinGroups[group]
+          if (@part.indexOf(group) isnt -1) and pinGroup?
+            if @[side].length > 0
+              @[side].push '-' # Insert gap
+            @[side] = @[side].concat pinGroup
+
+    both = @left.filter((n) => (n isnt '-') and (@right.indexOf(n) isnt -1))
+    delta = Math.ceil((@left.length + both.length - @right.length) / 2)
+    left = both[0..(delta-1)]
+    right = both[delta..]
+    @left = @left.filter((n) => right.indexOf(n) is -1)
+    @right = @right.filter((n) => left.indexOf(n) is -1)
 
   #
   # Add attribute object

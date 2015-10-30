@@ -47,7 +47,7 @@ class QedaLibrary
     @mergeObjects this, settings
 
     @symbolDefs = [
-      { regexp: /DIL(\d+)/, handler: 'dil' },
+      { regexp: /DIL/, handler: 'dil' },
       { regexp: /QUAD/, handler: 'quad' }
     ]
     @patternDefs = [

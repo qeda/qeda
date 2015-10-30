@@ -1,8 +1,9 @@
-module.exports = (symbol, pinCount) ->
+module.exports = (symbol) ->
   step = 2
   width = 20
   pinLen = 4
 
+  pinCount = 8 # TODO: Oops!
   height =  Math.round(step * pinCount/2)
 
   # Attributes
