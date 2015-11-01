@@ -68,12 +68,27 @@ class QedaElement
     @patterns.push new QedaPattern(this, housing)
 
   #
-  # Calculate actual layouts
+  # Check whether number is float
   #
-  calculate: (gridSize) ->
-    @_calculated ?= false
-    if @_calculated then return
+  isFloat: (n) ->
+    Number(n) and (n % 1 isnt 0)
 
+  #
+  # Merge two objects
+  #
+  mergeObjects: (dest, src) ->
+    for k, v of src
+      if typeof v is 'object' and dest.hasOwnProperty k
+        @mergeObjects dest[k], v
+      else
+        dest[k] = v
+
+  #
+  # Generate symbols and patterns
+  #
+  render: ->
+    @_rendered ?= false
+    if @_rendered then return
     # Apply elemend wide handler
     handler = require "./element/#{@library.elementStyle}"
     handler this
@@ -87,8 +102,6 @@ class QedaElement
           if cap
             handler = require "./symbol/#{@library.symbolStyle}/#{def.handler}"
             handler(symbol, cap[1..]...)
-      # Calculate symbol dimensions
-      symbol.calculate gridSize
 
     # Pattern processing
     for pattern in @patterns
@@ -105,23 +118,7 @@ class QedaElement
         if cap
           handler = require "./pattern/#{@library.patternStyle}/#{def.handler}"
           handler(pattern, cap[1..]...)
-    @_calculated = true
-
-  #
-  # Check whether number is float
-  #
-  isFloat: (n) ->
-    Number(n) and (n % 1 isnt 0)
-
-  #
-  # Merge two objects
-  #
-  mergeObjects: (dest, src) ->
-    for k, v of src
-      if typeof v is 'object' and dest.hasOwnProperty k
-        @mergeObjects dest[k], v
-      else
-        dest[k] = v
+  @_rendered = true
 
   _concatenateGroups: (groups) ->
     result = []

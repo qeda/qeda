@@ -47,8 +47,7 @@ class QedaLibrary
     @mergeObjects this, settings
 
     @symbolDefs = [
-      { regexp: /DIL/, handler: 'dil' },
-      { regexp: /QUAD/, handler: 'quad' }
+      { regexp: /IC/, handler: 'ic' }
     ]
     @patternDefs = [
       { regexp: /QFP(\d+)P(\d+)X(\d+)X(\d+)-(\d+)/, handler: 'sm/qfp' }
@@ -84,6 +83,9 @@ class QedaLibrary
   calculate: ->
     @_calculated ?= false
     if @_calculated then return
+    for element in @elements
+      element.render()
+
     for prop of @symbol.fontSize
       @symbol.fontSize[prop] *= @symbol.gridSize
     for prop of @symbol.lineWidth
@@ -91,8 +93,9 @@ class QedaLibrary
     for prop of @symbol.space
       @symbol.space[prop] *= @symbol.gridSize
 
-    for e in @elements
-      e.calculate @symbol.gridSize
+    for element in @elements
+      for symbol in element.symbols
+        symbol.resize @symbol.gridSize
     @_calculated = true
 
   #

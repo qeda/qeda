@@ -25,10 +25,10 @@ class QedaSymbol
 
     both = @left.filter((n) => (n isnt '-') and (@right.indexOf(n) isnt -1))
     delta = Math.ceil((@left.length + both.length - @right.length) / 2)
-    left = both[0..(delta-1)]
-    right = both[delta..]
-    @left = @left.filter((n) => right.indexOf(n) is -1)
-    @right = @right.filter((n) => left.indexOf(n) is -1)
+    toLeft = both[0..(delta-1)]
+    toRight = both[delta..]
+    @left = @left.filter((n) => toRight.indexOf(n) is -1)
+    @right = @right.filter((n) => toLeft.indexOf(n) is -1)
 
   #
   # Add attribute object
@@ -61,25 +61,23 @@ class QedaSymbol
     obj
 
   #
-  # Convert inner units to physical (mm, mil etc.)
-  #
-  calculate: (gridSize) ->
-    @_calculated ?= false
-    if @_calculated then return
-    for shape in @shapes
-      if shape.x? then shape.x *= gridSize
-      if shape.y? then shape.y *= gridSize
-      if shape.length? then shape.length *= gridSize
-      if shape.width? then shape.width *= gridSize
-      if shape.height? then shape.height *= gridSize
-    @_calculated = true
-
-  #
   # Flip vertically
   #
   invertVertical: ->
     for shape in @shapes
       if shape.y? then shape.y *= -1
       if shape.height? then shape.height *= -1
+
+  #
+  # Convert inner units to physical (mm, mil etc.)
+  #
+  resize: (gridSize) ->
+    for shape in @shapes
+      if shape.x? then shape.x *= gridSize
+      if shape.y? then shape.y *= gridSize
+      if shape.length? then shape.length *= gridSize
+      if shape.width? then shape.width *= gridSize
+      if shape.height? then shape.height *= gridSize
+
 
 module.exports = QedaSymbol
