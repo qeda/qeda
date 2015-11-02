@@ -77,7 +77,7 @@ Description example:
   "properties": {
     "power": "Vcc",
     "ground": "GND",
-    "in": ["DIN", "Vcc"],
+    "in": "DIN",
     "out": "DOUT",
     "nc": "NC"
   },
