@@ -13,7 +13,7 @@ Features
 
 * Downloading component definitions from global repository
 * Generating schematic symbols:
-  - Dual-in-line
+  - Single and multi part IC (dual-in-line, quad)
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
 * Land pattern calculation according to IPC-7351:
@@ -45,9 +45,10 @@ lib = new Qeda.Library
     units: 'mil'
     gridSize: 50
 
+lib.add 'Altera/5M1270ZT144' # Adding Altera MAX V CPLD
 lib.add 'TI/ISO721' # Adding Texas Instruments ISO721
 lib.add 'TI/ISO722' # Adding Texas Instruments ISO722
-lib.generateKicad 'ti_iso'
+lib.generateKicad 'qeda'
 ```
 
 This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to your custom library. Last string is to generate components library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
@@ -82,9 +83,13 @@ Description example:
   },
 
   "schematic": {
-    "symbol": "QUAD",
+    "symbol": "IC",
     "showPinNumbers": true,
-    "showPinNames": true
+    "showPinNames": true,
+    "left": "DIN",
+    "right": ["DOUT", "NC"],
+    "top": "Vcc",
+    "bottom": "GND"
   },
 
   "housing": {
@@ -105,9 +110,10 @@ Source code is licensed under [MIT license](http://opensource.org/licenses/MIT).
 Coming soon
 ===========
 
-* Multipart component support
 * Generating schematic symbols:
-  - Quad
+  - Resistors
+  - Capacitors
+  - Special symbols (ground, power supply, test points etc.)
   - GOST
 * Generating libraries:
   - Eagle XML format
@@ -149,3 +155,4 @@ Coming soon
   - TO (Flange mount)
   - TO (Cylindrical)
   - Wire
+* 3D models generation

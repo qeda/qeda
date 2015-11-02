@@ -90,16 +90,7 @@ class KicadGenerator
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} H V #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} H V #{nameObj.halign} #{nameObj.valign}NN\n"
-    aliases = []
-    if element.suffix?
-      unless Array.isArray element.suffix then element.suffix = [element.suffix]
-      for suffix in element.suffix
-        aliases.push element.name + suffix
-    if element.alias?
-      unless Array.isArray element.alias then element.suffix = [element.alias]
-      for alias in element.alias
-        aliases.push alias
-    if aliases.length > 0 then fs.writeSync fd, "ALIAS #{aliases.join(' ')}\n"
+    if element.alias? then fs.writeSync fd, "ALIAS #{element.alias.join(' ')}\n"
     fs.writeSync fd, "$FPLIST\n"
     for pattern in element.patterns
       fs.writeSync fd, "  #{pattern.name}\n"

@@ -11,6 +11,14 @@ class QedaElement
   constructor: (@library, definition) ->
     @mergeObjects this, definition
 
+    if @alias? and (not Array.isArray @alias) then @alias = [@alias]
+    if @suffix?
+      @alias ?= []
+      unless Array.isArray(@suffix) then @suffix = [@suffix]
+      for suffix in @suffix
+        alias = @name + suffix
+        if @alias.indexOf(alias) is -1 then @alias.push alias
+
     @refDes = 'REF' # Should be overriden in element handler
     @symbols = [] # Array of symbols (one for single part or several for multi-part)
     @patterns = [] # Array of possible land patterns
