@@ -17,8 +17,6 @@ module.exports = (symbol) ->
   top = symbol.top
   bottom = symbol.bottom
   pins = symbol.element.pins
-  dualInLine = (top.length is 0) and (bottom.length is 0)
-  quad = not dualInLine
 
   width = step * (Math.max(top.length, bottom.length) + 2)
   height = step * (Math.max(left.length, right.length) + 2)
@@ -34,15 +32,11 @@ module.exports = (symbol) ->
   symbol.addAttribute 'name',
     x: 0
     y: 0.5
-    halign: if quad then 'center' else 'right'
+    halign: 'center'
     valign: 'center'
-    orientation: if quad then 'horizontal' else 'vertical'
 
   textWidth = symbol.element.longestAlias.length * settings.fontSize.name
   textHeight = settings.fontSize.refDes + settings.fontSize.name + 1
-  if dualInLine
-    textWidth = settings.fontSize.name
-    textHeight = symbol.element.longestAlias.length * settings.fontSize.name
 
   # Update box size
   width = Math.max width, textWidth + 2*space
@@ -138,10 +132,7 @@ module.exports = (symbol) ->
   x = -width/2
   dy = settings.fontSize.pinName/2 + space
   leftPins = []
-  if quad
-    y = -step * left.length/2 + step/2
-  else
-    y = Math.ceil(settings.fontSize.name + step)
+  y = -step * left.length/2 + step/2
   for i in left
     if i is '-'
       y += step
@@ -169,10 +160,7 @@ module.exports = (symbol) ->
   # Pins on the right side
   x = width/2
   rightPins = []
-  if quad
-    y = -step * right.length/2 + step/2
-  else
-    y = Math.ceil(settings.fontSize.name + step)
+  y = -step * right.length/2 + step/2
   for i in right
     if i is '-'
       y += step
@@ -202,8 +190,7 @@ module.exports = (symbol) ->
   height = bottomY - topY
 
   # Box
-  y = 0
-  if quad then y = topY
+  y = topY
   symbol.addRectangle
     x: leftX
     y: y
