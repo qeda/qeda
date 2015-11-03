@@ -11,19 +11,6 @@ module.exports = (symbol) ->
   bottom = symbol.bottom
   pins = symbol.element.pins
 
-  # Attributes
-  symbol.addAttribute 'refDes',
-    x: 0
-    y: -0.5
-    halign: 'center'
-    valign: 'bottom'
-
-  symbol.addAttribute 'name',
-    x: 0
-    y: 0.5
-    halign: 'center'
-    valign: 'top'
-
   width = step * (Math.max(top.length, bottom.length) + 2)
   height = step * (Math.max(left.length, right.length) + 2)
   space = settings.space.pinName
@@ -108,34 +95,48 @@ module.exports = (symbol) ->
     x += step
   bottomTextHeight *= settings.fontSize.pinName
 
-  textWidth = symbol.element.name.length * settings.fontSize.name
-  textWidth = Math.ceil(textWidth / 2) * 2 # Make width even
+  textWidth = symbol.element.longestAlias.length * settings.fontSize.name
+
+  if left.length > 0 then leftTextWidth += space
+  if right.length > 0 then rightTextWidth += space
 
   if top.length > 0 # Center aligned symbol
-    width = Math.max width, (leftTextWidth + textWidth + rightTextWidth + space)
+    width = Math.max width, (leftTextWidth + textWidth + rightTextWidth + 2*space)
   else # Top aligned symbol
-    width = Math.max width, textWidth, (leftTextWidth + rightTextWidth + space)
-  width += 2*space
+    width = Math.max width, textWidth + 2*space, (leftTextWidth + rightTextWidth + space)
 
   textHeight = settings.fontSize.refDes + settings.fontSize.name + 1
+
+  if top.length > 0 then topTextHeight += space
+  if bottom.length > 0 then bottomTextHeight += space
+
   height = Math.max height, (topTextHeight + textHeight + bottomTextHeight + 2*space)
   if topTextWidth > textWidth
     height += topTextHeight
   if bottomTextWidth > textWidth
     height += bottomTextHeight
 
-  width = Math.ceil(width / 2) * 2 # Make width even
-  height = Math.ceil(height / 2) * 2 # Make height even
+  #width = Math.ceil(width / 2) * 2 # Make width even
+  #height = Math.ceil(height / 2) * 2 # Make height even
 
+  # Let's generate symbol
+  # Attributes
+  x = Math.round((-width - leftTextWidth + rightTextWidth) / 2)
+  symbol.addAttribute 'refDes',
+    x: 0
+    y: -0.5
+    halign: 'center'
+    valign: 'bottom'
+
+  symbol.addAttribute 'name',
+    x: 0
+    y: 0.5
+    halign: 'center'
+    valign: 'top'
+
+  # Box
   y = 0
   if top.length > 0 then y = -height/2 # Center aligned symbol
-
-  x = -width/2
-  if left.length is 0
-    x = -textWidth/2
-  if right.length is 0
-    x = textWidth/2 - width
-
   symbol.addRectangle
     x: x
     y: y
@@ -143,6 +144,7 @@ module.exports = (symbol) ->
     height: height
     fill: 'foreground'
 
+  # Pins
   for pin in leftPins
     pin.x = x - pinLength
     symbol.addPin pin

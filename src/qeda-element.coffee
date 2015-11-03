@@ -19,6 +19,12 @@ class QedaElement
         alias = @name + suffix
         if @alias.indexOf(alias) is -1 then @alias.push alias
 
+    # Find longest alias
+    @longestAlias = @name
+    if @alias?
+      for alias in @alias
+        if alias.length > @longestAlias.length then @longestAlias = alias
+
     @refDes = 'REF' # Should be overriden in element handler
     @symbols = [] # Array of symbols (one for single part or several for multi-part)
     @pattern = new QedaPattern this

@@ -24,7 +24,7 @@ class QedaSymbol
             @[side] = @[side].concat pinGroup
 
     both = @left.filter((n) => (n isnt '-') and (@right.indexOf(n) isnt -1))
-    delta = Math.ceil((@left.length + both.length - @right.length) / 2)
+    delta = Math.ceil((@right.length - @left.length + both.length) / 2)
     toLeft = both[0..(delta-1)]
     toRight = both[delta..]
     @left = @left.filter((n) => toRight.indexOf(n) is -1)
