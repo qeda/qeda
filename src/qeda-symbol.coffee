@@ -5,7 +5,7 @@ class QedaSymbol
   #
   # Constructor
   #
-  constructor: (@element, @name, @part) ->
+  constructor: (@element, @part, @name) ->
     @settings = @element.library.symbol
     @schematic = @element.schematic
     @shapes = []

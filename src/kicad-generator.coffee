@@ -87,8 +87,12 @@ class KicadGenerator
     showPinNames = if element.schematic?.showPinNames then 'Y' else 'N'
     pinNameSpace = Math.round @library.symbol.space.pinName
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
-    fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} H V #{refObj.halign} #{refObj.valign}NN\n"
-    fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} H V #{nameObj.halign} #{nameObj.valign}NN\n"
+    fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} V #{refObj.halign} #{refObj.valign}NN\n"
+    fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} V #{nameObj.halign} #{nameObj.valign}NN\n"
+    if symbol.attributes['user']?
+      attrObj = @_symbolObj symbol.attributes['user']
+      fs.writeSync fd, "F4 \"#{attrObj.text}\" #{attrObj.x} #{attrObj.y} #{attrObj.fontSize} #{attrObj.orientation} V #{attrObj.halign} #{attrObj.valign}NN\n"
+
     if element.alias? then fs.writeSync fd, "ALIAS #{element.alias.join(' ')}\n"
     fs.writeSync fd, "$FPLIST\n"
     fs.writeSync fd, "  #{element.pattern.name}\n"
@@ -142,22 +146,22 @@ class KicadGenerator
     obj.x = Math.round obj.x
     obj.y = Math.round obj.y
     obj.length = Math.round obj.length
-    if obj.halign?
-      obj.halign = switch obj.halign
-        when 'center' then 'C'
-        when 'right' then 'R'
-        else 'L'
-    if obj.valign?
-      obj.valign = switch obj.valign
-        when 'center' then 'C'
-        when 'bottom' then 'B'
-        else 'T'
-    if obj.orientation?
-      obj.orientation = switch obj.orientation
-        when 'left' then 'L'
-        when 'up' then 'U'
-        when 'down' then 'D'
-        else 'R'
+    obj.halign = switch obj.halign
+      when 'center' then 'C'
+      when 'right' then 'R'
+      else 'L'
+    obj.valign = switch obj.valign
+      when 'center' then 'C'
+      when 'bottom' then 'B'
+      else 'T'
+    obj.orientation = switch obj.orientation
+      when 'left' then 'L'
+      when 'right' then 'R'
+      when 'up' then 'U'
+      when 'down' then 'D'
+      when 'horizontal' then 'H'
+      when 'vertical' then 'V'
+      else 'H'
     obj.fontSize = Math.round(if @library.symbol.fontSize[shape.name]? then @library.symbol.fontSize[shape.name] else @library.symbol.fontSize.default)
     obj.fontSizeNum = Math.round @library.symbol.fontSize.pinNumber
     obj.fontSizeName = Math.round @library.symbol.fontSize.pinName

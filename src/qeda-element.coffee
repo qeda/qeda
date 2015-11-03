@@ -55,14 +55,14 @@ class QedaElement
 
     if @parts? # Multi-part element
       for name, part of @parts
-        @symbols.push new QedaSymbol(this, name, part)
+        @symbols.push new QedaSymbol(this, part, name)
     else # Single-part element
       part = []
       if @groups?
         part.push key for key of @groups
       else
         part.push key for key of @pinout
-      @symbols.push new QedaSymbol(this, @name, part)
+      @symbols.push new QedaSymbol(this, part)
 
   #
   # Check whether number is float
