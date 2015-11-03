@@ -1,8 +1,7 @@
 sprintf = require('sprintf-js').sprintf
 gullwing = require './common/gullwing'
 
-module.exports = (pattern) ->
-  housing = pattern.housing
+module.exports = (pattern, housing) ->
   settings = pattern.settings
 
   pattern.name ?= sprintf "SOP%dP%dX%d-%d",
@@ -16,7 +15,7 @@ module.exports = (pattern) ->
   leadCount = housing.leadCount
 
   # Calculation according to IPC-7351
-  dims = gullwing.calculate pattern
+  dims = gullwing.calculate pattern, housing
 
   # Trim pads when they extend under body
   defaultShape = 'oval'

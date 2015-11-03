@@ -1,7 +1,6 @@
 
 module.exports =
-  calculate: (pattern) ->
-    housing = pattern.housing
+  calculate: (pattern, housing) ->
     settings = pattern.settings
 
     toe = { L: 0.15, N: 0.35, M: 0.55 }

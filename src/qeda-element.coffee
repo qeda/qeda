@@ -21,7 +21,7 @@ class QedaElement
 
     @refDes = 'REF' # Should be overriden in element handler
     @symbols = [] # Array of symbols (one for single part or several for multi-part)
-    @patterns = [] # Array of possible land patterns
+    @pattern = new QedaPattern this
 
     @pins = [] # Array of pin objects
     @pinGroups = [] # Array of pin groups
@@ -58,23 +58,6 @@ class QedaElement
         part.push key for key of @pinout
       @symbols.push new QedaSymbol(this, @name, part)
 
-    # Create land patterns
-    unless Array.isArray @housing
-      @housing = [@housing]
-    for h in @housing
-      if typeof h is 'object'
-        @addPattern h
-      else if typeof h is 'string'
-        if @[h]? then @addPattern @[h]
-
-  #
-  # Add pattern
-  #
-  addPattern: (housing) ->
-    unless housing.pattern?
-      return
-    @patterns.push new QedaPattern(this, housing)
-
   #
   # Check whether number is float
   #
@@ -86,7 +69,7 @@ class QedaElement
   #
   mergeObjects: (dest, src) ->
     for k, v of src
-      if typeof v is 'object' and dest.hasOwnProperty k
+      if typeof v is 'object' and (not Array.isArray v) and dest.hasOwnProperty k
         @mergeObjects dest[k], v
       else
         dest[k] = v
@@ -109,20 +92,20 @@ class QedaElement
         handler symbol
 
     # Pattern processing
-    for pattern in @patterns
-      if pattern.housing?.outline?
-        outline = pattern.housing.outline
-        for def in @library.outlineDefs
-          cap = def.regexp.exec outline
-          if cap
-            handler = require "./outline/#{def.handler}"
-            handler(pattern.housing, cap[1..]...)
-      @_convertDimensions pattern.housing
-      handler = require "./pattern/#{@library.patternStyle}/#{pattern.handler}"
-      handler pattern#, cap[1..]...)
-      pattern.name ?= pattern.housing.pattern
+    if @housing?.outline?
+      outline = @housing.outline
+      for def in @library.outlineDefs
+        cap = def.regexp.exec outline
+        if cap
+          handler = require "./outline/#{def.handler}"
+          handler(@housing, cap[1..]...)
 
-  @_rendered = true
+    @_convertDimensions @housing
+    handler = require "./pattern/#{@library.patternStyle}/#{@pattern.handler}"
+    handler @pattern, @housing
+    @pattern.name ?= @housing.pattern
+
+    @_rendered = true
 
   _concatenateGroups: (groups) ->
     result = []

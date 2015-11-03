@@ -26,8 +26,7 @@ class KicadGenerator
     fs.writeSync fd, '#encoding utf-8\n'
     for element in @library.elements
       @_generateSymbol fd, element
-      for pattern in element.patterns
-        patterns[pattern.name] = pattern
+      patterns[element.pattern.name] = element.pattern
     fs.writeSync fd, '# End Library\n'
     fs.closeSync fd
     console.log "Generating KiCad library '#{name}.lib': OK"
@@ -92,8 +91,7 @@ class KicadGenerator
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} H V #{nameObj.halign} #{nameObj.valign}NN\n"
     if element.alias? then fs.writeSync fd, "ALIAS #{element.alias.join(' ')}\n"
     fs.writeSync fd, "$FPLIST\n"
-    for pattern in element.patterns
-      fs.writeSync fd, "  #{pattern.name}\n"
+    fs.writeSync fd, "  #{element.pattern.name}\n"
     fs.writeSync fd, "$ENDFPLIST\n"
     fs.writeSync fd, "DRAW\n"
     i = 1

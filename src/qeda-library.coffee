@@ -59,15 +59,29 @@ class QedaLibrary
     if def.abstract
       console.error "'#{element}': Cannot add abstract component, use it only as base for others"
       process.exit 1
-    newElement = new QedaElement this, def
-    @elements.push newElement
-    return newElement
+    res = []
+    housings = if Array.isArray def.housing then def.housing else [def.housing]
+    name = def.name
+    # Create separate element for each housing
+    for housing in housings
+      suffixes = ''
+      if typeof housing is 'string'
+        def.housing = def[housing]
+        suffixes = if def[housing]?.suffix? then def[housing].suffix else housing
+      else if housing.suffix? then suffixes = housing.suffix
 
-  #
-  # Add pattern definition: regular expression assotiated with handler script
-  #
-  addPatternDefinition: (regexp, handler) ->
-    @patternDefs.push regexp:regexp, handler: handler
+      unless Array.isArray(suffixes) then suffixes = [suffixes]
+
+      def.name = name + suffixes[0]
+      if suffixes.length > 1
+        def.alias ?= []
+        unless Array.isArray def.alias then def.alias = [def.alias]
+        for suffix in suffixes[1..]
+          def.alias.push(name + suffix)
+      newElement = new QedaElement this, def
+      @elements.push newElement
+      res.push newElement
+    res
 
   #
   # Calculate patterns' dimensions according to settings
@@ -130,7 +144,7 @@ class QedaLibrary
   #
   mergeObjects: (dest, src) ->
     for k, v of src
-      if typeof v is 'object' and dest.hasOwnProperty k
+      if typeof v is 'object' and (not Array.isArray v) and dest.hasOwnProperty k
         @mergeObjects dest[k], v
       else
         dest[k] = v
