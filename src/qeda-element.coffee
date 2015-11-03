@@ -105,11 +105,8 @@ class QedaElement
     for symbol in @symbols
       # Apply symbol handler
       if @schematic?.symbol?
-        for def in @library.symbolDefs
-          cap = def.regexp.exec @schematic.symbol
-          if cap
-            handler = require "./symbol/#{@library.symbolStyle}/#{def.handler}"
-            handler(symbol, cap[1..]...)
+        handler = require "./symbol/#{@library.symbolStyle}/#{@schematic.symbol.toLowerCase()}"
+        handler symbol
 
     # Pattern processing
     for pattern in @patterns
@@ -121,11 +118,10 @@ class QedaElement
             handler = require "./outline/#{def.handler}"
             handler(pattern.housing, cap[1..]...)
       @_convertDimensions pattern.housing
-      for def in @library.patternDefs
-        cap = def.regexp.exec pattern.name
-        if cap
-          handler = require "./pattern/#{@library.patternStyle}/#{def.handler}"
-          handler(pattern, cap[1..]...)
+      handler = require "./pattern/#{@library.patternStyle}/#{pattern.handler}"
+      handler pattern#, cap[1..]...)
+      pattern.name ?= pattern.housing.pattern
+
   @_rendered = true
 
   _concatenateGroups: (groups) ->
@@ -165,7 +161,7 @@ class QedaElement
           unless cap
             numbers.push sub
           else
-            for i in [@_letters.indexOf(cap[1])..@_letters.indexOf(cap[3])] # TODO: Improve
+            for i in [@_letters.indexOf(cap[1])..@_letters.indexOf(cap[3])]
               for j in [cap[2]..cap[4]]
                 numbers.push @_letters[i] + j
     numbers

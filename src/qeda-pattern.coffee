@@ -6,7 +6,7 @@ class QedaPattern
   # Constructor
   #
   constructor: (@element, @housing) ->
-    @name = @housing.pattern
+    @handler = @housing.pattern.toLowerCase()
     @settings = @element.library.pattern
     @shapes = []
     @layer = 'top'

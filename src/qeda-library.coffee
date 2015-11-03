@@ -46,14 +46,6 @@ class QedaLibrary
         value: 1
     @mergeObjects this, settings
 
-    @symbolDefs = [
-      { regexp: /IC/, handler: 'ic' }
-    ]
-    @patternDefs = [
-      { regexp: /QFP(\d+)P(\d+)X(\d+)X(\d+)-(\d+)/, handler: 'sm/qfp' }
-      { regexp: /SOIC(\d+)P(\d+)X(\d+)-(\d+)/,      handler: 'sm/sop' },
-      { regexp: /SOP(\d+)P(\d+)X(\d+)-(\d+)/,       handler: 'sm/sop' }
-    ]
     @outlineDefs = [
       { regexp: /JEDEC-(.*)/, handler: 'jedec' }
     ]

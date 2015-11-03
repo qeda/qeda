@@ -1,16 +1,19 @@
+sprintf = require('sprintf-js').sprintf
 gullwing = require './common/gullwing'
 
-module.exports = (pattern, pitch, span, height, leadCount) ->
-  pitch /= 100.0
-  span /= 100.0
-  height /= 100.0
-  leadCount *= 1
-
+module.exports = (pattern) ->
   housing = pattern.housing
   settings = pattern.settings
 
-  housing.pitch ?= pitch
-  housing.leadCount ?= leadCount
+  pattern.name ?= sprintf "SOP%dP%dX%d-%d",
+    [housing.pitch*100
+    housing.leadSpan.nom*100
+    housing.height.max*100
+    housing.leadCount]
+    .map((a) => Math.round a)...
+
+  pitch = housing.pitch
+  leadCount = housing.leadCount
 
   # Calculation according to IPC-7351
   dims = gullwing.calculate pattern

@@ -93,7 +93,7 @@ Description example:
   },
 
   "housing": {
-    "pattern": "SOIC127P600X175-8",
+    "pattern": "SOIC",
     "outline": "JEDEC-MS-012AA"
   }
 }
