@@ -1,3 +1,10 @@
+intersects = (s1, s2) ->
+  a1 = (s1[0] >= s2[0]) and (s1[0] <= s2[1])
+  a2 = (s1[1] >= s2[0]) and (s1[1] <= s2[1])
+  a3 = (s2[0] >= s1[0]) and (s2[0] <= s1[1])
+  a4 = (s2[1] >= s1[0]) and (s2[1] <= s1[1])
+  a1 or a2 or a3 or a4
+
 module.exports = (symbol) ->
   part = symbol.part
   settings = symbol.settings
@@ -64,7 +71,7 @@ module.exports = (symbol) ->
     if y > -h - space then y = -h - space
     # Check whether pin rectangle intersects other rectangles
     for r in rects
-      if ((x1 > r.x1) and (x1 < r.x2)) or ((x2 > r.x1) and (x2 < r.x2))
+      if intersects [x1, x2], [r.x1, r.x2]
         y1 = r.y1 - h - space
         if y > y1 then y = y1 # Make symbol larger
     x += step
@@ -74,7 +81,7 @@ module.exports = (symbol) ->
       x2: x2,
       y2: h
 
-  topY = Math.round y
+  topY = Math.floor y
 
   # Pins on the bottom side
   y = height/2
@@ -98,7 +105,7 @@ module.exports = (symbol) ->
     if y < h + space then y = h + space
     # Check whether pin rectangle intersects other rectangles
     for r in rects
-      if ((x1 > r.x1) and (x1 < r.x2)) or ((x2 > r.x1) and (x2 < r.x2))
+      if intersects [x1, x2], [r.x1, r.x2]
         y2 = r.y2 + h + space
         if y < y2 then y = y2 # Make symbol larger
     x += step
@@ -108,7 +115,7 @@ module.exports = (symbol) ->
       x2: x2,
       y2: 0
 
-  bottomY = Math.round y
+  bottomY = Math.ceil y
 
   for r in topRects
     r.y1 += topY
@@ -145,12 +152,12 @@ module.exports = (symbol) ->
     if x > -w - space then x = -w - space
     # Check whether pin rectangle intersects other rectangles
     for r in rects
-      if ((y1 > r.y1) and (y1 < r.y2)) or ((y2 > r.y1) and (y2 < r.y2))
+      if intersects [y1, y2], [r.y1, r.y2]
         x1 = r.x1 - w - space
         if x > x1 then x = x1 # Make symbol wider
     y += step
 
-  leftX = Math.round x
+  leftX = Math.floor x
 
   # Pins on the right side
   x = width/2
@@ -176,12 +183,12 @@ module.exports = (symbol) ->
     if x < w + space then x = w + space
     # Check whether pin rectangle intersects other rectangles
     for r in rects
-      if ((y1 > r.y1) and (y1 < r.y2)) or ((y2 > r.y1) and (y2 < r.y2))
+      if intersects [y1, y2], [r.y1, r.y2]
         x2 = r.x2 + w + space
         if x < x2 then x = x2 # Make symbol wider
     y += step
 
-  rightX = Math.round x
+  rightX = Math.ceil x
 
   # Update box size
   width = rightX - leftX
