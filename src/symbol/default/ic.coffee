@@ -15,9 +15,115 @@ module.exports = (symbol) ->
   height = step * (Math.max(left.length, right.length) + 2)
   space = settings.space.pinName
 
+  # Attributes
+  symbol.addAttribute 'refDes',
+    x: 0
+    y: -0.5
+    halign: 'center'
+    valign: 'bottom'
+
+  symbol.addAttribute 'name',
+    x: 0
+    y: 0.5
+    halign: 'center'
+    valign: 'top'
+
+  textWidth = symbol.element.longestAlias.length * settings.fontSize.name
+  textHeight = settings.fontSize.refDes + settings.fontSize.name + 1
+  # Update box size
+  width = Math.max width, textWidth + 2*space
+  height = Math.max height, textHeight + 2*space
+
+  rects = []
+  rects.push
+    x1:  -textWidth/2
+    y1: -textHeight/2
+    x2: textWidth/2
+    y2: textHeight/2
+
+  # Pins on the top side
+  y = -height/2
+  dx = settings.fontSize.pinName/2 + space
+  topPins = []
+  topRects = []
+  x = -step * top.length/2 + step/2
+  for i in top
+    if i is '-'
+      x += step
+      continue
+    pin = pins[i]
+    unless pin? then continue
+    pin.x = x
+    pin.length = pinLength
+    pin.orientation = 'down'
+    topPins.push pin
+
+    h = pin.name.length*settings.fontSize.pinName + space
+    x1 = x - dx
+    x2 = x + dx
+    if y > -h - space then y = -h - space
+    # Check whether pin rectangle intersects other rectangles
+    for r in rects
+      if ((x1 > r.x1) and (x1 < r.x2)) or ((x2 > r.x1) and (x2 < r.x2))
+        y1 = r.y1 - h - space
+        if y > y1 then y = y1 # Make symbol larger
+    x += step
+    topRects.push
+      x1: x1,
+      y1: 0,
+      x2: x2,
+      y2: h
+
+  topY = Math.round y
+
+  # Pins on the bottom side
+  y = height/2
+  bottomPins = []
+  bottomRects = []
+  x = -step * bottom.length/2 + step/2
+  for i in bottom
+    if i is '-'
+      x += step
+      continue
+    pin = pins[i]
+    unless pin? then continue
+    pin.x = x
+    pin.length = pinLength
+    pin.orientation = 'up'
+    bottomPins.push pin
+
+    h = pin.name.length*settings.fontSize.pinName + space
+    x1 = x - dx
+    x2 = x + dx
+    if y < h + space then y = h + space
+    # Check whether pin rectangle intersects other rectangles
+    for r in rects
+      if ((x1 > r.x1) and (x1 < r.x2)) or ((x2 > r.x1) and (x2 < r.x2))
+        y2 = r.y2 + h + space
+        if y < y2 then y = y2 # Make symbol larger
+    x += step
+    bottomRects.push
+      x1: x1,
+      y1: -h,
+      x2: x2,
+      y2: 0
+
+  bottomY = Math.round y
+
+  for r in topRects
+    r.y1 += topY
+    r.y2 += topY
+    rects.push r
+
+  for r in bottomRects
+    r.y1 += bottomY
+    r.y2 += bottomY
+    rects.push r
+
   # Pins on the left side
+  x = -width/2
+  dy = settings.fontSize.pinName/2 + space
   leftPins = []
-  leftTextWidth = 0
   if top.length > 0 # Center aligned symbol
     y = -step * left.length/2 + step/2
   else # Top aligned symbol
@@ -31,14 +137,24 @@ module.exports = (symbol) ->
     pin.y = y
     pin.length = pinLength
     pin.orientation = 'right'
-    if pin.name.length > leftTextWidth then leftTextWidth = pin.name.length
     leftPins.push pin
+
+    w = pin.name.length*settings.fontSize.pinName + space
+    y1 = y - dy
+    y2 = y + dy
+    if x > -w - space then x = -w - space
+    # Check whether pin rectangle intersects other rectangles
+    for r in rects
+      if ((y1 > r.y1) and (y1 < r.y2)) or ((y2 > r.y1) and (y2 < r.y2))
+        x1 = r.x1 - w - space
+        if x > x1 then x = x1 # Make symbol wider
     y += step
-  leftTextWidth *= settings.fontSize.pinName
+
+  leftX = Math.round x
 
   # Pins on the right side
+  x = width/2
   rightPins = []
-  rightTextWidth = 0
   if top.length > 0 # Center aligned symbol
     y = -step * right.length/2 + step/2
   else # Top aligned symbol
@@ -52,113 +168,47 @@ module.exports = (symbol) ->
     pin.y = y
     pin.length = pinLength
     pin.orientation = 'left'
-    if pin.name.length > rightTextWidth then rightTextWidth = pin.name.length
     rightPins.push pin
+
+    w = pin.name.length*settings.fontSize.pinName + space
+    y1 = y - dy
+    y2 = y + dy
+    if x < w + space then x = w + space
+    # Check whether pin rectangle intersects other rectangles
+    for r in rects
+      if ((y1 > r.y1) and (y1 < r.y2)) or ((y2 > r.y1) and (y2 < r.y2))
+        x2 = r.x2 + w + space
+        if x < x2 then x = x2 # Make symbol wider
     y += step
-  rightTextWidth *= settings.fontSize.pinName
 
-  # Pins on the top side
-  topPins = []
-  topTextWidth = step*(top.length - 1) + settings.fontSize.pinName
-  topTextHeight = 0
-  x = -step * top.length/2 + step/2
-  for i in top
-    if i is '-'
-      x += step
-      continue
-    pin = pins[i]
-    unless pin? then continue
-    pin.x = x
-    pin.length = pinLength
-    pin.orientation = 'down'
-    if pin.name.length > topTextHeight then topTextHeight = pin.name.length
-    topPins.push pin
-    x += step
-  topTextHeight *= settings.fontSize.pinName
+  rightX = Math.round x
 
-  # Pins on the bottom side
-  bottomPins = []
-  bottomTextWidth = step*(bottom.length - 1) + settings.fontSize.pinName
-  bottomTextHeight = 0
-  x = -step * bottom.length/2 + step/2
-  for i in bottom
-    if i is '-'
-      x += step
-      continue
-    pin = pins[i]
-    unless pin? then continue
-    pin.x = x
-    pin.length = pinLength
-    pin.orientation = 'up'
-    if pin.name.length > bottomTextHeight then bottomTextHeight = pin.name.length
-    bottomPins.push pin
-    x += step
-  bottomTextHeight *= settings.fontSize.pinName
-
-  textWidth = symbol.element.longestAlias.length * settings.fontSize.name
-
-  if left.length > 0 then leftTextWidth += space
-  if right.length > 0 then rightTextWidth += space
-
-  if top.length > 0 # Center aligned symbol
-    width = Math.max width, (leftTextWidth + textWidth + rightTextWidth + 2*space)
-  else # Top aligned symbol
-    width = Math.max width, textWidth + 2*space, (leftTextWidth + rightTextWidth + space)
-
-  textHeight = settings.fontSize.refDes + settings.fontSize.name + 1
-
-  if top.length > 0 then topTextHeight += space
-  if bottom.length > 0 then bottomTextHeight += space
-
-  height = Math.max height, (topTextHeight + textHeight + bottomTextHeight + 2*space)
-  if topTextWidth > textWidth
-    height += topTextHeight
-  if bottomTextWidth > textWidth
-    height += bottomTextHeight
-
-  #width = Math.ceil(width / 2) * 2 # Make width even
-  #height = Math.ceil(height / 2) * 2 # Make height even
-
-  # Let's generate symbol
-  # Attributes
-  x = Math.round((-width - leftTextWidth + rightTextWidth) / 2)
-  symbol.addAttribute 'refDes',
-    x: 0
-    y: -0.5
-    halign: 'center'
-    valign: 'bottom'
-
-  symbol.addAttribute 'name',
-    x: 0
-    y: 0.5
-    halign: 'center'
-    valign: 'top'
+  # Update box size
+  width = rightX - leftX
+  height = bottomY - topY
 
   # Box
   y = 0
-  if top.length > 0 then y = -height/2 # Center aligned symbol
+  if top.length > 0 then y = topY # Center aligned symbol
   symbol.addRectangle
-    x: x
+    x: leftX
     y: y
     width: width
     height: height
     fill: 'foreground'
 
-  # Pins
   for pin in leftPins
-    pin.x = x - pinLength
+    pin.x = leftX - pinLength
     symbol.addPin pin
 
-  x += width
   for pin in rightPins
-    pin.x = x + pinLength
+    pin.x = rightX + pinLength
     symbol.addPin pin
 
   for pin in topPins
-    pin.y = y - pinLength
+    pin.y = topY - pinLength
     symbol.addPin pin
 
-  y += height
   for pin in bottomPins
-    pin.y = y + pinLength
+    pin.y = bottomY + pinLength
     symbol.addPin pin
