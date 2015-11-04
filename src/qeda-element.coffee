@@ -11,13 +11,15 @@ class QedaElement
   constructor: (@library, definition) ->
     @mergeObjects this, definition
 
-    if @alias? and (not Array.isArray @alias) then @alias = [@alias]
+    if @alias?
+      @aliases ?= []
+      @aliases.concat @alias.replace(/\s+/g, '').split(',')
     if @suffix?
-      @alias ?= []
-      unless Array.isArray(@suffix) then @suffix = [@suffix]
-      for suffix in @suffix
+      @aliases ?= []
+      suffixes = @suffix.replace(/\s+/g, '').split(',')
+      for suffix in suffixes
         alias = @name + suffix
-        if @alias.indexOf(alias) is -1 then @alias.push alias
+        if @aliases.indexOf(alias) is -1 then @aliases.push alias
 
     # Find longest alias
     @longestAlias = @name
@@ -39,15 +41,15 @@ class QedaElement
       for j in [i..last]
         @_letters.push @_letters[i] + @_letters[j]
 
-    # Create pin objects
-    for pinName of @pinout
-      pinNumbers = @_pinNumbers @pinout[pinName]
-      @pinGroups[pinName] = pinNumbers
-      for pinNumber in pinNumbers
-        unless @pins[pinNumber]?
-          @pins[pinNumber] = @_pinObj pinNumber, pinName
+    # Create pin objects and groups
+    for name, numbers of @pinout
+      pins = @_addPins numbers
+      @pinGroups[name] = pins
+      for number in pins
+        unless @pins[number]?
+          @pins[number] = @_pinObj number, name
         else
-          @pins[pinNumber].name += '/' + pinName
+          @pins[number].name += '/' + name
 
     # Forming groups
     for key, value of @groups
@@ -55,7 +57,7 @@ class QedaElement
 
     if @parts? # Multi-part element
       for name, part of @parts
-        @symbols.push new QedaSymbol(this, part, name)
+        @symbols.push new QedaSymbol(this, part.replace(/\s+/g, '').split(','), name)
     else # Single-part element
       part = []
       if @groups?
@@ -113,9 +115,28 @@ class QedaElement
 
     @_rendered = true
 
+  _addPins: (value) ->
+    result = []
+    if typeof value is 'object'
+      for name, numbers of value
+        result = result.concat @_addPins(numbers)
+    else
+      if typeof value is 'number' then value = value.toString()
+      numbers = value.replace(/\s+/g, '').split(',')
+      for number in numbers
+        cap = /([A-Z]*)(\d+)\.{2,3}([A-Z]*)(\d+)/.exec number
+        unless cap
+          result.push number
+        else
+          for i in [@_letters.indexOf(cap[1])..@_letters.indexOf(cap[3])]
+            for j in [cap[2]..cap[4]]
+              result.push @_letters[i] + j
+    result
+
+
   _concatenateGroups: (groups) ->
     result = []
-    unless Array.isArray groups then groups = [groups]
+    groups = groups.replace(/\s+/g, '').split(',')
     for group in groups
       pinGroup = @pinGroups[group]
       if pinGroup? then result = result.concat pinGroup
@@ -126,6 +147,8 @@ class QedaElement
   #
   _convertDimensions: (housing) ->
     for key, value of housing
+      if typeof value is 'string'
+        value = value.replace(/\s+/g, '').split(',').map (a) -> parseFloat(a)
       if Array.isArray(value) and value.length > 0
         min = value[0]
         max = if value.length > 1 then value[1] else min
@@ -167,7 +190,7 @@ class QedaElement
       props = ['bidir', 'ground', 'in', 'inverted', 'out', 'passive', 'power']
       for prop in props
         if @properties[prop]?
-          pins = if Array.isArray @properties[prop] then @properties[prop] else [@properties[prop]]
+          pins = @properties[prop].replace(/\s+/g, '').split(',')
           obj[prop] = (pins.indexOf(name) isnt -1)
     obj
 

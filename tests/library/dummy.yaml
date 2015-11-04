@@ -1,0 +1,28 @@
+name: Dummy
+
+pinout:
+  DIN:  1
+  DOUT: 2
+  Vcc:  3, 4
+  GND:  5, 6
+  NC:   7, 8
+
+properties:
+  power: Vcc
+  ground: GND
+  in: DIN
+  out: DOUT
+  nc: NC
+
+schematic:
+  symbol: IC
+  showPinNumbers: true
+  showPinNames: true
+  left: DIN
+  right: DOUT, NC
+  top: Vcc
+  bottom: GND
+
+housing:
+  pattern: SOIC
+  outline: JEDEC-MS-012AA

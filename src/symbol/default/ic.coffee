@@ -6,7 +6,6 @@ intersects = (s1, s2) ->
   a1 or a2 or a3 or a4
 
 module.exports = (symbol) ->
-  part = symbol.part
   settings = symbol.settings
 
   step = 2

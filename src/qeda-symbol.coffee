@@ -5,7 +5,7 @@ class QedaSymbol
   #
   # Constructor
   #
-  constructor: (@element, @part, @name) ->
+  constructor: (@element, @groups, @name) ->
     @settings = @element.library.symbol
     @schematic = @element.schematic
     @shapes = []
@@ -14,11 +14,10 @@ class QedaSymbol
     for side in sides
       @[side] = []
       if @schematic[side]?
-        groups = @schematic[side]
-        unless Array.isArray groups then groups = [groups]
+        groups = @schematic[side].replace(/\s+/g, '').split(',')
         for group in groups
           pinGroup = @element.pinGroups[group]
-          if (@part.indexOf(group) isnt -1) and pinGroup?
+          if (@groups.indexOf(group) isnt -1) and pinGroup?
             if @[side].length > 0
               @[side].push '-' # Insert gap
             @[side] = @[side].concat pinGroup

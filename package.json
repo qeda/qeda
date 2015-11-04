@@ -1,6 +1,6 @@
 {
   "name": "qeda",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "QEDA.js — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "repository": {
@@ -30,6 +30,7 @@
     "rm-r": ">=1.0.0"
   },
   "dependencies": {
+    "js-yaml": ">=3.0.0",
     "mkdirp": ">=0.5.0",
     "sync-request": ">=2.0.0",
     "sprintf-js": ">= 1.0.0"

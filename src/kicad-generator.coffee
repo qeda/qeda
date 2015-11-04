@@ -93,7 +93,7 @@ class KicadGenerator
       attrObj = @_symbolObj symbol.attributes['user']
       fs.writeSync fd, "F4 \"#{attrObj.text}\" #{attrObj.x} #{attrObj.y} #{attrObj.fontSize} #{attrObj.orientation} V #{attrObj.halign} #{attrObj.valign}NN\n"
 
-    if element.alias? then fs.writeSync fd, "ALIAS #{element.alias.join(' ')}\n"
+    if element.aliases? then fs.writeSync fd, "ALIAS #{element.aliases.join(' ')}\n"
     fs.writeSync fd, "$FPLIST\n"
     fs.writeSync fd, "  #{element.pattern.name}\n"
     fs.writeSync fd, "$ENDFPLIST\n"

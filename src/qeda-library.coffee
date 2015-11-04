@@ -2,6 +2,7 @@ fs = require 'fs'
 mkdirp = require 'mkdirp'
 path = require 'path'
 request = require 'sync-request'
+yaml = require 'js-yaml'
 
 KicadGenerator = require './kicad-generator'
 QedaElement = require './qeda-element'
@@ -60,24 +61,28 @@ class QedaLibrary
       console.error "'#{element}': Cannot add abstract component, use it only as base for others"
       process.exit 1
     res = []
-    housings = if Array.isArray def.housing then def.housing else [def.housing]
+    housings = []
+    if typeof def.housing is 'string'
+      keys = def.housing.replace(/\s+/g, '').split(',')
+      for key in keys
+        housing = def[key]
+        housing.suffix ?= key
+        housings.push housing
+    else # Is object
+      def.housing.suffix ?= ''
+      housings.push def.housing
     name = def.name
     # Create separate element for each housing
     for housing in housings
-      suffixes = ''
-      if typeof housing is 'string'
-        def.housing = def[housing]
-        suffixes = if def[housing]?.suffix? then def[housing].suffix else housing
-      else if housing.suffix? then suffixes = housing.suffix
-
-      unless Array.isArray(suffixes) then suffixes = [suffixes]
-
+      suffixes = housing.suffix.replace(/\s+/g, '').split(',')
       def.name = name + suffixes[0]
+      def.housing = housing
       if suffixes.length > 1
-        def.alias ?= []
-        unless Array.isArray def.alias then def.alias = [def.alias]
-        for suffix in suffixes[1..]
-          def.alias.push(name + suffix)
+        aliases = []
+        if def.alias?
+          aliases.concat def.alias.replace(/\s+/g, '').split(',')
+        aliases.concat(suffixes.map (a) => name + a)
+        def.aliases = aliases
       newElement = new QedaElement this, def
       @elements.push newElement
       res.push newElement
@@ -116,27 +121,33 @@ class QedaLibrary
   # Load element description from remote repository
   #
   load: (element) ->
-    elementJson = element.toLowerCase() + '.json'
-    localFile = './library/' + elementJson
+    elementYaml = element.toLowerCase() + '.yaml'
+    localFile = './library/' + elementYaml
     unless fs.existsSync localFile
-      res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementJson, timeout: 3000
+      res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml, timeout: 3000
       if res.statusCode is 200
         mkdirp.sync (path.dirname localFile)
         fs.writeFileSync localFile, res.body
         console.log "Loading '#{element}': OK"
       else
-        console.error "Loading '#{element}': Error (#{res.statusCode})"
+        console.error "Loading '#{element}': Error: (#{res.statusCode})"
         process.exit 1
-    def = JSON.parse fs.readFileSync(localFile)
-    # TODO: JSON Schema validation
+    try
+      def = yaml.safeLoad fs.readFileSync(localFile)
+      # TODO: YAML Schema validation
+    catch e
+      console.error "Loading '#{element}': Error: #{e.message}"
+      process.exit 1
     if def.base?
-      baseElement = def.base
-      delete def.base
-      if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
-      baseDef = @load baseElement
-      if baseDef.abstract then delete baseDef.abstract
-      @mergeObjects baseDef, def
-      def = baseDef
+      bases = def.base.replace(/\s+/g, '').split(',')
+      delete def.base # We do not need this information now
+      for base in bases
+        baseElement = base
+        if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
+        baseDef = @load baseElement
+        if baseDef.abstract then delete baseDef.abstract # In order to not merge into def
+        @mergeObjects baseDef, def
+        def = baseDef
     def
 
   #

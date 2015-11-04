@@ -58,45 +58,39 @@ _API will be documented soon._
 Component description
 ---------------------
 
-Any electronic component is described by JSON file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.json` suffix).
+Any electronic component is described by YAML file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
 
 Description example:
 
-```json
-{
-  "name": "Dummy",
+```yaml
+name: Dummy
 
-  "pinout": {
-    "DIN":  1,
-    "DOUT": 2,
-    "Vcc":  [3, 4],
-    "GND":  [5, 6],
-    "NC":   [7, 8]
-  },
+pinout:
+  DIN:  1
+  DOUT: 2
+  Vcc:  3, 4
+  GND:  5, 6
+  NC:   7, 8
 
-  "properties": {
-    "power": "Vcc",
-    "ground": "GND",
-    "in": "DIN",
-    "out": "DOUT",
-    "nc": "NC"
-  },
+properties:
+  power: Vcc
+  ground: GND
+  in: DIN
+  out: DOUT
+  nc: NC
 
-  "schematic": {
-    "symbol": "IC",
-    "showPinNumbers": true,
-    "showPinNames": true,
-    "left": "DIN",
-    "right": ["DOUT", "NC"],
-    "top": "Vcc",
-    "bottom": "GND"
-  },
+schematic:
+  symbol: IC
+  showPinNumbers: true
+  showPinNames: true
+  left: DIN
+  right: DOUT, NC
+  top: Vcc
+  bottom: GND
 
-  "housing": {
-    "pattern": "SOIC",
-    "outline": "JEDEC-MS-012AA"
-  }
-}
+housing:
+  pattern: SOIC
+  outline: JEDEC-MS-012AA
 ```
 
 _Available JSON fields will be documented soon._
