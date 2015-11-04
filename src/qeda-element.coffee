@@ -42,9 +42,10 @@ class QedaElement
         @_letters.push @_letters[i] + @_letters[j]
 
     # Create pin objects and groups
-    for name, numbers of @pinout
-      pins = @_addPins numbers
+    for name, value of @pinout
+      pins = @_addPins value
       @pinGroups[name] = pins
+      if typeof value is 'object' then continue
       for number in pins
         unless @pins[number]?
           @pins[number] = @_pinObj number, name
@@ -119,12 +120,18 @@ class QedaElement
     result = []
     if typeof value is 'object'
       for name, numbers of value
-        result = result.concat @_addPins(numbers)
+        pins = @_addPins numbers
+        for number in pins
+          unless @pins[number]?
+            @pins[number] = @_pinObj number, name
+          else
+            @pins[number].name += '/' + name
+        result = result.concat pins
     else
       if typeof value is 'number' then value = value.toString()
       numbers = value.replace(/\s+/g, '').split(',')
       for number in numbers
-        cap = /([A-Z]*)(\d+)\.{2,3}([A-Z]*)(\d+)/.exec number
+        cap = /([A-Z]*)(\d+)-([A-Z]*)(\d+)/.exec number
         unless cap
           result.push number
         else
@@ -132,7 +139,6 @@ class QedaElement
             for j in [cap[2]..cap[4]]
               result.push @_letters[i] + j
     result
-
 
   _concatenateGroups: (groups) ->
     result = []
@@ -155,28 +161,6 @@ class QedaElement
         nom = (max + min) / 2
         tol = max - min
         housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
-
-  #
-  # Convert pin numbers definition to array
-  #
-  _pinNumbers: (inputs) ->
-    numbers = []
-    unless Array.isArray inputs then inputs = [inputs]
-    for input in inputs
-      if typeof input is 'number'
-        numbers.push input.toString()
-      else if typeof input is 'string'
-        input = input.replace /\s+/g, ''
-        subs = input.split ','
-        for sub in subs
-          cap = /([A-Z]*)(\d+)\.{2,3}([A-Z]*)(\d+)/.exec sub
-          unless cap
-            numbers.push sub
-          else
-            for i in [@_letters.indexOf(cap[1])..@_letters.indexOf(cap[3])]
-              for j in [cap[2]..cap[4]]
-                numbers.push @_letters[i] + j
-    numbers
 
   #
   # Generate pin object
