@@ -1,6 +1,5 @@
 .DS_Store
 kicad/*
 lib/*
-library/*
 node_modules/*
 tests/library/*

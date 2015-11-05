@@ -30,7 +30,7 @@ Installation
 Examples
 ========
 
-Example below is written on CoffeeScript but one can use vanilla JavaScript.
+Examples below is written on CoffeeScript but one can use vanilla JavaScript.
 
 Generating KiCad library
 ------------------------
@@ -51,40 +51,41 @@ lib.add 'TI/ISO722' # Adding Texas Instruments ISO722
 lib.generateKicad 'qeda'
 ```
 
-This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to your custom library. Last string is to generate components library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
+This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
 
 _API will be documented soon._
 
 Component description
 ---------------------
 
-Any electronic component is described by YAML file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
+Any electronic component is described using YAML-file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
 
-Description example:
+[dummy.yaml](./examples/second/library/dummy.yaml):
 
 ```yaml
 name: Dummy
 
 pinout:
   DIN: 1
-  DOUT: 2
-  Vcc: 3, 4
-  GND: 5, 6
-  NC: 7, 8
+  ~DOUT: 2
+  Vcc: 3
+  GND: 4, 5
+  NC: 6-8
 
 properties:
   power: Vcc
   ground: GND
   in: DIN
-  out: DOUT
+  out: ~DOUT
   nc: NC
+  inverted: ~DOUT
 
 schematic:
   symbol: IC
   showPinNumbers: true
   showPinNames: true
-  left: DIN
-  right: DOUT, NC
+  left: DIN, NC
+  right: ~DOUT, NC
   top: Vcc
   bottom: GND
 
@@ -93,13 +94,31 @@ housing:
   outline: JEDEC-MS-012AA
 ```
 
-_Available JSON fields will be documented soon._
+_Available YAML fields will be documented soon._
 
+[second.coffee](./examples/second/second.coffee):
+
+```coffeescript
+Qeda = require 'qeda'
+
+lib = new Qeda.Library
+  symbol:
+    units: 'mil'
+    gridSize: 50
+
+lib.add 'Dummy' # Adding custom element
+lib.generateKicad 'dummy'
+```
+
+Result:
+
+![Symbol](./doc/images/dummy.png)
+![Footprint](./doc/images/soic.png)
 
 License
 =======
 
-Source code is licensed under [MIT license](http://opensource.org/licenses/MIT).
+Source code is licensed under [MIT license](./LICENSE.md).
 
 Coming soon
 ===========

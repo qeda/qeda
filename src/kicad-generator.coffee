@@ -171,18 +171,25 @@ class KicadGenerator
       obj.type = 'W' # Power input
       if obj.output then obj.type = 'w' # Power output
     else
-      if obj.input and obj.output
+      if obj.bidir or (obj.in and obj.out)
         obj.type = 'B' # Bidirectional
-      else if obj.input
+      else if obj.in
         obj.type = 'I' # Input
-      else
+      else if obj.out
         obj.type = 'O' # Output
-      if obj.z then obj.type = 'T' # Tristate
+      else if obj.nc
+        obj.type = 'N' # Not connected
+      else if obj.z
+        obj.type = 'T' # Tristate
+      else
+        obj.type = 'U' # Unspecified
 
     obj.shape = ''
     if obj.invisible then obj.shape += 'N'
     if obj.inverted
       obj.shape += 'I'
+    else if obj.nc
+      obj.shape += 'NX'
     if obj.shape isnt '' then obj.shape = ' ' + obj.shape
 
     switch obj.fill

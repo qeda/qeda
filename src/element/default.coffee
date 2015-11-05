@@ -4,6 +4,7 @@ designators =
   R: ['resistor']
 
 module.exports = (element) ->
+  unless element.keywords? then return
   keywords = element.keywords.replace(/\s+/g, '').split(',').map (a) -> a.toLowerCase()
   refWeight = 0
   for des, classes of designators

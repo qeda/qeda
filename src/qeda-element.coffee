@@ -41,9 +41,15 @@ class QedaElement
       for j in [i..last]
         @_letters.push @_letters[i] + @_letters[j]
 
+    @delimiter = {}
+    for key, value of @joint
+      groups = @parseGroups key
+      for group in groups
+        @delimiter[group] = value
+
     # Create pin objects and groups
     for name, value of @pinout
-      pins = @_addPins value
+      pins = @_addPins name, value
       @pinGroups[name] = pins
       if typeof value is 'object' then continue
       for number in pins
@@ -58,7 +64,7 @@ class QedaElement
 
     if @parts? # Multi-part element
       for name, part of @parts
-        @symbols.push new QedaSymbol(this, part.replace(/\s+/g, '').split(','), name)
+        @symbols.push new QedaSymbol(this, @parseGroups(part), name)
     else # Single-part element
       part = []
       if @groups?
@@ -82,6 +88,21 @@ class QedaElement
         @mergeObjects dest[k], v
       else
         dest[k] = v
+
+  #
+  # Parse group list
+  #
+  parseGroups: (groups) ->
+    result = []
+    groups = groups.replace(/\s+/g, '').split(',')
+    for group in groups
+      cap = /(\w+)(\d+)-(\d+)/.exec group
+      if cap
+        for i in [cap[2]..cap[3]]
+          result.push cap[1] + i
+      else
+        result.push group
+    result
 
   #
   # Generate symbols and patterns
@@ -116,11 +137,15 @@ class QedaElement
 
     @_rendered = true
 
-  _addPins: (value) ->
+  #
+  # Add pin objects
+  #
+  _addPins: (key, value) ->
     result = []
     if typeof value is 'object'
       for name, numbers of value
-        pins = @_addPins numbers
+        pins = @_addPins name, numbers
+        if @delimiter[key] then name = key + @delimiter[key] + name
         for number in pins
           unless @pins[number]?
             @pins[number] = @_pinObj number, name
@@ -142,7 +167,7 @@ class QedaElement
 
   _concatenateGroups: (groups) ->
     result = []
-    groups = groups.replace(/\s+/g, '').split(',')
+    groups = @parseGroups groups
     for group in groups
       pinGroup = @pinGroups[group]
       if pinGroup? then result = result.concat pinGroup
@@ -171,10 +196,10 @@ class QedaElement
       number: number
 
     if @properties?
-      props = ['bidir', 'ground', 'in', 'inverted', 'out', 'passive', 'power']
+      props = ['bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
       for prop in props
         if @properties[prop]?
-          pins = @properties[prop].replace(/\s+/g, '').split(',')
+          pins = @parseGroups @properties[prop]
           obj[prop] = (pins.indexOf(name) isnt -1)
     obj
 
