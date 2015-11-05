@@ -53,6 +53,12 @@ lib.generateKicad 'qeda'
 
 This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
 
+Run it:
+
+    coffee first.coffee
+
+And find generated files in `./kikad` directory.
+
 _API will be documented soon._
 
 Component description
@@ -60,7 +66,7 @@ Component description
 
 Any electronic component is described using YAML-file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
 
-[dummy.yaml](./examples/second/library/dummy.yaml):
+[library/dummy.yaml](./examples/second/library/dummy.yaml):
 
 ```yaml
 name: Dummy
@@ -109,6 +115,10 @@ lib = new Qeda.Library
 lib.add 'Dummy' # Adding custom element
 lib.generateKicad 'dummy'
 ```
+
+Run it:
+
+    coffee second.coffee
 
 Result:
 
