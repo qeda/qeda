@@ -55,7 +55,7 @@ class KicadGenerator
             sprintf("    (effects (font (size #{@f} #{@f}) (thickness #{@f})))\n",
             patObj.fontSize, patObj.fontSize, patObj.lineWidth)
           )
-          fs.writeSync fd, "  )"
+          fs.writeSync fd, "  )\n"
         when 'circle'
           fs.writeSync(fd,
             sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n",

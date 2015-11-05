@@ -66,11 +66,11 @@ Description example:
 name: Dummy
 
 pinout:
-  DIN:  1
+  DIN: 1
   DOUT: 2
-  Vcc:  3, 4
-  GND:  5, 6
-  NC:   7, 8
+  Vcc: 3, 4
+  GND: 5, 6
+  NC: 7, 8
 
 properties:
   power: Vcc
