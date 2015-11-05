@@ -47,9 +47,6 @@ class QedaLibrary
         value: 1
     @mergeObjects this, settings
 
-    @outlineDefs = [
-      { regexp: /JEDEC-(.*)/, handler: 'jedec' }
-    ]
     @elements = []
 
   #
@@ -135,8 +132,8 @@ class QedaLibrary
     try
       def = yaml.safeLoad fs.readFileSync(localFile)
       # TODO: YAML Schema validation
-    catch e
-      console.error "Loading '#{element}': Error: #{e.message}"
+    catch error
+      console.error "Loading '#{element}': Error: #{error.message}"
       process.exit 1
     if def.base?
       bases = def.base.replace(/\s+/g, '').split(',')

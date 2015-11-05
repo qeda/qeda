@@ -26,4 +26,4 @@ schematic:
 
 housing:
   pattern: SOIC
-  outline: JEDEC-MS-012AA
+  outline: JEDEC MS-012 AA

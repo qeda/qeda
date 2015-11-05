@@ -6,4 +6,4 @@ lib = new Qeda.Library
     gridSize: 50
 
 lib.add 'Dummy' # Adding custom element
-lib.generateKicad 'dummy'
+lib.generateKicad 'custom'

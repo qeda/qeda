@@ -25,17 +25,20 @@ Features
 Installation
 ============
 
+QEDA.js module for using in scripts:
+
     npm install qeda
+
 
 Examples
 ========
 
 Examples below is written on CoffeeScript but one can use vanilla JavaScript.
 
-Generating KiCad library
-------------------------
+Generating KiCad library from script
+------------------------------------
 
-[first.coffee](./examples/first/first.coffee):
+[script.coffee](./examples/script/script.coffee):
 
 ```coffeescript
 Qeda = require 'qeda'
@@ -55,18 +58,18 @@ This example will download component descriptions from [library repository](http
 
 Run it:
 
-    coffee first.coffee
+    coffee script.coffee
 
 And find generated files in `./kikad` directory.
 
 _API will be documented soon._
 
-Component description
----------------------
+Custom component description
+----------------------------
 
 Any electronic component is described using YAML-file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
 
-[library/dummy.yaml](./examples/second/library/dummy.yaml):
+[library/dummy.yaml](./examples/custom/library/dummy.yaml):
 
 ```yaml
 name: Dummy
@@ -97,12 +100,12 @@ schematic:
 
 housing:
   pattern: SOIC
-  outline: JEDEC-MS-012AA
+  outline: JEDEC MS-012 AA
 ```
 
 _Available YAML fields will be documented soon._
 
-[second.coffee](./examples/second/second.coffee):
+[custom.coffee](./examples/custom/custom.coffee):
 
 ```coffeescript
 Qeda = require 'qeda'
@@ -118,7 +121,7 @@ lib.generateKicad 'dummy'
 
 Run it:
 
-    coffee second.coffee
+    coffee custom.coffee
 
 Result:
 

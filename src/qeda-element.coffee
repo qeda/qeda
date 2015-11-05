@@ -1,3 +1,6 @@
+fs = require 'fs'
+yaml = require 'js-yaml'
+
 QedaSymbol = require './qeda-symbol'
 QedaPattern = require './qeda-pattern'
 
@@ -123,12 +126,21 @@ class QedaElement
 
     # Pattern processing
     if @housing?.outline?
-      outline = @housing.outline
-      for def in @library.outlineDefs
-        cap = def.regexp.exec outline
-        if cap
-          handler = require "./outline/#{def.handler}"
-          handler(@housing, cap[1..]...)
+      cap = @housing.outline.split(' ')
+      dirName = cap.shift().toLowerCase()
+      fileName = cap.shift().toLowerCase()
+      try
+        outline = yaml.safeLoad fs.readFileSync(__dirname + "/outline/#{dirName}/#{fileName}.yaml")
+      catch error
+        console.error "Loading outline '#{@housing.outline}': Error: #{error.message}"
+        process.exit 1
+      loop
+        for key, value of outline
+          if (typeof value is 'number') or (typeof value is 'string')
+            @housing[key] = value
+        if cap.length is 0 then break
+        outline = outline[cap.shift()]
+        unless outline? then break
 
     @_convertDimensions @housing
     handler = require "./pattern/#{@library.patternStyle}/#{@pattern.handler}"
