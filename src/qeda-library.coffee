@@ -125,7 +125,6 @@ class QedaLibrary
     localFile = './library/' + elementYaml
     unless fs.existsSync localFile
       try
-        r = request.defaults proxy:'http://proxy.croc.ru:8000'
         res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml, timeout: 3000
       catch error
         console.error "Loading '#{element}': Error: #{error.message}"
