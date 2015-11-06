@@ -15,9 +15,10 @@ class QedaLibrary
     @elementStyle = 'default'
     @symbolStyle = 'default'
     @patternStyle = 'default'
+    @output = 'kicad'
     @symbol =
-      units: 'mm'
-      gridSize: 2.5 # mm
+      units: 'mil'
+      gridSize: 50 # mil
       fontSize: # Grid units
         default: 1
         refDes: 1
@@ -107,12 +108,14 @@ class QedaLibrary
     @_calculated = true
 
   #
-  # Generate library in KiCad format
+  # Generate library in given format
   #
-  generateKicad: (name) ->
+  generate: (name) ->
     @calculate()
-    kicad = new KicadGenerator(this)
-    kicad.generate name
+    generator = null
+    switch @output
+      when 'kicad' then generator = new KicadGenerator(this)
+    if generator then generator.generate name
 
   #
   # Load element description from remote repository

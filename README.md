@@ -44,14 +44,10 @@ Generating KiCad library from script
 Qeda = require 'qeda'
 
 lib = new Qeda.Library
-  symbol:
-    units: 'mil'
-    gridSize: 50
-
 lib.add 'Altera/5M1270ZT144' # Adding Altera MAX V CPLD
 lib.add 'TI/ISO721' # Adding Texas Instruments ISO721
 lib.add 'TI/ISO722' # Adding Texas Instruments ISO722
-lib.generateKicad 'qeda'
+lib.generate 'mylib'
 ```
 
 This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
@@ -111,12 +107,8 @@ _Available YAML fields will be documented soon._
 Qeda = require 'qeda'
 
 lib = new Qeda.Library
-  symbol:
-    units: 'mil'
-    gridSize: 50
-
 lib.add 'Dummy' # Adding custom element
-lib.generateKicad 'dummy'
+lib.generate 'dummy'
 ```
 
 Run it:
