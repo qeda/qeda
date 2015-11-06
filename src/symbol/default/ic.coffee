@@ -17,39 +17,32 @@ module.exports = (symbol) ->
   bottom = symbol.bottom
   pins = symbol.element.pins
 
-  width = step * (Math.max(top.length, bottom.length) + 2)
-  height = step * (Math.max(left.length, right.length) + 2)
+  width = step * (Math.max(top.length, bottom.length) + 1)
+  height = step * (Math.max(left.length, right.length) + 1)
   space = settings.space.pinName
 
   # Attributes
   symbol.addAttribute 'refDes',
     x: 0
-    y: -0.5
-    halign: 'center'
+    y: -settings.fontSize.refDes - 1
+    halign: 'left'
     valign: 'bottom'
 
   symbol.addAttribute 'name',
     x: 0
-    y: 0.5
-    halign: 'center'
-    valign: 'center'
+    y: -0.5
+    halign: 'left'
+    valign: 'bottom'
 
   textWidth = symbol.element.longestAlias.length * settings.fontSize.name
-  textHeight = settings.fontSize.refDes + settings.fontSize.name + 1
 
-  # Update box size
-  width = Math.max width, textWidth + 2*space
-  height = Math.max height, textHeight + 2*space
-
-  rects = []
-  rects.push
-    x1:  -textWidth/2
-    y1: -textHeight/2
-    x2: textWidth/2
-    y2: textHeight/2
+  leftX = -width/2
+  rightX = width/2
+  topY = -height/2
+  bottomY = height/2
 
   # Pins on the top side
-  y = -height/2
+  y = topY
   dx = settings.fontSize.pinName/2 + space
   topPins = []
   topRects = []
@@ -68,12 +61,7 @@ module.exports = (symbol) ->
     h = pin.name.length*settings.fontSize.pinName + space
     x1 = x - dx
     x2 = x + dx
-    if y > -h - space then y = -h - space
-    # Check whether pin rectangle intersects other rectangles
-    for r in rects
-      if intersects [x1, x2], [r.x1, r.x2]
-        y1 = r.y1 - h - space
-        if y > y1 then y = y1 # Make symbol larger
+    if y > (-h - space) then y = -h - space
     x += step
     topRects.push
       x1: x1,
@@ -84,7 +72,7 @@ module.exports = (symbol) ->
   topY = Math.floor y
 
   # Pins on the bottom side
-  y = height/2
+  y = bottomY
   bottomPins = []
   bottomRects = []
   x = -step * bottom.length/2 + step/2
@@ -102,12 +90,7 @@ module.exports = (symbol) ->
     h = pin.name.length*settings.fontSize.pinName + space
     x1 = x - dx
     x2 = x + dx
-    if y < h + space then y = h + space
-    # Check whether pin rectangle intersects other rectangles
-    for r in rects
-      if intersects [x1, x2], [r.x1, r.x2]
-        y2 = r.y2 + h + space
-        if y < y2 then y = y2 # Make symbol larger
+    if y < (h + space) then y = h + space
     x += step
     bottomRects.push
       x1: x1,
@@ -117,6 +100,7 @@ module.exports = (symbol) ->
 
   bottomY = Math.ceil y
 
+  rects = []
   for r in topRects
     r.y1 += topY
     r.y2 += topY
@@ -128,7 +112,7 @@ module.exports = (symbol) ->
     rects.push r
 
   # Pins on the left side
-  x = -width/2
+  x = leftX
   dy = settings.fontSize.pinName/2 + space
   leftPins = []
   y = -step * left.length/2 + step/2
@@ -146,7 +130,6 @@ module.exports = (symbol) ->
     w = pin.name.length*settings.fontSize.pinName + space
     y1 = y - dy
     y2 = y + dy
-    if x > -w - space then x = -w - space
     # Check whether pin rectangle intersects other rectangles
     for r in rects
       if intersects [y1, y2], [r.y1, r.y2]
@@ -154,10 +137,13 @@ module.exports = (symbol) ->
         if x > x1 then x = x1 # Make symbol wider
     y += step
 
+  # Align according to text
+  if x > (-step*(top.length/2 + 1) - textWidth)
+    x = -step*(top.length/2 + 1) - textWidth
   leftX = Math.floor x
 
   # Pins on the right side
-  x = width/2
+  x = rightX
   rightPins = []
   y = -step * right.length/2 + step/2
   for i in right
@@ -174,7 +160,6 @@ module.exports = (symbol) ->
     w = pin.name.length*settings.fontSize.pinName + space
     y1 = y - dy
     y2 = y + dy
-    if x < w + space then x = w + space
     # Check whether pin rectangle intersects other rectangles
     for r in rects
       if intersects [y1, y2], [r.y1, r.y2]
@@ -191,24 +176,28 @@ module.exports = (symbol) ->
   # Box
   y = topY
   symbol.addRectangle
-    x: leftX
-    y: y
+    x: 0
+    y: 0
     width: width
     height: height
     fill: 'foreground'
 
   for pin in leftPins
-    pin.x = leftX - pinLength
+    pin.x = -pinLength
+    pin.y -= topY
     symbol.addPin pin
 
   for pin in rightPins
-    pin.x = rightX + pinLength
+    pin.x = width + pinLength
+    pin.y -= topY
     symbol.addPin pin
 
   for pin in topPins
-    pin.y = topY - pinLength
+    pin.x -= leftX
+    pin.y = -pinLength
     symbol.addPin pin
 
   for pin in bottomPins
-    pin.y = bottomY + pinLength
+    pin.x -= leftX
+    pin.y = height + pinLength
     symbol.addPin pin
