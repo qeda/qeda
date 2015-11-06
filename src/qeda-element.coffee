@@ -172,9 +172,13 @@ class QedaElement
         unless cap
           result.push number
         else
-          for i in [@_letters.indexOf(cap[1])..@_letters.indexOf(cap[3])]
-            for j in [cap[2]..cap[4]]
-              result.push @_letters[i] + j
+          row1 = @_letters.indexOf cap[1]
+          row2 = @_letters.indexOf cap[3]
+          col1 = parseInt cap[2]
+          col2 = parseInt cap[4]
+          for row in [row1..row2]
+            for col in [col1..col2]
+              result.push @_letters[row] + col
     result
 
   _concatenateGroups: (groups) ->

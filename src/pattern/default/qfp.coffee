@@ -2,15 +2,15 @@ sprintf = require('sprintf-js').sprintf
 gullwing = require './common/gullwing'
 
 module.exports = (pattern, housing) ->
-  settings = pattern.settings
-
   pattern.name ?= sprintf "QFP%dP%dX%dX%d-%d",
     [housing.pitch*100
     housing.leadSpan1.nom*100
     housing.leadSpan2.nom*100
-    housing.height.max*100
+    housing.height*100
     housing.leadCount]
     .map((a) => Math.round a)...
+
+  settings = pattern.settings
 
   pitch = housing.pitch
   leadCount1 = housing.leadCount1

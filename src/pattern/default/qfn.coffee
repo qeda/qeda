@@ -1,12 +1,10 @@
 sprintf = require('sprintf-js').sprintf
-sop = require './sop'
 
 module.exports = (pattern, housing) ->
-  housing.pitch = 1.27
-  pattern.name ?= sprintf "SOIC%dP%dX%d-%d",
+  pattern.name ?= sprintf "QFN%dP%dX%dX%d-%d",
     [housing.pitch*100
-    housing.leadSpan.nom*100
+    housing.bodyWidth.nom*100
+    housing.bodyLength.nom*100
     housing.height*100
     housing.leadCount]
     .map((a) => Math.round a)...
-  sop pattern, housing

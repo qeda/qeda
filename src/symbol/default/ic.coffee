@@ -7,6 +7,10 @@ intersects = (s1, s2) ->
 
 module.exports = (symbol) ->
   settings = symbol.settings
+  schematic = symbol.element.schematic
+
+  schematic.showPinNames ?= true
+  schematic.showPinNumbers ?= true
 
   step = 2
   pinLength = settings.pinLenght ? 4

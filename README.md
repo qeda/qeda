@@ -87,8 +87,6 @@ properties:
 
 schematic:
   symbol: IC
-  showPinNumbers: true
-  showPinNames: true
   left: DIN, NC
   right: ~DOUT, NC
   top: Vcc
