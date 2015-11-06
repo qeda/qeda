@@ -89,7 +89,7 @@ module.exports = (pattern, housing) ->
   pattern.setLayer 'topAssembly'
   pattern.setLineWidth settings.lineWidth.assembly
   bodyWidth = housing.bodyWidth.nom
-  leadLength = housing.leadLength.nom
+  leadLength = (housing.leadSpan.nom - housing.bodyWidth.nom) / 2
   # Body
   pattern.addRectangle { x: -bodyWidth/2, y: -bodyLength/2, width: bodyWidth, height: bodyLength }
   # Leads

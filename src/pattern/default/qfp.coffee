@@ -130,20 +130,21 @@ module.exports = (pattern, housing) ->
   pattern.setLineWidth settings.lineWidth.assembly
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
-  leadLength = housing.leadLength.nom
+  leadLength1 = (housing.leadSpan1.nom - housing.bodyWidth.nom) / 2
+  leadLength2 = (housing.leadSpan2.nom - housing.bodyLength.nom) / 2
   # Body
   pattern.addRectangle { x: -bodyWidth/2, y: -bodyLength/2, width: bodyWidth, height: bodyLength }
   # Leads
   y = -pitch * (leadCount1/2 - 0.5)
   for i in [1..leadCount1]
-    pattern.addLine { x1: -bodyWidth/2, y1: y, x2: -bodyWidth/2 - leadLength, y2: y }
-    pattern.addLine { x1: bodyWidth/2,  y1: y, x2: bodyWidth/2 + leadLength,  y2: y }
+    pattern.addLine { x1: -bodyWidth/2, y1: y, x2: -bodyWidth/2 - leadLength1, y2: y }
+    pattern.addLine { x1: bodyWidth/2,  y1: y, x2: bodyWidth/2 + leadLength1,  y2: y }
     y += pitch
 
   x = -pitch * (leadCount2/2 - 0.5)
   for i in [1..leadCount2]
-    pattern.addLine { x1: x, y1: -bodyLength/2, x2: x, y2: -bodyLength/2 - leadLength }
-    pattern.addLine { x1: x, y1: bodyLength/2,  x2: x, y2: bodyLength/2 + leadLength }
+    pattern.addLine { x1: x, y1: -bodyLength/2, x2: x, y2: -bodyLength/2 - leadLength2 }
+    pattern.addLine { x1: x, y1: bodyLength/2,  x2: x, y2: bodyLength/2 + leadLength2 }
     x += pitch
   # Key
   r = 0.5
@@ -157,6 +158,6 @@ module.exports = (pattern, housing) ->
   pattern.addAttribute 'value',
     text: pattern.name
     x: 0
-    y: bodyLength/2 + leadLength + fontSize/2 + 0.5
+    y: bodyLength/2 + leadLength2 + fontSize/2 + 0.5
     halign: 'center'
     valign: 'center'
