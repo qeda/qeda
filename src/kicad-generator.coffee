@@ -15,7 +15,7 @@ class KicadGenerator
   # Generate symbol library and footprint files
   #
   generate: (name) ->
-    dir = './kikad'
+    dir = './kicad'
     mkdirp.sync "#{dir}/#{name}.pretty"
     patterns = {}
 

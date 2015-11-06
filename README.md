@@ -56,7 +56,7 @@ Run it:
 
     coffee script.coffee
 
-And find generated files in `./kikad` directory.
+And find generated files in `./kicad` directory.
 
 _API will be documented soon._
 
