@@ -1,5 +1,6 @@
 sprintf = require('sprintf-js').sprintf
-gullwing = require './common/gullwing'
+calculator = require './common/calculator'
+quad = require './common/quad'
 
 module.exports = (pattern, housing) ->
   pattern.name ?= sprintf "QFP%dP%dX%dX%d-%d",
@@ -12,89 +13,28 @@ module.exports = (pattern, housing) ->
 
   settings = pattern.settings
 
+
+  # Calculate pad dimensions according to IPC-7351
+  padParams = calculator.qfp pattern, housing
+  padParams.defaultShape = if padParams.trimmed then 'rectangle' else 'oval'
+  padParams.pitch = housing.pitch
+  padParams.count1 = housing.leadCount1
+  padParams.count2 = housing.leadCount2
+
+  pattern.setLayer 'top'
+  quad pattern, padParams
+
+  # Silkscreen
+  padWidth1 = padParams.width1
+  padHeight1 = padParams.height1
+  padDistance1 = padParams.distance1
+  padWidth2 = padParams.width2
+  padHeight2 = padParams.height2
+  padDistance2 = padParams.distance2
   pitch = housing.pitch
   leadCount1 = housing.leadCount1
   leadCount2 = housing.leadCount2
 
-  # Calculation according to IPC-7351
-  housing.leadSpan = housing.leadSpan1
-  dims1 = gullwing.calculate pattern, housing
-  housing.leadSpan = housing.leadSpan2
-  dims2 = gullwing.calculate pattern, housing
-
-  # Trim pads when they extend under body
-  defaultShape = 'oval'
-  if dims1.gap < housing.bodyWidth.nom
-    dims1.gap = housing.bodyWidth.nom
-    defaultShape = 'rectangle'
-  if dims2.gap < housing.bodyLength.nom
-    dims2.gap = housing.bodyLength.nom
-    defaultShape = 'rectangle'
-
-  # Calculate pad dimensions
-  padDims1 = gullwing.pad dims1, pattern
-  padWidth1 = padDims1.width
-  padHeight1 = padDims1.height
-  padDistance1 = padDims1.distance
-
-  padDims2 = gullwing.pad dims1, pattern
-  padWidth2 = padDims1.width
-  padHeight2 = padDims1.height
-  padDistance2 = padDims1.distance
-
-  pad1 =
-    type: 'smd'
-    width: padWidth1
-    height: padHeight1
-
-  # Rotated to 90 degree (width and height swapped)
-  pad2 =
-    type: 'smd'
-    width: padHeight2
-    height: padWidth2
-    shape: defaultShape
-
-  pattern.setLayer 'top'
-
-  # Pads on the left side
-  pad1.x = -padDistance1 / 2
-  y = -pitch * (leadCount1/2 - 0.5)
-  num = 1
-  for i in [1..leadCount1]
-    pad1.name = num++
-    pad1.y = y
-    pad1.shape =  if i is 1 then 'rectangle' else defaultShape
-    pattern.addPad pad1
-    y += pitch
-
-  # Pads on the bottom side
-  x = -pitch * (leadCount2/2 - 0.5)
-  pad2.y = padDistance2 / 2
-  for i in [1..leadCount2]
-    pad2.name = num++
-    pad2.x = x
-    pattern.addPad pad2
-    x += pitch
-
-  # Pads on the right side
-  pad1.x = padDistance1 / 2
-  y -= pitch
-  for i in [1..leadCount1]
-    pad1.name = num++
-    pad1.y = y
-    pattern.addPad pad1
-    y -= pitch
-
-  # Pads on the top side
-  x -= pitch
-  pad2.y = -padDistance2 / 2
-  for i in [1..leadCount2]
-    pad2.name = num++
-    pad2.x = x
-    pattern.addPad pad2
-    x -= pitch
-
-  # Silkscreen
   pattern.setLayer 'topSilkscreen'
   lineWidth = settings.lineWidth.silkscreen
   pattern.setLineWidth lineWidth

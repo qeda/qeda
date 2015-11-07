@@ -1,5 +1,6 @@
 sprintf = require('sprintf-js').sprintf
-gullwing = require './common/gullwing'
+calculator = require './common/calculator'
+dual = require './common/dual'
 
 module.exports = (pattern, housing) ->
   pattern.name ?= sprintf "SOP%dP%dX%d-%d",
@@ -11,52 +12,22 @@ module.exports = (pattern, housing) ->
 
   settings = pattern.settings
 
+  # Calculate pad dimensions according to IPC-7351
+  padParams = calculator.sop pattern, housing
+  padParams.defaultShape = if padParams.trimmed then 'rectangle' else 'oval'
+  padParams.pitch = housing.pitch
+  padParams.count = housing.leadCount
+
+  pattern.setLayer 'top'
+  dual pattern, padParams
+
+  # Silkscreen
+  padWidth = padParams.width
+  padHeight = padParams.height
+  padDistance = padParams.distance
   pitch = housing.pitch
   leadCount = housing.leadCount
 
-  # Calculation according to IPC-7351
-  dims = gullwing.calculate pattern, housing
-
-  # Trim pads when they extend under body
-  defaultShape = 'oval'
-  if dims.gap < housing.bodyWidth.nom
-    dims.gap = housing.bodyWidth.nom
-    defaultShape = 'rectangle'
-
-  # Calculate pad dimensions
-  padDims = gullwing.pad dims, pattern
-  padWidth = padDims.width
-  padHeight = padDims.height
-  padDistance = padDims.distance
-
-  pad =
-    type: 'smd'
-    width: padWidth
-    height: padHeight
-
-  pattern.setLayer 'top'
-
-  # Pads on the left side
-  pad.x = -padDistance / 2
-  y = -pitch * (leadCount/4 - 0.5)
-  num = 1
-  for i in [1..leadCount/2]
-    pad.name = num++
-    pad.y = y
-    pad.shape =  if i is 1 then 'rectangle' else defaultShape
-    pattern.addPad pad
-    y += pitch
-
-  # Pads on the right side
-  pad.x = padDistance / 2
-  y -= pitch
-  for i in [(leadCount/2 + 1)..leadCount]
-    pad.name = num++
-    pad.y = y
-    pattern.addPad pad
-    y -= pitch
-
-  # Silkscreen
   pattern.setLayer 'topSilkscreen'
   lineWidth = settings.lineWidth.silkscreen
   pattern.setLineWidth lineWidth
