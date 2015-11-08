@@ -8,55 +8,55 @@ module.exports = (pattern, padParams) ->
   padDistance2 = padParams.distance2
 
   pitch = padParams.pitch
-  leadCount1 = padParams.count1
-  leadCount2 = padParams.count2
+  rowCount = padParams.rowCount
+  columnCount = padParams.columnCount
 
-  pad1 =
+  rowPad =
     type: 'smd'
     width: padWidth1
     height: padHeight1
     shape: 'rectangle'
 
   # Rotated to 90 degree (swap width and height)
-  pad2 =
+  columnPad =
     type: 'smd'
     width: padHeight2
     height: padWidth2
     shape: 'rectangle'
 
   # Pads on the left side
-  pad1.x = -padDistance1 / 2
-  y = -pitch * (leadCount1/2 - 0.5)
+  rowPad.x = -padDistance1 / 2
+  y = -pitch * (rowCount/2 - 0.5)
   num = 1
-  for i in [1..leadCount1]
-    pad1.name = num++
-    pad1.y = y
-    pattern.addPad pad1
+  for i in [1..rowCount]
+    rowPad.name = num++
+    rowPad.y = y
+    pattern.addPad rowPad
     y += pitch
 
   # Pads on the bottom side
-  x = -pitch * (leadCount2/2 - 0.5)
-  pad2.y = padDistance2 / 2
-  for i in [1..leadCount2]
-    pad2.name = num++
-    pad2.x = x
-    pattern.addPad pad2
+  x = -pitch * (columnCount/2 - 0.5)
+  columnPad.y = padDistance2 / 2
+  for i in [1..columnCount]
+    columnPad.name = num++
+    columnPad.x = x
+    pattern.addPad columnPad
     x += pitch
 
   # Pads on the right side
-  pad1.x = padDistance1 / 2
+  rowPad.x = padDistance1 / 2
   y -= pitch
-  for i in [1..leadCount1]
-    pad1.name = num++
-    pad1.y = y
-    pattern.addPad pad1
+  for i in [1..rowCount]
+    rowPad.name = num++
+    rowPad.y = y
+    pattern.addPad rowPad
     y -= pitch
 
   # Pads on the top side
   x -= pitch
-  pad2.y = -padDistance2 / 2
-  for i in [1..leadCount2]
-    pad2.name = num++
-    pad2.x = x
-    pattern.addPad pad2
+  columnPad.y = -padDistance2 / 2
+  for i in [1..columnCount]
+    columnPad.name = num++
+    columnPad.x = x
+    pattern.addPad columnPad
     x -= pitch

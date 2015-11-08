@@ -3,12 +3,14 @@ calculator = require './common/calculator'
 quad = require './common/quad'
 
 module.exports = (pattern, housing) ->
+  leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
+  height = housing.height.max ? housing.height
   pattern.name ?= sprintf "QFP%dP%dX%dX%d-%d",
     [housing.pitch*100
-    housing.leadSpan1.nom*100
-    housing.leadSpan2.nom*100
-    housing.height*100
-    housing.leadCount]
+    housing.rowSpan.nom*100
+    housing.columnSpan.nom*100
+    height*100
+    leadCount]
     .map((a) => Math.round a)...
 
   settings = pattern.settings
@@ -16,8 +18,8 @@ module.exports = (pattern, housing) ->
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.qfp pattern, housing
   padParams.pitch = housing.pitch
-  padParams.count1 = housing.leadCount1
-  padParams.count2 = housing.leadCount2
+  padParams.rowCount = housing.rowCount
+  padParams.columnCount = housing.columnCount
 
   pattern.setLayer 'top'
   quad pattern, padParams
@@ -30,8 +32,8 @@ module.exports = (pattern, housing) ->
   padHeight2 = padParams.height2
   padDistance2 = padParams.distance2
   pitch = housing.pitch
-  leadCount1 = housing.leadCount1
-  leadCount2 = housing.leadCount2
+  rowCount = housing.rowCount
+  columnCount = housing.columnCount
 
   pattern.setLayer 'topSilkscreen'
   lineWidth = settings.lineWidth.silkscreen
@@ -47,7 +49,7 @@ module.exports = (pattern, housing) ->
   # First pin keys
   r = 0.25
   x = (-padDistance1 - padWidth1)/2 + r
-  y = -pitch*(leadCount1/2 - 0.5) - padHeight1/2 - r - settings.clearance.padToSilk
+  y = -pitch*(rowCount/2 - 0.5) - padHeight1/2 - r - settings.clearance.padToSilk
   pattern.addCircle { x: x, y: y, radius: r/2, lineWidth: r }
   r = 0.5
   shift = rectWidth/2 - r
@@ -68,19 +70,19 @@ module.exports = (pattern, housing) ->
   pattern.setLineWidth settings.lineWidth.assembly
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
-  leadLength1 = (housing.leadSpan1.nom - housing.bodyWidth.nom) / 2
-  leadLength2 = (housing.leadSpan2.nom - housing.bodyLength.nom) / 2
+  leadLength1 = (housing.rowSpan.nom - housing.bodyWidth.nom) / 2
+  leadLength2 = (housing.columnSpan.nom - housing.bodyLength.nom) / 2
   # Body
   pattern.addRectangle { x: -bodyWidth/2, y: -bodyLength/2, width: bodyWidth, height: bodyLength }
   # Leads
-  y = -pitch * (leadCount1/2 - 0.5)
-  for i in [1..leadCount1]
+  y = -pitch * (rowCount/2 - 0.5)
+  for i in [1..rowCount]
     pattern.addLine { x1: -bodyWidth/2, y1: y, x2: -bodyWidth/2 - leadLength1, y2: y }
     pattern.addLine { x1: bodyWidth/2,  y1: y, x2: bodyWidth/2 + leadLength1,  y2: y }
     y += pitch
 
-  x = -pitch * (leadCount2/2 - 0.5)
-  for i in [1..leadCount2]
+  x = -pitch * (columnCount/2 - 0.5)
+  for i in [1..columnCount]
     pattern.addLine { x1: x, y1: -bodyLength/2, x2: x, y2: -bodyLength/2 - leadLength2 }
     pattern.addLine { x1: x, y1: bodyLength/2,  x2: x, y2: bodyLength/2 + leadLength2 }
     x += pitch

@@ -1,13 +1,12 @@
 leadLength: 0.45-0.75
 
 BFB:
+  pitch: 0.5
   bodyLength: 19.80-20.20
   bodyWidth: 19.80-20.20
   height: 1.60
-  leadCount: 144
-  leadCount1: 36
-  leadCount2: 36
-  leadSpan1: 21.80-22.20
-  leadSpan2: 21.80-22.20
+  rowCount: 36
+  columnCount: 36
+  rowSpan: 21.80-22.20
+  columnSpan: 21.80-22.20
   leadWidth: 0.17-0.27
-  pitch: 0.5

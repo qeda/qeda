@@ -36,11 +36,11 @@ module.exports =
 
   qfp: (pattern, housing) ->
     params = @_gullwing pattern, housing
-    params.Lmin = housing.leadSpan1.min
-    params.Lmax = housing.leadSpan1.max
+    params.Lmin = housing.rowSpan.min
+    params.Lmax = housing.rowSpan.max
     ipc1 = @_ipc7351 params
-    params.Lmin = housing.leadSpan2.min
-    params.Lmax = housing.leadSpan2.max
+    params.Lmin = housing.columnSpan.min
+    params.Lmax = housing.columnSpan.max
     ipc2 = @_ipc7351 params
     trimmed = false
 
