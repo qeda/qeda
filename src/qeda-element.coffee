@@ -127,7 +127,7 @@ class QedaElement
       dirName = cap.shift().toLowerCase()
       fileName = cap.shift().toLowerCase()
       try
-        outline = yaml.safeLoad fs.readFileSync(__dirname + "/outline/#{dirName}/#{fileName}.yaml")
+        outline = yaml.safeLoad fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
       catch error
         console.error "Loading outline '#{@housing.outline}': Error: #{error.message}"
         process.exit 1
