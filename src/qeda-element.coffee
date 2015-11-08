@@ -56,10 +56,7 @@ class QedaElement
       @pinGroups[name] = pins
       if typeof value is 'object' then continue
       for number in pins
-        unless @pins[number]?
-          @pins[number] = @_pinObj number, name
-        else
-          @pins[number].name += '/' + name
+        @pins[number] = @_pinObj number, name
 
     # Forming groups
     for key, value of @groups
@@ -159,10 +156,7 @@ class QedaElement
         pins = @_addPins name, numbers
         if @delimiter[key] then name = key + @delimiter[key] + name
         for number in pins
-          unless @pins[number]?
-            @pins[number] = @_pinObj number, name
-          else
-            @pins[number].name += '/' + name
+          @pins[number] = @_pinObj number, name
         result = result.concat pins
     else
       if typeof value is 'number' then value = value.toString()
@@ -207,16 +201,21 @@ class QedaElement
   # Generate pin object
   #
   _pinObj: (number, name) ->
-    obj =
-      name: name
-      number: number
+    obj = @pins[number]
+    if obj?
+      obj.name += '/' +  name
+    else
+      obj =
+        name: name
+        number: number
 
     if @properties?
-      props = ['bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
+      props = ['analog', 'bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
       for prop in props
         if @properties[prop]?
           pins = @parseGroups @properties[prop]
-          obj[prop] = (pins.indexOf(name) isnt -1)
+          obj[prop] ?= false
+          if (pins.indexOf(name) isnt -1) then obj[prop] = true
     obj
 
 module.exports = QedaElement

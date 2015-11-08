@@ -34,10 +34,11 @@ class QedaLibrary
       decimals: 3
       tolerance:
         default: 0.1
-        fabrication: 0.05
-        placement: 0.05
+        fabrication: 0.1
+        placement: 0.1
       clearance:
         padToSilk: 0.2
+        padToPad: 0.2
       lineWidth:
         default: 0.2
         silkscreen: 0.2
