@@ -15,7 +15,6 @@ module.exports = (pattern, housing) ->
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.qfp pattern, housing
-  padParams.defaultShape = if padParams.trimmed then 'rectangle' else 'oval'
   padParams.pitch = housing.pitch
   padParams.count1 = housing.leadCount1
   padParams.count2 = housing.leadCount2

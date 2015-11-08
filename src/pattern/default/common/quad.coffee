@@ -7,8 +7,6 @@ module.exports = (pattern, padParams) ->
   padHeight2 = padParams.height2
   padDistance2 = padParams.distance2
 
-  defaultShape = padParams.defaultShape
-
   pitch = padParams.pitch
   leadCount1 = padParams.count1
   leadCount2 = padParams.count2
@@ -17,13 +15,14 @@ module.exports = (pattern, padParams) ->
     type: 'smd'
     width: padWidth1
     height: padHeight1
+    shape: 'rectangle'
 
   # Rotated to 90 degree (swap width and height)
   pad2 =
     type: 'smd'
     width: padHeight2
     height: padWidth2
-    shape: defaultShape
+    shape: 'rectangle'
 
   # Pads on the left side
   pad1.x = -padDistance1 / 2
@@ -32,7 +31,6 @@ module.exports = (pattern, padParams) ->
   for i in [1..leadCount1]
     pad1.name = num++
     pad1.y = y
-    pad1.shape =  if i is 1 then 'rectangle' else defaultShape
     pattern.addPad pad1
     y += pitch
 
