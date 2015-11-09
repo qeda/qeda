@@ -135,6 +135,8 @@ Coming soon
   - GOST
 * Generating libraries:
   - Eagle XML format
+  - DipTrace format
+  - gEDA format
 * SMD land pattern calculation:
   - BGA
   - CFP

@@ -47,6 +47,8 @@ class QedaLibrary
         default: 1
         refDes: 1
         value: 1
+      ball:
+        collapsible: true
     @mergeObjects this, settings
 
     @elements = []

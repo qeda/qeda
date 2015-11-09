@@ -14,7 +14,7 @@ class QedaSymbol
     for side in sides
       @[side] = []
       if @schematic[side]?
-        groups = @element.parseGroups @schematic[side] #.replace(/\s+/g, '').split(',')
+        groups = @element.parseMultiple @schematic[side]
         for group in groups
           pinGroup = @element.pinGroups[group]
           if (@groups.indexOf(group) isnt -1) and pinGroup?

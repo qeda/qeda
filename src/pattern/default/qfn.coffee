@@ -4,13 +4,13 @@ quad = require './common/quad'
 
 module.exports = (pattern, housing) ->
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
-  if housing.thermalWidth? and housing.thermalLength then ++leadCount
+  if housing.tabWidth? and housing.tabLength then ++leadCount
   height = housing.height.max ? housing.height
   pattern.name ?= sprintf "%sQFN%dP%dX%dX%d-%d",
     if housing.pullBack? then 'P' else '',
     [housing.pitch*100
-    housing.bodyWidth.nom*100
     housing.bodyLength.nom*100
+    housing.bodyWidth.nom*100
     height*100
     leadCount]
     .map((a) => Math.round a)...

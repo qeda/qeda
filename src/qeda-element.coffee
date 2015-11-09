@@ -46,17 +46,20 @@ class QedaElement
 
     @delimiter = {}
     for key, value of @joint
-      groups = @parseGroups key
+      groups = @parseMultiple key
       for group in groups
         @delimiter[group] = value
 
     # Create pin objects and groups
-    for name, value of @pinout
-      pins = @_addPins name, value
-      @pinGroups[name] = pins
-      if typeof value is 'object' then continue
-      for number in pins
-        @pins[number] = @_pinObj number, name
+    #@pinGroups[''] =
+    @_addPins '', @pinout
+    #for name, value of @pinout
+      #console.log @parseMultiple name
+    #  pins = @_addPins name, value
+    #  @pinGroups[name] = pins
+    #  if typeof value is 'object' then continue
+    #  for number in pins
+    #    @pins[number] = @_pinObj number, name
 
     # Forming groups
     for key, value of @groups
@@ -64,7 +67,7 @@ class QedaElement
 
     if @parts? # Multi-part element
       for name, part of @parts
-        @symbols.push new QedaSymbol(this, @parseGroups(part), name)
+        @symbols.push new QedaSymbol(this, @parseMultiple(part), name)
     else # Single-part element
       part = []
       if @groups?
@@ -90,15 +93,17 @@ class QedaElement
         dest[k] = v
 
   #
-  # Parse group list
+  # Parse pin/group list
   #
-  parseGroups: (groups) ->
+  parseMultiple: (input) ->
     result = []
-    groups = groups.replace(/\s+/g, '').split(',')
+    groups = input.replace(/\s+/g, '').split(',')
     for group in groups
-      cap = /(\w+)(\d+)-(\d+)/.exec group
+      cap = /(.*\D)(\d+)-(\d+)/.exec group
       if cap
-        for i in [cap[2]..cap[3]]
+        begin = parseInt cap[2]
+        end = parseInt cap[3]
+        for i in [begin..end]
           result.push cap[1] + i
       else
         result.push group
@@ -149,18 +154,17 @@ class QedaElement
   #
   # Add pin objects
   #
-  _addPins: (key, value) ->
+  _addPins: (name, pinOrGroup) ->
     result = []
-    if typeof value is 'object'
-      for name, numbers of value
-        pins = @_addPins name, numbers
-        if @delimiter[key] then name = key + @delimiter[key] + name
-        for number in pins
-          @pins[number] = @_pinObj number, name
+    if typeof pinOrGroup is 'object' # Group of pins
+      for key, value of pinOrGroup
+        pinName = if @delimiter[name]? then name + @delimiter[name] + key else key
+        pins = @_addPins pinName, value
+        @pinGroups[key] = pins
         result = result.concat pins
-    else
-      if typeof value is 'number' then value = value.toString()
-      numbers = value.replace(/\s+/g, '').split(',')
+    else # Pin number(s)
+      if typeof pinOrGroup is 'number' then pinOrGroup = pinOrGroup.toString()
+      numbers = pinOrGroup.replace(/\s+/g, '').split(',')
       for number in numbers
         cap = /([A-Z]*)(\d+)-([A-Z]*)(\d+)/.exec number
         unless cap
@@ -168,16 +172,28 @@ class QedaElement
         else
           row1 = @_letters.indexOf cap[1]
           row2 = @_letters.indexOf cap[3]
+          if row2 is '' then row2 = row1
           col1 = parseInt cap[2]
           col2 = parseInt cap[4]
           for row in [row1..row2]
             for col in [col1..col2]
               result.push @_letters[row] + col
+      names = @parseMultiple name
+      if names.length > 1
+        # Dearraying
+        if names.length isnt result.length
+          console.error 'Error: Pin count does not correspond pad count'
+          process.exit 1
+        for i in [0..(names.length-1)]
+          @pins[result[i]] = @_pinObj result[i], names[i]
+      else
+        for number in result
+          @pins[number] = @_pinObj number, name
     result
 
   _concatenateGroups: (groups) ->
     result = []
-    groups = @parseGroups groups
+    groups = @parseMultiple groups
     for group in groups
       pinGroup = @pinGroups[group]
       if pinGroup? then result = result.concat pinGroup
@@ -213,7 +229,7 @@ class QedaElement
       props = ['analog', 'bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
       for prop in props
         if @properties[prop]?
-          pins = @parseGroups @properties[prop]
+          pins = @parseMultiple @properties[prop]
           obj[prop] ?= false
           if (pins.indexOf(name) isnt -1) then obj[prop] = true
     obj
