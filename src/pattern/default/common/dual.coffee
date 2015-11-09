@@ -3,8 +3,6 @@ module.exports = (pattern, padParams) ->
   padHeight = padParams.height
   padDistance = padParams.distance
 
-  defaultShape = padParams.defaultShape
-
   pitch = padParams.pitch
   leadCount = padParams.count
 

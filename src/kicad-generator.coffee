@@ -68,9 +68,13 @@ class KicadGenerator
           )
         when 'pad'
           fs.writeSync(fd,
-            sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s))\n"
+            sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
             patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
           )
+          if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
+          if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
+          fs.writeSync fd, ")\n"
+
     fs.writeSync fd, ")\n" # module
 
   #

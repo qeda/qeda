@@ -38,11 +38,11 @@ class QedaElement
     @pinGroups = [] # Array of pin groups
 
     # Grid-array row letters
-    @_letters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
-    last = @_letters.length - 1
+    @gridLetters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
+    last = @gridLetters.length - 1
     for i in [1..last]
       for j in [i..last]
-        @_letters.push @_letters[i] + @_letters[j]
+        @gridLetters.push @gridLetters[i] + @gridLetters[j]
 
     @delimiter = {}
     for key, value of @joint
@@ -170,14 +170,14 @@ class QedaElement
         unless cap
           result.push number
         else
-          row1 = @_letters.indexOf cap[1]
-          row2 = @_letters.indexOf cap[3]
+          row1 = @gridLetters.indexOf cap[1]
+          row2 = @gridLetters.indexOf cap[3]
           if row2 is '' then row2 = row1
           col1 = parseInt cap[2]
           col2 = parseInt cap[4]
           for row in [row1..row2]
             for col in [col1..col2]
-              result.push @_letters[row] + col
+              result.push @gridLetters[row] + col
       names = @parseMultiple name
       if names.length > 1
         # Dearraying
