@@ -5,18 +5,18 @@ class QedaSymbol
   #
   # Constructor
   #
-  constructor: (@element, @groups, @name) ->
-    @settings = @element.library.symbol
-    @schematic = @element.schematic
+  constructor: (element, @groups, @name) ->
+    @settings = element.library.symbol
     @shapes = []
     @attributes = []
     sides = ['left', 'right', 'top', 'bottom']
+    schematic = element.schematic
     for side in sides
       @[side] = []
-      if @schematic[side]?
-        groups = @element.parseMultiple @schematic[side]
+      if schematic[side]?
+        groups = element.parseMultiple schematic[side]
         for group in groups
-          pinGroup = @element.pinGroups[group]
+          pinGroup = element.pinGroups[group]
           if (@groups.indexOf(group) isnt -1) and pinGroup?
             if @[side].length > 0
               @[side].push '-' # Insert gap

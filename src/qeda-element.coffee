@@ -51,15 +51,7 @@ class QedaElement
         @delimiter[group] = value
 
     # Create pin objects and groups
-    #@pinGroups[''] =
     @_addPins '', @pinout
-    #for name, value of @pinout
-      #console.log @parseMultiple name
-    #  pins = @_addPins name, value
-    #  @pinGroups[name] = pins
-    #  if typeof value is 'object' then continue
-    #  for number in pins
-    #    @pins[number] = @_pinObj number, name
 
     # Forming groups
     for key, value of @groups
@@ -124,7 +116,7 @@ class QedaElement
       # Apply symbol handler
       if @schematic?.symbol?
         handler = require "./symbol/#{@library.symbolStyle}/#{@schematic.symbol.toLowerCase()}"
-        handler symbol
+        handler symbol, this
 
     # Pattern processing
     if @housing?.outline?
@@ -146,8 +138,7 @@ class QedaElement
 
     @_convertDimensions @housing
     handler = require "./pattern/#{@library.patternStyle}/#{@pattern.handler}"
-    handler @pattern, @housing
-    @pattern.name ?= @housing.pattern
+    handler @pattern, this
 
     @_rendered = true
 
@@ -204,7 +195,7 @@ class QedaElement
   #
   _convertDimensions: (housing) ->
     for key, value of housing
-      if typeof value is 'string'
+      if typeof value is 'string' and (/\d+(\.\d+)?-?\d+(\.\d+)?$/.test value)
         value = value.replace(/\s+/g, '').split('-').map (a) -> parseFloat(a)
       if Array.isArray(value) and value.length > 0
         min = value[0]

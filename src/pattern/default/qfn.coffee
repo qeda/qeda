@@ -2,7 +2,8 @@ sprintf = require('sprintf-js').sprintf
 calculator = require './common/calculator'
 quad = require './common/quad'
 
-module.exports = (pattern, housing) ->
+module.exports = (pattern, element) ->
+  housing = element.housing
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
   if housing.tabWidth? and housing.tabLength then ++leadCount
   height = housing.height.max ? housing.height

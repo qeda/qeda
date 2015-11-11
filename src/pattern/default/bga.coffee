@@ -2,7 +2,8 @@ sprintf = require('sprintf-js').sprintf
 calculator = require './common/calculator'
 gridarray = require './common/gridarray'
 
-module.exports = (pattern, housing) ->
+module.exports = (pattern, element) ->
+  housing = element.housing
   settings = pattern.settings
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
   height = housing.height.max ? housing.height
@@ -24,7 +25,7 @@ module.exports = (pattern, housing) ->
   padParams.columnCount = housing.columnCount
 
   pattern.setLayer 'top'
-  gridarray pattern, padParams
+  gridarray pattern, element, padParams
 
   # Silkscreen
   pattern.setLayer 'topSilkscreen'

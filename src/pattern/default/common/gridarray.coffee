@@ -1,4 +1,4 @@
-module.exports = (pattern, padParams) ->
+module.exports = (pattern, element, padParams) ->
   rowPitch = padParams.rowPitch
   columnPitch = padParams.columnPitch
   rowCount = padParams.rowCount
@@ -12,8 +12,8 @@ module.exports = (pattern, padParams) ->
     mask: 0.001 # KiCad does not support zero value
     paste: -0.001 # KiCad does not support zero value
 
-  gridLetters = pattern.element.gridLetters
-  pins = pattern.element.pins
+  gridLetters = element.gridLetters
+  pins = element.pins
 
   # Pads on the left side
   y = -rowPitch * (rowCount/2 - 0.5)

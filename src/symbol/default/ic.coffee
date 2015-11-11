@@ -5,9 +5,9 @@ intersects = (s1, s2) ->
   a4 = (s2[1] >= s1[0]) and (s2[1] <= s1[1])
   a1 or a2 or a3 or a4
 
-module.exports = (symbol) ->
+module.exports = (symbol, element) ->
+  schematic = element.schematic
   settings = symbol.settings
-  schematic = symbol.element.schematic
 
   schematic.showPinNames ?= true
   schematic.showPinNumbers ?= true
@@ -19,7 +19,7 @@ module.exports = (symbol) ->
   right = symbol.right
   top = symbol.top
   bottom = symbol.bottom
-  pins = symbol.element.pins
+  pins = element.pins
 
   width = step * (Math.max(top.length, bottom.length) + 1)
   height = step * (Math.max(left.length, right.length) + 1)
@@ -38,7 +38,7 @@ module.exports = (symbol) ->
     halign: 'left'
     valign: 'bottom'
 
-  textWidth = symbol.element.longestAlias.length * settings.fontSize.name
+  textWidth = element.longestAlias.length * settings.fontSize.name
 
   leftX = -width/2
   rightX = width/2
