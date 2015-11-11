@@ -123,10 +123,10 @@ class QedaLibrary
   #
   # Load element description from remote repository
   #
-  load: (element) ->
+  load: (element, force = false) ->
     elementYaml = element.toLowerCase() + '.yaml'
     localFile = './library/' + elementYaml
-    unless fs.existsSync localFile
+    if (not fs.existsSync localFile) or force
       try
         res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml, timeout: 3000
       catch error

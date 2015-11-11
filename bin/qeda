@@ -1,0 +1,112 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var nopt = require('nopt');
+var yaml = require('js-yaml');
+var pkg = require('../package.json');
+var QedaLibrary = require('../lib/qeda-library');
+
+function displayUsage() {
+  var text =
+'Usage:\n\
+  qeda [COMMAND]... [OPTION]\n\
+\n\
+Options:\n\
+  -h, --help        Display this information\n\
+  --version         Display version information\n\
+  -v, --verbose     Display more information while processing\n\
+\n\
+Command:\n\
+  add COMPONENT     Load (if nesessary) component definition and add it to config\n\
+  load COMPONENT    Load component definition from global repository\n\
+  generate LIBRARY  Generate libraries according to config.yaml contents\n\
+\n\
+For additional information please refer to:\n\
+<http://qeda.org>'
+  ;
+  console.log(text);
+}
+
+function displayHelp() {
+  console.log('QEDA: a tool for creating libraries of electronic components\n');
+  displayUsage();
+}
+
+function displayVersion() {
+  var text = 'QEDA v' + pkg.version
+  console.log(text);
+}
+
+function displayError(error) {
+  console.error('Error: ' + error);
+  console.log('');
+  displayUsage();
+  process.exit(1);
+}
+
+function loadComponent(componentName) {
+  var lib = new QedaLibrary();
+  lib.load(componentName, true);
+}
+
+function addComponent(componentName) {
+  var lib = new QedaLibrary();
+  lib.load(componentName);
+  // TODO: Add to config.yaml
+}
+
+function generateLibrary(libraryName) {
+  // TODO: Read config.yaml and generate library
+}
+
+var args = nopt(
+  {
+    help: Boolean,
+    verbose: Boolean,
+    version: Boolean,
+  },
+  {
+    'h': ['--help'],
+    'v': ['--verbose'],
+  }
+);
+
+if (args.help) {
+  displayHelp();
+  process.exit(0)
+}
+
+if (args.version) {
+  displayVersion();
+  process.exit(0)
+}
+
+if (args.argv.remain.length < 1) {
+  displayError('No arguments');
+}
+
+var command = args.argv.remain[0];
+switch(command) {
+  case 'load':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing component name after "load" command');
+    }
+    loadComponent(args.argv.remain[1]);
+    break;
+  case 'add':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing component name after "add" command');
+    }
+    addComponent(args.argv.remain[1]);
+    break;
+  case 'generate':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing library name after "generate" command');
+    }
+    generateLibrary(args.argv.remain[1]);
+    break;
+  default:
+    displayError('Unknown command "' + command + '"');
+    process.exit(1);
+}

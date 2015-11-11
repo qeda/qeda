@@ -3,6 +3,9 @@
   "version": "0.0.19",
   "description": "QEDA.js — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
+  "bin": {
+    "qeda": "bin/qeda"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qeda/qeda.git"
@@ -25,14 +28,15 @@
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {
-    "coffee-script": ">=1.10.0",
-    "gulp": ">=3.9.0",
-    "rm-r": ">=1.0.0"
+    "coffee-script": "1.x.x",
+    "gulp": "3.x.x",
+    "rm-r": "1.x.x"
   },
   "dependencies": {
-    "js-yaml": ">=3.0.0",
-    "mkdirp": ">=0.5.0",
-    "sync-request": ">=2.0.0",
-    "sprintf-js": ">= 1.0.0"
+    "js-yaml": "3.x.x",
+    "mkdirp": "0.5.x",
+    "nopt": "3.x.x",
+    "sync-request": "2.x.x",
+    "sprintf-js": "1.x.x"
   }
 }

@@ -1,3 +1,7 @@
+[![NPM version](http://img.shields.io/npm/v/qeda.svg)](https://npmjs.org/package/qeda)
+[![Dependencies](https://david-dm.org/qeda/qeda.svg)](https://david-dm.org/qeda/qeda)
+[![devDependency Status](https://david-dm.org/qeda/qeda/dev-status.svg)](https://david-dm.org/qeda/qeda#info=devDependencies)
+
 QEDA.js
 =======
 
@@ -35,7 +39,7 @@ QEDA.js module for using in scripts:
 Examples
 ========
 
-Examples below is written on CoffeeScript but one can use vanilla JavaScript.
+Examples below are written on CoffeeScript but one can use vanilla JavaScript.
 
 Generating KiCad library from script
 ------------------------------------
