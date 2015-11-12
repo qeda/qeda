@@ -6,6 +6,7 @@ yaml = require 'js-yaml'
 
 KicadGenerator = require './kicad-generator'
 QedaElement = require './qeda-element'
+log = require './qeda-log'
 
 class QedaLibrary
   #
@@ -114,11 +115,16 @@ class QedaLibrary
   # Generate library in given format
   #
   generate: (name) ->
+    log.start "Render library '#{name}'"
     @calculate()
+    log.ok()
     generator = null
     switch @output
       when 'kicad' then generator = new KicadGenerator(this)
-    if generator then generator.generate name
+    if generator
+      log.start "Generate output for '#{name}'"
+      generator.generate name
+      log.ok()
 
   #
   # Load element description from remote repository
@@ -127,25 +133,27 @@ class QedaLibrary
     elementYaml = element.toLowerCase() + '.yaml'
     localFile = './library/' + elementYaml
     if (not fs.existsSync localFile) or force
+      log.start "Load '#{element}'"
+      elementYaml = elementYaml.split('/').map((a) -> encodeURIComponent(a)).join('/')
       try
-        res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml, timeout: 3000
+        res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml,
+          timeout: 3000
       catch error
-        console.error "Loading '#{element}': Error: #{error.message}"
-        process.exit 1
+        log.error error.message
       if res.statusCode is 200
         mkdirp.sync (path.dirname localFile)
         fs.writeFileSync localFile, res.body
-        console.log "Loading '#{element}': OK"
+        log.ok()
       else
-        console.error "Loading '#{element}': Error: (#{res.statusCode})"
-        process.exit 1
+        log.warning res.statusCode
+    log.start "Read '#{element}'"
     try
       def = yaml.safeLoad fs.readFileSync(localFile)
       # TODO: YAML Schema validation
     catch error
-      console.error "Loading '#{element}': Error: #{error.message}"
-      process.exit 1
+      log.error "#{error.message}"
     if def.base?
+      unless typeof def.base is 'string' then def.base = def.base.toString()
       bases = def.base.replace(/\s+/g, '').split(',')
       delete def.base # We do not need this information now
       for base in bases
@@ -155,6 +163,7 @@ class QedaLibrary
         if baseDef.abstract then delete baseDef.abstract # In order to not merge into def
         @mergeObjects baseDef, def
         def = baseDef
+    log.ok()
     def
 
   #

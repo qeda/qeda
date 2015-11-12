@@ -3,6 +3,7 @@ yaml = require 'js-yaml'
 
 QedaSymbol = require './qeda-symbol'
 QedaPattern = require './qeda-pattern'
+log = require './qeda-log'
 
 #
 # Class for electronic component
@@ -113,21 +114,27 @@ class QedaElement
 
     # Symbols processing
     for symbol in @symbols
+      log.start "Schematic symbol for '" + @name + (if symbol.name? then ': ' + symbol.name else '') + "'"
       # Apply symbol handler
       if @schematic?.symbol?
-        handler = require "./symbol/#{@library.symbolStyle}/#{@schematic.symbol.toLowerCase()}"
+        try
+          handler = require "./symbol/#{@library.symbolStyle}/#{@schematic.symbol.toLowerCase()}"
+        catch error
+          log.error error.message
         handler symbol, this
+      log.ok()
 
     # Pattern processing
+    log.start "Land pattern for '#{@name}'"
     if @housing?.outline?
       cap = @housing.outline.split(' ')
       dirName = cap.shift().toLowerCase()
       fileName = cap.shift().toLowerCase()
+      log.start "Outline '#{@housing.outline}'"
       try
         outline = yaml.safeLoad fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
       catch error
-        console.error "Loading outline '#{@housing.outline}': Error: #{error.message}"
-        process.exit 1
+        log.error error.message
       loop
         for key, value of outline
           if (typeof value is 'number') or (typeof value is 'string')
@@ -135,10 +142,15 @@ class QedaElement
         if cap.length is 0 then break
         outline = outline[cap.shift()]
         unless outline? then break
+      log.ok()
 
     @_convertDimensions @housing
-    handler = require "./pattern/#{@library.patternStyle}/#{@pattern.handler}"
+    try
+      handler = require "./pattern/#{@library.patternStyle}/#{@pattern.handler}"
+    catch error
+      log.error error.message
     handler @pattern, this
+    log.ok()
 
     @_rendered = true
 

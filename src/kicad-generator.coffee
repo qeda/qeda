@@ -2,6 +2,8 @@ fs = require 'fs'
 mkdirp = require 'mkdirp'
 sprintf = require('sprintf-js').sprintf
 
+log = require './qeda-log'
+
 #
 # Generator of library in KiCad format
 #
@@ -21,6 +23,7 @@ class KicadGenerator
 
     now = new Date
     timestamp = "#{now.getDate()}/#{now.getMonth() + 1}/#{now.getYear() + 1900} #{now.getHours()}:#{now.getMinutes()}:#{now.getSeconds()}"
+    log.start "KiCad library '#{name}.lib'"
     fd = fs.openSync "#{dir}/#{name}.lib", 'w'
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
     fs.writeSync fd, '#encoding utf-8\n'
@@ -29,13 +32,14 @@ class KicadGenerator
       patterns[element.pattern.name] = element.pattern
     fs.writeSync fd, '# End Library\n'
     fs.closeSync fd
-    console.log "Generating KiCad library '#{name}.lib': OK"
+    log.ok()
 
     for patternName, pattern of patterns
+      log.start "KiCad footprint '#{patternName}.kicad_mod'"
       fd = fs.openSync "#{dir}/#{name}.pretty/#{patternName}.kicad_mod", 'w'
       @_generatePattern fd, pattern
-      console.log "Generating KiCad footprint '#{patternName}.kicad_mod': OK"
       fs.closeSync fd
+      log.ok()
 
   #
   # Write pattern file
