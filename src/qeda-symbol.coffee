@@ -37,6 +37,12 @@ class QedaSymbol
     @attributes[name] = @addShape 'attribute',  attribute
 
   #
+  # Add rectangle object
+  #
+  addLine: (line) ->
+    @addShape 'line', line
+
+  #
   # Add pin object
   #
   addPin: (pin) ->
@@ -63,20 +69,18 @@ class QedaSymbol
   # Flip vertically
   #
   invertVertical: ->
+    props = ['y', 'y1', 'y2', 'height']
     for shape in @shapes
-      if shape.y? then shape.y *= -1
-      if shape.height? then shape.height *= -1
+      for prop in props
+        if shape[prop]? then shape[prop] *= -1
 
   #
   # Convert inner units to physical (mm, mil etc.)
   #
   resize: (gridSize) ->
+    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length']
     for shape in @shapes
-      if shape.x? then shape.x *= gridSize
-      if shape.y? then shape.y *= gridSize
-      if shape.length? then shape.length *= gridSize
-      if shape.width? then shape.width *= gridSize
-      if shape.height? then shape.height *= gridSize
-
+      for prop in props
+        if shape[prop]? then shape[prop] *= gridSize
 
 module.exports = QedaSymbol

@@ -96,7 +96,7 @@ class KicadGenerator
     pinNameSpace = Math.round @library.symbol.space.pinName
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} V #{refObj.halign} #{refObj.valign}NN\n"
-    fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} V #{nameObj.halign} #{nameObj.valign}NN\n"
+    fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} #{nameObj.visible} #{nameObj.halign} #{nameObj.valign}NN\n"
     if symbol.attributes['user']?
       attrObj = @_symbolObj symbol.attributes['user']
       fs.writeSync fd, "F4 \"#{attrObj.text}\" #{attrObj.x} #{attrObj.y} #{attrObj.fontSize} #{attrObj.orientation} V #{attrObj.halign} #{attrObj.valign}NN\n"
@@ -113,6 +113,7 @@ class KicadGenerator
         switch symObj.kind
           when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSizeNum} #{symObj.fontSizeName} #{i} 1 #{symObj.type}#{symObj.shape}\n"
           when 'rectangle' then fs.writeSync fd, "S #{symObj.x} #{symObj.y} #{symObj.x + symObj.width} #{symObj.y + symObj.height} #{i} 1 0 #{symObj.fillStyle}\n"
+          when 'line' then fs.writeSync fd, "P 2 #{i} 1 0 #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
@@ -150,7 +151,10 @@ class KicadGenerator
   # Convert definition to symbol object
   #
   _symbolObj: (shape) ->
+    unless shape? then return
     obj = shape
+    obj.visible ?= true
+    obj.visible = if obj.visible then 'V' else 'I'
     obj.x = Math.round obj.x
     obj.y = Math.round obj.y
     obj.length = Math.round obj.length
@@ -196,8 +200,6 @@ class KicadGenerator
     if obj.invisible then obj.shape += 'N'
     if obj.inverted
       obj.shape += 'I'
-    else if obj.nc
-      obj.shape += 'NX'
     if obj.shape isnt '' then obj.shape = ' ' + obj.shape
 
     switch obj.fill

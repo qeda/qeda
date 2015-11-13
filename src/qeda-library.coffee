@@ -13,11 +13,9 @@ class QedaLibrary
   # Constructor
   #
   constructor: (settings = {}) ->
-    @elementStyle = 'default'
-    @symbolStyle = 'default'
-    @patternStyle = 'default'
     @output = 'kicad'
     @symbol =
+      style: 'default'
       units: 'mil'
       gridSize: 50 # mil
       fontSize: # Grid units
@@ -31,6 +29,7 @@ class QedaLibrary
       space: # Grid units
         pinName: 1
     @pattern =
+      style: 'default'
       densityLevel: 'N' # Nominal
       decimals: 3
       tolerance:
@@ -175,26 +174,5 @@ class QedaLibrary
         @mergeObjects dest[k], v
       else
         dest[k] = v
-
-  #
-  # Change element style
-  #
-  setElementStyle: (style) ->
-    style = style.toLowerCase()
-    @elementStyle = style
-    if @symbolStyle is 'default' or style is 'default' then @symbolStyle = style
-    if @patternStyle is 'default' or style is 'default' then @patternStyle = style
-
-  #
-  # Change pattern style
-  #
-  setPatternStyle: (style) ->
-    @patternStyle = style.toLowerCase()
-
-  #
-  # Change symbol style
-  #
-  setSymbolStyle: (style) ->
-    @symbolStyle = style.toLowerCase()
 
 module.exports = QedaLibrary

@@ -6,6 +6,7 @@ intersects = (s1, s2) ->
   a1 or a2 or a3 or a4
 
 module.exports = (symbol, element) ->
+  element.refDes = 'U'
   schematic = element.schematic
   settings = symbol.settings
 

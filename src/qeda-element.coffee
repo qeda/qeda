@@ -108,21 +108,20 @@ class QedaElement
   render: ->
     @_rendered ?= false
     if @_rendered then return
-    # Apply elemend wide handler
-    handler = require "./element/#{@library.elementStyle}"
-    handler this
 
     # Symbols processing
-    for symbol in @symbols
-      log.start "Schematic symbol for '" + @name + (if symbol.name? then ': ' + symbol.name else '') + "'"
-      # Apply symbol handler
-      if @schematic?.symbol?
-        try
-          handler = require "./symbol/#{@library.symbolStyle}/#{@schematic.symbol.toLowerCase()}"
-        catch error
-          log.error error.message
+    if @schematic?.symbol?
+      paths = [
+        "./symbol/#{@library.symbol.style.toLowerCase()}/#{@schematic.symbol.toLowerCase()}"
+        "./symbol/default/#{@schematic.symbol.toLowerCase()}"
+        process.cwd() + "/symbol/#{@schematic.symbol.toLowerCase()}"
+      ]
+      [handler, error] = @_firstHandler paths
+      for symbol in @symbols
+        log.start "Schematic symbol for '" + @name + (if symbol.name? then ': ' + symbol.name else '') + "'"
+        if error then log.error "'#{@schematic.symbol}': " + error.code
         handler symbol, this
-      log.ok()
+        log.ok()
 
     # Pattern processing
     log.start "Land pattern for '#{@name}'"
@@ -145,10 +144,13 @@ class QedaElement
       log.ok()
 
     @_convertDimensions @housing
-    try
-      handler = require "./pattern/#{@library.patternStyle}/#{@pattern.handler}"
-    catch error
-      log.error error.message
+    paths = [
+      "./pattern/#{@library.pattern.style.toLowerCase()}/#{@housing.pattern.toLowerCase()}"
+      "./pattern/default/#{@housing.pattern.toLowerCase()}"
+      process.cwd() + "/pattern/#{@housing.pattern.toLowerCase()}"
+    ]
+    [handler, error] = @_firstHandler paths
+    if error then log.error "'#{@housing.pattern}': " + error.code
     handler @pattern, this
     log.ok()
 
@@ -216,6 +218,19 @@ class QedaElement
         tol = max - min
         housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
 
+  #
+  # Return first valid hadnler
+  #
+  _firstHandler: (paths) ->
+    for handlerPath in paths
+      handlerError = null
+      try
+        handler = require handlerPath
+      catch error
+        handlerError = error
+        if error.code is 'MODULE_NOT_FOUND' then continue else break
+      break
+    [handler, handlerError]
   #
   # Generate pin object
   #
