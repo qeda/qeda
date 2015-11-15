@@ -2,6 +2,7 @@
 
 'use strict';
 
+var fs = require('fs');
 var nopt = require('nopt');
 var yaml = require('js-yaml');
 var pkg = require('../package.json');
@@ -45,6 +46,33 @@ function displayError(error) {
   process.exit(1);
 }
 
+function readYaml() {
+  var yamlName = '.qeda.yaml';
+  var res = {};
+  if (fs.existsSync(yamlName)) {
+    try {
+      res = yaml.safeLoad(fs.readFileSync(yamlName));
+    }
+    catch(error) {
+      console.error(yamlName + ': ' + error.message);
+      process.exit(1);
+    }
+  }
+  return res;
+}
+
+function writeYaml(obj) {
+  var yamlName = '.qeda.yaml';
+  try {
+    var data = yaml.safeDump(obj);
+    fs.writeFileSync(yamlName, data);
+  }
+  catch(error) {
+    console.error(yamlName + ': ' + error.message);
+    process.exit(1);
+  }
+}
+
 function loadComponent(componentName) {
   var lib = new QedaLibrary();
   lib.load(componentName, true);
@@ -53,11 +81,31 @@ function loadComponent(componentName) {
 function addComponent(componentName) {
   var lib = new QedaLibrary();
   lib.load(componentName);
-  // TODO: Add to config.yaml
+  var qedaYaml = readYaml();
+  qedaYaml.library = qedaYaml.library || [];
+  qedaYaml.library.map(function (a) { return a.toLowerCase(); });
+  componentName = componentName.toLowerCase();
+  if (qedaYaml.library.indexOf(componentName) === -1) {
+    qedaYaml.library.push(componentName);
+    writeYaml(qedaYaml);
+  }
 }
 
 function generateLibrary(libraryName) {
-  // TODO: Read config.yaml and generate library
+  var qedaYaml = readYaml();
+  qedaYaml.library = qedaYaml.library || [];
+  if (qedaYaml.library.length === 0) {
+    console.error('Error: Nothing to generate');
+    console.error('');
+    console.error('Run command \'qeda add ...\' at least once');
+    console.error('Try \'qeda --help\' for more information.');
+    process.exit(1);
+  }
+  var lib = new QedaLibrary();
+  for (var i = 0; i < qedaYaml.library.length; ++i) {
+    lib.add(qedaYaml.library[i]);
+  }
+  lib.generate(libraryName);
 }
 
 var args = nopt(

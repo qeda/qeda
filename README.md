@@ -18,7 +18,7 @@ Features
 * Downloading component definitions from global repository
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
-  - GOST style
+  - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
 * Land pattern calculation according to IPC-7351:
@@ -32,18 +32,35 @@ Features
 Installation
 ============
 
-QEDA.js module for using in scripts:
+QEDA.js module for using in scripts and command line interface:
 
-    npm install qeda
+    npm install -g qeda
 
 
 Examples
 ========
 
-Examples below are written on CoffeeScript but one can use vanilla JavaScript.
+First example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
 
-Generating KiCad library from script
-------------------------------------
+CLI
+---
+
+Run in terminal:
+
+```
+qeda add Altera/5M1270ZT144
+qeda add Analog/AD9393
+qeda add ST/L3GD20H
+qeda add TI/ISO721
+qeda add TI/ISO722
+qeda generate mylib
+```
+And find generated files in `./kicad` directory.
+
+From script
+-----------
+
+Example is written on CoffeeScript but one can use vanilla JavaScript.
 
 [script.coffee](./examples/script/script.coffee):
 
@@ -58,8 +75,6 @@ lib.add 'TI/ISO721' # Add Texas Instruments digital isolator
 lib.add 'TI/ISO722' # Add Texas Instruments digital isolator
 lib.generate 'mylib'
 ```
-
-This example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
 
 Run it:
 
@@ -108,6 +123,14 @@ housing:
 
 _Available YAML fields will be documented soon._
 
+Then:
+
+```
+qeda add Dummy
+qeda generate dummy
+```
+Or:
+
 [custom.coffee](./examples/custom/custom.coffee):
 
 ```coffeescript
@@ -118,7 +141,7 @@ lib.add 'Dummy' # Adding custom element
 lib.generate 'dummy'
 ```
 
-Run it:
+And run:
 
     coffee custom.coffee
 
