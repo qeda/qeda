@@ -18,6 +18,7 @@ Features
 * Downloading component definitions from global repository
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
+  - GOST style
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
 * Land pattern calculation according to IPC-7351:
@@ -138,7 +139,6 @@ Coming soon
   - Resistors
   - Capacitors
   - Special symbols (ground, power supply, test points etc.)
-  - GOST
 * Generating libraries:
   - Eagle XML format
   - DipTrace format
