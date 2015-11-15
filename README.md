@@ -87,7 +87,7 @@ _API will be documented soon._
 Custom component description
 ----------------------------
 
-Any electronic component is described using YAML-file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
+Any electronic component is described using YAML-file located in `./library` directory (or some subdirectory within). You can clone all available descriptions from <https://github.com/qeda/library>, add your ones, copy from any source. Then just point correspondent path as parameter for `qeda add ...` command or `Qeda.Library.add` method (without `./library/` prefix and `.yaml` suffix).
 
 [library/dummy.yaml](./examples/custom/library/dummy.yaml):
 
@@ -129,9 +129,7 @@ Then:
 qeda add Dummy
 qeda generate dummy
 ```
-Or:
-
-[custom.coffee](./examples/custom/custom.coffee):
+Or create [custom.coffee](./examples/custom/custom.coffee):
 
 ```coffeescript
 Qeda = require 'qeda'
