@@ -1,10 +1,10 @@
 designators =
-  DA : ['analog']
+  DA: ['analog']
   DD: ['digital']
 
 purposes =
   RTX: ['isolator', 'interface', 'transceiver']
-  PLD: ['CPLD']
+  PLM: ['CPLD']
 
 updateElement = (element) ->
   unless element.keywords? then return
