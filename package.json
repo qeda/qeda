@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "coffee-script": "1.x.x",
-    "gulp": "3.x.x",
     "rm-r": "1.x.x"
   },
   "dependencies": {
