@@ -13,15 +13,22 @@ function displayUsage() {
 'Usage:\n\
   qeda [COMMAND]... [OPTION]\n\
 \n\
-Options:\n\
-  -h, --help        Display this information\n\
-  --version         Display version information\n\
-  -v, --verbose     Display more information while processing\n\
+Examples: \n\
+  qeda add ti/iso721\n\
+  qeda config output kicad\n\
+  qeda generate mylib\n\
 \n\
-Command:\n\
-  add COMPONENT     Load (if nesessary) component definition and add it to config\n\
-  load COMPONENT    Load component definition from global repository\n\
-  generate LIBRARY  Generate libraries according to config.yaml contents\n\
+Options:\n\
+  -h, --help            Display this information\n\
+  --version             Display version information\n\
+  -v, --verbose         Display more information while processing\n\
+\n\
+Commands:\n\
+  add COMPONENT         Add component definition to config (with preloading\n\
+                        if necessary)\n\
+  load COMPONENT        Load component definition from global repository\n\
+  config PARAM [VALUE]  Set/get config parameter\n\
+  generate LIBRARY      Generate libraries according to config\n\
 \n\
 For additional information please refer to:\n\
 <http://qeda.org>'
@@ -101,11 +108,40 @@ function generateLibrary(libraryName) {
     console.error('Try \'qeda --help\' for more information.');
     process.exit(1);
   }
-  var lib = new QedaLibrary();
+  qedaYaml.config = qedaYaml.config || {};
+  var lib = new QedaLibrary(qedaYaml.config);
   for (var i = 0; i < qedaYaml.library.length; ++i) {
     lib.add(qedaYaml.library[i]);
   }
   lib.generate(libraryName);
+}
+
+function config(param, value) {
+  var qedaYaml = readYaml();
+  qedaYaml.config = qedaYaml.config || {};
+  var keys = param.split('.');
+  var key = keys[0];
+  var obj = qedaYaml.config;
+  for (var i = 1; i < keys.length; ++i) {
+    if (typeof obj[key] === 'undefined' || obj[key] === null) {
+      obj[key] = {};
+    }
+    obj = obj[key];
+    key = keys[i];
+  }
+
+  if (typeof value === 'undefined' || value === null) { // Only display
+    if (typeof obj[key] === 'undefined' || obj[key] === null) {
+      console.error('Error: Parameter \'' + param + '\' not found');
+      process.exit(1);
+    } else {
+      var value = obj[key];
+      console.log(value);
+    }
+  } else { // Change value
+    obj[key] = value;
+    writeYaml(qedaYaml);
+  }
 }
 
 var args = nopt(
@@ -122,12 +158,12 @@ var args = nopt(
 
 if (args.help) {
   displayHelp();
-  process.exit(0)
+  process.exit(0);
 }
 
 if (args.version) {
   displayVersion();
-  process.exit(0)
+  process.exit(0);
 }
 
 if (args.argv.remain.length < 1) {
@@ -135,18 +171,24 @@ if (args.argv.remain.length < 1) {
 }
 
 var command = args.argv.remain[0];
-switch(command) {
+switch (command) {
+  case 'add':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing component name after "add" command');
+    }
+    addComponent(args.argv.remain[1]);
+    break;
   case 'load':
     if (args.argv.remain.length < 2) {
       displayError('Missing component name after "load" command');
     }
     loadComponent(args.argv.remain[1]);
     break;
-  case 'add':
+  case 'config':
     if (args.argv.remain.length < 2) {
-      displayError('Missing component name after "add" command');
+      displayError('Missing parameter after "config" command');
     }
-    addComponent(args.argv.remain[1]);
+    config(args.argv.remain[1], args.argv.remain[2]);
     break;
   case 'generate':
     if (args.argv.remain.length < 2) {
@@ -156,5 +198,6 @@ switch(command) {
     break;
   default:
     displayError('Unknown command "' + command + '"');
-    process.exit(1);
 }
+
+process.exit(0);
