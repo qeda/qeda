@@ -6,8 +6,8 @@ module.exports = (pattern, element, padParams) ->
 
   pad =
     type: 'smd'
-    width: padParams.size
-    height: padParams.size
+    width: padParams.width
+    height: padParams.height
     shape: 'circle'
     mask: 0.001 # KiCad does not support zero value
     paste: -0.001 # KiCad does not support zero value
@@ -15,7 +15,7 @@ module.exports = (pattern, element, padParams) ->
   gridLetters = element.gridLetters
   pins = element.pins
 
-  # Pads on the left side
+  # Grid array
   y = -rowPitch * (rowCount/2 - 0.5)
   for row in [1..rowCount]
     x = -columnPitch * (columnCount/2 - 0.5)
@@ -23,7 +23,7 @@ module.exports = (pattern, element, padParams) ->
       pad.x = x
       pad.y = y
       pad.name = gridLetters[row] + column
-      if pins[pad.name]?
+      if pins[pad.name]? # Add only if exists
         pattern.addPad pad
       x += columnPitch
     y += rowPitch

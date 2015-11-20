@@ -3,14 +3,15 @@ module.exports =
     settings = pattern.settings
     # Calculations according to IPC-7351C
     adj = if settings.ball.collapsible then 0.8 else 1
-    padSize = housing.lead.nom * adj
+    padSize = housing.leadSize.nom * adj
     roundOff = 0.01
     padSize = Math.round(padSize / roundOff) * roundOff
     courtyard = housing.pitch * 0.8
     roundOff = 0.05
     courtyard = Math.round(courtyard / roundOff) * roundOff
 
-    size: padSize
+    width: padSize
+    height: padSize
     courtyard: courtyard
 
   qfn: (pattern, housing) ->
