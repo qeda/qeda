@@ -153,6 +153,9 @@ class KicadGenerator
   _symbolObj: (shape) ->
     unless shape? then return
     obj = shape
+    obj.name ?= '~'
+    if obj.name is '' then obj.name = '~'
+
     obj.visible ?= true
     obj.visible = if obj.visible then 'V' else 'I'
     obj.x = Math.round obj.x

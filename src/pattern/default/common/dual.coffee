@@ -1,16 +1,8 @@
 module.exports = (pattern, padParams) ->
-  padWidth = padParams.width
-  padHeight = padParams.height
   padDistance = padParams.distance
-
   pitch = padParams.pitch
   leadCount = padParams.count
-
-  pad =
-    type: 'smd'
-    width: padWidth
-    height: padHeight
-    shape: 'rectangle'
+  pad = padParams.pad
 
   # Pads on the left side
   pad.x = -padDistance / 2

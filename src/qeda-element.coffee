@@ -119,7 +119,7 @@ class QedaElement
       [handler, error] = @_firstHandler paths
       for symbol in @symbols
         log.start "Schematic symbol for '" + @name + (if symbol.name? then ': ' + symbol.name else '') + "'"
-        if error then log.error "'#{@schematic.symbol}': " + error.code
+        if error then log.error "'#{@schematic.symbol}': " + error.message
         handler symbol, this
         log.ok()
 
@@ -150,7 +150,7 @@ class QedaElement
       process.cwd() + "/pattern/#{@housing.pattern.toLowerCase()}"
     ]
     [handler, error] = @_firstHandler paths
-    if error then log.error "'#{@housing.pattern}': " + error.code
+    if error then log.error "'#{@housing.pattern}': " + error.message
     handler @pattern, this
     log.ok()
 
@@ -209,8 +209,8 @@ class QedaElement
   #
   _convertDimensions: (housing) ->
     for key, value of housing
-      if typeof value is 'string' and (/\d+(\.\d+)?-?\d+(\.\d+)?$/.test value)
-        value = value.replace(/\s+/g, '').split('-').map (a) -> parseFloat(a)
+      if typeof value is 'string' and (/^\d+(\.\d+)?-\d+(\.\d+)?$/.test value)
+        value = value.replace(/\s+/g, '').split('-').map((a) -> parseFloat(a))
       if Array.isArray(value) and value.length > 0
         min = value[0]
         max = if value.length > 1 then value[1] else min
@@ -231,6 +231,7 @@ class QedaElement
         if error.code is 'MODULE_NOT_FOUND' then continue else break
       break
     [handler, handlerError]
+
   #
   # Generate pin object
   #

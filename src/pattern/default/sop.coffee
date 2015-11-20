@@ -18,6 +18,11 @@ module.exports = (pattern, element) ->
   padParams = calculator.sop pattern, housing
   padParams.pitch = housing.pitch
   padParams.count = housing.leadCount
+  padParams.pad =
+    type: 'smd'
+    shape: 'rectangle'
+    width: padParams.width
+    height: padParams.height
 
   pattern.setLayer 'top'
   dual pattern, padParams
