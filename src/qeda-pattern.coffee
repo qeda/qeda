@@ -8,7 +8,7 @@ class QedaPattern
   constructor: (element) ->
     @settings = element.library.pattern
     @shapes = []
-    @layer = 'top'
+    @layer = ['topCopper']
     @lineWidth = 0
     @type = 'smd'
     @attributes = {}
@@ -85,6 +85,7 @@ class QedaPattern
   # Set current layer
   #
   setLayer: (layer) ->
+    unless Array.isArray(layer) then layer = [layer]
     @layer = layer
 
   #

@@ -2,15 +2,15 @@
 [![Dependencies](https://david-dm.org/qeda/qeda.svg)](https://david-dm.org/qeda/qeda)
 [![devDependency Status](https://david-dm.org/qeda/qeda/dev-status.svg)](https://david-dm.org/qeda/qeda#info=devDependencies)
 
-QEDA.js
-=======
+QEDA
+====
 
-QEDA.js is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematic and land patterns for PCB.
+QEDA is a Node.js library aimed to simplify creating libraries of electronic components for using in EDA software. You can easily create both symbols for schematic and land patterns for PCB.
 
 Attention
 =========
 
-**The project is under active development. Not recommended for use in production.**
+**The project is under active development. Not recommended for use in production at the moment.**
 
 Features
 ========
@@ -32,7 +32,7 @@ Features
 Installation
 ============
 
-QEDA.js module for using in scripts and command line interface:
+QEDA module for using in scripts as well as command line interface:
 
     npm install -g qeda
 
@@ -45,14 +45,13 @@ First example will download component descriptions from [library repository](htt
 CLI
 ---
 
-Run in terminal:
+Run in terminal (note that component names are case insensitive):
 
 ```
-qeda add Altera/5M1270ZT144
-qeda add Analog/AD9393
-qeda add ST/L3GD20H
-qeda add TI/ISO721
-qeda add TI/ISO722
+qeda add altera/5m1270zt144
+qeda add analog/ad9393
+qeda add st/l3gd20h
+qeda add ti/iso722
 qeda generate mylib
 ```
 And find generated files in `./kicad` directory.
@@ -71,7 +70,6 @@ lib = new Qeda.Library
 lib.add 'Altera/5M1270ZT144' # Add Altera MAX V CPLD
 lib.add 'Analog/AD9393' # Add Analog Devices HDMI interface
 lib.add 'ST/L3GD20H' # Add STMicroelectronics gyroscope
-lib.add 'TI/ISO721' # Add Texas Instruments digital isolator
 lib.add 'TI/ISO722' # Add Texas Instruments digital isolator
 lib.generate 'mylib'
 ```
@@ -123,10 +121,10 @@ housing:
 
 _Available YAML fields will be documented soon._
 
-Then:
+Then run in terminal:
 
 ```
-qeda add Dummy
+qeda add dummy
 qeda generate dummy
 ```
 Or create [custom.coffee](./examples/custom/custom.coffee):

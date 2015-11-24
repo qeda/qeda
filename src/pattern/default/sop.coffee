@@ -18,13 +18,14 @@ module.exports = (pattern, element) ->
   padParams = calculator.sop pattern, housing
   padParams.pitch = housing.pitch
   padParams.count = housing.leadCount
+  padParams.order = 'round'
   padParams.pad =
     type: 'smd'
     shape: 'rectangle'
     width: padParams.width
     height: padParams.height
+    layer: ['topCopper', 'topMask', 'topPaste']
 
-  pattern.setLayer 'top'
   dual pattern, padParams
 
   # Silkscreen

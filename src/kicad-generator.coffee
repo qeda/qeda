@@ -75,6 +75,7 @@ class KicadGenerator
             sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
             patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
           )
+          if patObj.drill? then fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.drill)
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
           if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
           fs.writeSync fd, ")\n"
@@ -124,16 +125,18 @@ class KicadGenerator
   _patternObj: (shape) ->
     obj = shape
     if obj.shape is 'rectangle' then obj.shape = 'rect'
-    obj.layer = switch obj.layer
-      when 'top'
-        if obj.kind is 'pad' then 'F.Cu F.Paste F.Mask' else 'F.Cu'
-      when 'topSilkscreen' then 'F.SilkS'
-      when 'topAssembly' then 'F.Fab'
-      when 'bottom'
-        if obj.kind is 'pad' then 'B.Cu B.Paste B.Mask' else 'B.Cu'
-      when 'bottomSilkscreen' then 'B.SilkS'
-      when 'bottomAssembly' then 'B.Fab'
-      else 'F.Cu'
+    layers =
+      topCopper: 'F.Cu'
+      topMask: 'F.Mask'
+      topPaste: 'F.Paste'
+      topSilkscreen: 'F.SilkS'
+      topAssembly: 'F.Fab'
+      bottomCopper: 'F.Cu'
+      bottomMask: 'F.Mask'
+      bottomPaste: 'F.Paste'
+      bottomSilkscreen: 'F.SilkS'
+      bottomAssembly: 'F.Fab'
+    obj.layer = obj.layer.map((a) => layers[a]).join(' ')
     if obj.kind is 'attribute'
       switch obj.name
         when 'refDes'
@@ -145,6 +148,17 @@ class KicadGenerator
         else
           obj.name = 'user'
           obj.fontSize ?= @library.pattern.fontSize.default
+    else if obj.kind is 'pad'
+      if obj.type is 'mount' then obj.shape ?= 'circle'
+      obj.width ?= obj.drill ? obj.size
+      obj.height ?= obj.drill ? obj.size
+
+      types =
+        smd: 'smd'
+        th: 'thru_hole'
+        mount: 'np_thru_hole'
+      obj.type = types[obj.type]
+
     obj
 
   #

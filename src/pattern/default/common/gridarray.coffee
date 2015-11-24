@@ -3,14 +3,7 @@ module.exports = (pattern, element, padParams) ->
   columnPitch = padParams.columnPitch
   rowCount = padParams.rowCount
   columnCount = padParams.columnCount
-
-  pad =
-    type: 'smd'
-    width: padParams.width
-    height: padParams.height
-    shape: 'circle'
-    mask: 0.001 # KiCad does not support zero value
-    paste: -0.001 # KiCad does not support zero value
+  pad = padParams.pad
 
   gridLetters = element.gridLetters
   pins = element.pins

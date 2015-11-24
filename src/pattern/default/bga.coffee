@@ -23,8 +23,15 @@ module.exports = (pattern, element) ->
   padParams.columnPitch = housing.columnPitch ? housing.pitch
   padParams.rowCount = housing.rowCount
   padParams.columnCount = housing.columnCount
+  padParams.pad =
+    type: 'smd'
+    width: padParams.width
+    height: padParams.height
+    shape: 'circle'
+    mask: 0.001 # KiCad does not support zero value
+    paste: -0.001 # KiCad does not support zero value
 
-  pattern.setLayer 'top'
+  pattern.setLayer ['topCopper', 'topMask', 'topPaste']
   gridarray pattern, element, padParams
 
   # Silkscreen

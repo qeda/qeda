@@ -21,8 +21,22 @@ module.exports = (pattern, element) ->
   padParams.pitch = housing.pitch
   padParams.rowCount = housing.rowCount
   padParams.columnCount = housing.columnCount
+  padParams.rowPad =
+    type: 'smd'
+    shape: 'rectangle'
+    width: padParams.width1
+    height: padParams.height1
+    distance: padParams.distance1
+    layer: ['topCopper', 'topMask', 'topPaste']
+  # Rotated to 90 degree (swap width and height)
+  padParams.columnPad =
+    type: 'smd'
+    shape: 'rectangle'
+    width: padParams.height2
+    height: padParams.width2
+    distance: padParams.distance2
+    layer: ['topCopper', 'topMask', 'topPaste']
 
-  pattern.setLayer 'top'
   quad pattern, padParams
 
   # Silkscreen
