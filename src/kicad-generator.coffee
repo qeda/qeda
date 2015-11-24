@@ -131,11 +131,12 @@ class KicadGenerator
       topPaste: 'F.Paste'
       topSilkscreen: 'F.SilkS'
       topAssembly: 'F.Fab'
-      bottomCopper: 'F.Cu'
-      bottomMask: 'F.Mask'
-      bottomPaste: 'F.Paste'
-      bottomSilkscreen: 'F.SilkS'
-      bottomAssembly: 'F.Fab'
+      intCopper: '*.Cu'
+      bottomCopper: 'B.Cu'
+      bottomMask: 'B.Mask'
+      bottomPaste: 'B.Paste'
+      bottomSilkscreen: 'B.SilkS'
+      bottomAssembly: 'B.Fab'
     obj.layer = obj.layer.map((a) => layers[a]).join(' ')
     if obj.kind is 'attribute'
       switch obj.name
