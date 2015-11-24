@@ -18,6 +18,7 @@ Features
 * Downloading component definitions from global repository
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
+  - Connectors
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
