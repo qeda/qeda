@@ -52,8 +52,10 @@ class KicadGenerator
       switch patObj.kind
         when 'attribute'
           fs.writeSync(fd,
-            sprintf("  (fp_text %s %s (at #{@f} #{@f}) (layer %s)\n",
-            patObj.name, patObj.text, patObj.x, patObj.y, patObj.layer)
+            sprintf("  (fp_text %s %s (at #{@f} #{@f}%s) (layer %s)\n",
+            patObj.name, patObj.text, patObj.x, patObj.y,
+            if patObj.angle? then (' ' + patObj.angle.toString()) else ''
+            patObj.layer)
           )
           fs.writeSync(fd,
             sprintf("    (effects (font (size #{@f} #{@f}) (thickness #{@f})))\n",

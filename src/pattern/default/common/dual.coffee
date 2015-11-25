@@ -17,16 +17,14 @@ module.exports = (pattern, padParams) ->
   pad.x = if mirror then (distance / 2) else (-distance / 2)
   y = -pitch * (count/4 - 0.5)
   for i in [0..(count/2 - 1)]
-    pad.name = numbers[i]
     pad.y = y
-    pattern.addPad pad
+    pattern.pad numbers[i], pad
     y += pitch
 
   # Pads on the right side
   pad.x = if mirror then (-distance / 2) else (distance / 2)
   y = -pitch * (count/4 - 0.5)
   for i in [(count/2)..(count - 1)]
-    pad.name = numbers[i]
     pad.y = y
-    pattern.addPad pad
+    pattern.pad numbers[i], pad
     y += pitch

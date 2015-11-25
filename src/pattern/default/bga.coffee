@@ -30,14 +30,12 @@ module.exports = (pattern, element) ->
     shape: 'circle'
     mask: 0.001 # KiCad does not support zero value
     paste: -0.001 # KiCad does not support zero value
+    layer: ['topCopper', 'topMask', 'topPaste']
 
-  pattern.setLayer ['topCopper', 'topMask', 'topPaste']
   gridarray pattern, element, padParams
 
   # Silkscreen
-  pattern.setLayer 'topSilkscreen'
   lineWidth = settings.lineWidth.silkscreen
-  pattern.setLineWidth lineWidth
   # Box
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
@@ -46,34 +44,39 @@ module.exports = (pattern, element) ->
   dx = x - padParams.columnPitch * (padParams.columnCount/2 - 0.5)
   dy = y - padParams.rowPitch * (padParams.rowCount/2 - 0.5)
   d = Math.min dx, dy
-  pattern.addLine { x1: -x, y1: -y + d, x2: -x + d, y2: -y }
-  pattern.addLine { x1: -x + d, y1: -y, x2: x, y2: -y }
-  pattern.addLine { x1: x, y1: -y, x2: x, y2: y }
-  pattern.addLine { x1: x, y1: y, x2: -x, y2: y }
-  pattern.addLine { x1: -x, y1: y, x2: -x, y2: -y + d }
+  pattern
+    .layer 'topSilkscreen'
+    .lineWidth lineWidth
+    .line -x, -y + d, -x + d, -y
+    .line -x + d, -y, x, -y
+    .line x, -y, x, y
+    .line x, y, -x,  y
+    .line -x, y, -x, -y + d
   # Key
   r = 0.25
-  pattern.addCircle { x: -x, y: -y, radius: r/2, lineWidth: r}
+  pattern
+    .lineWidth r
+    .circle -x, -y, r/2
   # RefDes
   fontSize = settings.fontSize.refDes
-  pattern.addAttribute 'refDes',
+  pattern.attribute 'refDes',
     x: 0
     y: -bodyLength/2 - fontSize/2 - 2*lineWidth
     halign: 'center'
     valign: 'center'
 
   # Assembly
-  pattern.setLayer 'topAssembly'
-  pattern.setLineWidth settings.lineWidth.assembly
-  # Body
-  pattern.addLine { x1: -x, y1: -y + d, x2: -x + d, y2: -y }
-  pattern.addLine { x1: -x + d, y1: -y, x2: x, y2: -y }
-  pattern.addLine { x1: x, y1: -y, x2: x, y2: y }
-  pattern.addLine { x1: x, y1: y, x2: -x, y2: y }
-  pattern.addLine { x1: -x, y1: y, x2: -x, y2: -y + d }
+  pattern
+    .layer 'topAssembly'
+    .lineWidth settings.lineWidth.assembly
+    .line -x, -y + d, -x + d, -y
+    .line -x + d, -y, x, -y
+    .line x,-y, x, y
+    .line x, y, -x, y
+    .line -x, y, -x, -y + d
   # Value
   fontSize = settings.fontSize.value
-  pattern.addAttribute 'value',
+  pattern.attribute 'value',
     text: pattern.name
     x: 0
     y: bodyLength/2 + fontSize/2 + 0.5

@@ -15,8 +15,8 @@ module.exports = (pattern, element, padParams) ->
     for column in [1..columnCount]
       pad.x = x
       pad.y = y
-      pad.name = gridLetters[row] + column
-      if pins[pad.name]? # Add only if exists
-        pattern.addPad pad
+      name = gridLetters[row] + column
+      if pins[name]? # Add only if exists
+        pattern.pad name, pad
       x += columnPitch
     y += rowPitch

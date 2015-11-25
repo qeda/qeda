@@ -12,34 +12,30 @@ module.exports = (pattern, padParams) ->
   y = -pitch * (rowCount/2 - 0.5)
   num = 1
   for i in [1..rowCount]
-    rowPad.name = num++
     rowPad.y = y
-    pattern.addPad rowPad
+    pattern.pad num++, rowPad
     y += pitch
 
   # Pads on the bottom side
   x = -pitch * (columnCount/2 - 0.5)
   columnPad.y = distance2 / 2
   for i in [1..columnCount]
-    columnPad.name = num++
     columnPad.x = x
-    pattern.addPad columnPad
+    pattern.pad num++, columnPad
     x += pitch
 
   # Pads on the right side
   rowPad.x = distance1 / 2
   y -= pitch
   for i in [1..rowCount]
-    rowPad.name = num++
     rowPad.y = y
-    pattern.addPad rowPad
+    pattern.pad num++, rowPad
     y -= pitch
 
   # Pads on the top side
   x -= pitch
   columnPad.y = -distance2 / 2
   for i in [1..columnCount]
-    columnPad.name = num++
     columnPad.x = x
-    pattern.addPad columnPad
+    pattern.pad num++, columnPad
     x -= pitch

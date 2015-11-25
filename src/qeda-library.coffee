@@ -12,7 +12,7 @@ class QedaLibrary
   #
   # Constructor
   #
-  constructor: (settings = {}) ->
+  constructor: (config = {}) ->
     @output = 'kicad'
     @symbol =
       style: 'default'
@@ -32,6 +32,7 @@ class QedaLibrary
       style: 'default'
       densityLevel: 'N' # Nominal
       decimals: 3
+      polarityMark: 'dot'
       tolerance:
         default: 0.1
         fabrication: 0.1
@@ -39,17 +40,19 @@ class QedaLibrary
       clearance:
         padToSilk: 0.2
         padToPad: 0.2
+        padToMask: 0.05
       lineWidth:
         default: 0.2
-        silkscreen: 0.2
-        assembly: 0.1
+        silkscreen: 0.12 # IPC-7351C (0.1, 0.12, 0.15)
+        assembly: 0.1 # IPC-7351C
+        courtyard: 0.05 # IPC-7351C
       fontSize: # mm
         default: 1
-        refDes: 1
+        refDes: 1.2  # IPC-7351C (1, 1.2, 1.5)
         value: 1
       ball:
         collapsible: true
-    @mergeObjects this, settings
+    @mergeObjects this, config
 
     @elements = []
 
