@@ -16,15 +16,15 @@ class KicadGenerator
   #
   # Generate symbol library and footprint files
   #
-  generate: (name) ->
+  generate: (@name) ->
     dir = './kicad'
-    mkdirp.sync "#{dir}/#{name}.pretty"
+    mkdirp.sync "#{dir}/#{@name}.pretty"
     patterns = {}
 
     now = new Date
     timestamp = "#{now.getDate()}/#{now.getMonth() + 1}/#{now.getYear() + 1900} #{now.getHours()}:#{now.getMinutes()}:#{now.getSeconds()}"
-    log.start "KiCad library '#{name}.lib'"
-    fd = fs.openSync "#{dir}/#{name}.lib", 'w'
+    log.start "KiCad library '#{@name}.lib'"
+    fd = fs.openSync "#{dir}/#{@name}.lib", 'w'
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
     fs.writeSync fd, '#encoding utf-8\n'
     for element in @library.elements
@@ -36,7 +36,7 @@ class KicadGenerator
 
     for patternName, pattern of patterns
       log.start "KiCad footprint '#{patternName}.kicad_mod'"
-      fd = fs.openSync "#{dir}/#{name}.pretty/#{patternName}.kicad_mod", 'w'
+      fd = fs.openSync "#{dir}/#{@name}.pretty/#{patternName}.kicad_mod", 'w'
       @_generatePattern fd, pattern
       fs.closeSync fd
       log.ok()
@@ -100,6 +100,7 @@ class KicadGenerator
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} V #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} #{nameObj.visible} #{nameObj.halign} #{nameObj.valign}NN\n"
+    fs.writeSync fd, "F2 \"#{@name}:#{element.pattern.name}\" 0 0 0 H I C CNN\n"
     if symbol.attributes['user']?
       attrObj = @_symbolObj symbol.attributes['user']
       fs.writeSync fd, "F4 \"#{attrObj.text}\" #{attrObj.x} #{attrObj.y} #{attrObj.fontSize} #{attrObj.orientation} V #{attrObj.halign} #{attrObj.valign}NN\n"
