@@ -41,73 +41,85 @@ module.exports = (pattern, element) ->
 
   quad pattern, padParams
 
-  # Silkscreen
-  padWidth1 = padParams.width1
-  padHeight1 = padParams.height1
-  padDistance1 = padParams.distance1
-  padWidth2 = padParams.width2
-  padHeight2 = padParams.height2
-  padDistance2 = padParams.distance2
-  pitch = housing.pitch
-  rowCount = housing.rowCount
-  columnCount = housing.columnCount
+  firstPad = pattern.pads[1]
+  lastPad = pattern.pads[2*(padParams.rowCount + padParams.columnCount)]
 
+  # Silkscreen
   lineWidth = settings.lineWidth.silkscreen
-  # Boundary
-  x1 = -housing.bodyWidth.nom/2
-  x2 = -pitch*(columnCount/2 - 0.5) - padHeight2/2 - lineWidth/2 - settings.clearance.padToSilk
-  if x1 > x2 then x1 = x2
-  y1 = -housing.bodyLength.nom/2
-  y2 = -pitch*(rowCount/2 - 0.5) - padHeight1/2 - lineWidth/2 - settings.clearance.padToSilk
-  if y1 > y2 then y1 = y2
+  bodyWidth = housing.bodyWidth.nom
+  bodyLength = housing.bodyLength.nom
+
+  x = -bodyWidth/2 - lineWidth/2
+  y = -bodyLength/2 - lineWidth/2
+
+  x1 = lastPad.x - lastPad.width/2 - lineWidth/2 - settings.clearance.padToSilk
+  if x > x1 then x = x1
+  y1 = firstPad.y - firstPad.height/2 - lineWidth/2 - settings.clearance.padToSilk
+  if y > y1 then y = y1
+
   pattern
     .layer 'topSilkscreen'
     .lineWidth lineWidth
-    .line  x1,  y1,  x2,  y1
-    .line  x1,  y1,  x1,  y2
-    .line -x1,  y1, -x2,  y1
-    .line -x1,  y1, -x1,  y2
-    .line  x1, -y1,  x2, -y1
-    .line  x1, -y1,  x1, -y2
-    .line -x1, -y1, -x2, -y1
-    .line -x1, -y1, -x1, -y2
+    .attribute 'refDes',
+      x: 0
+      y: 0
+      halign: 'center'
+      valign: 'center'
+    .moveTo  x1,  y
+    .lineTo  x,   y
 
-  # First pin key
-  r = 0.25
-  x1 = (-padDistance1 - padWidth1)/2 - r - settings.clearance.padToSilk
-  x2 = -housing.bodyWidth.nom/2 - r - settings.clearance.padToSilk
-  x = Math.min x1, x2
-  y = -pitch*(rowCount/2 - 0.5)
-  pattern
-    .lineWidth r
-    .circle x, y, r/2
-  # RefDes
-  fontSize = settings.fontSize.refDes
-  pattern.attribute 'refDes',
-    x: 0
-    y: -padDistance2/2 - padWidth2/2 - fontSize/2 - 2*lineWidth
-    halign: 'center'
-    valign: 'center'
+    .moveTo -x1,  y
+    .lineTo -x,   y
+    .lineTo -x,   y1
+
+    .moveTo  x1, -y
+    .lineTo  x,  -y
+    .lineTo  x,  -y1
+
+    .moveTo -x1, -y
+    .lineTo -x,  -y
+    .lineTo -x,  -y1
+
+  if settings.polarityMark is 'dot'
+    r = 0.25
+    x = firstPad.x - firstPad.width/2 - r - settings.clearance.padToSilk
+    y = firstPad.y
+    pattern
+      .lineWidth r
+      .circle x, y, r/2
 
   # Assembly
-  bodyWidth = housing.bodyWidth.nom
-  bodyLength = housing.bodyLength.nom
+  x = bodyWidth/2
+  y = bodyLength/2
+  d = 1
   pattern
     .layer 'topAssembly'
     .lineWidth settings.lineWidth.assembly
-    .rectangle -bodyWidth/2, -bodyLength/2, bodyWidth/2, bodyLength/2
-  # Key
-  r = 0.25
-  shift = bodyWidth/2 - r
-  if shift > 0.3 then shift = 0.3
-  x = -bodyWidth/2 + r + shift
-  y = -bodyLength/2 + r + shift
-  pattern.circle x, y, r
-  # Value
-  fontSize = settings.fontSize.value
-  pattern.attribute 'value',
-    text: pattern.name
-    x: 0
-    y: bodyLength/2 + fontSize/2 + 0.5
-    halign: 'center'
-    valign: 'center'
+    .attribute 'value',
+      text: pattern.name
+      x: 0
+      y: y + settings.fontSize.value/2 + 0.5
+      halign: 'center'
+      valign: 'center'
+      visible: false
+    .moveTo -x + d, -y
+    .lineTo  x, -y
+    .lineTo  x,  y
+    .lineTo -x,  y
+    .lineTo -x, -y + d
+    .lineTo -x + d, -y
+
+  # Courtyard
+  courtyard = padParams.courtyard
+  x = bodyWidth/2 + courtyard
+  y = bodyLength/2 + courtyard
+
+  pattern
+    .layer 'topCourtyard'
+    .lineWidth settings.lineWidth.courtyard
+    # Centroid origin marking
+    .circle 0, 0, 0.5
+    .line -0.7, 0, 0.7, 0
+    .line 0, -0.7, 0, 0.7
+    # Contour courtyard
+    .rectangle -x, -y, x, y

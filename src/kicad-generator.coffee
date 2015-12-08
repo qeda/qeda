@@ -128,19 +128,26 @@ class KicadGenerator
   _patternObj: (shape) ->
     obj = shape
     if obj.shape is 'rectangle' then obj.shape = 'rect'
+
     layers =
       topCopper: 'F.Cu'
       topMask: 'F.Mask'
       topPaste: 'F.Paste'
       topSilkscreen: 'F.SilkS'
       topAssembly: 'F.Fab'
+      topCourtyard: 'F.CrtYd'
       intCopper: '*.Cu'
       bottomCopper: 'B.Cu'
       bottomMask: 'B.Mask'
       bottomPaste: 'B.Paste'
       bottomSilkscreen: 'B.SilkS'
       bottomAssembly: 'B.Fab'
+      bottomCourtyard: 'B.CrtYd'
     obj.layer = obj.layer.map((a) => layers[a]).join(' ')
+
+    if obj.mask? and (obj.mask < 0.001) then obj.mask = 0.001 # KiCad does not support zero value
+    if obj.paste? and (obj.paste > -0.001) then obj.paste = -0.001 # KiCad does not support zero value
+
     if obj.kind is 'attribute'
       switch obj.name
         when 'refDes'

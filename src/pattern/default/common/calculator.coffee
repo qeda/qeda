@@ -48,6 +48,7 @@ module.exports =
     height2: pad2.height
     distance2: pad2.distance
     trimmed: trimmed
+    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
 
   qfp: (pattern, housing) ->
     params = @_gullwing pattern, housing
@@ -86,6 +87,7 @@ module.exports =
     height2: pad2.height
     distance2: pad2.distance
     trimmed: trimmed
+    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
 
   sop: (pattern, housing) ->
     params = @_gullwing pattern, housing
@@ -108,6 +110,7 @@ module.exports =
       trimmed = true
 
     pad.trimmed = trimmed
+    pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel];
     pad
 
   _gullwing: (pattern, housing) ->

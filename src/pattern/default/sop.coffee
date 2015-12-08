@@ -27,23 +27,24 @@ module.exports = (pattern, element) ->
     layer: ['topCopper', 'topMask', 'topPaste']
 
   dual pattern, padParams
+  firstPad = pattern.pads[1]
 
   # Silkscreen
   lineWidth = settings.lineWidth.silkscreen
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
+
   x = bodyWidth/2 + lineWidth/2
   y1 = -bodyLength/2 - lineWidth/2
-  y2 = pattern.pads[1].y - padParams.height - settings.clearance.padToSilk
+  y2 = firstPad.y - firstPad.height/2 - lineWidth/2 - settings.clearance.padToSilk
   if y1 > y2 then y1 = y2
-  #fontSize = settings.fontSize.refDes
 
   pattern
     .layer 'topSilkscreen'
     .lineWidth lineWidth
     .attribute 'refDes',
       x: 0
-      y: 0 #-bodyLength/2 - fontSize/2 - 2*lineWidth
+      y: 0
       angle: 90
       halign: 'center'
       valign: 'center'
@@ -51,7 +52,7 @@ module.exports = (pattern, element) ->
     .lineTo  x, y1
     .lineTo -x, y1
     .lineTo -x, y2
-    .lineTo -x - padParams.width, y2
+    .lineTo -x - firstPad.width, y2
     .moveTo  x, -y2
     .lineTo  x, -y1
     .lineTo -x, -y1
@@ -59,8 +60,8 @@ module.exports = (pattern, element) ->
 
   if settings.polarityMark is 'dot'
     r = 0.25
-    x = pattern.pads[1].x - padParams.width/2 - r - settings.clearance.padToSilk
-    y = pattern.pads[1].y
+    x = firstPad.x - firstPad.width/2 - r - settings.clearance.padToSilk
+    y = firstPad.y
     pattern
       .lineWidth r
       .circle x, y, r/2
@@ -68,14 +69,50 @@ module.exports = (pattern, element) ->
   # Assembly
   x = bodyWidth/2
   y = bodyLength/2
+  d = 1
   pattern
     .layer 'topAssembly'
     .lineWidth settings.lineWidth.assembly
-    .moveTo -x, -y
-    .lineTo -1, -y
-    .lineTo 0, -y + 1
-    .lineTo 1, -y
-    .lineTo x, -y
-    .lineTo x, y
-    .lineTo -x, y
-    .lineTo -x, -y
+    .attribute 'value',
+      text: pattern.name
+      x: 0
+      y: y + settings.fontSize.value/2 + 0.5
+      halign: 'center'
+      valign: 'center'
+      visible: false
+    .moveTo -x + d, -y
+    .lineTo  x, -y
+    .lineTo  x,  y
+    .lineTo -x,  y
+    .lineTo -x, -y + d
+    .lineTo -x + d, -y
+
+  # Courtyard
+  courtyard = padParams.courtyard
+  x1 = -bodyWidth/2 - courtyard
+  y1 = -bodyLength/2 - courtyard
+  x2 = firstPad.x - firstPad.width/2 - courtyard
+  y2 = firstPad.y - firstPad.height/2 - courtyard
+  if y1 > y2 then y1 = y2
+  pattern
+    .layer 'topCourtyard'
+    .lineWidth settings.lineWidth.courtyard
+    # Centroid origin marking
+    .circle 0, 0, 0.5
+    .line -0.7, 0, 0.7, 0
+    .line 0, -0.7, 0, 0.7
+    # Contour courtyard
+    .moveTo  x1,  y1
+    .lineTo  x1,  y2
+    .lineTo  x2,  y2
+    .lineTo  x2, -y2
+    .lineTo  x1, -y2
+    .lineTo  x1, -y2
+    .lineTo  x1, -y1
+    .lineTo -x1, -y1
+    .lineTo -x1, -y2
+    .lineTo -x2, -y2
+    .lineTo -x2,  y2
+    .lineTo -x1,  y2
+    .lineTo -x1,  y1
+    .lineTo  x1,  y1

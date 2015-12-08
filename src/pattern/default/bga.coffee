@@ -28,57 +28,84 @@ module.exports = (pattern, element) ->
     width: padParams.width
     height: padParams.height
     shape: 'circle'
-    mask: 0.001 # KiCad does not support zero value
-    paste: -0.001 # KiCad does not support zero value
     layer: ['topCopper', 'topMask', 'topPaste']
 
   gridarray pattern, element, padParams
 
   # Silkscreen
   lineWidth = settings.lineWidth.silkscreen
-  # Box
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
-  x = bodyWidth/2
-  y = bodyLength/2
+
+  x = bodyWidth/2 + lineWidth/2
+  y = bodyLength/2 + lineWidth/2
   dx = x - padParams.columnPitch * (padParams.columnCount/2 - 0.5)
   dy = y - padParams.rowPitch * (padParams.rowCount/2 - 0.5)
   d = Math.min dx, dy
+  len = Math.min 2*padParams.columnPitch, 2*padParams.rowPitch, x, y
   pattern
     .layer 'topSilkscreen'
     .lineWidth lineWidth
-    .line -x, -y + d, -x + d, -y
-    .line -x + d, -y, x, -y
-    .line x, -y, x, y
-    .line x, y, -x,  y
-    .line -x, y, -x, -y + d
-  # Key
-  r = 0.25
-  pattern
-    .lineWidth r
-    .circle -x, -y, r/2
-  # RefDes
-  fontSize = settings.fontSize.refDes
-  pattern.attribute 'refDes',
-    x: 0
-    y: -bodyLength/2 - fontSize/2 - 2*lineWidth
-    halign: 'center'
-    valign: 'center'
+    .attribute 'refDes',
+      x: 0
+      y: 0
+      halign: 'center'
+      valign: 'center'
+    .moveTo -x, -y + len
+    .lineTo -x, -y + d
+    .lineTo -x + d, -y
+    .lineTo -x + len, -y
+
+    .moveTo x, -y + len
+    .lineTo x, -y
+    .lineTo x - len, -y
+
+    .moveTo x, y - len
+    .lineTo x, y
+    .lineTo x - len, y
+
+    .moveTo -x, y - len
+    .lineTo -x, y
+    .lineTo -x + len, y
+
+  if settings.polarityMark is 'dot'
+    r = 0.25
+    pattern
+      .lineWidth r
+      .circle -x, -y, r/2
 
   # Assembly
+  x = bodyWidth/2
+  y = bodyLength/2
+  d = 1
   pattern
     .layer 'topAssembly'
     .lineWidth settings.lineWidth.assembly
-    .line -x, -y + d, -x + d, -y
-    .line -x + d, -y, x, -y
-    .line x,-y, x, y
-    .line x, y, -x, y
-    .line -x, y, -x, -y + d
-  # Value
-  fontSize = settings.fontSize.value
-  pattern.attribute 'value',
-    text: pattern.name
-    x: 0
-    y: bodyLength/2 + fontSize/2 + 0.5
-    halign: 'center'
-    valign: 'center'
+    .attribute 'value',
+      text: pattern.name
+      x: 0
+      y: y + settings.fontSize.value/2 + 0.5
+      halign: 'center'
+      valign: 'center'
+      visible: false
+    .moveTo -x + d, -y
+    .lineTo  x, -y
+    .lineTo  x,  y
+    .lineTo -x,  y
+    .lineTo -x, -y + d
+    .lineTo -x + d, -y
+
+  # Courtyard
+  courtyard = padParams.courtyard
+  x = bodyWidth/2 + courtyard
+  y = bodyLength/2 + courtyard
+
+  pattern
+    .layer 'topCourtyard'
+    .lineWidth settings.lineWidth.courtyard
+    # Centroid origin marking
+    .circle 0, 0, 0.5
+    .line -0.7, 0, 0.7, 0
+    .line 0, -0.7, 0, 0.7
+    # Contour courtyard
+    .rectangle -x, -y, x, y

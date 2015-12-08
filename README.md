@@ -22,7 +22,7 @@ Features
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
-* Land pattern calculation according to IPC-7351:
+* Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
   - BGA
   - QFN
   - QFP
