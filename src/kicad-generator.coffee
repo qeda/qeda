@@ -116,7 +116,7 @@ class KicadGenerator
         symObj = @_symbolObj shape
         switch symObj.kind
           when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSizeNum} #{symObj.fontSizeName} #{i} 1 #{symObj.type}#{symObj.shape}\n"
-          when 'rectangle' then fs.writeSync fd, "S #{symObj.x} #{symObj.y} #{symObj.x + symObj.width} #{symObj.y + symObj.height} #{i} 1 0 #{symObj.fillStyle}\n"
+          when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 0 #{symObj.fillStyle}\n"
           when 'line' then fs.writeSync fd, "P 2 #{i} 1 0 #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
       ++i
     fs.writeSync fd, "ENDDRAW\n"

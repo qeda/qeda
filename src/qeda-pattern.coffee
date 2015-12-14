@@ -17,69 +17,6 @@ class QedaPattern
     @y = 0
 
   #
-  # Add attribute object
-  #
-  _addAttribute: (name, attribute) ->
-    attribute.name = name
-    @attributes[name] = @addShape 'attribute',  attribute
-
-  #
-  # Add pad object
-  #
-  _addPad: (pad) ->
-    if pad.type isnt 'smd' then @type = 'through-hole'
-    @_addShape 'pad', pad
-
-  #
-  # Add arbitrary shape object
-  #
-  _addShape: (kind, shape) ->
-    obj =
-      kind: kind
-    for own prop of shape
-      obj[prop] = shape[prop]
-    obj.layer ?= @currentLayer
-    obj.lineWidth ?= @currentLineWidth
-    @shapes.push obj
-    obj
-
-  #
-  # Add text object
-  #
-  _addText: (text) ->
-    @addShape 'text',  text
-
-  #
-  # Merge two objects
-  #
-  _mergeObjects: (dest, src) ->
-    for k, v of src
-      if typeof v is 'object' and dest.hasOwnProperty k
-        @mergeObjects dest[k], v
-      else
-        dest[k] = v
-
-  #
-  # Set current layer
-  #
-  _setLayer: (layer) ->
-    unless Array.isArray(layer) then layer = [layer]
-    @currentLayer = layer
-
-  #
-  # Set current line width
-  #
-  _setLineWidth: (lineWidth) ->
-    @currentLineWidth = lineWidth
-
-  #--------------------#
-  #                    #
-  #     Public API     #
-  #                    #
-  #--------------------#
-
-
-  #
   # Add attribute
   #
   attribute: (name, attribute) ->
@@ -106,7 +43,7 @@ class QedaPattern
   # Add line
   #
   line: (x1, y1, x2, y2) ->
-    @_addShape 'line', {x1: x1, y1: y1, x2: x2, y2: y2 }
+    @_addShape 'line', { x1: x1, y1: y1, x2: x2, y2: y2 }
     this
 
   #
@@ -167,5 +104,41 @@ class QedaPattern
     @_origin ?= []
     @_origin.push [@x, @y]
     this
+
+  #
+  # Add pad object
+  #
+  _addPad: (pad) ->
+    if pad.type isnt 'smd' then @type = 'through-hole'
+    @_addShape 'pad', pad
+
+  #
+  # Add arbitrary shape object
+  #
+  _addShape: (kind, shape) ->
+    obj =
+      kind: kind
+    for own prop of shape
+      obj[prop] = shape[prop]
+    obj.layer ?= @currentLayer
+    obj.lineWidth ?= @currentLineWidth
+    @shapes.push obj
+    obj
+
+  #
+  # Merge two objects
+  #
+  _mergeObjects: (dest, src) ->
+    for k, v of src
+      if typeof v is 'object' and dest.hasOwnProperty k
+        @mergeObjects dest[k], v
+      else
+        dest[k] = v
+
+  #
+  # Set current line width
+  #
+  _setLineWidth: (lineWidth) ->
+    @currentLineWidth = lineWidth
 
 module.exports = QedaPattern

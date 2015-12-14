@@ -50,25 +50,24 @@ module.exports = (symbol, element) ->
   space = settings.space.pinName
 
   # Attributes
-  symbol.addAttribute 'refDes',
-    x: 0
-    y: -0.5
-    halign: 'center'
-    valign: 'bottom'
-
-  symbol.addAttribute 'name',
-    x: 0
-    y: -settings.fontSize.refDes - 1
-    halign: 'center'
-    valign: 'bottom'
-    visible: false
-
-  symbol.addAttribute 'user',
-    x: 0
-    y: 1.5
-    halign: 'center'
-    valign: 'top'
-    text: element.purpose
+  symbol
+    .attribute 'refDes',
+      x: 0
+      y: -0.5
+      halign: 'center'
+      valign: 'bottom'
+    .attribute 'name',
+      x: 0
+      y: -settings.fontSize.refDes - 1
+      halign: 'center'
+      valign: 'bottom'
+      visible: false
+    .attribute 'user',
+      x: 0
+      y: 1.5
+      halign: 'center'
+      valign: 'top'
+      text: element.purpose
 
   textWidth = element.purpose.length * settings.fontSize.name
 
@@ -125,41 +124,24 @@ module.exports = (symbol, element) ->
   width = Math.ceil(width/2) * 2 # Make width even
 
   # Box
-  symbol.addRectangle
-    x: -width/2
-    y: 0
-    width: width
-    height: height
-    fill: 'foreground'
+  symbol
+    .rectangle -width/2, 0, width/2, height, 'foreground'
+    .line -textWidth/2 - space, 0, -textWidth/2 - space, height
+    .line textWidth/2 + space, 0, textWidth/2 + space, height
 
-  symbol.addLine
-    x1: -textWidth/2 - space
-    y1: 0
-    x2: -textWidth/2 - space
-    y2: height
-
-  symbol.addLine
-    x1: textWidth/2 + space
-    y1: 0
-    x2: textWidth/2 + space
-    y2: height
 
   # Gap lines
   for line in leftLines
-    line.x1 = -width/2
-    line.x2 = -textWidth/2 - space
-    symbol.addLine line
+    symbol.line -width/2, line.y1, -textWidth/2 - space, line.y2
 
   for line in rightLines
-    line.x1 = width/2
-    line.x2 = textWidth/2 + space
-    symbol.addLine line
+    symbol.line width/2, line.y1, textWidth/2 + space, line.y2
 
   # Pins
   for pin in leftPins
     pin.x = -width/2 - pinLength
-    symbol.addPin pin
+    symbol.pin pin
 
   for pin in rightPins
     pin.x = width/2 + pinLength
-    symbol.addPin pin
+    symbol.pin pin

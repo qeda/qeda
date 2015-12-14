@@ -30,40 +30,12 @@ class QedaSymbol
     @right = @right.filter((a) => toLeft.indexOf(a) is -1)
 
   #
-  # Add attribute object
+  # Add attribute
   #
-  addAttribute: (name, attribute) ->
+  attribute: (name, attribute) ->
     attribute.name = name
-    @attributes[name] = @addShape 'attribute',  attribute
-
-  #
-  # Add rectangle object
-  #
-  addLine: (line) ->
-    @addShape 'line', line
-
-  #
-  # Add pin object
-  #
-  addPin: (pin) ->
-    @addShape 'pin', pin
-
-  #
-  # Add rectangle object
-  #
-  addRectangle: (rectangle) ->
-    @addShape 'rectangle', rectangle
-
-  #
-  # Add arbitrary shape object
-  #
-  addShape: (kind, shape) ->
-    obj =
-      kind: kind
-    for own prop of shape
-      obj[prop] = shape[prop]
-    @shapes.push obj
-    obj
+    @attributes[name] = @_addShape 'attribute',  attribute
+    this
 
   #
   # Flip vertically
@@ -75,6 +47,27 @@ class QedaSymbol
         if shape[prop]? then shape[prop] *= -1
 
   #
+  # Add line
+  #
+  line: (x1, y1, x2, y2) ->
+    @_addShape 'line', { x1: x1, y1: y1, x2: x2, y2: y2 }
+    this
+
+  #
+  # Add pin
+  #
+  pin: (pin) ->
+    @_addShape 'pin', pin
+    this
+
+  #
+  # Add rectangle
+  #
+  rectangle: (x1, y1, x2, y2, fill = 'none') ->
+    @_addShape 'rectangle', { x1: x1, y1: y1, x2: x2, y2: y2, fill: fill }
+    this
+
+  #
   # Convert inner units to physical (mm, mil etc.)
   #
   resize: (gridSize) ->
@@ -82,5 +75,16 @@ class QedaSymbol
     for shape in @shapes
       for prop in props
         if shape[prop]? then shape[prop] *= gridSize
+
+  #
+  # Add arbitrary shape object
+  #
+  _addShape: (kind, shape) ->
+    obj =
+      kind: kind
+    for own prop of shape
+      obj[prop] = shape[prop]
+    @shapes.push obj
+    obj
 
 module.exports = QedaSymbol

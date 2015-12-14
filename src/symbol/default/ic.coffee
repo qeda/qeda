@@ -27,17 +27,17 @@ module.exports = (symbol, element) ->
   space = settings.space.pinName
 
   # Attributes
-  symbol.addAttribute 'refDes',
-    x: 0
-    y: -settings.fontSize.refDes - 1
-    halign: 'left'
-    valign: 'bottom'
-
-  symbol.addAttribute 'name',
-    x: 0
-    y: -0.5
-    halign: 'left'
-    valign: 'bottom'
+  symbol
+    .attribute 'refDes',
+      x: 0
+      y: -settings.fontSize.refDes - 1
+      halign: 'left'
+      valign: 'bottom'
+    .attribute 'name',
+      x: 0
+      y: -0.5
+      halign: 'left'
+      valign: 'bottom'
 
   textWidth = element.longestAlias.length * settings.fontSize.name
 
@@ -180,29 +180,24 @@ module.exports = (symbol, element) ->
 
   # Box
   y = topY
-  symbol.addRectangle
-    x: 0
-    y: 0
-    width: width
-    height: height
-    fill: 'foreground'
+  symbol.rectangle 0, 0, width, height, 'foreground'
 
   for pin in leftPins
     pin.x = -pinLength
     pin.y -= topY
-    symbol.addPin pin
+    symbol.pin pin
 
   for pin in rightPins
     pin.x = width + pinLength
     pin.y -= topY
-    symbol.addPin pin
+    symbol.pin pin
 
   for pin in topPins
     pin.x -= leftX
     pin.y = -pinLength
-    symbol.addPin pin
+    symbol.pin pin
 
   for pin in bottomPins
     pin.x -= leftX
     pin.y = height + pinLength
-    symbol.addPin pin
+    symbol.pin pin

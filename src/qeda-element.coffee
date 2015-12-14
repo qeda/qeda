@@ -40,11 +40,13 @@ class QedaElement
 
     # Grid-array row letters
     @gridLetters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
+    # Make pairs
     last = @gridLetters.length - 1
     for i in [1..last]
       for j in [i..last]
         @gridLetters.push @gridLetters[i] + @gridLetters[j]
 
+    # Process joint names
     @delimiter = {}
     for key, value of @joint
       groups = @parseMultiple key
@@ -161,6 +163,7 @@ class QedaElement
   #
   _addPins: (name, pinOrGroup) ->
     result = []
+    unless pinOrGroup? then return result
     if typeof pinOrGroup is 'object' # Group of pins
       for key, value of pinOrGroup
         pinName = if @delimiter[name]? then name + @delimiter[name] + key else key
