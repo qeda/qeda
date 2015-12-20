@@ -2,4 +2,5 @@
 kicad/*
 lib/*
 node_modules/*
-tests/library/*
+test/kicad/*
+test/library/*

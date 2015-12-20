@@ -19,11 +19,13 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
+  - Resistors
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
   - BGA
+  - Chip
   - QFN
   - QFP
   - SOP (and SOIC)
@@ -156,7 +158,6 @@ Coming soon
 ===========
 
 * Generating schematic symbols:
-  - Resistors
   - Capacitors
   - Special symbols (ground, power supply, test points etc.)
 * Generating libraries:
@@ -167,7 +168,6 @@ Coming soon
   - CFP
   - CGA
   - CQFP
-  - Chip
   - Chip array
   - Crystal
   - DFN

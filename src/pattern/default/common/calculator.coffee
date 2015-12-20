@@ -14,6 +14,44 @@ module.exports =
     height: padSize
     courtyard: courtyard
 
+  chip: (pattern, housing) ->
+    housing.leadWidth ?= housing.bodyWidth
+    housing.leadSpan ?= housing.bodyLength
+
+    settings = pattern.settings
+
+    height = housing.height.nom ? housing.height
+    toe = height * 0.5
+    heel = height * 0.1
+    side = height * 0.15
+
+    # Dimensions according to IPC-7351
+    params =
+      Tmin: housing.leadLength.min
+      Tmax: housing.leadLength.max
+      Wmin: housing.leadWidth.min
+      Wmax: housing.leadWidth.max
+
+      F: settings.tolerance.fabrication
+      P: settings.tolerance.placement
+      Jt: pattern.toe ? toe
+      Jh: pattern.heel ? heel
+      Js: pattern.side ? side
+
+      Lmin: housing.leadSpan.min
+      Lmax: housing.leadSpan.max
+
+    ipc = @_ipc7351 params
+    if ipc.Gmin < settings.clearance.padToPad then ipc.Gmin = settings.clearance.padToPad
+
+    pad = @_pad ipc, pattern
+
+    courtyard = height * 0.4
+    courtyard = Math.round(courtyard / 0.01) * 0.01
+    if courtyard > 0.25 then courtyard = 0.25
+    pad.courtyard = courtyard
+    pad
+
   qfn: (pattern, housing) ->
     params = @_nolead pattern, housing
     params.Lmin = housing.bodyWidth.min
