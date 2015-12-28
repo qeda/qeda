@@ -9,6 +9,7 @@ class QedaSymbol
     @settings = element.library.symbol
     @shapes = []
     @attributes = []
+    @currentLineWidth = 0
     sides = ['left', 'right', 'top', 'bottom']
     schematic = element.schematic
     for side in sides
@@ -54,6 +55,13 @@ class QedaSymbol
     this
 
   #
+  # Set current line width
+  #
+  lineWidth: (lineWidth) ->
+    @currentLineWidth = lineWidth
+    this
+
+  #
   # Add pin
   #
   pin: (pin) ->
@@ -71,7 +79,7 @@ class QedaSymbol
   # Convert inner units to physical (mm, mil etc.)
   #
   resize: (gridSize) ->
-    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length']
+    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length', 'lineWidth']
     for shape in @shapes
       for prop in props
         if shape[prop]? then shape[prop] *= gridSize
@@ -84,6 +92,7 @@ class QedaSymbol
       kind: kind
     for own prop of shape
       obj[prop] = shape[prop]
+    obj.lineWidth ?= @currentLineWidth
     @shapes.push obj
     obj
 

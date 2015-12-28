@@ -180,7 +180,9 @@ module.exports = (symbol, element) ->
 
   # Box
   y = topY
-  symbol.rectangle 0, 0, width, height, 'foreground'
+  symbol
+    .lineWidth settings.lineWidth.default
+    .rectangle 0, 0, width, height, 'foreground'
 
   for pin in leftPins
     pin.x = -pinLength

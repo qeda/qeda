@@ -19,7 +19,7 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
-  - Resistors
+  - Capacitors, Resistors
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
@@ -158,7 +158,6 @@ Coming soon
 ===========
 
 * Generating schematic symbols:
-  - Capacitors
   - Special symbols (ground, power supply, test points etc.)
 * Generating libraries:
   - Eagle XML format

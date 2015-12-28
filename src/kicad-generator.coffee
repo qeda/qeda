@@ -116,8 +116,8 @@ class KicadGenerator
         symObj = @_symbolObj shape
         switch symObj.kind
           when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSizeNum} #{symObj.fontSizeName} #{i} 1 #{symObj.type}#{symObj.shape}\n"
-          when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 0 #{symObj.fillStyle}\n"
-          when 'line' then fs.writeSync fd, "P 2 #{i} 1 0 #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
+          when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
+          when 'line' then fs.writeSync fd, "P 2 #{i} 1 #{symObj.lineWidth} #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
@@ -183,9 +183,11 @@ class KicadGenerator
 
     obj.visible ?= true
     obj.visible = if obj.visible then 'V' else 'I'
-    obj.x = Math.round obj.x
-    obj.y = Math.round obj.y
-    obj.length = Math.round obj.length
+  
+    props = ['x', 'y', 'length', 'lineWidth']
+    for prop in props
+      if obj[prop]? then obj[prop] = Math.round obj[prop]
+
     obj.halign = switch obj.halign
       when 'center' then 'C'
       when 'right' then 'R'

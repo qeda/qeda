@@ -86,9 +86,14 @@ module.exports = (pattern, element) ->
 
   # Courtyard
   courtyard = padParams.courtyard
-  x = (padParams.width + padParams.distance )/2 + courtyard
+  x = (padParams.width + padParams.distance)/2 + courtyard
   y = padParams.height/2 + courtyard
   pattern
     .layer 'topCourtyard'
     .lineWidth settings.lineWidth.courtyard
+    # Centroid origin marking
+    .circle 0, 0, 0.5
+    .line -0.7, 0, 0.7, 0
+    .line 0, -0.7, 0, 0.7
+    # Contour courtyard
     .rectangle -x, -y, x, y

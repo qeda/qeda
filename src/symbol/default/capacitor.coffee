@@ -1,14 +1,14 @@
 module.exports = (symbol, element) ->
-  element.refDes = 'R'
+  element.refDes = 'C'
   schematic = element.schematic
   settings = symbol.settings
 
   schematic.showPinNames ?= false
   schematic.showPinNumbers ?= false
 
-  pinLength = settings.pinLenght ? 1
-  width = 4
-  height = 1.6
+  pinLength = settings.pinLenght ? 2.5
+  width = 1
+  height = 3.2
 
   symbol
     .attribute 'refDes',
@@ -38,4 +38,5 @@ module.exports = (symbol, element) ->
       orientation: 'left'
       type: 'passive'
     .lineWidth settings.lineWidth.default
-    .rectangle -width/2, -height/2, width/2, height/2
+    .line -width/2, -height/2, -width/2, height/2
+    .line width/2, -height/2, width/2, height/2

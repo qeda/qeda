@@ -25,7 +25,7 @@ class QedaLibrary
         pinNumber: 1
         pinName: 1
       lineWidth: # Grid units
-        default: 0.02
+        default: 0.3
       space: # Grid units
         pinName: 1
     @pattern =
@@ -98,6 +98,7 @@ class QedaLibrary
   calculate: ->
     @_calculated ?= false
     if @_calculated then return
+
     for element in @elements
       element.render()
 

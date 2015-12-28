@@ -125,6 +125,7 @@ module.exports = (symbol, element) ->
 
   # Box
   symbol
+    .lineWidth settings.lineWidth.default
     .rectangle -width/2, 0, width/2, height, 'foreground'
     .line -textWidth/2 - space, 0, -textWidth/2 - space, height
     .line textWidth/2 + space, 0, textWidth/2 + space, height
