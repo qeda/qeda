@@ -40,6 +40,13 @@ class QedaSymbol
     this
 
   #
+  # Add circle
+  #
+  circle: (x, y, radius) ->
+    @_addShape 'circle', { x: x, y: y, radius: radius }
+    this
+
+  #
   # Flip vertically
   #
   invertVertical: ->
@@ -81,12 +88,15 @@ class QedaSymbol
   #
   # Resize symbol to new grid size
   #
-  resize: (gridSize) ->
+  resize: (gridSize, needRound = false) ->
     factor = gridSize / @settings.gridSize
-    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length', 'lineWidth', 'fontSize', 'space']
+    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length', 'lineWidth', 'fontSize', 'space', 'radius']
     for shape in @shapes
       for prop in props
-        if shape[prop]? then shape[prop] *= factor
+        if shape[prop]?
+           value = shape[prop] * factor
+           if needRound then value = Math.round value
+           shape[prop] = value
 
   #
   # Add arbitrary shape object

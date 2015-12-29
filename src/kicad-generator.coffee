@@ -90,7 +90,7 @@ class KicadGenerator
   #
   _generateSymbol: (fd, element) ->
     for symbol in element.symbols
-      symbol.resize 50 # Grid size is 50 mil
+      symbol.resize 50, true # Resize to grid 50 mil with rounding
       symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
 
     symbol = element.symbols[0]
@@ -126,6 +126,7 @@ class KicadGenerator
           when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSize} #{symObj.fontSize} #{i} 1 #{symObj.type}#{symObj.shape}\n"
           when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
           when 'line' then fs.writeSync fd, "P 2 #{i} 1 #{symObj.lineWidth} #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
+          when 'circle' then fs.writeSync fd, "C #{symObj.x} #{symObj.y} #{symObj.radius} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
@@ -192,10 +193,6 @@ class KicadGenerator
     obj.visible ?= true
     obj.visible = if obj.visible then 'V' else 'I'
 
-    props = ['x', 'y', 'length', 'lineWidth']
-    for prop in props
-      if obj[prop]? then obj[prop] = Math.round obj[prop]
-
     obj.halign = switch obj.halign
       when 'center' then 'C'
       when 'right' then 'R'
@@ -212,7 +209,7 @@ class KicadGenerator
       when 'horizontal' then 'H'
       when 'vertical' then 'V'
       else 'H'
-        
+
     obj.fontSize = Math.round(obj.fontSize)
 
     obj.type = 'U'
