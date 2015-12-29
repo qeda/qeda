@@ -5,7 +5,8 @@ quad = require './common/quad'
 module.exports = (pattern, element) ->
   housing = element.housing
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
-  if housing.tabWidth? and housing.tabLength then ++leadCount
+  hasTab = housing.tabWidth? and housing.tabLength?
+  if hasTab then ++leadCount
   height = housing.height.max ? housing.height
   pattern.name ?= sprintf "%sQFN%dP%dX%dX%d-%d",
     if housing.pullBack? then 'P' else '',
@@ -40,6 +41,21 @@ module.exports = (pattern, element) ->
     layer: ['topCopper', 'topMask', 'topPaste']
 
   quad pattern, padParams
+
+  if hasTab
+    housing.tabOffset ?= '0, 0'
+    [x, y] = housing.tabOffset.replace(/\s+/g, '').split(',').map((a) => parseFloat(a))
+
+    tabNumber = leadCount
+    tabPad =
+      type: 'smd'
+      shape: 'rectangle'
+      width: housing.tabWidth.nom
+      height: housing.tabLength.nom
+      layer: ['topCopper', 'topMask', 'topPaste']
+      x: x
+      y: y
+    pattern.pad tabNumber, tabPad
 
   firstPad = pattern.pads[1]
   lastPad = pattern.pads[2*(padParams.rowCount + padParams.columnCount)]
@@ -111,8 +127,9 @@ module.exports = (pattern, element) ->
 
   # Courtyard
   courtyard = padParams.courtyard
-  x = bodyWidth/2 + courtyard
-  y = bodyLength/2 + courtyard
+
+  x = Math.min(-bodyWidth/2, firstPad.x - firstPad.width/2) - courtyard
+  y = Math.min(-bodyLength/2, lastPad.y - lastPad.height/2) - courtyard
 
   pattern
     .layer 'topCourtyard'
