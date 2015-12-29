@@ -6,19 +6,19 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= false
   schematic.showPinNumbers ?= false
 
-  pinLength = settings.pinLenght ? 1
-  width = 4
-  height = 1.6
+  pinLength = settings.pinLenght ? 2.5
+  width = 10
+  height = 4
 
   symbol
     .attribute 'refDes',
       x: 0
-      y: -height/2 - 0.5
+      y: -height/2 - 1
       halign: 'center'
       valign: 'bottom'
     .attribute 'name',
       x: 0
-      y: height/2 + 0.5
+      y: height/2 + 1
       halign: 'center'
       valign: 'top'
     .pin
@@ -37,5 +37,5 @@ module.exports = (symbol, element) ->
       length: pinLength
       orientation: 'left'
       type: 'passive'
-    .lineWidth settings.lineWidth.default
+    .lineWidth settings.lineWidth.thick
     .rectangle -width/2, -height/2, width/2, height/2

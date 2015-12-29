@@ -13,6 +13,7 @@ class KicadGenerator
   #
   constructor: (@library) ->
     @f = "%.#{@library.pattern.decimals}f"
+
   #
   # Generate symbol library and footprint files
   #
@@ -89,14 +90,21 @@ class KicadGenerator
   #
   _generateSymbol: (fd, element) ->
     for symbol in element.symbols
+      symbol.resize 50 # Grid size is 50 mil
       symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
+
     symbol = element.symbols[0]
     refObj = @_symbolObj symbol.attributes['refDes']
     nameObj = @_symbolObj symbol.attributes['name']
     fs.writeSync fd, "#\n# #{element.name}\n#\n"
     showPinNumbers = if element.schematic?.showPinNumbers then 'Y' else 'N'
     showPinNames = if element.schematic?.showPinNames then 'Y' else 'N'
-    pinNameSpace = Math.round @library.symbol.space.pinName
+
+    for shape in symbol.shapes
+      if shape.kind is 'pin'
+        pinNameSpace = Math.round shape.space
+        break
+
     fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} V #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} #{nameObj.visible} #{nameObj.halign} #{nameObj.valign}NN\n"
@@ -115,7 +123,7 @@ class KicadGenerator
       for shape in symbol.shapes
         symObj = @_symbolObj shape
         switch symObj.kind
-          when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSizeNum} #{symObj.fontSizeName} #{i} 1 #{symObj.type}#{symObj.shape}\n"
+          when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSize} #{symObj.fontSize} #{i} 1 #{symObj.type}#{symObj.shape}\n"
           when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
           when 'line' then fs.writeSync fd, "P 2 #{i} 1 #{symObj.lineWidth} #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
       ++i
@@ -183,7 +191,7 @@ class KicadGenerator
 
     obj.visible ?= true
     obj.visible = if obj.visible then 'V' else 'I'
-  
+
     props = ['x', 'y', 'length', 'lineWidth']
     for prop in props
       if obj[prop]? then obj[prop] = Math.round obj[prop]
@@ -204,9 +212,8 @@ class KicadGenerator
       when 'horizontal' then 'H'
       when 'vertical' then 'V'
       else 'H'
-    obj.fontSize = Math.round(if @library.symbol.fontSize[shape.name]? then @library.symbol.fontSize[shape.name] else @library.symbol.fontSize.default)
-    obj.fontSizeNum = Math.round @library.symbol.fontSize.pinNumber
-    obj.fontSizeName = Math.round @library.symbol.fontSize.pinName
+        
+    obj.fontSize = Math.round(obj.fontSize)
 
     obj.type = 'U'
     if obj.power or obj.ground

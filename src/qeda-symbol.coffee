@@ -35,6 +35,7 @@ class QedaSymbol
   #
   attribute: (name, attribute) ->
     attribute.name = name
+    attribute.fontSize ?= @settings.fontSize[name] ? @settings.fontSize.default
     @attributes[name] = @_addShape 'attribute',  attribute
     this
 
@@ -65,6 +66,8 @@ class QedaSymbol
   # Add pin
   #
   pin: (pin) ->
+    pin.fontSize ?= @settings.fontSize.pin
+    pin.space ?= @settings.space.pin
     @_addShape 'pin', pin
     this
 
@@ -76,13 +79,14 @@ class QedaSymbol
     this
 
   #
-  # Convert inner units to physical (mm, mil etc.)
+  # Resize symbol to new grid size
   #
   resize: (gridSize) ->
-    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length', 'lineWidth']
+    factor = gridSize / @settings.gridSize
+    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length', 'lineWidth', 'fontSize', 'space']
     for shape in @shapes
       for prop in props
-        if shape[prop]? then shape[prop] *= gridSize
+        if shape[prop]? then shape[prop] *= factor
 
   #
   # Add arbitrary shape object

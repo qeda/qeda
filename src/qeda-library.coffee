@@ -14,20 +14,22 @@ class QedaLibrary
   #
   constructor: (config = {}) ->
     @output = 'kicad'
+
     @symbol =
       style: 'default'
-      units: 'mil'
-      gridSize: 50 # mil
-      fontSize: # Grid units
-        default: 1
-        refDes: 1
-        name: 1
-        pinNumber: 1
-        pinName: 1
-      lineWidth: # Grid units
-        default: 0.3
-      space: # Grid units
-        pinName: 1
+      gridSize: 2.5
+      fontSize:
+        default: 2.5
+        refDes: 2.5
+        name: 2.5
+        pin: 2.5
+      lineWidth:
+        default: 0
+        thick: 0.8
+        thin: 0.2
+      space:
+        pin: 2
+
     @pattern =
       style: 'default'
       densityLevel: 'N' # Nominal
@@ -52,6 +54,7 @@ class QedaLibrary
         value: 1
       ball:
         collapsible: true
+
     @mergeObjects this, config
 
     @elements = []
@@ -93,33 +96,11 @@ class QedaLibrary
     res
 
   #
-  # Calculate patterns' dimensions according to settings
-  #
-  calculate: ->
-    @_calculated ?= false
-    if @_calculated then return
-
-    for element in @elements
-      element.render()
-
-    for prop of @symbol.fontSize
-      @symbol.fontSize[prop] *= @symbol.gridSize
-    for prop of @symbol.lineWidth
-      @symbol.lineWidth[prop] *= @symbol.gridSize
-    for prop of @symbol.space
-      @symbol.space[prop] *= @symbol.gridSize
-
-    for element in @elements
-      for symbol in element.symbols
-        symbol.resize @symbol.gridSize
-    @_calculated = true
-
-  #
   # Generate library in given format
   #
   generate: (name) ->
     log.start "Render library '#{name}'"
-    @calculate()
+    @render()
     log.ok()
     generator = null
     switch @output
@@ -178,5 +159,17 @@ class QedaLibrary
         @mergeObjects dest[k], v
       else
         dest[k] = v
+
+  #
+  # Render elements
+  #
+  render: ->
+    @_rendered ?= false
+    if @_rendered then return
+
+    for element in @elements
+      element.render()
+
+    @_rendered = true
 
 module.exports = QedaLibrary

@@ -13,8 +13,8 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= true
   schematic.showPinNumbers ?= true
 
-  step = 2
-  pinLength = settings.pinLenght ? 4
+  step = 5
+  pinLength = settings.pinLenght ? 10
 
   left = symbol.left
   right = symbol.right
@@ -24,18 +24,18 @@ module.exports = (symbol, element) ->
 
   width = step * (Math.max(top.length, bottom.length) + 1)
   height = step * (Math.max(left.length, right.length) + 1)
-  space = settings.space.pinName
+  space = settings.space.pin
 
   # Attributes
   symbol
     .attribute 'refDes',
       x: 0
-      y: -settings.fontSize.refDes - 1
+      y: -settings.fontSize.refDes - 2
       halign: 'left'
       valign: 'bottom'
     .attribute 'name',
       x: 0
-      y: -0.5
+      y: -1
       halign: 'left'
       valign: 'bottom'
 
@@ -48,7 +48,7 @@ module.exports = (symbol, element) ->
 
   # Pins on the top side
   y = topY
-  dx = settings.fontSize.pinName/2 + space
+  dx = settings.fontSize.pin/2 + space
   topPins = []
   topRects = []
   x = -step * top.length/2 + step/2
@@ -63,7 +63,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'down'
     topPins.push pin
 
-    h = pin.name.length*settings.fontSize.pinName + space
+    h = pin.name.length*settings.fontSize.pin + space
     x1 = x - dx
     x2 = x + dx
     if y > (-h - space) then y = -h - space
@@ -92,7 +92,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'up'
     bottomPins.push pin
 
-    h = pin.name.length*settings.fontSize.pinName + space
+    h = pin.name.length*settings.fontSize.pin + space
     x1 = x - dx
     x2 = x + dx
     if y < (h + space) then y = h + space
@@ -118,7 +118,7 @@ module.exports = (symbol, element) ->
 
   # Pins on the left side
   x = leftX
-  dy = settings.fontSize.pinName/2 + space
+  dy = settings.fontSize.pin/2 + space
   leftPins = []
   y = -step * left.length/2 + step/2
   for i in left
@@ -132,7 +132,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'right'
     leftPins.push pin
 
-    w = pin.name.length*settings.fontSize.pinName + space
+    w = pin.name.length*settings.fontSize.pin + space
     y1 = y - dy
     y2 = y + dy
     # Check whether pin rectangle intersects other rectangles
@@ -162,7 +162,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'left'
     rightPins.push pin
 
-    w = pin.name.length*settings.fontSize.pinName + space
+    w = pin.name.length*settings.fontSize.pin + space
     y1 = y - dy
     y2 = y + dy
     # Check whether pin rectangle intersects other rectangles
@@ -178,10 +178,12 @@ module.exports = (symbol, element) ->
   width = rightX - leftX
   height = bottomY - topY
 
+  width = Math.ceil(width / settings.gridSize) * settings.gridSize # Align to grid
+
   # Box
   y = topY
   symbol
-    .lineWidth settings.lineWidth.default
+    .lineWidth settings.lineWidth.thick
     .rectangle 0, 0, width, height, 'foreground'
 
   for pin in leftPins

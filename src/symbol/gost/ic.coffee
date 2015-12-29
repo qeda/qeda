@@ -33,8 +33,8 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= true
   schematic.showPinNumbers ?= true
 
-  step = 2
-  pinLength = settings.pinLenght ? 4
+  step = 5
+  pinLength = settings.pinLenght ? 10
 
   left = symbol.left
   if symbol.top.length
@@ -47,24 +47,24 @@ module.exports = (symbol, element) ->
 
   pins = element.pins
 
-  space = settings.space.pinName
+  space = settings.space.pin
 
   # Attributes
   symbol
     .attribute 'refDes',
       x: 0
-      y: -0.5
+      y: -1
       halign: 'center'
       valign: 'bottom'
     .attribute 'name',
       x: 0
-      y: -settings.fontSize.refDes - 1
+      y: -settings.fontSize.refDes - 2
       halign: 'center'
       valign: 'bottom'
       visible: false
     .attribute 'user',
       x: 0
-      y: 1.5
+      y: 3
       halign: 'center'
       valign: 'top'
       text: element.purpose
@@ -91,7 +91,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'right'
     leftPins.push pin
 
-    w = pin.name.length*settings.fontSize.pinName + space
+    w = pin.name.length*settings.fontSize.pin + space
     x1 = -width/2 - w - space
     if x > x1 then x = x1 # Make symbol wider
     y += step
@@ -115,17 +115,17 @@ module.exports = (symbol, element) ->
     pin.orientation = 'left'
     rightPins.push pin
 
-    w = pin.name.length*settings.fontSize.pinName + space
+    w = pin.name.length*settings.fontSize.pin + space
     x2 = textWidth/2 + w + space
     if x < x2 then x = x2 # Make symbol wider
     y += step
 
   width = Math.max width, 2*x
-  width = Math.ceil(width/2) * 2 # Make width even
+  width = Math.ceil(width / (2*settings.gridSize)) * 2*settings.gridSize # Align to grid
 
   # Box
   symbol
-    .lineWidth settings.lineWidth.default
+    .lineWidth settings.lineWidth.thick
     .rectangle -width/2, 0, width/2, height, 'foreground'
     .line -textWidth/2 - space, 0, -textWidth/2 - space, height
     .line textWidth/2 + space, 0, textWidth/2 + space, height
