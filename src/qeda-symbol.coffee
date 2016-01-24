@@ -99,6 +99,12 @@ class QedaSymbol
            shape[prop] = value
 
   #
+  # Get text height
+  #
+  textWidth: (text, textType = 'default') ->
+    @settings.fontSize[textType] * text.length
+
+  #
   # Add arbitrary shape object
   #
   _addShape: (kind, shape) ->

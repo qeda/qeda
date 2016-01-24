@@ -39,7 +39,7 @@ module.exports = (symbol, element) ->
       halign: 'left'
       valign: 'bottom'
 
-  textWidth = element.longestAlias.length * settings.fontSize.name
+  textWidth = symbol.textWidth element.longestAlias, 'name'
 
   leftX = -width/2
   rightX = width/2
@@ -63,7 +63,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'down'
     topPins.push pin
 
-    h = pin.name.length*settings.fontSize.pin + space
+    h = symbol.textWidth(pin.name, 'pin') + space
     x1 = x - dx
     x2 = x + dx
     if y > (-h - space) then y = -h - space
@@ -92,7 +92,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'up'
     bottomPins.push pin
 
-    h = pin.name.length*settings.fontSize.pin + space
+    h = symbol.textWidth(pin.name, 'pin') + space
     x1 = x - dx
     x2 = x + dx
     if y < (h + space) then y = h + space
@@ -132,7 +132,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'right'
     leftPins.push pin
 
-    w = pin.name.length*settings.fontSize.pin + space
+    w = symbol.textWidth(pin.name, 'pin') + space
     y1 = y - dy
     y2 = y + dy
     # Check whether pin rectangle intersects other rectangles
@@ -162,7 +162,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'left'
     rightPins.push pin
 
-    w = pin.name.length*settings.fontSize.pin + space
+    w = symbol.textWidth(pin.name, 'pin') + space
     y1 = y - dy
     y2 = y + dy
     # Check whether pin rectangle intersects other rectangles

@@ -100,6 +100,7 @@ class KicadGenerator
     showPinNumbers = if element.schematic?.showPinNumbers then 'Y' else 'N'
     showPinNames = if element.schematic?.showPinNames then 'Y' else 'N'
 
+    pinNameSpace = 0
     for shape in symbol.shapes
       if shape.kind is 'pin'
         pinNameSpace = Math.round shape.space
@@ -223,6 +224,8 @@ class KicadGenerator
         obj.type = 'I' # Input
       else if obj.out
         obj.type = 'O' # Output
+      else if obj.passive
+        obj.type = 'P' # Passive
       else if obj.nc
         obj.type = 'N' # Not connected
       else if obj.z
