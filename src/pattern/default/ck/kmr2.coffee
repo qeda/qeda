@@ -69,3 +69,29 @@ module.exports = (pattern, element) ->
     .lineTo -x,  y
     .lineTo -x, -y + d
     .lineTo -x + d, -y
+
+  # Courtyard
+  courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel];
+
+  x1 = firstPad.x - firstPad.width/2 - courtyard
+  y1 = firstPad.y - firstPad.height/2 - courtyard
+  x2 = -lastPad.width/2 - courtyard
+  y2 = lastPad.y + lastPad.height/2 + courtyard
+
+  pattern
+    .layer 'topCourtyard'
+    .lineWidth settings.lineWidth.courtyard
+    # Centroid origin marking
+    .circle 0, 0, 0.5
+    .line -0.7, 0, 0.7, 0
+    .line 0, -0.7, 0, 0.7
+    # Contour courtyard
+    .moveTo x1, y1
+    .lineTo x1, -y1
+    .lineTo x2, -y1
+    .lineTo x2, y2
+    .lineTo -x2, y2
+    .lineTo -x2, -y1
+    .lineTo -x1, -y1
+    .lineTo -x1, y1
+    .lineTo x1, y1
