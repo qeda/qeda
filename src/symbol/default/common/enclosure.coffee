@@ -17,6 +17,9 @@ module.exports = (symbol, element) ->
   width = Math.max width, symbol.minimumWidth + 2*space
   height = Math.max height, symbol.minimumHeight + 2*space
 
+  width = Math.ceil(width / settings.gridSize) * settings.gridSize # Align to grid
+  height = Math.ceil(height / settings.gridSize) * settings.gridSize # Align to grid
+
   left = symbol.left
   right = symbol.right
   top = symbol.top

@@ -28,7 +28,7 @@ module.exports = (symbol, element) ->
       y: 0
       length: pinLength
       orientation: 'right'
-      type: 'passive'
+      passive: true
     .pin
       number: 2
       name: 2
@@ -36,6 +36,6 @@ module.exports = (symbol, element) ->
       y: 0
       length: pinLength
       orientation: 'left'
-      type: 'passive'
+      passive: true
     .lineWidth settings.lineWidth.thick
     .rectangle -width/2, -height/2, width/2, height/2
