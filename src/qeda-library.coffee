@@ -172,4 +172,16 @@ class QedaLibrary
 
     @_rendered = true
 
+  #
+  # Add special element
+  #
+  special: (type, name) ->
+    def =
+      name: name
+      schematic:
+        symbol: 'special/' + type
+    newElement = new QedaElement(this, def)
+    @elements.push newElement
+    newElement
+
 module.exports = QedaLibrary

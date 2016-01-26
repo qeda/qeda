@@ -28,9 +28,10 @@ class KicadGenerator
     fd = fs.openSync "#{dir}/#{@name}.lib", 'w'
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
     fs.writeSync fd, '#encoding utf-8\n'
+    patterns = {}
     for element in @library.elements
       @_generateSymbol fd, element
-      patterns[element.pattern.name] = element.pattern
+      if element.pattern? then patterns[element.pattern.name] = element.pattern
     fs.writeSync fd, '# End Library\n'
     fs.closeSync fd
     log.ok()
@@ -106,18 +107,25 @@ class KicadGenerator
         pinNameSpace = Math.round shape.space
         break
 
-    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L N\n"
-    fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} V #{refObj.halign} #{refObj.valign}NN\n"
+    patternName = ''
+    if element.pattern? then patternName = "#{@name}:#{element.pattern.name}"
+
+    powerSymbol = 'N'
+    if element.power then powerSymbol = 'P'
+
+    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} F #{powerSymbol}\n"
+    fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} #{refObj.visible} #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} #{nameObj.visible} #{nameObj.halign} #{nameObj.valign}NN\n"
-    fs.writeSync fd, "F2 \"#{@name}:#{element.pattern.name}\" 0 0 0 H I C CNN\n"
+    fs.writeSync fd, "F2 \"#{patternName}\" 0 0 0 H I C CNN\n"
     if symbol.attributes['user']?
       attrObj = @_symbolObj symbol.attributes['user']
       fs.writeSync fd, "F4 \"#{attrObj.text}\" #{attrObj.x} #{attrObj.y} #{attrObj.fontSize} #{attrObj.orientation} V #{attrObj.halign} #{attrObj.valign}NN\n"
 
     if element.aliases? then fs.writeSync fd, "ALIAS #{element.aliases.join(' ')}\n"
-    fs.writeSync fd, "$FPLIST\n"
-    fs.writeSync fd, "  #{element.pattern.name}\n"
-    fs.writeSync fd, "$ENDFPLIST\n"
+    if element.pattern?
+      fs.writeSync fd, "$FPLIST\n"
+      fs.writeSync fd, "  #{element.pattern.name}\n"
+      fs.writeSync fd, "$ENDFPLIST\n"
     fs.writeSync fd, "DRAW\n"
     i = 1
     for symbol in element.symbols

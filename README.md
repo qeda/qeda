@@ -20,6 +20,7 @@ Features
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
   - Capacitors, Resistors, Pushbuttons
+  - Special symbols (ground, power supply etc.)
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
@@ -157,8 +158,6 @@ Source code is licensed under [MIT license](./LICENSE.md).
 Coming soon
 ===========
 
-* Generating schematic symbols:
-  - Special symbols (ground, power supply, test points etc.)
 * Generating libraries:
   - Eagle XML format
   - DipTrace format

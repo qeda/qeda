@@ -33,7 +33,7 @@ class QedaElement
 
     @refDes = 'REF' # Should be overriden in element handler
     @symbols = [] # Array of symbols (one for single part or several for multi-part)
-    @pattern = new QedaPattern this
+    if @housing? then @pattern = new QedaPattern this
 
     @pins = [] # Array of pin objects
     @pinGroups = [] # Array of pin groups
@@ -126,35 +126,36 @@ class QedaElement
         log.ok()
 
     # Pattern processing
-    log.start "Land pattern for '#{@name}'"
-    if @housing?.outline?
-      cap = @housing.outline.split(' ')
-      dirName = cap.shift().toLowerCase()
-      fileName = cap.shift().toLowerCase()
-      log.start "Outline '#{@housing.outline}'"
-      try
-        outline = yaml.safeLoad fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
-      catch error
-        log.error error.message
-      loop
-        for key, value of outline
-          if (typeof value is 'number') or (typeof value is 'string')
-            @housing[key] = value
-        if cap.length is 0 then break
-        outline = outline[cap.shift()]
-        unless outline? then break
-      log.ok()
+    if @pattern?
+      log.start "Land pattern for '#{@name}'"
+      if @housing?.outline?
+        cap = @housing.outline.split(' ')
+        dirName = cap.shift().toLowerCase()
+        fileName = cap.shift().toLowerCase()
+        log.start "Outline '#{@housing.outline}'"
+        try
+          outline = yaml.safeLoad fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
+        catch error
+          log.error error.message
+        loop
+          for key, value of outline
+            if (typeof value is 'number') or (typeof value is 'string')
+              @housing[key] = value
+          if cap.length is 0 then break
+          outline = outline[cap.shift()]
+          unless outline? then break
+        log.ok()
 
-    @_convertDimensions @housing
-    paths = [
-      "./pattern/#{@library.pattern.style.toLowerCase()}/#{@housing.pattern.toLowerCase()}"
-      "./pattern/default/#{@housing.pattern.toLowerCase()}"
-      process.cwd() + "/pattern/#{@housing.pattern.toLowerCase()}"
-    ]
-    [handler, error] = @_firstHandler paths
-    if error then log.error "'#{@housing.pattern}': " + error.message
-    handler @pattern, this
-    log.ok()
+      @_convertDimensions @housing
+      paths = [
+        "./pattern/#{@library.pattern.style.toLowerCase()}/#{@housing.pattern.toLowerCase()}"
+        "./pattern/default/#{@housing.pattern.toLowerCase()}"
+        process.cwd() + "/pattern/#{@housing.pattern.toLowerCase()}"
+      ]
+      [handler, error] = @_firstHandler paths
+      if error then log.error "'#{@housing.pattern}': " + error.message
+      handler @pattern, this
+      log.ok()
 
     @_rendered = true
 
