@@ -1,6 +1,6 @@
 {
   "name": "qeda",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "bin": {
@@ -35,7 +35,7 @@
     "js-yaml": "3.x.x",
     "mkdirp": "0.5.x",
     "nopt": "3.x.x",
-    "sync-request": "2.x.x",
+    "sync-request": "3.x.x",
     "sprintf-js": "1.x.x"
   }
 }
