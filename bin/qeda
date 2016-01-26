@@ -27,6 +27,8 @@ Commands:\n\
   add COMPONENT         Add component definition to config (with preloading\n\
                         if necessary)\n\
   load COMPONENT        Load component definition from global repository\n\
+  power NET             Add power supply symbol\n\
+  ground NET            Add ground symbol\n\
   config PARAM [VALUE]  Set/get config parameter\n\
   generate LIBRARY      Generate libraries according to config\n\
 \n\
@@ -98,13 +100,35 @@ function addComponent(componentName) {
   }
 }
 
+function addPower(netName) {
+  var qedaYaml = readYaml();
+  qedaYaml.power = qedaYaml.power || [];
+  if (qedaYaml.power.indexOf(netName) === -1) {
+    qedaYaml.power.push(netName);
+    writeYaml(qedaYaml);
+  }
+}
+
+function addGround(netName) {
+  var qedaYaml = readYaml();
+  qedaYaml.ground = qedaYaml.ground || [];
+  if (qedaYaml.ground.indexOf(netName) === -1) {
+    qedaYaml.ground.push(netName);
+    writeYaml(qedaYaml);
+  }
+}
+
 function generateLibrary(libraryName) {
   var qedaYaml = readYaml();
   qedaYaml.library = qedaYaml.library || [];
-  if (qedaYaml.library.length === 0) {
+  qedaYaml.power = qedaYaml.power || [];
+  qedaYaml.ground = qedaYaml.ground || [];
+  if (qedaYaml.library.length === 0 &&
+      qedaYaml.power.length === 0 &&
+      qedaYaml.ground.length === 0) {
     console.error('Error: Nothing to generate');
     console.error('');
-    console.error('Run command \'qeda add ...\' at least once');
+    console.error('Run command \'qeda add | power | ground ...\' at least once');
     console.error('Try \'qeda --help\' for more information.');
     process.exit(1);
   }
@@ -112,6 +136,12 @@ function generateLibrary(libraryName) {
   var lib = new QedaLibrary(qedaYaml.config);
   for (var i = 0; i < qedaYaml.library.length; ++i) {
     lib.add(qedaYaml.library[i]);
+  }
+  for (var i = 0; i < qedaYaml.power.length; ++i) {
+    lib.power(qedaYaml.power[i]);
+  }
+  for (var i = 0; i < qedaYaml.ground.length; ++i) {
+    lib.ground(qedaYaml.ground[i]);
   }
   lib.generate(libraryName);
 }
@@ -183,6 +213,18 @@ switch (command) {
       displayError('Missing component name after "load" command');
     }
     loadComponent(args.argv.remain[1]);
+    break;
+  case 'power':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing net name after "power" command');
+    }
+    addPower(args.argv.remain[1]);
+    break;
+  case 'ground':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing net name after "ground" command');
+    }
+    addGround(args.argv.remain[1]);
     break;
   case 'config':
     if (args.argv.remain.length < 2) {

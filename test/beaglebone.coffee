@@ -19,8 +19,8 @@ lib.add 'CK/KMR2'
 # Circuits
 lib.add 'TI/TPS65217'
 
-# Special
-lib.special 'ground', 'MYGND'
-lib.special 'power', 'MYVCC'
+# Power supply
+lib.power '+5VDC'
+lib.ground 'GNDDC'
 
 lib.generate 'qeda_bbb'

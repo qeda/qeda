@@ -96,6 +96,18 @@ class QedaLibrary
     res
 
   #
+  # Add symbol
+  #
+  addSymbol: (symbol, name) ->
+    def =
+      name: name
+      schematic:
+        symbol: symbol
+    newElement = new QedaElement(this, def)
+    @elements.push newElement
+    newElement
+
+  #
   # Generate library in given format
   #
   generate: (name) ->
@@ -109,6 +121,12 @@ class QedaLibrary
       log.start "Generate output for '#{name}'"
       generator.generate name
       log.ok()
+
+  #
+  # Add ground symbol
+  #
+  ground: (name) ->
+    @addSymbol 'ground', name
 
   #
   # Load element description from remote repository
@@ -161,6 +179,12 @@ class QedaLibrary
         dest[k] = v
 
   #
+  # Add power symbol
+  #
+  power: (name) ->
+    @addSymbol 'power', name
+
+  #
   # Render elements
   #
   render: ->
@@ -172,16 +196,6 @@ class QedaLibrary
 
     @_rendered = true
 
-  #
-  # Add special element
-  #
-  special: (type, name) ->
-    def =
-      name: name
-      schematic:
-        symbol: 'special/' + type
-    newElement = new QedaElement(this, def)
-    @elements.push newElement
-    newElement
+
 
 module.exports = QedaLibrary
