@@ -4,6 +4,7 @@ dual = require './common/dual'
 
 abbrs =
   CAPC: ['capacitor']
+  INDC: ['inductor']
   RESC: ['resistor']
   RESDFN: ['resistor', 'no-lead']
   RESMELF: ['resistor', 'melf']

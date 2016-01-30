@@ -136,6 +136,10 @@ class KicadGenerator
           when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
           when 'line' then fs.writeSync fd, "P 2 #{i} 1 #{symObj.lineWidth} #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
           when 'circle' then fs.writeSync fd, "C #{symObj.x} #{symObj.y} #{symObj.radius} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
+          when 'arc'
+            symObj.start = Math.round symObj.start*10
+            symObj.end = Math.round symObj.end*10
+            fs.writeSync fd, "A #{symObj.x} #{symObj.y} #{symObj.radius} #{symObj.start} #{symObj.end} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"

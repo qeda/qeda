@@ -13,6 +13,9 @@ lib.add 'Capacitor/C0402'
 lib.add 'Capacitor/C0603'
 lib.add 'Capacitor/C0805'
 
+# Inductors
+lib.add 'Inductor/L0805'
+
 # Pushbuttons
 lib.add 'CK/KMR2'
 

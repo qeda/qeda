@@ -19,7 +19,7 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
-  - Capacitors, Resistors, Pushbuttons
+  - Capacitors, Resistors, Inductors, Pushbuttons
   - Special symbols (ground, power supply etc.)
   - GOST style alternative
 * Borrowing packages dimensions from standards:

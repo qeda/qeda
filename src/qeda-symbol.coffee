@@ -37,6 +37,13 @@ class QedaSymbol
     Math.ceil(n / @settings.gridSize) * @settings.gridSize
 
   #
+  # Add arc
+  #
+  arc: (x, y, radius, start, end) ->
+    @_addShape 'arc', { x: x, y: y, radius: radius, start: start, end: end }
+    this
+
+  #
   # Add attribute
   #
   attribute: (name, attribute) ->
