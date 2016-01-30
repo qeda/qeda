@@ -13,8 +13,8 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= true
   schematic.showPinNumbers ?= true
 
-  step = 5
-  pinLength = settings.pinLenght ? 10
+  step = symbol.alignToGrid 5
+  pinLength = symbol.alignToGrid(settings.pinLength ? 10)
 
   left = symbol.left
   right = symbol.right
@@ -145,7 +145,7 @@ module.exports = (symbol, element) ->
   # Align according to text
   if x > (-step*(top.length/2 + 1) - textWidth)
     x = -step*(top.length/2 + 1) - textWidth
-  leftX = Math.floor x
+  leftX = symbol.alignToGrid x
 
   # Pins on the right side
   x = rightX
@@ -178,10 +178,10 @@ module.exports = (symbol, element) ->
   width = rightX - leftX
   height = bottomY - topY
 
-  width = Math.ceil(width / settings.gridSize) * settings.gridSize # Align to grid
+  width = symbol.alignToGrid width
+  height = symbol.alignToGrid height
 
   # Box
-  y = topY
   symbol
     .lineWidth settings.lineWidth.thick
     .rectangle 0, 0, width, height, 'foreground'

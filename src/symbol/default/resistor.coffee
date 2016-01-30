@@ -6,7 +6,7 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= false
   schematic.showPinNumbers ?= false
 
-  pinLength = settings.pinLenght ? 2.5
+  pinLength = settings.pinLength ? 2.5
   width = 10
   height = 4
 

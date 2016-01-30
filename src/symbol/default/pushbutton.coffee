@@ -24,7 +24,7 @@ module.exports = (symbol, element) ->
   else # Simple symbol
     width = iconWidth
     height = iconHeight
-    pinLength = settings.pinLenght ? 5
+    pinLength = settings.pinLength ? 5
     symbol
       .attribute 'refDes',
         x: 0

@@ -31,6 +31,12 @@ class QedaSymbol
     @right = @right.filter((a) => toLeft.indexOf(a) is -1)
 
   #
+  # Align number to grid
+  #
+  alignToGrid: (n) ->
+    Math.ceil(n / @settings.gridSize) * @settings.gridSize
+
+  #
   # Add attribute
   #
   attribute: (name, attribute) ->

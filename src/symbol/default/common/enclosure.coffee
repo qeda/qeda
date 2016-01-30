@@ -2,8 +2,8 @@ module.exports = (symbol, element) ->
   schematic = element.schematic
   settings = symbol.settings
 
-  step = 5
-  pinLength = settings.pinLenght ? 10
+  step = symbol.alignToGrid 5
+  pinLength = symbol.alignToGrid(settings.pinLength ? 10)
 
   left = symbol.left
   right = symbol.right
@@ -17,8 +17,8 @@ module.exports = (symbol, element) ->
   width = Math.max width, symbol.minimumWidth + 2*space
   height = Math.max height, symbol.minimumHeight + 2*space
 
-  width = Math.ceil(width / settings.gridSize) * settings.gridSize # Align to grid
-  height = Math.ceil(height / settings.gridSize) * settings.gridSize # Align to grid
+  width = symbol.alignToGrid width
+  height = symbol.alignToGrid height
 
   left = symbol.left
   right = symbol.right
