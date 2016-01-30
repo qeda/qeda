@@ -49,7 +49,7 @@ First example will download component descriptions from [library repository](htt
 CLI
 ---
 
-Run in terminal (note that component names are case insensitive):
+Run in terminal (note that component names are case insensitive but power and ground nets are not):
 
 ```
 qeda add altera/5m1270zt144
@@ -57,6 +57,7 @@ qeda add analog/ad9393
 qeda add st/l3gd20h
 qeda add ti/iso722
 qeda power +5VDC
+qeda power +3V3DC
 qeda ground GNDDC
 qeda generate mylib
 ```
@@ -78,6 +79,7 @@ lib.add 'Analog/AD9393' # Add Analog Devices HDMI interface
 lib.add 'ST/L3GD20H' # Add STMicroelectronics gyroscope
 lib.add 'TI/ISO722' # Add Texas Instruments digital isolator
 lib.power '+5VDC' # Add power supply symbol
+lib.power '+3V3DC' # Add another power supply symbol
 lib.ground 'GNDDC' # Add ground symbol
 lib.generate 'mylib'
 ```
