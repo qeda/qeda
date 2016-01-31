@@ -23,12 +23,12 @@ class QedaSymbol
               @[side].push '-' # Insert gap
             @[side] = @[side].concat pinGroup
 
-    both = @left.filter((a) => (a isnt '-') and (@right.indexOf(a) isnt -1))
+    both = @left.filter((v) => (v isnt '-') and (@right.indexOf(v) isnt -1))
     delta = Math.ceil((@right.length - @left.length + both.length) / 2)
     toLeft = both[0..(delta-1)]
     toRight = both[delta..]
-    @left = @left.filter((a) => toRight.indexOf(a) is -1)
-    @right = @right.filter((a) => toLeft.indexOf(a) is -1)
+    @left = @left.filter((v) => toRight.indexOf(v) is -1)
+    @right = @right.filter((v) => toLeft.indexOf(v) is -1)
 
   #
   # Align number to grid
@@ -67,6 +67,8 @@ class QedaSymbol
     for shape in @shapes
       for prop in props
         if shape[prop]? then shape[prop] *= -1
+      if shape['points']?
+        shape['points'] = shape['points'].map((v, i) -> if i % 2 is 1 then -v else v)
 
   #
   # Add line
@@ -92,6 +94,19 @@ class QedaSymbol
     this
 
   #
+  # Add polyline/polygon
+  #
+  poly: (points..., fill) ->
+    @_addShape 'poly', { points: points, fill: fill }
+    this
+
+  #
+  # Add polyline
+  #
+  polyline: (points...) ->
+    @poly points..., 'none'
+
+  #
   # Add rectangle
   #
   rectangle: (x1, y1, x2, y2, fill = 'none') ->
@@ -110,6 +125,10 @@ class QedaSymbol
            value = shape[prop] * factor
            if needRound then value = Math.round value
            shape[prop] = value
+      if shape['points']?
+        shape['points'] = shape['points'].map((v) -> v * factor)
+        if needRound then shape['points'] = shape['points'].map((v) -> Math.round(v))
+
 
   #
   # Get text height

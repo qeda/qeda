@@ -38,7 +38,7 @@ module.exports = (pattern, element) ->
     [housing.bodyLength.nom*10
     housing.bodyWidth.nom*10
     height*100]
-    .map((a) => Math.round a)...
+    .map((v) => Math.round v)...
 
   settings = pattern.settings
 

@@ -12,7 +12,7 @@ module.exports = (pattern, element) ->
     housing.columnSpan.nom*100
     height*100
     leadCount]
-    .map((a) => Math.round a)...
+    .map((v) => Math.round v)...
 
   settings = pattern.settings
 

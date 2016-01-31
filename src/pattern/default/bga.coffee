@@ -16,7 +16,7 @@ module.exports = (pattern, element) ->
     housing.bodyLength.nom*100
     housing.bodyWidth.nom*100
     height*100]
-    .map((a) => Math.round a)...
+    .map((v) => Math.round v)...
 
   padParams = calculator.bga pattern, housing
   padParams.rowPitch = housing.rowPitch ? housing.pitch

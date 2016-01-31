@@ -140,6 +140,13 @@ class KicadGenerator
             symObj.start = Math.round symObj.start*10
             symObj.end = Math.round symObj.end*10
             fs.writeSync fd, "A #{symObj.x} #{symObj.y} #{symObj.radius} #{symObj.start} #{symObj.end} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
+          when 'poly'
+            pointCount = symObj.points.length / 2
+            polyPoints = symObj.points.reduce((p, v) -> p + ' ' + v)
+            console.log symObj.points
+            console.log polyPoints
+            fs.writeSync fd, "P #{pointCount} #{i} 1 #{symObj.lineWidth} #{polyPoints} #{symObj.fillStyle}\n"
+
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
@@ -165,7 +172,7 @@ class KicadGenerator
       bottomSilkscreen: 'B.SilkS'
       bottomAssembly: 'B.Fab'
       bottomCourtyard: 'B.CrtYd'
-    obj.layer = obj.layer.map((a) => layers[a]).join(' ')
+    obj.layer = obj.layer.map((v) => layers[v]).join(' ')
 
     if obj.mask? and (obj.mask < 0.001) then obj.mask = 0.001 # KiCad does not support zero value
     if obj.paste? and (obj.paste > -0.001) then obj.paste = -0.001 # KiCad does not support zero value

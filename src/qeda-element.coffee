@@ -214,7 +214,7 @@ class QedaElement
   _convertDimensions: (housing) ->
     for key, value of housing
       if typeof value is 'string' and (/^\d+(\.\d+)?-\d+(\.\d+)?$/.test value)
-        value = value.replace(/\s+/g, '').split('-').map((a) -> parseFloat(a))
+        value = value.replace(/\s+/g, '').split('-').map((v) -> parseFloat(v))
       if Array.isArray(value) and value.length > 0
         min = value[0]
         max = if value.length > 1 then value[1] else min

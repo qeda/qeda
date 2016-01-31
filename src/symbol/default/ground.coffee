@@ -4,7 +4,7 @@ module.exports = (symbol, element) ->
   settings = symbol.settings
 
   width = 5
-  height = 2.5
+  height = 5
 
   symbol
     .attribute 'refDes',
@@ -27,6 +27,6 @@ module.exports = (symbol, element) ->
       orientation: 'down'
       ground: true
       invisible: true
-    .line 0, 0, 0, height
+    .line 0, 0, 0, height/2
     .lineWidth settings.lineWidth.thick
-    .line -width/2, height, width/2, height
+    .polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2

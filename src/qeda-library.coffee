@@ -88,7 +88,7 @@ class QedaLibrary
         aliases = []
         if def.alias?
           aliases.concat def.alias.replace(/\s+/g, '').split(',')
-        aliases.concat(suffixes.map (a) => name + a)
+        aliases.concat(suffixes.map (v) => name + v)
         def.aliases = aliases
       newElement = new QedaElement(this, def)
       @elements.push newElement

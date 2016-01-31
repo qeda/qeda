@@ -92,7 +92,7 @@ function addComponent(componentName) {
   lib.load(componentName);
   var qedaYaml = readYaml();
   qedaYaml.library = qedaYaml.library || [];
-  qedaYaml.library.map(function (a) { return a.toLowerCase(); });
+  qedaYaml.library.map(function (v) { return v.toLowerCase(); });
   componentName = componentName.toLowerCase();
   if (qedaYaml.library.indexOf(componentName) === -1) {
     qedaYaml.library.push(componentName);

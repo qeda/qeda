@@ -15,7 +15,7 @@ module.exports = (pattern, element) ->
     housing.bodyWidth.nom*100
     height*100
     leadCount]
-    .map((a) => Math.round a)...
+    .map((v) => Math.round v)...
 
   settings = pattern.settings
 
@@ -44,7 +44,7 @@ module.exports = (pattern, element) ->
 
   if hasTab
     housing.tabOffset ?= '0, 0'
-    [x, y] = housing.tabOffset.replace(/\s+/g, '').split(',').map((a) => parseFloat(a))
+    [x, y] = housing.tabOffset.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
 
     tabNumber = leadCount
     tabPad =
