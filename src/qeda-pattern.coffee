@@ -77,6 +77,37 @@ class QedaPattern
     this
 
   #
+  # Add polarity mark
+  #
+  polarityMark: (x, y, position = 'left') ->
+    d = 0.5
+    switch position
+      when 'left' then x -= d/2
+      when 'right' then x += d/2
+      when 'top' then y -= d/2
+      when 'bottom' then y += d/2
+      when 'topLeft'
+        x -= d/2
+        y -= d/2
+      when 'topRight'
+        x += d/2
+        y -= d/2
+      when 'bottomLeft'
+        x -= d/2
+        y += d/2
+      when 'bottomRight'
+        x += d/2
+        y += d/2
+
+    switch @settings.polarityMark
+      when 'dot'
+        r = d/2
+        oldLineWidth = @currentLineWidth
+        @lineWidth r
+        @circle x, y, r/2
+        @lineWidth oldLineWidth
+
+  #
   # Add rectangle
   #
   rectangle: (x1, y1, x2, y2) ->

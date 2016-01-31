@@ -68,11 +68,7 @@ module.exports = (pattern, element) ->
     .lineTo -x, y
     .lineTo -x + len, y
 
-  if settings.polarityMark is 'dot'
-    r = 0.25
-    pattern
-      .lineWidth r
-      .circle -x, -y, r/2
+    .polarityMark -x, -y, 'center'
 
   # Assembly
   x = bodyWidth/2

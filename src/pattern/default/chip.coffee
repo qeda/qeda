@@ -4,7 +4,14 @@ dual = require './common/dual'
 
 abbrs =
   CAPC: ['capacitor']
+  CAPM: ['capacitor', 'molded']
+  CAPMP: ['capacitor', 'molded', 'polarized']
+  DIOM: ['diode', 'molded']
+  DIOMELF: ['diode', 'melf']
   INDC: ['inductor']
+  INDM: ['inductor', 'molded']
+  LEDC: ['led']
+  LEDM: ['led', 'molded']
   RESC: ['resistor']
   RESDFN: ['resistor', 'no-lead']
   RESMELF: ['resistor', 'melf']
@@ -56,8 +63,11 @@ module.exports = (pattern, element) ->
   lineWidth = settings.lineWidth.silkscreen
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
+  leadWidth = housing.leadWidth.nom
   x = bodyLength/2
-  y = padParams.height/2 + lineWidth/2 + settings.clearance.padToSilk
+  y1 = padParams.height/2 + lineWidth/2 + settings.clearance.padToSilk
+  y2 = leadWidth/2 + lineWidth/2
+  y = Math.max y1, y2
   pattern
     .layer 'topSilkscreen'
     .lineWidth lineWidth
@@ -68,6 +78,21 @@ module.exports = (pattern, element) ->
       valign: 'center'
     .line -x, -y, x, -y
     .line -x, y, x, y
+  if leadWidth < bodyWidth and y1 < y2 # Molded
+    pattern
+     .line -x, -y1, -x, -y2
+     .line  x, -y1,  x, -y2
+     .line -x,  y1, -x,  y2
+     .line  x,  y1,  x,  y2
+  if housing.polarized
+    x2 = padParams.distance/2 + padParams.width/2 + lineWidth/2 + settings.clearance.padToSilk
+    y = Math.min y1, y2
+    pattern
+     .moveTo -x, -y
+     .lineTo -x2, -y
+     .lineTo -x2, y
+     .lineTo -x, y
+     .polarityMark -x2 - lineWidth/2, 0
 
   # Assembly
   x = bodyLength/2

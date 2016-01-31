@@ -76,14 +76,7 @@ module.exports = (pattern, element) ->
     .moveTo -x1, -y
     .lineTo -x,  -y
     .lineTo -x,  -y1
-
-  if settings.polarityMark is 'dot'
-    r = 0.25
-    x = firstPad.x - firstPad.width/2 - r - settings.clearance.padToSilk
-    y = firstPad.y
-    pattern
-      .lineWidth r
-      .circle x, y, r/2
+    .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
 
   # Assembly
   x = bodyWidth/2
