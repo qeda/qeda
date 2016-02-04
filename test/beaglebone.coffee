@@ -21,6 +21,7 @@ lib.add 'CK/KMR2'
 
 # Circuits
 lib.add 'TI/TPS65217'
+lib.add 'TI/SN74LVC1G07DCK'
 
 # Power supply
 lib.power '+5VDC'

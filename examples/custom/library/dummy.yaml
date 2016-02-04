@@ -23,5 +23,4 @@ schematic:
   bottom: GND
 
 housing:
-  pattern: SOIC
   outline: JEDEC MS-012 AA

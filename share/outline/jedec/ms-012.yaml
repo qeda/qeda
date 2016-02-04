@@ -1,3 +1,5 @@
+pattern: SOIC
+
 pitch: 1.27
 bodyWidth: 3.80-4.00
 leadLength: 0.40-1.27

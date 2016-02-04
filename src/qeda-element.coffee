@@ -139,7 +139,8 @@ class QedaElement
           log.error error.message
         loop
           for key, value of outline
-            if (typeof value is 'number') or (typeof value is 'string')
+            validType = (typeof value is 'number') or (typeof value is 'string')
+            if validType and not @housing[key]?
               @housing[key] = value
           if cap.length is 0 then break
           outline = outline[cap.shift()]

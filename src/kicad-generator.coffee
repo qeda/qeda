@@ -143,8 +143,6 @@ class KicadGenerator
           when 'poly'
             pointCount = symObj.points.length / 2
             polyPoints = symObj.points.reduce((p, v) -> p + ' ' + v)
-            console.log symObj.points
-            console.log polyPoints
             fs.writeSync fd, "P #{pointCount} #{i} 1 #{symObj.lineWidth} #{polyPoints} #{symObj.fillStyle}\n"
 
       ++i

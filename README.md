@@ -30,6 +30,7 @@ Features
   - QFN
   - QFP
   - SOP (and SOIC)
+  - SOT (SOT23)
 * Generating libraries:
   - KiCad format
 
@@ -125,7 +126,6 @@ schematic:
   bottom: GND
 
 housing:
-  pattern: SOIC
   outline: JEDEC MS-012 AA
 ```
 

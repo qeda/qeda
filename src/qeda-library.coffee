@@ -25,7 +25,7 @@ class QedaLibrary
         pin: 2.5
       lineWidth:
         default: 0
-        thick: 0.8
+        thick: 0.6
         thin: 0.2
       space:
         pin: 2

@@ -1,6 +1,6 @@
 {
   "name": "qeda",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "bin": {
@@ -12,6 +12,7 @@
   },
   "keywords": [
     "EDA",
+    "KiCad",
     "schematics",
     "PCB",
     "electronics",
