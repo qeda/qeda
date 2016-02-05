@@ -17,8 +17,8 @@ module.exports = (symbol, element) ->
   width = Math.max width, symbol.minimumWidth + 2*space
   height = Math.max height, symbol.minimumHeight + 2*space
 
-  width = symbol.alignToGrid width
-  height = symbol.alignToGrid height
+  width = symbol.alignToGrid width, 'ceil'
+  height = symbol.alignToGrid height, 'ceil'
 
   left = symbol.left
   right = symbol.right

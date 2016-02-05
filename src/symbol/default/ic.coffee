@@ -30,16 +30,14 @@ module.exports = (symbol, element) ->
   symbol
     .attribute 'refDes',
       x: 0
-      y: -settings.fontSize.refDes - 2
+      y: -1
       halign: 'left'
       valign: 'bottom'
     .attribute 'name',
       x: 0
-      y: -1
+      y: -settings.fontSize.name - 2
       halign: 'left'
       valign: 'bottom'
-
-  textWidth = symbol.textWidth element.longestAlias, 'name'
 
   leftX = -width/2
   rightX = width/2
@@ -74,7 +72,7 @@ module.exports = (symbol, element) ->
       x2: x2,
       y2: h
 
-  topY = Math.floor y
+  topY = symbol.alignToGrid y, 'floor'
 
   # Pins on the bottom side
   y = bottomY
@@ -103,7 +101,7 @@ module.exports = (symbol, element) ->
       x2: x2,
       y2: 0
 
-  bottomY = Math.ceil y
+  bottomY = symbol.alignToGrid y, 'ceil'
 
   rects = []
   for r in topRects
@@ -140,12 +138,10 @@ module.exports = (symbol, element) ->
       if intersects [y1, y2], [r.y1, r.y2]
         x1 = r.x1 - w - space
         if x > x1 then x = x1 # Make symbol wider
+    if x > -w then x = -w # Take text width in attention
     y += step
 
-  # Align according to text
-  if x > (-step*(top.length/2 + 1) - textWidth)
-    x = -step*(top.length/2 + 1) - textWidth
-  leftX = symbol.alignToGrid x
+  leftX = symbol.alignToGrid x, 'floor'
 
   # Pins on the right side
   x = rightX
@@ -170,22 +166,24 @@ module.exports = (symbol, element) ->
       if intersects [y1, y2], [r.y1, r.y2]
         x2 = r.x2 + w + space
         if x < x2 then x = x2 # Make symbol wider
+    if x < w then x = w # Take text width in attention
     y += step
 
-  rightX = Math.ceil x
+  rightX = symbol.alignToGrid x, 'ceil'
 
   # Update box size
   width = rightX - leftX
   height = bottomY - topY
 
-  width = symbol.alignToGrid width
-  height = symbol.alignToGrid height
+  width = symbol.alignToGrid width, 'ceil'
+  height = symbol.alignToGrid height, 'ceil'
 
   # Box
   symbol
     .lineWidth settings.lineWidth.thick
     .rectangle 0, 0, width, height, 'foreground'
 
+  # Pins
   for pin in leftPins
     pin.x = -pinLength
     pin.y -= topY

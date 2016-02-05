@@ -33,8 +33,8 @@ class QedaSymbol
   #
   # Align number to grid
   #
-  alignToGrid: (n) ->
-    Math.ceil(n / @settings.gridSize) * @settings.gridSize
+  alignToGrid: (n, method = 'round') ->
+    Math[method](n / @settings.gridSize) * @settings.gridSize
 
   #
   # Add arc
