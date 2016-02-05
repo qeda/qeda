@@ -44,8 +44,9 @@ module.exports = (symbol, element) ->
   topY = -height/2
   bottomY = height/2
 
+  rects = []
+
   # Pins on the top side
-  y = topY
   dx = settings.fontSize.pin/2 + space
   topPins = []
   topRects = []
@@ -64,7 +65,6 @@ module.exports = (symbol, element) ->
     h = symbol.textWidth(pin.name, 'pin') + space
     x1 = x - dx
     x2 = x + dx
-    if y > (-h - space) then y = -h - space
     x += step
     topRects.push
       x1: x1,
@@ -72,7 +72,12 @@ module.exports = (symbol, element) ->
       x2: x2,
       y2: h
 
-  topY = symbol.alignToGrid y, 'floor'
+  topY = symbol.alignToGrid topY, 'floor'
+
+  for r in topRects
+    r.y1 += topY
+    r.y2 += topY
+    rects.push r
 
   # Pins on the bottom side
   y = bottomY
@@ -93,7 +98,11 @@ module.exports = (symbol, element) ->
     h = symbol.textWidth(pin.name, 'pin') + space
     x1 = x - dx
     x2 = x + dx
-    if y < (h + space) then y = h + space
+    # Check whether pin rectangle intersects other rectangles
+    for r in rects
+      if intersects [x1, x2], [r.x1, r.x2]
+        y2 = r.y2 + w + space
+        if y < y2 then y = y2 # Make symbol higher
     x += step
     bottomRects.push
       x1: x1,
@@ -102,12 +111,6 @@ module.exports = (symbol, element) ->
       y2: 0
 
   bottomY = symbol.alignToGrid y, 'ceil'
-
-  rects = []
-  for r in topRects
-    r.y1 += topY
-    r.y2 += topY
-    rects.push r
 
   for r in bottomRects
     r.y1 += bottomY
@@ -118,6 +121,7 @@ module.exports = (symbol, element) ->
   x = leftX
   dy = settings.fontSize.pin/2 + space
   leftPins = []
+  leftRects = []
   y = -step * left.length/2 + step/2
   for i in left
     if i is '-'
@@ -138,10 +142,19 @@ module.exports = (symbol, element) ->
       if intersects [y1, y2], [r.y1, r.y2]
         x1 = r.x1 - w - space
         if x > x1 then x = x1 # Make symbol wider
-    if x > -w then x = -w # Take text width in attention
     y += step
+    leftRects.push
+      x1: 0,
+      y1: y1,
+      x2: w,
+      y2: y2
 
   leftX = symbol.alignToGrid x, 'floor'
+
+  for r in leftRects
+    r.x1 += leftX
+    r.x2 += leftX
+    rects.push r
 
   # Pins on the right side
   x = rightX
@@ -166,7 +179,6 @@ module.exports = (symbol, element) ->
       if intersects [y1, y2], [r.y1, r.y2]
         x2 = r.x2 + w + space
         if x < x2 then x = x2 # Make symbol wider
-    if x < w then x = w # Take text width in attention
     y += step
 
   rightX = symbol.alignToGrid x, 'ceil'
