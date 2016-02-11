@@ -59,6 +59,10 @@ class QedaSymbol
     @_addShape 'circle', { x: x, y: y, radius: radius }
     this
 
+  icon: (x, y, iconObj) ->
+    iconObj.draw this, x, y
+    this
+
   #
   # Flip vertically
   #
