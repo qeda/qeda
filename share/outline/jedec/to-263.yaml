@@ -1,0 +1,133 @@
+pattern: D2PAK
+
+AA:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 2.54
+  leadCount: 3
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+AA-1:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 2.54
+  leadCount: 3
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+AB:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 2.54
+  leadCount: 3
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+AB-1:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 2.54
+  leadCount: 3
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+AC:
+  bodyWidth: 8.13-9.4
+  bodyLength: 9.525-10.54
+  pitch: 2.54
+  leadCount: 3
+  leadWidth: 1.143-1.626
+  leadLength: 1.015-2.03
+  leadSpan: 11.940-13.21
+  tabWidth: 6.35
+  tabLength: 8
+  height: 1.27-2.03
+
+BA:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 1.702
+  leadCount: 5
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+BA-1:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 1.702
+  leadCount: 5
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+BB:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 1.702
+  leadCount: 5
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+BB-1:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 1.702
+  leadCount: 5
+  leadWidth: 0.508-0.991
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+CA:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 1.27
+  leadCount: 7
+  leadWidth: 0.508-0.914
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
+
+CB:
+  bodyWidth: 8.38-9.65
+  bodyLength: 9.65-10.67
+  pitch: 1.27
+  leadCount: 7
+  leadWidth: 0.508-0.914
+  leadLength: 1.78-2.795
+  leadSpan: 14.605-15.875
+  tabWidth: 6.86
+  tabLength: 6.225
+  height: 4.065-4.825
