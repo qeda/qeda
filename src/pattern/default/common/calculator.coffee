@@ -52,6 +52,29 @@ module.exports =
     pad.courtyard = courtyard
     pad
 
+  d2pak: (pattern, housing) ->
+    settings = pattern.settings
+    params = @_gullwing pattern, housing
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+    leadIpc = @_ipc7351 params
+    leadPad = @_pad leadIpc, pattern
+
+    params.Tmin = housing.tabLength.min ? housing.tabLength
+    params.Tmax = housing.tabLength.max ? housing.tabLength
+    params.Wmin = housing.tabWidth.min ? housing.tabWidth
+    params.Wmax = housing.tabWidth.max ? housing.tabWidth
+    tabIpc = @_ipc7351 params
+    tabPad = @_pad tabIpc, pattern
+
+    width1: leadPad.width
+    height1: leadPad.height
+    distance1: leadPad.distance
+    width2: tabPad.width
+    height2: tabPad.height
+    distance2: tabPad.distance
+    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+
   qfn: (pattern, housing) ->
     params = @_nolead pattern, housing
     params.Lmin = housing.bodyWidth.min
@@ -59,32 +82,32 @@ module.exports =
     if housing.pullBack?
       params.Lmin -= 2*housing.pullBack
       params.Lmax -= 2*housing.pullBack
-    ipc1 = @_ipc7351 params
+    rowIpc = @_ipc7351 params
     params.Lmin = housing.bodyLength.min
     params.Lmax = housing.bodyLength.max
     if housing.pullBack?
       params.Lmin -= 2*housing.pullBack
       params.Lmax -= 2*housing.pullBack
-    ipc2 = @_ipc7351 params
+    columnIpc = @_ipc7351 params
     trimmed = false
-    pad1 = @_pad ipc1, pattern
-    pad2 = @_pad ipc2, pattern
+    rowPad = @_pad rowIpc, pattern
+    columnPad = @_pad columnIpc, pattern
 
     # Check clearance violations
     settings = pattern.settings
-    if pad1.height > housing.pitch - settings.clearance.padToPad
-      pad1.height = housing.pitch - settings.clearance.padToPad
+    if rowPad.height > housing.pitch - settings.clearance.padToPad
+      rowPad.height = housing.pitch - settings.clearance.padToPad
       trimmed = true
-    if pad2.height > housing.pitch - settings.clearance.padToPad
-      pad2.height = housing.pitch - settings.clearance.padToPad
+    if columnPad.height > housing.pitch - settings.clearance.padToPad
+      columnPad.height = housing.pitch - settings.clearance.padToPad
       trimmed = true
 
-    width1: pad1.width
-    height1: pad1.height
-    distance1: pad1.distance
-    width2: pad2.width
-    height2: pad2.height
-    distance2: pad2.distance
+    width1: rowPad.width
+    height1: rowPad.height
+    distance1: rowPad.distance
+    width2: columnPad.width
+    height2: columnPad.height
+    distance2: columnPad.distance
     trimmed: trimmed
     courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
 
@@ -92,38 +115,38 @@ module.exports =
     params = @_gullwing pattern, housing
     params.Lmin = housing.rowSpan.min
     params.Lmax = housing.rowSpan.max
-    ipc1 = @_ipc7351 params
+    rowIpc = @_ipc7351 params
     params.Lmin = housing.columnSpan.min
     params.Lmax = housing.columnSpan.max
-    ipc2 = @_ipc7351 params
+    columnIpc = @_ipc7351 params
     trimmed = false
 
     # Trim if pad is under body
-    if ipc1.Gmin < (housing.bodyWidth.nom - 0.1) # TODO: determine, why 0.1
-      ipc1.Gmin = housing.bodyWidth.nom - 0.1
+    if rowIpc.Gmin < (housing.bodyWidth.nom - 0.1) # TODO: determine, why 0.1
+      rowIpc.Gmin = housing.bodyWidth.nom - 0.1
       trimmed = true
-    if ipc2.Gmin < (housing.bodyLength.nom - 0.1)
-      ipc2.Gmin = housing.bodyLength.nom - 0.1
+    if columnIpc.Gmin < (housing.bodyLength.nom - 0.1)
+      columnIpc.Gmin = housing.bodyLength.nom - 0.1
       trimmed = true
 
-    pad1 = @_pad ipc1, pattern
-    pad2 = @_pad ipc2, pattern
+    rowPad = @_pad rowIpc, pattern
+    columnPad = @_pad columnIpc, pattern
 
     # Check clearance violations
     settings = pattern.settings
-    if pad1.height > housing.pitch - settings.clearance.padToPad
-      pad1.height = housing.pitch - settings.clearance.padToPad
+    if rowPad.height > housing.pitch - settings.clearance.padToPad
+      rowPad.height = housing.pitch - settings.clearance.padToPad
       trimmed = true
-    if pad2.height > housing.pitch - settings.clearance.padToPad
-      pad2.height = housing.pitch - settings.clearance.padToPad
+    if columnPad.height > housing.pitch - settings.clearance.padToPad
+      columnPad.height = housing.pitch - settings.clearance.padToPad
       trimmed = true
 
-    width1: pad1.width
-    height1: pad1.height
-    distance1: pad1.distance
-    width2: pad2.width
-    height2: pad2.height
-    distance2: pad2.distance
+    width1: rowPad.width
+    height1: rowPad.height
+    distance1: rowPad.distance
+    width2: columnPad.width
+    height2: columnPad.height
+    distance2: columnPad.distance
     trimmed: trimmed
     courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
 
