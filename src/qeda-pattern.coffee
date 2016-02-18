@@ -43,7 +43,7 @@ class QedaPattern
   # Add line
   #
   line: (x1, y1, x2, y2) ->
-    @_addShape 'line', { x1: x1, y1: y1, x2: x2, y2: y2 }
+    if (x1 isnt x2) or (y1 isnt y2) then  @_addShape 'line', { x1: x1, y1: y1, x2: x2, y2: y2 }
     this
 
   #

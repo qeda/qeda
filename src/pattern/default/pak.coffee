@@ -22,7 +22,6 @@ module.exports = (pattern, element) ->
     width: padParams.width1
     height: padParams.height1
     layer: ['topCopper', 'topMask', 'topPaste']
-  #distance = padParams.distance
   pitch = housing.pitch
   leadCount = housing.leadCount
   bodyWidth = housing.bodyWidth.nom
@@ -31,13 +30,15 @@ module.exports = (pattern, element) ->
   tabLedge = housing.tabLedge.nom ? housing.tabLedge
   tabWidth = housing.tabWidth.nom ? housing.tabWidth
 
+  pins = element.pins
   # Pads on the left side
   pad.x = -padParams.distance1/2
   y = -pitch * (leadCount/2 - 0.5)
   for i in [1..leadCount]
     pad.y = y
-    pattern.pad i, pad
+    if pins[i]? then pattern.pad i, pad # Add only if exists
     y += pitch
+
 
   # Tab pad
   pad.width = padParams.width2
@@ -46,13 +47,21 @@ module.exports = (pattern, element) ->
   pad.y = 0
   pattern.pad leadCount + 1, pad
 
+  firstPad = pattern.pads[1]
+  lastPad = pattern.pads[leadCount + 1]
+
   # Silkscreen
   lineWidth = settings.lineWidth.silkscreen
-  x1 = leadSpan/2 - tabLedge
-  x2 = x1 - bodyWidth
-  y1 = -bodyLength/2 - lineWidth/2
-  y2 = -padParams.height2/2 - lineWidth/2 - settings.clearance.padToSilk
-  if y1 > y2 then y1 = y2
+  gap = lineWidth/2 + settings.clearance.padToSilk
+
+  x1 = firstPad.x - firstPad.width/2
+  x3 = lastPad.x - lastPad.width/2 - gap
+  x4 = leadSpan/2 - tabLedge
+  x2 = x4 - bodyWidth - lineWidth/2
+  y1 = firstPad.y - firstPad.height/2 - gap
+  y2 = -bodyLength/2 - lineWidth/2
+  y3 = lastPad.y - lastPad.height/2 - gap
+  ym = Math.min y2, y3
 
   pattern
     .layer 'topSilkscreen'
@@ -62,7 +71,19 @@ module.exports = (pattern, element) ->
       y: 0
       halign: 'center'
       valign: 'center'
-    .rectangle x1, y1, x2, -y1
+    .moveTo x1, y1
+    .lineTo x2, y1
+    .lineTo x2, y2
+    .lineTo x3, y2
+    .lineTo x3, ym
+    .lineTo x4, ym
+    .lineTo x4, y3
+    .moveTo x2, -y1
+    .lineTo x2, -y2
+    .lineTo x3, -y2
+    .lineTo x3, -ym
+    .lineTo x4, -ym
+    .lineTo x4, -y3
 
   # Assembly
   x1 = leadSpan/2 - tabLedge
@@ -73,7 +94,7 @@ module.exports = (pattern, element) ->
     .attribute 'value',
       text: pattern.name
       x: 0
-      y: y + settings.fontSize.value/2 + 0.5
+      y: bodyLength/2 + settings.fontSize.value/2 + 0.5
       halign: 'center'
       valign: 'center'
       visible: false
@@ -84,3 +105,41 @@ module.exports = (pattern, element) ->
   for i in [1..leadCount]
     pattern.line -leadSpan/2, y, x2, y
     y += pitch
+
+  # Courtyard
+  courtyard = padParams.courtyard
+  x1 = firstPad.x - firstPad.width/2 - courtyard
+  x2 = leadSpan/2 - tabLedge - bodyWidth - courtyard
+  x3 = lastPad.x - lastPad.width/2 - courtyard
+  x4 = leadSpan/2 - tabLedge + courtyard
+  x5 = lastPad.x + lastPad.width/2 + courtyard
+  y1 = firstPad.y - firstPad.height/2 - courtyard
+  y2 = -bodyLength/2 - lineWidth/2 - courtyard
+  y3 = lastPad.y - lastPad.height/2 - lineWidth/2 - settings.clearance.padToSilk
+  ym = Math.min y2, y3
+
+  pattern
+    .layer 'topCourtyard'
+    .lineWidth settings.lineWidth.courtyard
+    # Centroid origin marking
+    .circle 0, 0, 0.5
+    .line -0.7, 0, 0.7, 0
+    .line 0, -0.7, 0, 0.7
+    # Contour courtyard
+    .moveTo x1, y1
+    .lineTo x2, y1
+    .lineTo x2, y2
+    .lineTo x3, y2
+    .lineTo x3, ym
+    .lineTo x4, ym
+    .lineTo x4, y3
+    .lineTo x5, y3
+    .lineTo x5, -y3
+    .lineTo x4, -y3
+    .lineTo x4, -ym
+    .lineTo x3, -ym
+    .lineTo x3, -y2
+    .lineTo x2, -y2
+    .lineTo x2, -y1
+    .lineTo x1, -y1
+    .lineTo x1, y1

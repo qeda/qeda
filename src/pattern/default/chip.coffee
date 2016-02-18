@@ -64,8 +64,9 @@ module.exports = (pattern, element) ->
   bodyWidth = housing.bodyWidth.nom
   bodyLength = housing.bodyLength.nom
   leadWidth = housing.leadWidth.nom
+  gap = lineWidth/2 + settings.clearance.padToSilk
   x = bodyLength/2
-  y1 = padParams.height/2 + lineWidth/2 + settings.clearance.padToSilk
+  y1 = padParams.height/2 + gap
   y2 = leadWidth/2 + lineWidth/2
   y = Math.max y1, y2
   pattern

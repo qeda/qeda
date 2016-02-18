@@ -55,12 +55,13 @@ module.exports = (pattern, element) ->
     lineWidth = settings.lineWidth.silkscreen
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
+    gap = lineWidth/2 + settings.clearance.padToSilk
 
     x = bodyWidth/2 + lineWidth/2
     y1 = -bodyLength/2 - lineWidth/2
-    y2 = firstPad.y - firstPad.height/2 - lineWidth/2 - settings.clearance.padToSilk
+    y2 = firstPad.y - firstPad.height/2 - gap
     if y1 > y2 then y1 = y2
-    y3 = lastPad.y + lastPad.height/2 + lineWidth/2 + settings.clearance.padToSilk
+    y3 = lastPad.y + lastPad.height/2 + gap
 
     pattern
       .layer 'topSilkscreen'
