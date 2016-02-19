@@ -3,18 +3,24 @@ enclosure = require './common/enclosure'
 icon = Object.create
   width: 10
   height: 8
+  lineWidth: 0
   draw: (symbol, x, y) ->
     r = 1
     symbol
-      .circle x - @width/2 + r, y + @height/2 - r, r
-      .circle x + @width/2 - r, y + @height/2 - r, r
-      .line x - @width/2, y, x + @width/2, y
-      .line x, y, x, y - @height/2
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .circle -@width/2 + r, @height/2 - r, r
+      .circle @width/2 - r, @height/2 - r, r
+      .line -@width/2, 0, @width/2, 0
+      .line 0, 0, 0, -@height/2
+      .center 0, 0 # Restore default center point
 
 module.exports = (symbol, element) ->
   element.refDes = 'S'
   schematic = element.schematic
   settings = symbol.settings
+
+  icon.lineWidth = settings.lineWidth.thick
 
   if element.pins.length > 2 # With enclosure
     schematic.showPinNumbers = true
@@ -51,5 +57,4 @@ module.exports = (symbol, element) ->
         length: pinLength
         orientation: 'left'
         type: 'passive'
-      .lineWidth settings.lineWidth.thick
       .icon 0, 0, icon

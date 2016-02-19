@@ -15,20 +15,32 @@ class QedaPattern
     @pads = {}
     @x = 0
     @y = 0
+    @cx = 0
+    @cy = 0
 
   #
   # Add attribute
   #
   attribute: (name, attribute) ->
     attribute.name = name
+    attribute.x = @cx + attribute.x
+    attribute.y = @cy + attribute.y
     @attributes[name] = @_addShape 'attribute',  attribute
+    this
+
+  #
+  # Change center point
+  #
+  center: (x, y) ->
+    @cx = x
+    @cy = y
     this
 
   #
   # Add circle
   #
   circle: (x, y, radius) ->
-    @_addShape 'circle', { x: x, y: y, radius: radius }
+    @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius }
     this
 
   #
@@ -43,7 +55,8 @@ class QedaPattern
   # Add line
   #
   line: (x1, y1, x2, y2) ->
-    if (x1 isnt x2) or (y1 isnt y2) then  @_addShape 'line', { x1: x1, y1: y1, x2: x2, y2: y2 }
+    if (x1 isnt x2) or (y1 isnt y2)
+      @_addShape 'line', { x1: @cx + x1, y1: @cy + y1, x2: @cx + x2, y2: @cy + y2 }
     this
 
   #
@@ -73,6 +86,8 @@ class QedaPattern
   #
   pad: (name, pad) ->
     pad.name = name
+    pad.x = @cx + pad.x
+    pad.y = @cy + pad.y 
     @pads[name] = @_addPad pad
     this
 

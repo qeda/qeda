@@ -30,6 +30,9 @@ class QedaSymbol
     @left = @left.filter((v) => toRight.indexOf(v) is -1)
     @right = @right.filter((v) => toLeft.indexOf(v) is -1)
 
+    @cx = 0
+    @cy = 0
+
   #
   # Align number to grid
   #
@@ -40,7 +43,7 @@ class QedaSymbol
   # Add arc
   #
   arc: (x, y, radius, start, end) ->
-    @_addShape 'arc', { x: x, y: y, radius: radius, start: start, end: end }
+    @_addShape 'arc', { x: @cx + x, y: @cy + y, radius: radius, start: start, end: end }
     this
 
   #
@@ -53,10 +56,18 @@ class QedaSymbol
     this
 
   #
+  # Change center point
+  #
+  center: (x, y) ->
+    @cx = x
+    @cy = y
+    this
+
+  #
   # Add circle
   #
   circle: (x, y, radius) ->
-    @_addShape 'circle', { x: x, y: y, radius: radius }
+    @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius }
     this
 
   icon: (x, y, iconObj) ->
@@ -78,7 +89,8 @@ class QedaSymbol
   # Add line
   #
   line: (x1, y1, x2, y2) ->
-    @_addShape 'line', { x1: x1, y1: y1, x2: x2, y2: y2 }
+    if (x1 isnt x2) or (y1 isnt y2)
+      @_addShape 'line', { x1: @cx + x1, y1: @cy + y1, x2: @cx + x2, y2: @cy + y2 }
     this
 
   #
@@ -94,6 +106,8 @@ class QedaSymbol
   pin: (pin) ->
     pin.fontSize ?= @settings.fontSize.pin
     pin.space ?= @settings.space.pin
+    pin.x = @cx + pin.x
+    pin.y = @cy + pin.y
     @_addShape 'pin', pin
     this
 
@@ -114,7 +128,7 @@ class QedaSymbol
   # Add rectangle
   #
   rectangle: (x1, y1, x2, y2, fill = 'none') ->
-    @_addShape 'rectangle', { x1: x1, y1: y1, x2: x2, y2: y2, fill: fill }
+    @_addShape 'rectangle', { x1: @cx + x1, y1: @cy + y1, x2: @cx + x2, y2: @cy + y2, fill: fill }
     this
 
   #

@@ -1,4 +1,4 @@
-pattern: D2PAK
+pattern: PAK
 
 AA:
   bodyWidth: 8.38-9.65
@@ -8,8 +8,8 @@ AA:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
   height: 4.065-4.825
 
 AA-1:
@@ -20,8 +20,8 @@ AA-1:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
   height: 4.065-4.825
 
 AB:
@@ -32,8 +32,9 @@ AB:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 AB-1:
@@ -44,8 +45,9 @@ AB-1:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 AC:
@@ -56,8 +58,9 @@ AC:
   leadWidth: 1.143-1.626
   leadLength: 1.015-2.03
   leadSpan: 11.940-13.21
-  tabWidth: 6.35
-  tabLength: 8
+  tabWidth: 9.525-10.54
+  tabLength: 6.35
+  tabLedge: 1.27
   height: 1.27-2.03
 
 BA:
@@ -68,8 +71,9 @@ BA:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 BA-1:
@@ -80,8 +84,9 @@ BA-1:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 BB:
@@ -92,8 +97,9 @@ BB:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 BB-1:
@@ -104,8 +110,9 @@ BB-1:
   leadWidth: 0.508-0.991
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 CA:
@@ -116,8 +123,9 @@ CA:
   leadWidth: 0.508-0.914
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 CB:
@@ -128,6 +136,7 @@ CB:
   leadWidth: 0.508-0.914
   leadLength: 1.78-2.795
   leadSpan: 14.605-15.875
-  tabWidth: 6.86
-  tabLength: 6.225
+  tabWidth: 9.65-10.67
+  tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825

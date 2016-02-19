@@ -54,6 +54,7 @@ module.exports = (symbol, element, icon) ->
 
   # Pins on the top side
   dx = settings.fontSize.pin/2 + space
+  y = topY
   topPins = []
   topRects = []
   x = -step * top.length/2 + step/2
@@ -74,8 +75,8 @@ module.exports = (symbol, element, icon) ->
     # Check whether pin rectangle intersects other rectangles
     for r in rects
       if intersects [x1, x2], [r.x1, r.x2]
-        y2 = r.y2 - h - space
-        if y > y2 then y = y2 # Make symbol higher
+        y1 = r.y1 - h - space
+        if y > y1 then y = y1 # Make symbol higher
     x += step
     topRects.push
       x1: x1,
@@ -83,7 +84,7 @@ module.exports = (symbol, element, icon) ->
       x2: x2,
       y2: h
 
-  topY = symbol.alignToGrid topY, 'floor'
+  topY = symbol.alignToGrid y, 'floor'
 
   for r in topRects
     r.y1 += topY
