@@ -30,7 +30,8 @@ Features
   - QFN
   - QFP
   - SOP (and SOIC)
-  - SOT (SOT23)
+  - SOT (SOT23, SOT223)
+  - TO (DPAK, D2PAK etc.)
 * Generating libraries:
   - KiCad format
 
@@ -186,10 +187,7 @@ Coming soon
   - SOJ
   - SON
   - SOTFL
-  - SOT23
   - SOT143
-  - SOT223
-  - TO
 * Through-hole land pattern calculation:
   - Axial lead
   - DIP

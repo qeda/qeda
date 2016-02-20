@@ -52,7 +52,7 @@ module.exports =
     pad.courtyard = courtyard
     pad
 
-  d2pak: (pattern, housing) ->
+  pak: (pattern, housing) ->
     settings = pattern.settings
     params = @_gullwing pattern, housing
     params.Lmin = housing.leadSpan.min
@@ -173,6 +173,26 @@ module.exports =
     pad.trimmed = trimmed
     pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel];
     pad
+
+  sot: (pattern, housing) ->
+    settings = pattern.settings
+    housing.leadWidth = housing.leadWidth1
+    params = @_gullwing pattern, housing
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+    ipc1 = @_ipc7351 params
+    pad1 = @_pad ipc1, pattern
+    params.Wmin = housing.leadWidth2.min
+    params.Wmax = housing.leadWidth2.max
+    ipc2 = @_ipc7351 params
+    pad2 = @_pad ipc2, pattern
+
+    width1: pad1.width
+    height1: pad1.height
+    distance: pad1.distance
+    width2: pad2.width
+    height2: pad2.height
+    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
 
   _gullwing: (pattern, housing) ->
     settings = pattern.settings

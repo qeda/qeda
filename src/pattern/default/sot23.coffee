@@ -76,13 +76,12 @@ module.exports = (pattern, element) ->
       .lineTo  x, y1
       .lineTo -x, y1
       .lineTo -x, y2
-      .lineTo -x - firstPad.width, y2
+      .lineTo firstPad.x - firstPad.width/2, y2
       .moveTo  x, -y2
       .lineTo  x, -y1
       .lineTo -x, -y1
       .lineTo -x, -y2
       .line    x, -y3, x, y3
-      .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
 
     # Assembly
     x = bodyWidth/2

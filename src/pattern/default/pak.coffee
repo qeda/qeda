@@ -15,7 +15,7 @@ module.exports = (pattern, element) ->
   settings = pattern.settings
 
   # Calculate pad dimensions according to IPC-7351
-  padParams = calculator.d2pak pattern, housing
+  padParams = calculator.pak pattern, housing
   pad =
     type: 'smd'
     shape: 'rectangle'
