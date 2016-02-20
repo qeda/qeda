@@ -28,7 +28,7 @@ module.exports = (symbol, element) ->
     enclosure symbol, element, icon
   else # Simple symbol
     width = icon.width
-    height = icon.weight
+    height = icon.height
     pinLength = settings.pinLength ? 5
     symbol
       .attribute 'refDes',
@@ -56,5 +56,5 @@ module.exports = (symbol, element) ->
         y: height/2 - 1
         length: pinLength
         orientation: 'left'
-        type: 'passive'
+        passive: true
       .icon 0, 0, icon

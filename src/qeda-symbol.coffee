@@ -115,6 +115,10 @@ class QedaSymbol
   # Add polyline/polygon
   #
   poly: (points..., fill) ->
+    count = points.length/2
+    for i in [0..(count - 1)]
+      points[2*i] = @cx + points[2*i]
+      points[2*i + 1] = @cy + points[2*i + 1]
     @_addShape 'poly', { points: points, fill: fill }
     this
 

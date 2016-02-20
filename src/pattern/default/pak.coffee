@@ -103,7 +103,7 @@ module.exports = (pattern, element) ->
 
   y = -pitch * (leadCount/2 - 0.5)
   for i in [1..leadCount]
-    pattern.line -leadSpan/2, y, x2, y
+    if pins[i]? then pattern.line -leadSpan/2, y, x2, y
     y += pitch
 
   # Courtyard

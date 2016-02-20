@@ -258,7 +258,7 @@ class KicadGenerator
 
     switch obj.fill
       when 'foreground' then obj.fillStyle = 'f'
-      when 'backgroung' then obj.fillStyle = 'F'
+      when 'background' then obj.fillStyle = 'F'
       else obj.fillStyle = 'N'
     obj
 
