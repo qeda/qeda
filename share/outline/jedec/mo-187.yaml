@@ -1,0 +1,65 @@
+pattern: SOP
+
+AA:
+  bodyWidth: 2.8-3.2
+  bodyLength: 2.8-3.2
+  height: 1.1
+  leadSpan: 4.65-5.15
+  leadWidth: 0.22-0.38
+  leadLength: 0.4-0.8
+  leadCount: 8
+  pitch: 0.65
+
+AA-T:
+  bodyWidth: 2.8-3.2
+  bodyLength: 2.8-3.2
+  height: 1.1
+  leadSpan: 4.65-5.15
+  leadWidth: 0.22-0.38
+  leadLength: 0.4-0.8
+  leadCount: 8
+  pitch: 0.65
+  tabWidth: 0.75-2.5
+  tabLength: 0.75-2.5
+
+BA:
+  bodyWidth: 2.8-3.2
+  bodyLength: 2.8-3.2
+  height: 1.1
+  leadSpan: 4.65-5.15
+  leadWidth: 0.17-0.33
+  leadLength: 0.4-0.8
+  leadCount: 10
+  pitch: 0.5
+
+BA-T:
+  bodyWidth: 2.8-3.2
+  bodyLength: 2.8-3.2
+  height: 1.1
+  leadSpan: 4.65-5.15
+  leadWidth: 0.17-0.33
+  leadLength: 0.4-0.8
+  leadCount: 10
+  pitch: 0.5
+  tabWidth: 0.75-2.5
+  tabLength: 0.75-2.5
+
+CA:
+  bodyWidth: 2.1-2.5
+  bodyLength: 1.8-2.2
+  height: 1
+  leadSpan: 2.05-2.55
+  leadWidth: 0.17-0.33
+  leadLength: 0.15-0.4
+  leadCount: 8
+  pitch: 0.5
+
+DA:
+  bodyWidth: 2.6-3
+  bodyLength: 2.75-3.15
+  height: 1.35
+  leadSpan: 3.75-4.25
+  leadWidth: 0.15-0.3
+  leadLength: 0.2-0.6
+  leadCount: 8
+  pitch: 0.65
