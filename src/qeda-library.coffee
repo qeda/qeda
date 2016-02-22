@@ -160,11 +160,13 @@ class QedaLibrary
       unless typeof def.base is 'string' then def.base = def.base.toString()
       bases = def.base.replace(/\s+/g, '').split(',')
       delete def.base # We do not need this information now
+      exclude = ['abstract', 'alias'] # Exclude these fields from base object
       for base in bases
         baseElement = base
         if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
         baseDef = @load baseElement
-        if baseDef.abstract then delete baseDef.abstract # In order to not merge into def
+        for e in exclude
+          if baseDef[e]? then delete baseDef[e]
         @mergeObjects baseDef, def
         def = baseDef
     log.ok()
