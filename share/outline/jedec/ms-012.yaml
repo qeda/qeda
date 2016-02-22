@@ -1,12 +1,43 @@
 pattern: SOIC
 
 pitch: 1.27
-bodyWidth: 3.80-4.00
-leadLength: 0.40-1.27
-leadSpan: 5.80-6.20
+bodyWidth: 3.8-4
+leadLength: 0.4-1.27
+leadSpan: 5.8-6.2
 leadWidth: 0.31-0.51
 
 AA:
-  bodyLength: 4.80-5.00
+  bodyLength: 4.8-5
   height: 1.75
   leadCount: 8
+
+AB:
+  bodyLength: 8.55-8.75
+  height: 1.75
+  leadCount: 14
+
+AC:
+  bodyLength: 9.8-10
+  height: 1.75
+  leadCount: 16
+
+BA:
+  bodyLength: 4.8-5
+  height: 1.7
+  leadCount: 8
+  tabWidth: 1
+  tabLength: 1.5
+
+BB:
+  bodyLength: 8.55-8.75
+  height: 1.7
+  leadCount: 14
+  tabWidth: 1
+  tabLength: 1.5
+
+BC:
+  bodyLength: 9.8-10
+  height: 1.7
+  leadCount: 16
+  tabWidth: 1
+  tabLength: 1.5
