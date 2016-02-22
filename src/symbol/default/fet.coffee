@@ -40,7 +40,6 @@ icon = Object.create
 
     symbol.center 0, 0 # Restore default center point
 
-
 module.exports = (symbol, element) ->
   element.refDes = 'VT'
   schematic = element.schematic

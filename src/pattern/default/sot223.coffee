@@ -62,7 +62,6 @@ module.exports = (pattern, element) ->
     .attribute 'refDes',
       x: 0
       y: 0
-      angle: 90
       halign: 'center'
       valign: 'center'
     .moveTo  x, y3

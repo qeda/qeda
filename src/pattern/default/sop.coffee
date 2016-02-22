@@ -1,15 +1,19 @@
 sprintf = require('sprintf-js').sprintf
 calculator = require './common/calculator'
 dual = require './common/dual'
+tab = require './common/tab'
 
 module.exports = (pattern, element) ->
   housing = element.housing
   height = housing.height.max ? housing.height
+  leadCount = housing.leadCount
+  hasTab = housing.tabWidth? and housing.tabLength?
+  if hasTab then ++leadCount
   pattern.name ?= sprintf "SOP%dP%dX%d-%d",
     [housing.pitch*100
     housing.leadSpan.nom*100
     height*100
-    housing.leadCount]
+    leadCount]
     .map((v) => Math.round v)...
 
   settings = pattern.settings
@@ -27,6 +31,8 @@ module.exports = (pattern, element) ->
     layer: ['topCopper', 'topMask', 'topPaste']
 
   dual pattern, padParams
+  tab pattern, housing
+  
   firstPad = pattern.pads[1]
 
   # Silkscreen
@@ -46,7 +52,6 @@ module.exports = (pattern, element) ->
     .attribute 'refDes',
       x: 0
       y: 0
-      angle: 90
       halign: 'center'
       valign: 'center'
     .moveTo  x, y2

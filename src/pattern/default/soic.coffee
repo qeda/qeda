@@ -11,4 +11,5 @@ module.exports = (pattern, element) ->
     height*100
     housing.leadCount]
     .map((v) => Math.round v)...
+
   sop pattern, element

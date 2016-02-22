@@ -1,6 +1,7 @@
 sprintf = require('sprintf-js').sprintf
 calculator = require './common/calculator'
 quad = require './common/quad'
+tab = require './common/tab'
 
 module.exports = (pattern, element) ->
   housing = element.housing
@@ -41,21 +42,7 @@ module.exports = (pattern, element) ->
     layer: ['topCopper', 'topMask', 'topPaste']
 
   quad pattern, padParams
-
-  if hasTab
-    housing.tabOffset ?= '0, 0'
-    [x, y] = housing.tabOffset.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
-
-    tabNumber = leadCount
-    tabPad =
-      type: 'smd'
-      shape: 'rectangle'
-      width: housing.tabWidth.nom
-      height: housing.tabLength.nom
-      layer: ['topCopper', 'topMask', 'topPaste']
-      x: x
-      y: y
-    pattern.pad tabNumber, tabPad
+  tab pattern, housing
 
   firstPad = pattern.pads[1]
   lastPad = pattern.pads[2*(padParams.rowCount + padParams.columnCount)]

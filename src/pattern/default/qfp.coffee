@@ -1,10 +1,13 @@
 sprintf = require('sprintf-js').sprintf
 calculator = require './common/calculator'
 quad = require './common/quad'
+tab = require './common/tab'
 
 module.exports = (pattern, element) ->
   housing = element.housing
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
+  hasTab = housing.tabWidth? and housing.tabLength?
+  if hasTab then ++leadCount
   height = housing.height.max ? housing.height
   pattern.name ?= sprintf "QFP%dP%dX%dX%d-%d",
     [housing.pitch*100
@@ -38,6 +41,7 @@ module.exports = (pattern, element) ->
     layer: ['topCopper', 'topMask', 'topPaste']
 
   quad pattern, padParams
+  tab pattern, housing
 
   firstPad = pattern.pads[1]
   lastPad = pattern.pads[2*(padParams.rowCount + padParams.columnCount)]
