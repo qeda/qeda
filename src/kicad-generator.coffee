@@ -36,12 +36,31 @@ class KicadGenerator
     fs.closeSync fd
     log.ok()
 
+    log.start "KiCad library doc '#{@name}.dcm'"
+    fd = fs.openSync "#{dir}/#{@name}.dcm", 'w'
+    fs.writeSync fd, "EESchema-DOCLIB Version 2.0 Date: #{timestamp}\n"
+    for element in @library.elements
+      @_generateDoc fd, element
+    fs.writeSync fd, '# End Doc Library\n'
+    fs.closeSync fd
+    log.ok()
+
     for patternName, pattern of patterns
       log.start "KiCad footprint '#{patternName}.kicad_mod'"
       fd = fs.openSync "#{dir}/#{@name}.pretty/#{patternName}.kicad_mod", 'w'
       @_generatePattern fd, pattern
       fs.closeSync fd
       log.ok()
+
+  #
+  # Write doc entry to library doc file
+  #
+  _generateDoc: (fd, element) ->
+    fs.writeSync fd, "$CMP #{element.name}\n"
+    if element.description? then fs.writeSync fd, "D #{element.description}\n"
+    if element.keywords? then fs.writeSync fd, "K #{element.keywords}\n"
+    if element.datasheet? then fs.writeSync fd, "F #{element.datasheet}\n"
+    fs.writeSync fd, "$ENDCMP\n"
 
   #
   # Write pattern file
