@@ -15,15 +15,15 @@ class QedaElement
   constructor: (@library, definition) ->
     @mergeObjects this, definition
 
-    if @alias?
-      @aliases ?= []
-      @aliases.concat @alias.replace(/\s+/g, '').split(',')
     if @suffix?
       @aliases ?= []
+      newAliases = []
       suffixes = @suffix.replace(/\s+/g, '').split(',')
-      for suffix in suffixes
-        alias = @name + suffix
-        if @aliases.indexOf(alias) is -1 then @aliases.push alias
+      newAliases = newAliases.concat(suffixes.map (v) => @name + v)
+      for alias in @aliases
+        newAliases = newAliases.concat(suffixes.map (v) => alias + v)
+      newAliases = newAliases.filter (v) => @aliases.indexOf(v) is -1
+      @aliases = @aliases.concat newAliases
 
     # Find longest alias
     @longestAlias = @name

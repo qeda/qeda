@@ -84,12 +84,14 @@ class QedaLibrary
       suffixes = housing.suffix.replace(/\s+/g, '').split(',')
       def.name = name + suffixes[0]
       def.housing = housing
+      aliases = []
+      if def.alias?
+        for alias in def.alias.replace(/\s+/g, '').split(',')
+          aliases = aliases.concat(suffixes.map (v) => alias + v)
       if suffixes.length > 1
-        aliases = []
-        if def.alias?
-          aliases.concat def.alias.replace(/\s+/g, '').split(',')
-        aliases.concat(suffixes.map (v) => name + v)
-        def.aliases = aliases
+        aliases = aliases.concat(suffixes[1..].map (v) => name + v)
+
+      def.aliases = aliases
       newElement = new QedaElement(this, def)
       @elements.push newElement
       res.push newElement
