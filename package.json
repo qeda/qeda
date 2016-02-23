@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "js-yaml": "3.x.x",
+    "crc": "3.x.x",
     "mkdirp": "0.5.x",
     "nopt": "3.x.x",
     "sync-request": "3.x.x",

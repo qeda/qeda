@@ -194,12 +194,23 @@ class QedaLibrary
   render: ->
     @_rendered ?= false
     if @_rendered then return
-
+    patterns = {}
     for element in @elements
       element.render()
+      # Check for pattern names duplication
+      if element.pattern?
+        baseName = element.pattern.name
+        name = baseName
+        keys = Object.keys patterns
+        i = 1
+        while keys.indexOf(name) isnt -1
+          if element.pattern.isEqualTo(patterns[name])
+            break
+          else
+            name = "#{baseName}-#{i++}"
+            element.pattern.name = name
+        patterns[name] = element.pattern
 
     @_rendered = true
-
-
 
 module.exports = QedaLibrary

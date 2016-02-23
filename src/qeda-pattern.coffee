@@ -1,3 +1,5 @@
+crc = require 'crc'
+
 #
 # Class for footprint pattern
 #
@@ -7,6 +9,7 @@ class QedaPattern
   #
   constructor: (element) ->
     @settings = element.library.pattern
+    @crc32 = @_calcCrc element.housing
     @shapes = []
     @currentLayer = ['topCopper']
     @currentLineWidth = 0
@@ -42,6 +45,12 @@ class QedaPattern
   circle: (x, y, radius) ->
     @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius }
     this
+
+  #
+  # Check whether two patterns are equal
+  #
+  isEqualTo: (pattern) ->
+    @crc32 is pattern.crc32
 
   #
   # Set current layer(s)
@@ -87,7 +96,7 @@ class QedaPattern
   pad: (name, pad) ->
     pad.name = name
     pad.x = @cx + pad.x
-    pad.y = @cy + pad.y 
+    pad.y = @cy + pad.y
     @pads[name] = @_addPad pad
     this
 
@@ -170,6 +179,15 @@ class QedaPattern
     obj.lineWidth ?= @currentLineWidth
     @shapes.push obj
     obj
+
+  _calcCrc: (housing) ->
+    sum = 0
+    exclude = ['suffix']
+    for key in Object.keys(housing)
+      if exclude.indexOf(key) isnt -1 then continue
+      sum = crc.crc32 key, sum
+      sum = crc.crc32 housing[key], sum
+    sum
 
   #
   # Merge two objects
