@@ -5,13 +5,15 @@ tab = require './common/tab'
 
 module.exports = (pattern, element) ->
   housing = element.housing
+  settings = pattern.settings
   height = housing.height.max ? housing.height
   leadCount = housing.leadCount
   hasTab = housing.tabWidth? and housing.tabLength?
   if hasTab then ++leadCount
-  pattern.name ?= sprintf "SON%dP%dX%d-%d",
+  pattern.name ?= sprintf "SON%dP%dX%d-%d%s",
     [housing.pitch*100
     housing.leadSpan.nom*100
     height*100
     leadCount]
-    .map((v) => Math.round v)...
+    .map((v) => Math.round v)...,
+    settings.densityLevel

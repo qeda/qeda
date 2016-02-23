@@ -3,16 +3,16 @@ calculator = require './common/calculator'
 
 module.exports = (pattern, element) ->
   housing = element.housing
+  settings = pattern.settings
   height = housing.height.max ? housing.height
-  pattern.name ?= sprintf "TO%dP%dX%dX%d-%d",
+  pattern.name ?= sprintf "TO%dP%dX%dX%d-%d%s",
     [housing.pitch*100
     housing.bodyLength.nom*100
     housing.bodyWidth.nom*100
     height*100
     housing.leadCount]
-    .map((v) => Math.round v)...
-
-  settings = pattern.settings
+    .map((v) => Math.round v)...,
+    settings.densityLevel
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.pak pattern, housing

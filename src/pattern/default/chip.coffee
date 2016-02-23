@@ -32,15 +32,15 @@ getName = (element) ->
 
 module.exports = (pattern, element) ->
   housing = element.housing
+  settings = pattern.settings
   height = housing.height.max ? housing.height
-  pattern.name ?= sprintf "%s%02d%02dX%d",
+  pattern.name ?= sprintf "%s%02d%02dX%d%s",
     getName(element),
     [housing.bodyLength.nom*10
     housing.bodyWidth.nom*10
     height*100]
-    .map((v) => Math.round v)...
-
-  settings = pattern.settings
+    .map((v) => Math.round v)...,
+    settings.densityLevel
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.chip pattern, housing

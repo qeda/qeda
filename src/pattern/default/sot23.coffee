@@ -5,15 +5,15 @@ log = require '../../qeda-log'
 
 module.exports = (pattern, element) ->
   housing = element.housing
+  settings = pattern.settings
   height = housing.height.max ? housing.height
-  pattern.name ?= sprintf "SOT%dP%dX%d-%d",
+  pattern.name ?= sprintf "SOT%dP%dX%d-%d%s",
     [housing.pitch*100
     housing.leadSpan.nom*100
     height*100
     housing.leadCount]
-    .map((v) => Math.round v)...
-
-  settings = pattern.settings
+    .map((v) => Math.round v)...,
+    settings.densityLevel
 
   if (housing.leadCount is 6) or (housing.leadCount is 8)
     sop pattern, element

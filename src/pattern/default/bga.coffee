@@ -7,7 +7,7 @@ module.exports = (pattern, element) ->
   settings = pattern.settings
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
   height = housing.height.max ? housing.height
-  pattern.name ?= sprintf "BGA%d%s%dP%dX%d_%dX%dX%d",
+  pattern.name ?= sprintf "BGA%d%s%dP%dX%d_%dX%dX%d%s",
     leadCount,
     if settings.ball.collapsible then 'C' else 'N'
     [housing.pitch*100
@@ -16,7 +16,8 @@ module.exports = (pattern, element) ->
     housing.bodyLength.nom*100
     housing.bodyWidth.nom*100
     height*100]
-    .map((v) => Math.round v)...
+    .map((v) => Math.round v)...,
+    settings.densityLevel
 
   padParams = calculator.bga pattern, housing
   padParams.rowPitch = housing.rowPitch ? housing.pitch
