@@ -38,7 +38,7 @@ class KicadGenerator
 
     log.start "KiCad library doc '#{@name}.dcm'"
     fd = fs.openSync "#{dir}/#{@name}.dcm", 'w'
-    fs.writeSync fd, "EESchema-DOCLIB Version 2.0 Date: #{timestamp}\n"
+    fs.writeSync fd, "EESchema-DOCLIB Version 2.0 Date: #{timestamp}\n#\n"
     for element in @library.elements
       @_generateDoc fd, element
     fs.writeSync fd, '# End Doc Library\n'
@@ -56,11 +56,18 @@ class KicadGenerator
   # Write doc entry to library doc file
   #
   _generateDoc: (fd, element) ->
+    fields = ['description', 'keywords', 'datasheet']
+    keys = ['D', 'K', 'F']
+    empty = true
+    for field in fields
+      if element[field]?
+        empty = false
+        break
+    if empty then return
     fs.writeSync fd, "$CMP #{element.name}\n"
-    if element.description? then fs.writeSync fd, "D #{element.description}\n"
-    if element.keywords? then fs.writeSync fd, "K #{element.keywords}\n"
-    if element.datasheet? then fs.writeSync fd, "F #{element.datasheet}\n"
-    fs.writeSync fd, "$ENDCMP\n"
+    for i in [0..(fields.length - 1)]
+      if element[fields[i]]? then fs.writeSync fd, "#{keys[i]} #{element[fields[i]]}\n"
+    fs.writeSync fd, '$ENDCMP\n#\n'
 
   #
   # Write pattern file
