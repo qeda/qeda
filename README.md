@@ -19,7 +19,7 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
-  - Capacitors, Resistors, Inductors, Pushbuttons
+  - Capacitors, Resistors, Inductors, Diodes, Pushbuttons
   - Special symbols (ground, power supply etc.)
   - GOST style alternative
 * Borrowing packages dimensions from standards:
@@ -27,6 +27,7 @@ Features
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
   - BGA
   - Chip
+  - Molded body
   - QFN
   - QFP
   - SOP (and SOIC)
@@ -181,7 +182,6 @@ Coming soon
   - LGA
   - LCC
   - MELF
-  - Molded body
   - Oscillator
   - PLCC
   - SOD

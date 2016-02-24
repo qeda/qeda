@@ -26,20 +26,12 @@ module.exports =
     side = height * 0.15
 
     # Dimensions according to IPC-7351
-    params =
-      Tmin: housing.leadLength.min
-      Tmax: housing.leadLength.max
-      Wmin: housing.leadWidth.min
-      Wmax: housing.leadWidth.max
-
-      F: settings.tolerance.fabrication
-      P: settings.tolerance.placement
-      Jt: pattern.toe ? toe
-      Jh: pattern.heel ? heel
-      Js: pattern.side ? side
-
-      Lmin: housing.leadSpan.min
-      Lmax: housing.leadSpan.max
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe
+    params.Jh = pattern.heel ? heel
+    params.Js = pattern.side ? side
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
 
     ipc = @_ipc7351 params
     ipc.clearance = settings.clearance.padToPad
@@ -49,6 +41,50 @@ module.exports =
     courtyard = Math.round(courtyard / 0.01) * 0.01
     if courtyard > 0.25 then courtyard = 0.25
     pad.courtyard = courtyard
+    pad
+
+  melf: (pattern, housing) ->
+    settings = pattern.settings
+
+    toe = { L: 0.2, N: 0.4, M: 0.6 }
+    heel = { L: 0.02, N: 0.1, M: 0.2 }
+    side = { L: 0.01, N: 0.05, M: 0.1 }
+
+    # Dimensions according to IPC-7351
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe[settings.densityLevel]
+    params.Jh = pattern.heel ? heel[settings.densityLevel]
+    params.Js = pattern.side ? side[settings.densityLevel]
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+
+    ipc = @_ipc7351 params
+    ipc.clearance = settings.clearance.padToPad
+    pad = @_pad ipc, pattern
+
+    pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+    pad
+
+  molded: (pattern, housing) ->
+    settings = pattern.settings
+
+    toe = { L: 0.07, N: 0.15, M: 0.25 }
+    heel = { L: 0.2, N: 0.5, M: 0.8 }
+    side = { L: -0.1, N: -0.05, M: 0.01 }
+
+    # Dimensions according to IPC-7351
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe[settings.densityLevel]
+    params.Jh = pattern.heel ? heel[settings.densityLevel]
+    params.Js = pattern.side ? side[settings.densityLevel]
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+
+    ipc = @_ipc7351 params
+    ipc.clearance = settings.clearance.padToPad
+    pad = @_pad ipc, pattern
+
+    pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
     pad
 
   pak: (pattern, housing) ->
@@ -185,17 +221,11 @@ module.exports =
     heel = { L: 0.25, N: 0.35, M: 0.45 }
     side = if housing.pitch > 0.625 then { L: 0.01, N: 0.03, M: 0.05 } else { L: -0.04, N: -0.02, M: 0.01 }
 
-    # Dimensions according to IPC-7351
-    Tmin: housing.leadLength.min
-    Tmax: housing.leadLength.max
-    Wmin: housing.leadWidth.min
-    Wmax: housing.leadWidth.max
-
-    F: settings.tolerance.fabrication
-    P: settings.tolerance.placement
-    Jt: pattern.toe ? toe[settings.densityLevel]
-    Jh: pattern.heel ? heel[settings.densityLevel]
-    Js: pattern.side ? side[settings.densityLevel]
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe[settings.densityLevel]
+    params.Jh = pattern.heel ? heel[settings.densityLevel]
+    params.Js = pattern.side ? side[settings.densityLevel]
+    params
 
   _ipc7351: (params) ->
     # Calculation according to IPC-7351
@@ -237,18 +267,13 @@ module.exports =
     side = if housing.pullBack? then 0.0 else -0.04
 
     # Dimensions according to IPC-7351
-    Tmin: housing.leadLength.min
-    Tmax: housing.leadLength.max
-    Wmin: housing.leadWidth.min
-    Wmax: housing.leadWidth.max
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe
+    params.Jh = pattern.heel ? heel
+    params.Js = pattern.side ? side
+    params
 
-    F: settings.tolerance.fabrication
-    P: settings.tolerance.placement
-    Jt: pattern.toe ? toe
-    Jh: pattern.heel ? heel
-    Js: pattern.side ? side
-
-  _pad: (ipc, pattern, pitch) ->
+  _pad: (ipc, pattern) ->
     padWidth = (ipc.Zmax - ipc.Gmin) / 2
     padHeight = ipc.Xmax
     padDistance = (ipc.Zmax + ipc.Gmin) / 2
@@ -288,3 +313,14 @@ module.exports =
     height: padHeight
     distance: padDistance
     trimmed: trimmed
+
+  _params: (pattern, housing) ->
+    settings = pattern.settings
+    # Dimensions according to IPC-7351
+    Tmin: housing.leadLength.min
+    Tmax: housing.leadLength.max
+    Wmin: housing.leadWidth.min
+    Wmax: housing.leadWidth.max
+
+    F: settings.tolerance.fabrication
+    P: settings.tolerance.placement

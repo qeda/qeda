@@ -43,7 +43,12 @@ module.exports = (pattern, element) ->
     settings.densityLevel
 
   # Calculate pad dimensions according to IPC-7351
-  padParams = calculator.chip pattern, housing
+  if housing.molded
+    padParams = calculator.molded pattern, housing
+  else if housing.melf
+    padParams = calculator.melf pattern, housing
+  else
+    padParams = calculator.chip pattern, housing
 
   pad =
     type: 'smd'
@@ -65,9 +70,9 @@ module.exports = (pattern, element) ->
   bodyLength = housing.bodyLength.nom
   leadWidth = housing.leadWidth.nom
   gap = lineWidth/2 + settings.clearance.padToSilk
-  x = bodyLength/2
+  x = bodyLength/2 + lineWidth/2
   y1 = padParams.height/2 + gap
-  y2 = leadWidth/2 + lineWidth/2
+  y2 = bodyWidth/2 + lineWidth/2
   y = Math.max y1, y2
   pattern
     .layer 'topSilkscreen'
@@ -79,20 +84,21 @@ module.exports = (pattern, element) ->
       valign: 'center'
     .line -x, -y, x, -y
     .line -x, y, x, y
-  if leadWidth < bodyWidth and y1 < y2 # Molded
+
+  if y1 < y2 # Molded
     pattern
      .line -x, -y1, -x, -y2
      .line  x, -y1,  x, -y2
      .line -x,  y1, -x,  y2
      .line  x,  y1,  x,  y2
+
   if housing.polarized
     x2 = padParams.distance/2 + padParams.width/2 + lineWidth/2 + settings.clearance.padToSilk
-    y = Math.min y1, y2
     pattern
-     .moveTo -x, -y
-     .lineTo -x2, -y
-     .lineTo -x2, y
-     .lineTo -x, y
+     .moveTo -x, -y1
+     .lineTo -x2, -y1
+     .lineTo -x2, y1
+     .lineTo -x, y1
      .polarityMark -x2 - lineWidth/2, 0
 
   # Assembly
@@ -109,12 +115,25 @@ module.exports = (pattern, element) ->
       halign: 'center'
       valign: 'center'
       visible: false
-    .rectangle -x, -y, x, y
+  if housing.polarized
+    d = 1
+    pattern
+      .moveTo -x, -y
+      .lineTo x, -y
+      .lineTo x, y
+      .lineTo -x + d, y
+      .lineTo -x, y - d
+      .lineTo -x, -y
+  else
+    pattern.rectangle -x, -y, x, y
 
   # Courtyard
   courtyard = padParams.courtyard
-  x = (padParams.width + padParams.distance)/2 + courtyard
-  y = padParams.height/2 + courtyard
+  x1 = (padParams.width + padParams.distance)/2 + courtyard
+  x2 = bodyLength/2 + courtyard
+  y1 = padParams.height/2 + courtyard
+  y2 = bodyWidth/2 + courtyard
+  ym = Math.max y1, y2
   pattern
     .layer 'topCourtyard'
     .lineWidth settings.lineWidth.courtyard
@@ -123,4 +142,16 @@ module.exports = (pattern, element) ->
     .line -0.7, 0, 0.7, 0
     .line 0, -0.7, 0, 0.7
     # Contour courtyard
-    .rectangle -x, -y, x, y
+    .moveTo -x1, -y1
+    .lineTo -x2, -y1
+    .lineTo -x2, -ym
+    .lineTo x2, -ym
+    .lineTo x2, -y1
+    .lineTo x1, -y1
+    .lineTo x1, y1
+    .lineTo x2, y1
+    .lineTo x2, ym
+    .lineTo -x2, ym
+    .lineTo -x2, y1
+    .lineTo -x1, y1
+    .lineTo -x1, -y1
