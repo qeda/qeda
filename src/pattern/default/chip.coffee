@@ -3,52 +3,49 @@ calculator = require './common/calculator'
 dual = require './common/dual'
 
 abbrs =
-  CAPC: ['capacitor']
-  CAPM: ['capacitor', 'molded']
-  CAPMP: ['capacitor', 'molded', 'polarized']
-  DIOM: ['diode', 'molded']
-  DIOMELF: ['diode', 'melf']
-  INDC: ['inductor']
-  INDM: ['inductor', 'molded']
-  LEDC: ['led']
-  LEDM: ['led', 'molded']
-  RESC: ['resistor']
-  RESDFN: ['resistor', 'no-lead']
-  RESMELF: ['resistor', 'melf']
-  RESM: ['resistor', 'molded']
-  RESSC: ['resistor', 'concave']
+  CAP: 'capacitor'
+  DIO: 'diode'
+  IND: 'inductor'
+  LED: 'led'
+  RES: 'resistor'
 
-getName = (element) ->
-  name = 'U'
+getAbbr = (element) ->
+  abbr = 'U'
   unless element.keywords? then return name
   keywords = element.keywords.replace(/\s+/g, '').split(',')
-  abbrWeight = 0
-  for abbr, classes of abbrs
-    weight = keywords.filter((a) => classes.indexOf(a) isnt -1).length
-    if weight > abbrWeight
-      abbrWeight = weight
-      name = abbr
-  name
+  for k, v of abbrs
+    if keywords.indexOf(v) isnt -1
+      abbr = k
+      break
+  abbr
 
 module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
   height = housing.height.max ? housing.height
+  abbr = getAbbr element
+
+  # Calculate pad dimensions according to IPC-7351
+  if housing.molded
+    abbr += 'M'
+    padParams = calculator.molded pattern, housing
+  else if housing.melf
+    abbr += 'MELF'
+    padParams = calculator.melf pattern, housing
+  else if housing.nolead
+    abbr += 'DFN'
+    #padParams = calculator.dfn pattern, housing
+  else
+    abbr += 'C'
+    padParams = calculator.chip pattern, housing
+
   pattern.name ?= sprintf "%s%02d%02dX%d%s",
-    getName(element),
+    abbr,
     [housing.bodyLength.nom*10
     housing.bodyWidth.nom*10
     height*100]
     .map((v) => Math.round v)...,
     settings.densityLevel
-
-  # Calculate pad dimensions according to IPC-7351
-  if housing.molded
-    padParams = calculator.molded pattern, housing
-  else if housing.melf
-    padParams = calculator.melf pattern, housing
-  else
-    padParams = calculator.chip pattern, housing
 
   pad =
     type: 'smd'

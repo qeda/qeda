@@ -30,6 +30,8 @@ class QedaSymbol
     @left = @left.filter((v) => toRight.indexOf(v) is -1)
     @right = @right.filter((v) => toLeft.indexOf(v) is -1)
 
+    @x = 0
+    @y = 0
     @cx = 0
     @cy = 0
 
@@ -94,10 +96,25 @@ class QedaSymbol
     this
 
   #
+  # Line to current position
+  #
+  lineTo: (x, y) ->
+    @line @x, @y, x, y
+    @moveTo x, y
+
+  #
   # Set current line width
   #
   lineWidth: (lineWidth) ->
     @currentLineWidth = lineWidth
+    this
+
+  #
+  # Change current position
+  #
+  moveTo: (x, y) ->
+    @x = x
+    @y = y
     this
 
   #

@@ -33,7 +33,7 @@ class QedaElement
 
     @refDes = 'REF' # Should be overriden in element handler
     @symbols = [] # Array of symbols (one for single part or several for multi-part)
-    if @housing? then @pattern = new QedaPattern this
+
 
     @pins = [] # Array of pin objects
     @pinGroups = [] # Array of pin groups
@@ -60,6 +60,12 @@ class QedaElement
     for key, value of @groups
       @pinGroups[key] = @_concatenateGroups value
 
+    if @schematic?.options?
+      options = @schematic.options.replace(/\s+/g, '').split(',')
+      for option in options
+        @schematic[option] = true;
+
+    # Create symbol(s)
     if @parts? # Multi-part element
       for name, part of @parts
         @symbols.push new QedaSymbol(this, @parseMultiple(part), name)
@@ -70,6 +76,15 @@ class QedaElement
       else
         part.push key for key of @pinout
       @symbols.push new QedaSymbol(this, part)
+
+    # Create pattern
+    if @housing?
+      if @housing.options?
+        options = @housing.options.replace(/\s+/g, '').split(',')
+        for option in options
+          @housing[option] = true;
+      @pattern = new QedaPattern this
+
 
   #
   # Check whether number is float
