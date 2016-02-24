@@ -54,6 +54,7 @@ CLI
 Run in terminal (note that component names are case insensitive but power and ground nets are not):
 
 ```
+qeda reset
 qeda add altera/5m1270zt144
 qeda add analog/ad9393
 qeda add st/l3gd20h
@@ -135,6 +136,7 @@ _Available YAML fields will be documented soon._
 Then run in terminal:
 
 ```
+qeda reset
 qeda add dummy
 qeda generate dummy
 ```

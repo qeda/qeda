@@ -13,24 +13,28 @@ function displayUsage() {
 'Usage:\n\
   qeda [COMMAND]... [OPTION]\n\
 \n\
-Examples: \n\
-  qeda add ti/iso721\n\
-  qeda config output kicad\n\
-  qeda generate mylib\n\
-\n\
 Options:\n\
   -h, --help            Display this information\n\
   --version             Display version information\n\
   -v, --verbose         Display more information while processing\n\
 \n\
 Commands:\n\
+  reset                 Delete current config (use with attention!)\n\
   add COMPONENT         Add component definition to config (with preloading\n\
                         if necessary)\n\
   load COMPONENT        Load component definition from global repository\n\
-  power NET             Add power supply symbol\n\
-  ground NET            Add ground symbol\n\
+  power NET             Add power supply symbol to config\n\
+  ground NET            Add ground symbol to config\n\
   config PARAM [VALUE]  Set/get config parameter\n\
   generate LIBRARY      Generate libraries according to config\n\
+\n\
+Examples: \n\
+  qeda reset\n\
+  qeda add ti/iso721\n\
+  qeda power +5V_DC\n\
+  qeda ground GND_DC\n\
+  qeda config output kicad\n\
+  qeda generate mylib\n\
 \n\
 For additional information please refer to:\n\
 <http://qeda.org>'
@@ -61,8 +65,7 @@ function readYaml() {
   if (fs.existsSync(yamlName)) {
     try {
       res = yaml.safeLoad(fs.readFileSync(yamlName));
-    }
-    catch(error) {
+    } catch(error) {
       console.error(yamlName + ': ' + error.message);
       process.exit(1);
     }
@@ -73,12 +76,22 @@ function readYaml() {
 function writeYaml(obj) {
   var yamlName = '.qeda.yaml';
   try {
-    var data = yaml.safeDump(obj);
+    var data = yaml.safeDump(obj, {sortKeys: true});
     fs.writeFileSync(yamlName, data);
-  }
-  catch(error) {
+  } catch(error) {
     console.error(yamlName + ': ' + error.message);
     process.exit(1);
+  }
+}
+
+function resetConfig() {
+  try {
+    fs.unlinkSync('.qeda.yaml');
+  } catch(error) {
+    if (error.code === 'EACCES') {
+      console.error('Error: Access denied, try to use \'sudo\'');
+      process.exit(1);
+    }
   }
 }
 
@@ -202,6 +215,9 @@ if (args.argv.remain.length < 1) {
 
 var command = args.argv.remain[0];
 switch (command) {
+  case 'reset':
+    resetConfig();
+    break;
   case 'add':
     if (args.argv.remain.length < 2) {
       displayError('Missing component name after "add" command');
