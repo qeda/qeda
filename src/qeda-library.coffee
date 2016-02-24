@@ -15,6 +15,9 @@ class QedaLibrary
   constructor: (config = {}) ->
     @output = 'kicad'
 
+    @connection =
+      timeout: 5000
+
     @symbol =
       style: 'default'
       gridSize: 2.5
@@ -141,7 +144,7 @@ class QedaLibrary
       elementYaml = elementYaml.split('/').map((a) -> encodeURIComponent(a)).join('/')
       try
         res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml,
-          timeout: 3000
+          timeout: @connection.timeout
       catch error
         log.error error.message
       if res.statusCode is 200

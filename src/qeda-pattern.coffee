@@ -185,8 +185,7 @@ class QedaPattern
     exclude = ['suffix']
     for key in Object.keys(housing)
       if exclude.indexOf(key) isnt -1 then continue
-      sum = crc.crc32 key, sum
-      sum = crc.crc32 housing[key], sum
+      sum = crc.crc32 "#{key}=#{housing[key]}", sum
     sum
 
   #
