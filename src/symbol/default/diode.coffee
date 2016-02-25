@@ -7,8 +7,8 @@ module.exports = (symbol, element) ->
   schematic.showPinNumbers ?= false
 
   pinLength = settings.pinLength ? 2.5
-  width = 5
-  height = 5
+  width = 4
+  height = 6
   pinLength = (2*symbol.alignToGrid(width/2 + pinLength, 'ceil') - width) / 2
 
   symbol

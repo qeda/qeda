@@ -1,0 +1,15 @@
+pattern: SOT23
+
+bodyWidth: 1.2-1.4
+bodyLength: 2.8-3.04
+leadSpan: 2.1-2.64
+leadWidth: 0.3-0.5
+leadLength: 0.4-0.6
+pitch: 0.95
+leadCount: 3
+
+AA:
+  height: 0.75-1.17
+
+AB:
+  height: 0.89-1.12
