@@ -37,6 +37,8 @@ module.exports = (pattern, element) ->
   else if housing.nolead
     abbr += 'DFN'
     #padParams = calculator.dfn pattern, housing
+  else if housing.cae
+    padParams = calculator.crystal pattern, housing
   else
     abbr += 'C'
     padParams = calculator.chip pattern, housing
@@ -81,17 +83,30 @@ module.exports = (pattern, element) ->
       y: 0
       halign: 'center'
       valign: 'center'
-    .line -x, -y, x, -y
-    .line -x, y, x, y
-
-  if y1 < y2 # Molded
+  if housing.cae
+    d = y2 - y1
     pattern
-     .line -x, -y1, -x, -y2
-     .line  x, -y1,  x, -y2
-     .line -x,  y1, -x,  y2
-     .line  x,  y1,  x,  y2
+      .moveTo -x, -y1
+      .lineTo -x + d, -y2
+      .lineTo x, -y2
+      .lineTo x, -y1
+      .moveTo -x, y1
+      .lineTo -x + d, y2
+      .lineTo x, y2
+      .lineTo x, y1
+  else
+    pattern
+      .line -x, -y, x, -y
+      .line -x, y, x, y
 
-  if housing.polarized
+    if y1 < y2 # Molded
+      pattern
+       .line -x, -y1, -x, -y2
+       .line  x, -y1,  x, -y2
+       .line -x,  y1, -x,  y2
+       .line  x,  y1,  x,  y2
+
+  if housing.polarized or housing.cae
     x2 = padParams.distance/2 + padParams.width/2 + lineWidth/2 + settings.clearance.padToSilk
     pattern
      .moveTo -x, -y1
@@ -113,7 +128,17 @@ module.exports = (pattern, element) ->
       halign: 'center'
       valign: 'center'
       visible: false
-  if housing.polarized
+  if housing.cae
+    d = Math.min bodyWidth/4, bodyLength/4
+    pattern
+      .moveTo -x, -y + d
+      .lineTo -x + d, -y
+      .lineTo x, -y
+      .lineTo x, y
+      .lineTo -x + d, y
+      .lineTo -x, y - d
+      .lineTo -x, -y + d
+  else if housing.polarized
     d = Math.min 1, bodyWidth/2, bodyLength/2
     pattern
       .moveTo -x, -y

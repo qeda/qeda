@@ -43,6 +43,29 @@ module.exports =
     pad.courtyard = courtyard
     pad
 
+  crystal: (pattern, housing) ->
+    settings = pattern.settings
+    height = housing.height.max ? housing.height
+
+    toe = if height >= 10 then { L: 0.4, N: 0.7, M: 1 }  else { L: 0.3, N: 0.5, M: 0.7 }
+    heel = if height >= 10 then { L: -0.1, N: -0.05, M: 0 }  else { L: -0.2, N: -0.1, M: 0 }
+    side = if height >= 10 then { L: 0.4, N: 0.5, M: 0.6 }  else { L: 0.3, N: 0.4, M: 0.5 }
+
+    # Dimensions according to IPC-7351
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe[settings.densityLevel]
+    params.Jh = pattern.heel ? heel[settings.densityLevel]
+    params.Js = pattern.side ? side[settings.densityLevel]
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+
+    ipc = @_ipc7351 params
+    ipc.clearance = settings.clearance.padToPad
+    pad = @_pad ipc, pattern
+
+    pad.courtyard = { L: 0.25, N: 0.50, M: 1 }[settings.densityLevel]
+    pad
+
   melf: (pattern, housing) ->
     settings = pattern.settings
 
