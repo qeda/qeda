@@ -19,8 +19,8 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
-  - Capacitors, Resistors, Inductors, Diodes, Pushbuttons
-  - Special symbols (ground, power supply etc.)
+  - Capacitors, diodes, FETs, inductors, pushbuttons, resistors, transistors
+  - Power supply and ground symbols
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
@@ -170,8 +170,6 @@ Coming soon
 
 * Generating libraries:
   - Eagle XML format
-  - DipTrace format
-  - gEDA format
 * SMD land pattern calculation:
   - CFP
   - CGA
