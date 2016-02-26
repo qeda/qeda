@@ -67,6 +67,8 @@ module.exports =
 
   molded: (pattern, housing) ->
     settings = pattern.settings
+    housing.leadWidth ?= housing.bodyWidth
+    housing.leadSpan ?= housing.bodyLength
 
     toe = { L: 0.07, N: 0.15, M: 0.25 }
     heel = { L: 0.2, N: 0.5, M: 0.8 }

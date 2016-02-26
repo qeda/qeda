@@ -25,6 +25,8 @@ module.exports = (pattern, element) ->
   height = housing.height.max ? housing.height
   abbr = getAbbr element
 
+  if housing.polarized and (abbr isnt 'DIO') and (abbr isnt 'LED') then abbr += 'P'
+
   # Calculate pad dimensions according to IPC-7351
   if housing.molded
     abbr += 'M'
