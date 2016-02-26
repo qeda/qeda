@@ -1,44 +1,47 @@
 enclosure = require './common/enclosure'
+Icon = require './common/icon'
 
-icon = Object.create
-  width: 12
-  height: 9
-  lineWidth: 0
-  draw: (symbol, x, y) ->
+class FetIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 12
+    @height = 9
+    super symbol, element
+
+  draw: (x, y) ->
     space = 1.5
     gap = 1
     arrowWidth = 1.5
-    symbol
+    @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
       .line -space, -@height/2, -space, @height/2
-    if @depletion
+    if @schematic.depletion
       symbol.line 0, -@height/2, 0, @height/2
     else # Enhancement
       x = 0
       y = -@height/2
       l = (@height - 2*gap)/3
       for i in [1..3]
-        symbol.line 0, y, 0, y + l
+        @symbol.line 0, y, 0, y + l
         y += l + gap
 
     y = (@height + gap)/3
-    symbol
+    @symbol
       .line -@width/2, 0, -space, 0
       .line 0, y, @width/2, y
       .line @width/2, y, @width/2, @height/2
       .line 0, -y, @width/2, -y
       .line @width/2, -y, @width/2, -@height/2
 
-    if @bulk
-      symbol
+    if @schematic.bulk
+      @symbol
         .line 0, 0, @width/4, 0
         .line @width/4, 0, @width/4, y
 
-    if @n then symbol.poly 0, 0, @width/8, arrowWidth/2, @width/8, -arrowWidth/2, 'background'
-    if @p then symbol.poly @width/8, arrowWidth/2, @width/4, 0, @width/8, -arrowWidth/2, 'background'
+    if @schematic.n then @symbol.poly 0, 0, @width/8, arrowWidth/2, @width/8, -arrowWidth/2, 'background'
+    if @schematic.p then @symbol.poly @width/8, arrowWidth/2, @width/4, 0, @width/8, -arrowWidth/2, 'background'
 
-    symbol.center 0, 0 # Restore default center point
+    @symbol.center 0, 0 # Restore default center point
 
 module.exports = (symbol, element) ->
   element.refDes = 'VT'
@@ -49,12 +52,7 @@ module.exports = (symbol, element) ->
 
   schematic.showPinNumbers = true
 
-  options = if schematic.options? then schematic.options.replace(/\s+/g, '').split(',') else []
-  for option in options
-    icon[option.toLowerCase()] = true
-  icon.lineWidth = settings.lineWidth.thick
-  icon.width = 2 * symbol.alignToGrid(icon.width/2, 'ceil')
-  icon.height = 2 * symbol.alignToGrid(icon.height/2, 'ceil')
+  icon = new FetIcon(symbol, element)
 
   for k, v of pinGroups
     switch k
@@ -77,15 +75,16 @@ module.exports = (symbol, element) ->
       .attribute 'refDes',
         x: 0
         y: -r - 1
-        halign: 'center'
+        halign: 'right'
         valign: 'bottom'
       .attribute 'name',
         x: r + 1
         y: 0
         halign: 'left'
         valign: 'center'
-      .icon 0, 0, icon
+      .lineWidth settings.lineWidth.thick
       .circle 0, 0, r
+    icon.draw 0, 0
 
     # Gate
     y = 0

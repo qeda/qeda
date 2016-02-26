@@ -73,7 +73,7 @@ class QedaSymbol
     this
 
   icon: (x, y, iconObj) ->
-    iconObj.draw this, x, y
+    iconObj.draw x, y
     this
 
   #

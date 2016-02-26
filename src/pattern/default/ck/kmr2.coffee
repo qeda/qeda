@@ -52,7 +52,7 @@ module.exports = (pattern, element) ->
   # Assembly
   x = bodyWidth/2
   y = bodyLength/2
-  d = 1
+  d = Math.min 1, bodyWidth/2, bodyLength/2
   pattern
     .layer 'topAssembly'
     .lineWidth settings.lineWidth.assembly

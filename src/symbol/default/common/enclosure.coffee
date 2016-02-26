@@ -207,7 +207,7 @@ module.exports = (symbol, element, icon) ->
     .lineWidth settings.lineWidth.thick
     .rectangle 0, 0, width, height, 'foreground'
 
-  if icon? then symbol.icon -leftX, -topY, icon
+  if icon? then icon.draw -leftX, -topY
 
   # Pins
   for pin in leftPins

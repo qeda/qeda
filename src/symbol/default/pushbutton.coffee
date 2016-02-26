@@ -1,12 +1,15 @@
 enclosure = require './common/enclosure'
+Icon = require './common/icon'
 
-icon = Object.create
-  width: 10
-  height: 8
-  lineWidth: 0
-  draw: (symbol, x, y) ->
+class PushbuttonIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 10
+    @height = 8
+    super symbol, element
+
+  draw: (x, y) ->
     r = 1
-    symbol
+    @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
       .circle -@width/2 + r, @height/2 - r, r
@@ -20,7 +23,7 @@ module.exports = (symbol, element) ->
   schematic = element.schematic
   settings = symbol.settings
 
-  icon.lineWidth = settings.lineWidth.thick
+  icon = new PushbuttonIcon(symbol, element)
 
   if element.pins.length > 2 # With enclosure
     schematic.showPinNumbers = true
@@ -57,4 +60,4 @@ module.exports = (symbol, element) ->
         length: pinLength
         orientation: 'left'
         passive: true
-      .icon 0, 0, icon
+    icon.draw 0, 0

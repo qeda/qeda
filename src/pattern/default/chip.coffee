@@ -101,7 +101,6 @@ module.exports = (pattern, element) ->
   # Assembly
   x = bodyLength/2
   y = bodyWidth/2
-  d = 1
   pattern
     .layer 'topAssembly'
     .lineWidth settings.lineWidth.assembly
@@ -113,7 +112,7 @@ module.exports = (pattern, element) ->
       valign: 'center'
       visible: false
   if housing.polarized
-    d = 1
+    d = Math.min 1, bodyWidth/2, bodyLength/2
     pattern
       .moveTo -x, -y
       .lineTo x, -y

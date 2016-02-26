@@ -15,15 +15,23 @@ module.exports = (pattern, element) ->
     .map((v) => Math.round v)...,
     settings.densityLevel
 
-  if (housing.leadCount is 6) or (housing.leadCount is 8)
+  if (housing.leadCount % 2) is 0 # Even
     sop pattern, element
-  else
+  else # Odd
     # Calculate pad dimensions according to IPC-7351
     padParams = calculator.sop pattern, housing
 
     switch housing.leadCount
-      when 3 then leftCount = 1
-      when 5 then leftCount = 3
+      when 3
+        leftCount = 2
+        leftPitch = housing.pitch * 2
+        rightCount = 1
+        rightPitch = housing.pitch
+      when 5
+        leftCount = 3
+        leftPitch = housing.pitch
+        rightCount = 2
+        rightPitch = housing.pitch * 2
       else log.error "Wrong lead count (#{housing.leadCount})"
 
     pad =
@@ -35,18 +43,19 @@ module.exports = (pattern, element) ->
 
     # Pads on the left side
     pad.x = -padParams.distance / 2
-    y = -housing.pitch * (leftCount/2 - 0.5)
+    y = -leftPitch * (leftCount/2 - 0.5)
     for i in [1..leftCount]
       pad.y = y
       pattern.pad i, pad
-      y += housing.pitch
+      y += leftPitch
 
     # Pads on the right side
     pad.x = padParams.distance / 2
-    pad.y = housing.pitch
-    pattern.pad leftCount + 1, pad
-    pad.y -= 2*housing.pitch
-    pattern.pad leftCount + 2, pad
+    y = rightPitch * (rightCount/2 - 0.5)
+    for i in [1..rightCount]
+      pad.y = y
+      pattern.pad leftCount + i, pad
+      y -= rightPitch
 
     firstPad = pattern.pads[1]
     lastPad = pattern.pads[housing.leadCount]
@@ -60,8 +69,10 @@ module.exports = (pattern, element) ->
     x = bodyWidth/2 + lineWidth/2
     y1 = -bodyLength/2 - lineWidth/2
     y2 = firstPad.y - firstPad.height/2 - gap
-    if y1 > y2 then y1 = y2
-    y3 = lastPad.y + lastPad.height/2 + gap
+    #if y1 > y2 then y1 = y2
+    y3 = lastPad.y - lastPad.height/2 - gap
+    ym1 = Math.min y1, y2
+    ym2 = Math.min y1, y3
 
     pattern
       .layer 'topSilkscreen'
@@ -71,21 +82,23 @@ module.exports = (pattern, element) ->
         y: 0
         halign: 'center'
         valign: 'center'
-      .moveTo  x, y2
-      .lineTo  x, y1
-      .lineTo -x, y1
+      .moveTo  x, ym2
+      .lineTo  x, ym1
+      .lineTo -x, ym1
       .lineTo -x, y2
       .lineTo firstPad.x - firstPad.width/2, y2
-      .moveTo  x, -y2
-      .lineTo  x, -y1
-      .lineTo -x, -y1
+      .moveTo  x, -ym2
+      .lineTo  x, -ym1
+      .lineTo -x, -ym1
       .lineTo -x, -y2
-      .line    x, -y3, x, y3
+      .lineTo -x, -ym1
+
+      #.line    x, -y3, x, y3
 
     # Assembly
     x = bodyWidth/2
     y = bodyLength/2
-    d = 1
+    d = Math.min 1, bodyWidth/2, bodyLength/2
     pattern
       .layer 'topAssembly'
       .lineWidth settings.lineWidth.assembly
@@ -105,11 +118,16 @@ module.exports = (pattern, element) ->
 
     # Courtyard
     courtyard = padParams.courtyard
-    x1 = -bodyWidth/2 - courtyard
+    x1 = firstPad.x - firstPad.width/2 - courtyard
+    x2 = -bodyWidth/2 - courtyard
+    x3 = -x2
+    x4 = lastPad.x + lastPad.width/2 + courtyard
     y1 = -bodyLength/2 - courtyard
-    x2 = firstPad.x - firstPad.width/2 - courtyard
-    y2 = firstPad.y - firstPad.height/2 - courtyard
-    if y1 > y2 then y1 = y2
+    yl2 = firstPad.y - firstPad.height/2 - courtyard
+    yr2 = lastPad.y - lastPad.height/2 - courtyard
+    yl3 = -yl2
+    yr3 = -yr2
+    y4 = -y1
     pattern
       .layer 'topCourtyard'
       .lineWidth settings.lineWidth.courtyard
@@ -118,17 +136,32 @@ module.exports = (pattern, element) ->
       .line -0.7, 0, 0.7, 0
       .line 0, -0.7, 0, 0.7
       # Contour courtyard
-      .moveTo  x1,  y1
+      .moveTo  x1,  yl2
+      .lineTo x2, yl2
+      .lineTo x2, y1
+      .lineTo x3, y1
+      .lineTo x3, yr2
+      .lineTo x4, yr2
+      .lineTo x4, yr3
+      .lineTo x3, yr3
+      .lineTo x3, y4
+      .lineTo x2, y4
+      .lineTo x2, yl3
+      .lineTo x1, yl3
+      .lineTo x1, yl2
+      ###
+      .moveTo  x1,  ym1
       .lineTo  x1,  y2
       .lineTo  x2,  y2
       .lineTo  x2, -y2
       .lineTo  x1, -y2
       .lineTo  x1, -y2
-      .lineTo  x1, -y1
-      .lineTo -x1, -y1
+      .lineTo  x1, -ym2
+      .lineTo -x1, -ym2
       .lineTo -x1, -y2
       .lineTo -x2, -y2
       .lineTo -x2,  y2
       .lineTo -x1,  y2
       .lineTo -x1,  y1
       .lineTo  x1,  y1
+      ###
