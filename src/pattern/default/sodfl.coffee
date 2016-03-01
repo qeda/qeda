@@ -1,7 +1,6 @@
-sprintf = require('sprintf-js').sprintf
-chip = require './chip'
+twopin = require './common/twopin'
 
 module.exports = (pattern, element) ->
   housing = element.housing
   housing.sodfl = true
-  chip pattern, element
+  twopin pattern, element

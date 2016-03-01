@@ -1,7 +1,9 @@
 sprintf = require('sprintf-js').sprintf
+assembly = require './common/assembly'
 calculator = require './common/calculator'
-quad = require './common/quad'
-tab = require './common/tab'
+copper = require './common/copper'
+courtyard = require './common/courtyard'
+silkscreen = require './common/silkscreen'
 
 module.exports = (pattern, element) ->
   housing = element.housing
@@ -41,84 +43,9 @@ module.exports = (pattern, element) ->
     distance: padParams.distance2
     layer: ['topCopper', 'topMask', 'topPaste']
 
-  quad pattern, padParams
-  tab pattern, housing
-
-  firstPad = pattern.pads[1]
-  lastPad = pattern.pads[2*(padParams.rowCount + padParams.columnCount)]
-
-  # Silkscreen
-  lineWidth = settings.lineWidth.silkscreen
-  bodyWidth = housing.bodyWidth.nom
-  bodyLength = housing.bodyLength.nom
-  gap = lineWidth/2 + settings.clearance.padToSilk
-
-  x = -bodyWidth/2 - lineWidth/2
-  y = -bodyLength/2 - lineWidth/2
-
-  x1 = lastPad.x - lastPad.width/2 - gap
-  if x > x1 then x = x1
-  y1 = firstPad.y - firstPad.height/2 - gap
-  if y > y1 then y = y1
-
-  pattern
-    .layer 'topSilkscreen'
-    .lineWidth lineWidth
-    .attribute 'refDes',
-      x: 0
-      y: 0
-      halign: 'center'
-      valign: 'center'
-    .moveTo  x1,  y
-    .lineTo  x,   y
-
-    .moveTo -x1,  y
-    .lineTo -x,   y
-    .lineTo -x,   y1
-
-    .moveTo  x1, -y
-    .lineTo  x,  -y
-    .lineTo  x,  -y1
-
-    .moveTo -x1, -y
-    .lineTo -x,  -y
-    .lineTo -x,  -y1
-
-    .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
-
-  # Assembly
-  x = bodyWidth/2
-  y = bodyLength/2
-  d = Math.min 1, bodyWidth/2, bodyLength/2
-  pattern
-    .layer 'topAssembly'
-    .lineWidth settings.lineWidth.assembly
-    .attribute 'value',
-      text: pattern.name
-      x: 0
-      y: y + settings.fontSize.value/2 + 0.5
-      halign: 'center'
-      valign: 'center'
-      visible: false
-    .moveTo -x + d, -y
-    .lineTo  x, -y
-    .lineTo  x,  y
-    .lineTo -x,  y
-    .lineTo -x, -y + d
-    .lineTo -x + d, -y
-
-  # Courtyard
-  courtyard = padParams.courtyard
-
-  x = Math.min(-bodyWidth/2, firstPad.x - firstPad.width/2) - courtyard
-  y = Math.min(-bodyLength/2, lastPad.y - lastPad.height/2) - courtyard
-
-  pattern
-    .layer 'topCourtyard'
-    .lineWidth settings.lineWidth.courtyard
-    # Centroid origin marking
-    .circle 0, 0, 0.5
-    .line -0.7, 0, 0.7, 0
-    .line 0, -0.7, 0, 0.7
-    # Contour courtyard
-    .rectangle -x, -y, x, y
+  copper.quad pattern, padParams
+  silkscreen.qfn pattern, housing
+  assembly.polarized pattern, housing
+  courtyard.qfn pattern, housing, padParams.courtyard
+  
+  copper.tab pattern, housing
