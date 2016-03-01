@@ -19,14 +19,16 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connectors
-  - Capacitors, diodes, FETs, inductors, pushbuttons, resistors, transistors
+  - Capacitors, crystals, diodes, FETs, inductors, pushbuttons, resistors, transistors
   - Power supply and ground symbols
   - GOST style alternative
 * Borrowing packages dimensions from standards:
   - JEDEC (partially)
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
+  - Aluminum Electrolytic Capacitor
   - BGA
   - Chip
+  - Crystal
   - Molded body
   - QFN
   - QFP
@@ -175,7 +177,6 @@ Coming soon
   - CGA
   - CQFP
   - Chip array
-  - Crystal
   - DFN
   - LGA
   - LCC

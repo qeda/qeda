@@ -3,8 +3,10 @@ Icon = require './common/icon'
 
 class FetIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 12
-    @height = 9
+    width = 12
+    height = 9
+    @width = 2 * symbol.alignToGrid(width/2, 'ceil')
+    @height = 2 * symbol.alignToGrid(height/2, 'ceil')
     super symbol, element
 
   draw: (x, y) ->

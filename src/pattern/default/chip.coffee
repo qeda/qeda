@@ -37,7 +37,7 @@ module.exports = (pattern, element) ->
   else if housing.nolead
     abbr += 'DFN'
     #padParams = calculator.dfn pattern, housing
-  else if housing.cae
+  else if housing.cae or housing.crystal
     padParams = calculator.crystal pattern, housing
   else
     abbr += 'C'
