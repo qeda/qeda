@@ -1,6 +1,5 @@
 sprintf = require('sprintf-js').sprintf
 twopin = require './common/twopin'
-chip = require './chip'
 
 module.exports = (pattern, element) ->
   housing = element.housing
