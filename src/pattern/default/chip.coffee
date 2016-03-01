@@ -8,6 +8,7 @@ abbrs =
   IND: 'inductor'
   LED: 'led'
   RES: 'resistor'
+  XTAL: 'crystal'
 
 getAbbr = (element) ->
   abbr = 'U'
@@ -27,34 +28,82 @@ module.exports = (pattern, element) ->
 
   if housing.polarized and (abbr isnt 'DIO') and (abbr isnt 'LED') then abbr += 'P'
 
-  if housing.cae or housing.crystal
+  if housing.cae
+    abbr += 'AE'
+    option = 'crystal' # CAE is the same as crystal
+    size = sprintf "%dX%d",
+      [housing.bodyWidth.nom*100
+      height*100]
+      .map((v) => Math.round v)...
+  if housing.concave
+    abbr += 'SC'
+    option = 'concave'
+    size = sprintf "%02dX%02dX%d",
+      [housing.bodyLength.nom*10
+      housing.bodyWidth.nom*10
+      height*100]
+      .map((v) => Math.round v)...
+  else if housing.crystal
     option = 'crystal'
-  else if housing.molded
-    abbr += 'M'
-    option = 'molded'
-  else if housing.melf
-    abbr += 'MELF'
-    option = 'melf'
+    size = sprintf "%02dX%02dX%d",
+      [housing.bodyLength.nom*10
+      housing.bodyWidth.nom*10
+      height*100]
+      .map((v) => Math.round v)...
   else if housing.dfn
     abbr += 'DFN'
     option = 'dfn'
+    size = sprintf "%02dX%02dX%d",
+      [housing.bodyLength.nom*10,
+      housing.bodyWidth.nom*10,
+      height*100]
+      .map((v) => Math.round v)...
+  else if housing.molded
+    abbr += 'M'
+    option = 'molded'
+    size = sprintf "%02d%02dX%d",
+      [housing.bodyLength.nom*10,
+      housing.bodyWidth.nom*10,
+      height*100]
+      .map((v) => Math.round v)...
+  else if housing.melf
+    abbr += 'MELF'
+    option = 'melf'
+    size = sprintf "%02d%02d",
+      [housing.bodyLength.nom*10,
+      housing.bodyDiameter.nom*10]
+      .map((v) => Math.round v)...
   else if housing.sod
+    abbr = 'SOD'
     option = 'sod'
+    size = sprintf "%02d%02dX%d",
+      [housing.leadSpan.nom*10
+      housing.bodyWidth.nom*10
+      height*100]
+      .map((v) => Math.round v)...
   else if housing.sodfl
+    abbr = 'SODFL'
     option = 'sodfl'
+    size = sprintf "%02d%02dX%d",
+      [housing.leadSpan.nom*10
+      housing.bodyWidth.nom*10
+      height*100]
+      .map((v) => Math.round v)...
   else
     abbr += 'C'
     option = 'chip'
+    size = sprintf "%02d%02dX%d",
+      [housing.bodyLength.nom*10,
+      housing.bodyWidth.nom*10,
+      height*100]
+      .map((v) => Math.round v)...
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.chip pattern, housing, option
 
-  pattern.name ?= sprintf "%s%02d%02dX%d%s",
+  pattern.name ?= sprintf "%s%s%s",
     abbr,
-    [housing.bodyLength.nom*10
-    housing.bodyWidth.nom*10
-    height*100]
-    .map((v) => Math.round v)...,
+    size,
     settings.densityLevel
 
   pad =
@@ -136,6 +185,7 @@ module.exports = (pattern, element) ->
       visible: false
   if housing.cae
     d = Math.min bodyWidth/4, bodyLength/4
+    diam = housing.bodyDiameter.nom ? housing.bodyDiameter
     pattern
       .moveTo -x, -y + d
       .lineTo -x + d, -y
@@ -144,6 +194,7 @@ module.exports = (pattern, element) ->
       .lineTo -x + d, y
       .lineTo -x, y - d
       .lineTo -x, -y + d
+    if diam? then  pattern.circle 0, 0, diam/2
   else if housing.polarized
     d = Math.min 1, bodyWidth/2, bodyLength/2
     pattern

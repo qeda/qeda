@@ -136,7 +136,7 @@ class QedaElement
       [handler, error] = @_firstHandler paths
       for symbol in @symbols
         log.start "Schematic symbol for '" + @name + (if symbol.name? then ': ' + symbol.name else '') + "'"
-        if error then log.error "'#{@schematic.symbol}': " + error.message
+        if error then log.exception error
         handler symbol, this
         log.ok()
 
@@ -169,7 +169,7 @@ class QedaElement
         process.cwd() + "/pattern/#{@housing.pattern.toLowerCase()}"
       ]
       [handler, error] = @_firstHandler paths
-      if error then log.error "'#{@housing.pattern}': " + error.message
+      if error then log.exception error
       handler @pattern, this
       log.ok()
 

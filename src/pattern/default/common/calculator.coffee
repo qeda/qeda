@@ -37,7 +37,7 @@ module.exports =
         toes =  if height >= 10 then { M: 1,   N:  0.7,  L:  0.4,}  else { M: 0.7, N:  0.5, L:  0.3 }
         heels = if height >= 10 then { M: 0,   N: -0.05, L: -0.1 }  else { M: 0,   N: -0.1, L: -0.2 }
         sides = if height >= 10 then { M: 0.6, N:  0.5,  L:  0.4 }  else { M: 0.5, N:  0.4, L:  0.3 }
-        courtyards = { M: 1, N: 0.5, L: 0.25 }
+        courtyard = { M: 1, N: 0.5, L: 0.25 }[settings.densityLevel]
       when 'dfn'
         toes =       { M: 0.6, N: 0.4,  L: 0.2 }
         heels =      { M: 0.2, N: 0.1,  L: 0.02}

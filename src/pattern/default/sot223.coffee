@@ -1,7 +1,6 @@
 sprintf = require('sprintf-js').sprintf
 calculator = require './common/calculator'
 sop = require './sop'
-log = require '../../qeda-log'
 
 module.exports = (pattern, element) ->
   housing = element.housing

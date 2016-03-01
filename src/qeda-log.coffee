@@ -9,6 +9,11 @@ module.exports =
     console.error 'Error: ' + message
     process.exit 1
 
+  exception: (obj) ->
+    @_indent 'stderr'
+    console.error "#{obj}"
+    process.exit 1
+
   ok: ->
     --@_level
 
