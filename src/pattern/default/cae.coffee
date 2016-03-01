@@ -13,11 +13,11 @@ module.exports = (pattern, element) ->
       nom: nom
       max: nom + tol/2
       tol: tol
-  housing.cae = true
   pattern.name ?= sprintf "CAPAE%dX%d%s",
     [housing.bodyWidth.nom*100
     height*100]
     .map((v) => Math.round v)...,
     settings.densityLevel
 
+  housing.cae = true
   chip pattern, element

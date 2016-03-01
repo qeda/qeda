@@ -5,7 +5,6 @@ module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
   height = housing.height.max ? housing.height
-  housing.crystal = true
   abbr = 'XTAL'
   pattern.name ?= sprintf "%s%02dX%02dX%d%s",
     abbr,
@@ -15,4 +14,5 @@ module.exports = (pattern, element) ->
     .map((v) => Math.round v)...,
     settings.densityLevel
 
+  housing.crystal = true
   chip pattern, element

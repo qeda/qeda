@@ -14,16 +14,55 @@ module.exports =
     height: padSize
     courtyard: courtyard
 
-  chip: (pattern, housing) ->
+  chip: (pattern, housing, option = 'chip') ->
     housing.leadWidth ?= housing.bodyWidth
     housing.leadSpan ?= housing.bodyLength
 
     settings = pattern.settings
 
-    height = housing.height.nom ? housing.height
-    toe = height * 0.5
-    heel = height * 0.1
-    side = height * 0.15
+    switch option
+      when 'chip'
+        height = housing.height.nom ? housing.height
+        toe = height * 0.5
+        heel = height * 0.1
+        side = height * 0.15
+        courtyard = height * 0.4
+        courtyard = Math.round(courtyard / 0.01) * 0.01
+        if courtyard > 0.25 then courtyard = 0.25
+      when 'concave'
+        toes =       { M:  0.55, N:  0.45, L:  0.35 }
+        heels =      { M: -0.05, N: -0.07, L: -0.1  }
+        sides =      { M: -0.05, N: -0.07, L: -0.1  }
+      when 'crystal'
+        toes =  if height >= 10 then { M: 1,   N:  0.7,  L:  0.4,}  else { M: 0.7, N:  0.5, L:  0.3 }
+        heels = if height >= 10 then { M: 0,   N: -0.05, L: -0.1 }  else { M: 0,   N: -0.1, L: -0.2 }
+        sides = if height >= 10 then { M: 0.6, N:  0.5,  L:  0.4 }  else { M: 0.5, N:  0.4, L:  0.3 }
+        courtyards = { M: 1, N: 0.5, L: 0.25 }
+      when 'dfn'
+        toes =       { M: 0.6, N: 0.4,  L: 0.2 }
+        heels =      { M: 0.2, N: 0.1,  L: 0.02}
+        sides =      { M: 0.1, N: 0.05, L: 0.01 }
+      when 'melf'
+        toes =       { M: 0.6, N: 0.4,  L: 0.2  }
+        heels =      { M: 0.2, N: 0.1,  L: 0.02 }
+        sides =      { M: 0.1, N: 0.05, L: 0.01 }
+      when 'molded'
+        toes =       { M: 0.25, N:  0.15, L:  0.07 }
+        heels =      { M: 0.8,  N:  0.5,  L:  0.2  }
+        sides =      { M: 0.01, N: -0.05, L: -0.1  }
+      when 'sod'
+        toes =       { M: 0.55, N: 0.35, L: 0.15 }
+        heels =      { M: 0.45, N: 0.35, L: 0.25 }
+        sides =      { M: 0.05, N: 0.03, L: 0.01 }
+      when 'sodfl'
+        toes =       { M: 0.3,  N: 0.2,  L:  0.1  }
+        heels =      { M: 0,    N: 0,    L:  0    }
+        sides =      { M: 0.05, N: 0,    L: -0.05 }
+        courtyard =  { M: 0.2,  N: 0.15, L:  0.12 }[settings.densityLevel]
+
+    toe ?= toes[settings.densityLevel]
+    heel ?= heels[settings.densityLevel]
+    side ?= sides[settings.densityLevel]
 
     # Dimensions according to IPC-7351
     params = @_params pattern, housing
@@ -37,79 +76,7 @@ module.exports =
     ipc.clearance = settings.clearance.padToPad
     pad = @_pad ipc, pattern
 
-    courtyard = height * 0.4
-    courtyard = Math.round(courtyard / 0.01) * 0.01
-    if courtyard > 0.25 then courtyard = 0.25
-    pad.courtyard = courtyard
-    pad
-
-  crystal: (pattern, housing) ->
-    settings = pattern.settings
-    height = housing.height.max ? housing.height
-
-    toe = if height >= 10 then { L: 0.4, N: 0.7, M: 1 }  else { L: 0.3, N: 0.5, M: 0.7 }
-    heel = if height >= 10 then { L: -0.1, N: -0.05, M: 0 }  else { L: -0.2, N: -0.1, M: 0 }
-    side = if height >= 10 then { L: 0.4, N: 0.5, M: 0.6 }  else { L: 0.3, N: 0.4, M: 0.5 }
-
-    # Dimensions according to IPC-7351
-    params = @_params pattern, housing
-    params.Jt = pattern.toe ? toe[settings.densityLevel]
-    params.Jh = pattern.heel ? heel[settings.densityLevel]
-    params.Js = pattern.side ? side[settings.densityLevel]
-    params.Lmin = housing.leadSpan.min
-    params.Lmax = housing.leadSpan.max
-
-    ipc = @_ipc7351 params
-    ipc.clearance = settings.clearance.padToPad
-    pad = @_pad ipc, pattern
-
-    pad.courtyard = { L: 0.25, N: 0.50, M: 1 }[settings.densityLevel]
-    pad
-
-  melf: (pattern, housing) ->
-    settings = pattern.settings
-
-    toe = { L: 0.2, N: 0.4, M: 0.6 }
-    heel = { L: 0.02, N: 0.1, M: 0.2 }
-    side = { L: 0.01, N: 0.05, M: 0.1 }
-
-    # Dimensions according to IPC-7351
-    params = @_params pattern, housing
-    params.Jt = pattern.toe ? toe[settings.densityLevel]
-    params.Jh = pattern.heel ? heel[settings.densityLevel]
-    params.Js = pattern.side ? side[settings.densityLevel]
-    params.Lmin = housing.leadSpan.min
-    params.Lmax = housing.leadSpan.max
-
-    ipc = @_ipc7351 params
-    ipc.clearance = settings.clearance.padToPad
-    pad = @_pad ipc, pattern
-
-    pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
-    pad
-
-  molded: (pattern, housing) ->
-    settings = pattern.settings
-    housing.leadWidth ?= housing.bodyWidth
-    housing.leadSpan ?= housing.bodyLength
-
-    toe = { L: 0.07, N: 0.15, M: 0.25 }
-    heel = { L: 0.2, N: 0.5, M: 0.8 }
-    side = { L: -0.1, N: -0.05, M: 0.01 }
-
-    # Dimensions according to IPC-7351
-    params = @_params pattern, housing
-    params.Jt = pattern.toe ? toe[settings.densityLevel]
-    params.Jh = pattern.heel ? heel[settings.densityLevel]
-    params.Js = pattern.side ? side[settings.densityLevel]
-    params.Lmin = housing.leadSpan.min
-    params.Lmax = housing.leadSpan.max
-
-    ipc = @_ipc7351 params
-    ipc.clearance = settings.clearance.padToPad
-    pad = @_pad ipc, pattern
-
-    pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+    pad.courtyard = courtyard ? params.courtyard
     pad
 
   pak: (pattern, housing) ->
@@ -135,7 +102,7 @@ module.exports =
     width2: tabPad.width
     height2: tabPad.height
     distance2: tabPad.distance
-    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+    courtyard: params.courtyard
 
   qfn: (pattern, housing) ->
     settings = pattern.settings
@@ -168,7 +135,7 @@ module.exports =
     height2: columnPad.height
     distance2: columnPad.distance
     trimmed: rowPad.trimmed or columnPad.trimmed
-    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+    courtyard: params.courtyard
 
   qfp: (pattern, housing) ->
     settings = pattern.settings
@@ -197,7 +164,7 @@ module.exports =
     height2: columnPad.height
     distance2: columnPad.distance
     trimmed: rowPad.trimmed or columnPad.trimmed
-    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+    courtyard: params.courtyard
 
   sop: (pattern, housing) ->
     settings = pattern.settings
@@ -210,7 +177,7 @@ module.exports =
     ipc.body = housing.bodyWidth.nom
     pad = @_pad ipc, pattern
 
-    pad.courtyard = { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel];
+    pad.courtyard = params.courtyard
     pad
 
   sot: (pattern, housing) ->
@@ -236,20 +203,20 @@ module.exports =
     distance: pad1.distance
     width2: pad2.width
     height2: pad2.height
-    courtyard: { L: 0.12, N: 0.25, M: 0.50 }[settings.densityLevel]
+    courtyard: params.courtyard
     trimmed: pad1.trimmed or pad2.trimmed
 
   _gullwing: (pattern, housing) ->
     settings = pattern.settings
 
-    toe = { L: 0.15, N: 0.35, M: 0.55 }
-    heel = { L: 0.25, N: 0.35, M: 0.45 }
-    side = if housing.pitch > 0.625 then { L: 0.01, N: 0.03, M: 0.05 } else { L: -0.04, N: -0.02, M: 0.01 }
+    toes =  { M: 0.55, N: 0.35, L: 0.15 }
+    heels = { M: 0.45, N: 0.35, L: 0.25 }
+    sides = if housing.pitch > 0.625 then { M: 0.05, N: 0.03, L: 0.01 } else { M: 0.01, N: -0.02, L: -0.04 }
 
     params = @_params pattern, housing
-    params.Jt = pattern.toe ? toe[settings.densityLevel]
-    params.Jh = pattern.heel ? heel[settings.densityLevel]
-    params.Js = pattern.side ? side[settings.densityLevel]
+    params.Jt = pattern.toe ? toes[settings.densityLevel]
+    params.Jh = pattern.heel ? heels[settings.densityLevel]
+    params.Js = pattern.side ? sides[settings.densityLevel]
     params
 
   _ipc7351: (params) ->
@@ -287,7 +254,7 @@ module.exports =
   _nolead: (pattern, housing) ->
     settings = pattern.settings
 
-    toe = if housing.pullBack? then 0.0 else { L: 0.20, N: 0.30, M: 0.40 }[settings.densityLevel]
+    toe = if housing.pullBack? then 0.0 else { M: 0.4, N: 0.3, L: 0.2 }[settings.densityLevel]
     heel = 0.0
     side = if housing.pullBack? then 0.0 else -0.04
 
@@ -349,3 +316,5 @@ module.exports =
 
     F: settings.tolerance.fabrication
     P: settings.tolerance.placement
+
+    courtyard: pattern.courtyard ? { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]

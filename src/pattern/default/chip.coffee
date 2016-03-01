@@ -27,21 +27,27 @@ module.exports = (pattern, element) ->
 
   if housing.polarized and (abbr isnt 'DIO') and (abbr isnt 'LED') then abbr += 'P'
 
-  # Calculate pad dimensions according to IPC-7351
-  if housing.molded
+  if housing.cae or housing.crystal
+    option = 'crystal'
+  else if housing.molded
     abbr += 'M'
-    padParams = calculator.molded pattern, housing
+    option = 'molded'
   else if housing.melf
     abbr += 'MELF'
-    padParams = calculator.melf pattern, housing
-  else if housing.nolead
+    option = 'melf'
+  else if housing.dfn
     abbr += 'DFN'
-    #padParams = calculator.dfn pattern, housing
-  else if housing.cae or housing.crystal
-    padParams = calculator.crystal pattern, housing
+    option = 'dfn'
+  else if housing.sod
+    option = 'sod'
+  else if housing.sodfl
+    option = 'sodfl'
   else
     abbr += 'C'
-    padParams = calculator.chip pattern, housing
+    option = 'chip'
+
+  # Calculate pad dimensions according to IPC-7351
+  padParams = calculator.chip pattern, housing, option
 
   pattern.name ?= sprintf "%s%02d%02dX%d%s",
     abbr,
