@@ -33,7 +33,7 @@ Features
   - QFN
   - QFP
   - SOP (and SOIC)
-  - SOT (SOT23, SOT223)
+  - SOT (SOT23, SOT223, SOT143)
   - TO (DPAK, D2PAK etc.)
 * Generating libraries:
   - KiCad format
@@ -44,7 +44,6 @@ Installation
 QEDA module for using in scripts as well as command line interface:
 
     npm install -g qeda
-
 
 Examples
 ========
@@ -188,7 +187,6 @@ Coming soon
   - SOJ
   - SON
   - SOTFL
-  - SOT143
 * Through-hole land pattern calculation:
   - Axial lead
   - DIP
