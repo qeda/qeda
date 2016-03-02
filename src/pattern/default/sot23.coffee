@@ -22,7 +22,7 @@ module.exports = (pattern, element) ->
     sop pattern, element
   else # Odd
     # Calculate pad dimensions according to IPC-7351
-    padParams = calculator.sop pattern, housing
+    padParams = calculator.dual pattern, housing, 'sop'
 
     switch housing.leadCount
       when 3

@@ -1,19 +1,4 @@
 module.exports =
-  bga: (pattern, housing) ->
-    settings = pattern.settings
-    # Calculations according to IPC-7351C
-    adj = if settings.ball.collapsible then 0.8 else 1
-    padSize = housing.leadSize.nom * adj
-    roundOff = 0.01
-    padSize = Math.round(padSize / roundOff) * roundOff
-    courtyard = housing.pitch * 0.8
-    roundOff = 0.05
-    courtyard = Math.round(courtyard / roundOff) * roundOff
-
-    width: padSize
-    height: padSize
-    courtyard: courtyard
-
   dual: (pattern, housing, option) ->
     settings = pattern.settings
 
@@ -33,6 +18,23 @@ module.exports =
 
     pad.courtyard = params.courtyard
     pad
+
+  gridArray: (pattern, housing, option) ->
+    settings = pattern.settings
+    # Calculations according to IPC-7351C
+    switch option
+      when 'bga'
+        adj = if settings.ball.collapsible then 0.8 else 1
+        padSize = housing.leadSize.nom * adj
+        roundOff = 0.01
+        padSize = Math.round(padSize / roundOff) * roundOff
+        courtyard = housing.pitch * 0.8
+        roundOff = 0.05
+        courtyard = Math.round(courtyard / roundOff) * roundOff
+
+    width: padSize
+    height: padSize
+    courtyard: courtyard
 
   pak: (pattern, housing) ->
     settings = pattern.settings
@@ -120,20 +122,6 @@ module.exports =
     distance2: columnPad.distance
     trimmed: rowPad.trimmed or columnPad.trimmed
     courtyard: params.courtyard
-
-  sop: (pattern, housing) ->
-    settings = pattern.settings
-    params = @_gullwing pattern, housing
-    params.Lmin = housing.leadSpan.min
-    params.Lmax = housing.leadSpan.max
-    ipc = @_ipc7351 params
-    ipc.clearance = settings.clearance.padToPad
-    ipc.pitch = housing.pitch
-    ipc.body = housing.bodyWidth.nom
-    pad = @_pad ipc, pattern
-
-    pad.courtyard = params.courtyard
-    pad
 
   sot: (pattern, housing) ->
     settings = pattern.settings
