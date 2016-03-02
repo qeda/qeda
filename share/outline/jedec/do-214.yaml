@@ -1,0 +1,31 @@
+pattern: molded
+
+leadLength: 0.75-1.6
+
+AA:
+  bodyWidth: 3.3-3.95
+  bodyLength: 4.05-4.6
+  height: 1.95-2.65
+  leadWidth: 1.95-2.2
+  leadSpan: 5.1-5.6
+
+AB:
+  bodyWidth: 5.55-6.25
+  bodyLength: 6.6-7.15
+  height: 1.95-2.65
+  leadWidth: 2.9-3.2
+  leadSpan: 7.75-8.15
+
+AC:
+  bodyWidth: 2.25-2.95
+  bodyLength: 3.95-4.6
+  height: 1.95-2.9
+  leadWidth: 1.25-1.65
+  leadSpan: 4.8-5.6
+
+BA:
+  bodyWidth: 2-3.3
+  bodyLength: 3.95-4.8
+  height: 2.35-3.5
+  leadWidth: 1-1.7
+  leadSpan: 4.95-5.85

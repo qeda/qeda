@@ -26,7 +26,7 @@ getAbbr = (element) ->
 module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
-  height = housing.height.max ? housing.height
+  height = housing.height?.max or housing.height or housing.bodyDiameter
   abbr = getAbbr element
 
   if housing.polarized and (abbr isnt 'DIO') and (abbr isnt 'LED') then abbr += 'P'

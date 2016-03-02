@@ -18,23 +18,19 @@ Features
 * Downloading component definitions from global repository
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
-  - Connectors
-  - Capacitors, crystals, diodes, FETs, inductors, pushbuttons, resistors, transistors
-  - Power supply and ground symbols
+  - Connector
+  - Capacitor, crystal, diode, FET, inductor, pushbutton, resistor, transistor
+  - Power supply, ground
   - GOST style alternative
 * Borrowing packages dimensions from standards:
-  - JEDEC (partially)
+  - JEDEC
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
-  - Aluminum Electrolytic Capacitor
-  - BGA
-  - Chip
-  - Crystal
-  - Molded body
-  - QFN
-  - QFP
-  - SOP (and SOIC)
-  - SOT (SOT23, SOT223, SOT143)
-  - TO (DPAK, D2PAK etc.)
+  - Dual (SOIC, SOP)
+  - Grid Array (BGA)
+  - Quad (QFN, QFP)
+  - SOT (SOT143, SOT223, SOT23)
+  - TO (\*PAK)
+  - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF)
 * Generating libraries:
   - KiCad format
 
@@ -179,7 +175,6 @@ Coming soon
   - DFN
   - LGA
   - LCC
-  - MELF
   - Oscillator
   - PLCC
   - SOD

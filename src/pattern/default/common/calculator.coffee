@@ -25,7 +25,7 @@ module.exports =
     switch option
       when 'bga'
         adj = if settings.ball.collapsible then 0.8 else 1
-        padSize = housing.leadSize.nom * adj
+        padSize = housing.leadDiameter.nom * adj
         roundOff = 0.01
         padSize = Math.round(padSize / roundOff) * roundOff
         courtyard = housing.pitch * 0.8
@@ -150,6 +150,7 @@ module.exports =
     trimmed: pad1.trimmed or pad2.trimmed
 
   twoPin: (pattern, housing, option = 'chip') ->
+    housing.bodyWidth ?= housing.bodyDiameter
     housing.leadWidth ?= housing.bodyWidth
     housing.leadSpan ?= housing.bodyLength
 
