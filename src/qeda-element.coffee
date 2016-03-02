@@ -61,7 +61,7 @@ class QedaElement
       @pinGroups[key] = @_concatenateGroups value
 
     if @schematic?.options?
-      options = @schematic.options.replace(/\s+/g, '').split(',')
+      options = @schematic.options.replace(/\s+/g, '').toLowerCase().split(',')
       for option in options
         @schematic[option] = true;
 
@@ -78,12 +78,7 @@ class QedaElement
       @symbols.push new QedaSymbol(this, part)
 
     # Create pattern
-    if @housing?
-      if @housing.options?
-        options = @housing.options.replace(/\s+/g, '').split(',')
-        for option in options
-          @housing[option] = true;
-      @pattern = new QedaPattern this
+    if @housing? then @pattern = new QedaPattern this
 
 
   #
@@ -161,6 +156,11 @@ class QedaElement
           outline = outline[cap.shift()]
           unless outline? then break
         log.ok()
+
+      if @housing.options?
+        options = @housing.options.replace(/\s+/g, '').toLowerCase().split(',')
+        for option in options
+          @housing[option] = true;
 
       @_convertDimensions @housing
       paths = [

@@ -23,14 +23,15 @@ Features
   - Power supply, ground
   - GOST style alternative
 * Borrowing packages dimensions from standards:
-  - JEDEC
+  - Industrial (JEDEC)
+  - Manufacturer's (NXP)
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
   - Dual (SOIC, SOP)
   - Grid Array (BGA)
   - Quad (QFN, QFP)
   - SOT (SOT143, SOT223, SOT23)
   - TO (\*PAK)
-  - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF)
+  - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF, SOD, SODFL)
 * Generating libraries:
   - KiCad format
 
@@ -177,8 +178,6 @@ Coming soon
   - LCC
   - Oscillator
   - PLCC
-  - SOD
-  - SODFL
   - SOJ
   - SON
   - SOTFL
