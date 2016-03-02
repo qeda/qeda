@@ -25,7 +25,7 @@ module.exports =
       .lineTo -x, -y + d
       .lineTo -x + d, -y
 
-  twopin: (pattern, housing) ->
+  twoPin: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.assembly
     bodyWidth = housing.bodyWidth.nom

@@ -26,7 +26,7 @@ module.exports =
       .lineTo -x, -y1
       .lineTo -x, -y2
       .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
-      
+
   gridArray: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
@@ -133,7 +133,7 @@ module.exports =
 
       .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
 
-  twopin: (pattern, housing) ->
+  twoPin: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
     bodyWidth = housing.bodyWidth.nom

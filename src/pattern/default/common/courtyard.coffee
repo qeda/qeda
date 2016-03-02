@@ -50,7 +50,6 @@ module.exports =
     bodyLength = housing.bodyLength.nom
 
     [firstPad, lastPad] = @_pads pattern
-    console.log lastPad
 
     x = Math.min(-bodyWidth/2, firstPad.x - firstPad.width/2) - courtyard
     y = Math.min(-bodyLength/2, lastPad.y - lastPad.height/2) - courtyard
@@ -98,7 +97,7 @@ module.exports =
 
       .lineTo x1, y1
 
-  twopin: (pattern, housing, courtyard) ->
+  twoPin: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 

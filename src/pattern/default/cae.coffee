@@ -1,5 +1,5 @@
 sprintf = require('sprintf-js').sprintf
-twopin = require './common/twopin'
+twoPin = require './common/two-pin'
 
 module.exports = (pattern, element) ->
   housing = element.housing
@@ -13,4 +13,4 @@ module.exports = (pattern, element) ->
       max: nom + tol/2
       tol: tol
   housing.cae = true
-  twopin pattern, element
+  twoPin pattern, element

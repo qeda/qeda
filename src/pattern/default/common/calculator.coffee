@@ -14,69 +14,24 @@ module.exports =
     height: padSize
     courtyard: courtyard
 
-  chip: (pattern, housing, option = 'chip') ->
-    housing.leadWidth ?= housing.bodyWidth
-    housing.leadSpan ?= housing.bodyLength
-
+  dual: (pattern, housing, option) ->
     settings = pattern.settings
 
     switch option
-      when 'chip'
-        height = housing.height.nom ? housing.height
-        toe = height * 0.5
-        heel = height * 0.1
-        side = height * 0.15
-        courtyard = height * 0.4
-        courtyard = Math.round(courtyard / 0.01) * 0.01
-        if courtyard > 0.25 then courtyard = 0.25
-      when 'concave'
-        toes =       { M:  0.55, N:  0.45, L:  0.35 }
-        heels =      { M: -0.05, N: -0.07, L: -0.1  }
-        sides =      { M: -0.05, N: -0.07, L: -0.1  }
-      when 'crystal'
-        toes =  if height >= 10 then { M: 1,   N:  0.7,  L:  0.4,}  else { M: 0.7, N:  0.5, L:  0.3 }
-        heels = if height >= 10 then { M: 0,   N: -0.05, L: -0.1 }  else { M: 0,   N: -0.1, L: -0.2 }
-        sides = if height >= 10 then { M: 0.6, N:  0.5,  L:  0.4 }  else { M: 0.5, N:  0.4, L:  0.3 }
-        courtyard = { M: 1, N: 0.5, L: 0.25 }[settings.densityLevel]
-      when 'dfn'
-        toes =       { M: 0.6, N: 0.4,  L: 0.2 }
-        heels =      { M: 0.2, N: 0.1,  L: 0.02}
-        sides =      { M: 0.1, N: 0.05, L: 0.01 }
-      when 'melf'
-        toes =       { M: 0.6, N: 0.4,  L: 0.2  }
-        heels =      { M: 0.2, N: 0.1,  L: 0.02 }
-        sides =      { M: 0.1, N: 0.05, L: 0.01 }
-      when 'molded'
-        toes =       { M: 0.25, N:  0.15, L:  0.07 }
-        heels =      { M: 0.8,  N:  0.5,  L:  0.2  }
-        sides =      { M: 0.01, N: -0.05, L: -0.1  }
-      when 'sod'
-        toes =       { M: 0.55, N: 0.35, L: 0.15 }
-        heels =      { M: 0.45, N: 0.35, L: 0.25 }
-        sides =      { M: 0.05, N: 0.03, L: 0.01 }
-      when 'sodfl'
-        toes =       { M: 0.3,  N: 0.2,  L:  0.1  }
-        heels =      { M: 0,    N: 0,    L:  0    }
-        sides =      { M: 0.05, N: 0,    L: -0.05 }
-        courtyard =  { M: 0.2,  N: 0.15, L:  0.12 }[settings.densityLevel]
+      when 'son'
+        params = @_nolead pattern, housing
+      when 'sop'
+        params = @_gullwing pattern, housing
 
-    toe ?= toes[settings.densityLevel]
-    heel ?= heels[settings.densityLevel]
-    side ?= sides[settings.densityLevel]
-
-    # Dimensions according to IPC-7351
-    params = @_params pattern, housing
-    params.Jt = pattern.toe ? toe
-    params.Jh = pattern.heel ? heel
-    params.Js = pattern.side ? side
     params.Lmin = housing.leadSpan.min
     params.Lmax = housing.leadSpan.max
-
     ipc = @_ipc7351 params
     ipc.clearance = settings.clearance.padToPad
+    ipc.pitch = housing.pitch
+    ipc.body = housing.bodyWidth.nom
     pad = @_pad ipc, pattern
 
-    pad.courtyard = courtyard ? params.courtyard
+    pad.courtyard = params.courtyard
     pad
 
   pak: (pattern, housing) ->
@@ -205,6 +160,71 @@ module.exports =
     height2: pad2.height
     courtyard: params.courtyard
     trimmed: pad1.trimmed or pad2.trimmed
+
+  twoPin: (pattern, housing, option = 'chip') ->
+    housing.leadWidth ?= housing.bodyWidth
+    housing.leadSpan ?= housing.bodyLength
+
+    settings = pattern.settings
+
+    switch option
+      when 'chip'
+        height = housing.height.nom ? housing.height
+        toe = height * 0.5
+        heel = height * 0.1
+        side = height * 0.15
+        courtyard = height * 0.4
+        courtyard = Math.round(courtyard / 0.01) * 0.01
+        if courtyard > 0.25 then courtyard = 0.25
+      when 'concave'
+        toes =       { M:  0.55, N:  0.45, L:  0.35 }
+        heels =      { M: -0.05, N: -0.07, L: -0.1  }
+        sides =      { M: -0.05, N: -0.07, L: -0.1  }
+      when 'crystal'
+        toes =  if height >= 10 then { M: 1,   N:  0.7,  L:  0.4,}  else { M: 0.7, N:  0.5, L:  0.3 }
+        heels = if height >= 10 then { M: 0,   N: -0.05, L: -0.1 }  else { M: 0,   N: -0.1, L: -0.2 }
+        sides = if height >= 10 then { M: 0.6, N:  0.5,  L:  0.4 }  else { M: 0.5, N:  0.4, L:  0.3 }
+        courtyard = { M: 1, N: 0.5, L: 0.25 }[settings.densityLevel]
+      when 'dfn'
+        toes =       { M: 0.6, N: 0.4,  L: 0.2 }
+        heels =      { M: 0.2, N: 0.1,  L: 0.02}
+        sides =      { M: 0.1, N: 0.05, L: 0.01 }
+      when 'melf'
+        toes =       { M: 0.6, N: 0.4,  L: 0.2  }
+        heels =      { M: 0.2, N: 0.1,  L: 0.02 }
+        sides =      { M: 0.1, N: 0.05, L: 0.01 }
+      when 'molded'
+        toes =       { M: 0.25, N:  0.15, L:  0.07 }
+        heels =      { M: 0.8,  N:  0.5,  L:  0.2  }
+        sides =      { M: 0.01, N: -0.05, L: -0.1  }
+      when 'sod'
+        toes =       { M: 0.55, N: 0.35, L: 0.15 }
+        heels =      { M: 0.45, N: 0.35, L: 0.25 }
+        sides =      { M: 0.05, N: 0.03, L: 0.01 }
+      when 'sodfl'
+        toes =       { M: 0.3,  N: 0.2,  L:  0.1  }
+        heels =      { M: 0,    N: 0,    L:  0    }
+        sides =      { M: 0.05, N: 0,    L: -0.05 }
+        courtyard =  { M: 0.2,  N: 0.15, L:  0.12 }[settings.densityLevel]
+
+    toe ?= toes[settings.densityLevel]
+    heel ?= heels[settings.densityLevel]
+    side ?= sides[settings.densityLevel]
+
+    # Dimensions according to IPC-7351
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toe
+    params.Jh = pattern.heel ? heel
+    params.Js = pattern.side ? side
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+
+    ipc = @_ipc7351 params
+    ipc.clearance = settings.clearance.padToPad
+    pad = @_pad ipc, pattern
+
+    pad.courtyard = courtyard ? params.courtyard
+    pad
 
   _gullwing: (pattern, housing) ->
     settings = pattern.settings

@@ -2,5 +2,6 @@ dual = require './common/dual'
 
 module.exports = (pattern, element) ->
   housing = element.housing
-  housing.sop = true
+  housing.pitch = 1.27
+  housing.cfp = true
   dual pattern, element

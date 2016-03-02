@@ -101,13 +101,13 @@ module.exports = (pattern, element) ->
       height*100]
       .map((v) => Math.round v)...
 
-  # Calculate pad dimensions according to IPC-7351
-  padParams = calculator.chip pattern, housing, option
-
   pattern.name ?= sprintf "%s%s%s",
     abbr,
     size,
     settings.densityLevel
+
+  # Calculate pad dimensions according to IPC-7351
+  padParams = calculator.twoPin pattern, housing, option
 
   pad =
     type: 'smd'
@@ -123,6 +123,6 @@ module.exports = (pattern, element) ->
   pad.x = -pad.x
   pattern.pad 2, pad
 
-  silkscreen.twopin pattern, housing
-  assembly.twopin pattern, housing
-  courtyard.twopin pattern, housing, padParams.courtyard
+  silkscreen.twoPin pattern, housing
+  assembly.twoPin pattern, housing
+  courtyard.twoPin pattern, housing, padParams.courtyard
