@@ -23,7 +23,9 @@ class KicadGenerator
     patterns = {}
 
     now = new Date
-    timestamp = "#{now.getDate()}/#{now.getMonth() + 1}/#{now.getYear() + 1900} #{now.getHours()}:#{now.getMinutes()}:#{now.getSeconds()}"
+    timestamp = sprintf "%02d/%02d/%d %02d:%02d:%02d",
+      now.getDate(), now.getMonth() + 1, now.getYear() + 1900,
+      now.getHours(), now.getMinutes(), now.getSeconds()
     log.start "KiCad library '#{@name}.lib'"
     fd = fs.openSync "#{dir}/#{@name}.lib", 'w'
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
