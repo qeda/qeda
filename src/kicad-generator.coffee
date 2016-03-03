@@ -220,9 +220,9 @@ class KicadGenerator
       obj.height ?= obj.drill ? obj.size
 
       types =
-        smd: 'smd'
-        th: 'thru_hole'
-        mount: 'np_thru_hole'
+        'smd': 'smd'
+        'through-hole': 'thru_hole'
+        'mount': 'np_thru_hole'
       obj.type = types[obj.type]
 
     obj

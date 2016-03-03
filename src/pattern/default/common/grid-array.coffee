@@ -8,7 +8,7 @@ silkscreen = require './silkscreen'
 module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
-  leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
+  leadCount = housing.leadCount ? Object.keys(element.pins).length
 
   abbr = 'BGA'
   option = 'bga'

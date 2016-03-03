@@ -149,6 +149,26 @@ module.exports =
     courtyard: params.courtyard
     trimmed: pad1.trimmed or pad2.trimmed
 
+  throughHole: (pattern, housing) ->
+    settings = pattern.settings
+
+    if housing.leadDiameter?
+      diameter = housing.leadDiameter.max
+    else
+      w = housing.leadWidth.max
+      h = housing.leadHeight.max
+      diameter = Math.sqrt(w*w + h*h) # Pythagorean theorem
+    drill = diameter + settings.clearance.holeOverLead
+    drillRoundoff = 0.01
+    drill = Math.round(drill / drillRoundoff ) * drillRoundoff
+
+    padDiameter = drill * settings.ratio.padToHole
+    if padDiameter < (drill + 2*settings.minimum.ringWidth)
+      padDiameter = drill + 2*settings.minimum.ringWidth
+
+    drill: drill
+    diameter: padDiameter
+
   twoPin: (pattern, housing, option = 'chip') ->
     housing.bodyWidth ?= housing.bodyDiameter
     housing.leadWidth ?= housing.bodyWidth
@@ -282,9 +302,9 @@ module.exports =
     # Round off
     sizeRoundoff = pattern.sizeRoundoff ? 0.05
     placeRoundoff = pattern.placeRoundoff ? 0.1
-    padWidth    = (Math.round(padWidth    / sizeRoundoff ) * sizeRoundoff )
-    padHeight   = (Math.round(padHeight   / sizeRoundoff ) * sizeRoundoff )
-    padDistance = (Math.round(padDistance / placeRoundoff) * placeRoundoff)
+    padWidth    = Math.round(padWidth    / sizeRoundoff ) * sizeRoundoff
+    padHeight   = Math.round(padHeight   / sizeRoundoff ) * sizeRoundoff
+    padDistance = Math.round(padDistance / placeRoundoff) * placeRoundoff
 
     # Check clearance violations
     gap = padDistance - padWidth

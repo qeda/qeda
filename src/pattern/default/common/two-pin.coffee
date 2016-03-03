@@ -31,7 +31,7 @@ module.exports = (pattern, element) ->
 
   if housing.polarized and (abbr isnt 'DIO') and (abbr isnt 'LED') then abbr += 'P'
 
-  if housing.cae
+  if housing.cae # Capacitor Aluminum Electrolytic
     abbr += 'AE'
     option = 'crystal' # CAE is the same as crystal
     size = sprintf "%dX%d",
@@ -53,7 +53,7 @@ module.exports = (pattern, element) ->
       housing.bodyWidth.nom*10
       height*100]
       .map((v) => Math.round v)...
-  else if housing.dfn
+  else if housing.dfn # Dual flat nolead
     abbr += 'DFN'
     option = 'dfn'
     size = sprintf "%02dX%02dX%d",
@@ -69,14 +69,14 @@ module.exports = (pattern, element) ->
       housing.bodyWidth.nom*10,
       height*100]
       .map((v) => Math.round v)...
-  else if housing.melf
+  else if housing.melf # Metal Electrode Leadless Face
     abbr += 'MELF'
     option = 'melf'
     size = sprintf "%02d%02d",
       [housing.bodyLength.nom*10,
       housing.bodyDiameter.nom*10]
       .map((v) => Math.round v)...
-  else if housing.sod
+  else if housing.sod # Small Outline Diode
     abbr = 'SOD'
     option = 'sod'
     size = sprintf "%02d%02dX%d",
@@ -84,7 +84,7 @@ module.exports = (pattern, element) ->
       housing.bodyWidth.nom*10
       height*100]
       .map((v) => Math.round v)...
-  else if housing.sodfl
+  else if housing.sodfl # Small Outline Diode Flat Lead
     abbr = 'SODFL'
     option = 'sodfl'
     size = sprintf "%02d%02dX%d",
@@ -92,7 +92,7 @@ module.exports = (pattern, element) ->
       housing.bodyWidth.nom*10
       height*100]
       .map((v) => Math.round v)...
-  else
+  else # Chip
     abbr += 'C'
     option = 'chip'
     size = sprintf "%02d%02dX%d",
