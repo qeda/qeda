@@ -32,7 +32,7 @@ module.exports = (pattern, element) ->
     height: padParams.height2
     layer: ['topCopper', 'topMask', 'topPaste']
 
-  if housing.reverse
+  if housing.reversed
     pad1.x = -padParams.distance / 2
     pad1.y = -housing.pitch/2
     pattern.pad 1, pad1

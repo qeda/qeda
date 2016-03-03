@@ -31,6 +31,7 @@ class QedaLibrary
         thick: 0.6
         thin: 0.2
       space:
+        default: 2
         pin: 2
 
     @pattern =

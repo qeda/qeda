@@ -5,15 +5,16 @@ intersects = (s1, s2) ->
   a4 = (s2[1] >= s1[0]) and (s2[1] <= s1[1])
   a1 or a2 or a3 or a4
 
-pinTextWidth = (symbol, pin, visible) ->
-  if visible then symbol.textWidth(pin.name, 'pin') else 0
+pinTextWidth = (symbol, pin, space, visible) ->
+  if visible then (symbol.textWidth(pin.name, 'pin') + space) else 0
 
 module.exports = (symbol, element, icon) ->
   schematic = element.schematic
   settings = symbol.settings
 
-  step = symbol.alignToGrid 5
+  pitch = symbol.alignToGrid(settings.pitch ? 5)
   pinLength = symbol.alignToGrid(settings.pinLength ? 10)
+  pinSpace = schematic.pinSpace ? settings.space.pin
 
   left = symbol.left
   right = symbol.right
@@ -21,9 +22,9 @@ module.exports = (symbol, element, icon) ->
   bottom = symbol.bottom
   pins = element.pins
 
-  width = step * (Math.max(top.length, bottom.length) + 1)
-  height = step * (Math.max(left.length, right.length) + 1)
-  space = settings.space.pin
+  width = pitch * (Math.max(top.length, bottom.length) + 1)
+  height = pitch * (Math.max(left.length, right.length) + 1)
+  space = settings.space.default
 
   # Attributes
   symbol
@@ -52,15 +53,20 @@ module.exports = (symbol, element, icon) ->
       x2: icon.width/2
       y2: icon.height/2
 
+  if schematic.pinIcon?
+    pinSpace += schematic.pinIcon.width
+    pinIconWidth = schematic.pinIcon.width
+    pinIconHeight = schematic.pinIcon.height
+
   # Pins on the top side
   dx = settings.fontSize.pin/2 + space
   y = topY
   topPins = []
   topRects = []
-  x = -step * top.length/2 + step/2
+  x = -pitch*(top.length/2 - 0.5)
   for i in top
     if i is '-'
-      x += step
+      x += pitch
       continue
     pin = pins[i]
     unless pin? then continue
@@ -69,7 +75,8 @@ module.exports = (symbol, element, icon) ->
     pin.orientation = 'down'
     topPins.push pin
 
-    h = pinTextWidth(symbol, pin, schematic.showPinNames) + space
+    h = pinTextWidth(symbol, pin, pinSpace, schematic.showPinNames)
+    if y > (-h - space) then y = -h - space
     x1 = x - dx
     x2 = x + dx
     # Check whether pin rectangle intersects other rectangles
@@ -77,7 +84,7 @@ module.exports = (symbol, element, icon) ->
       if intersects [x1, x2], [r.x1, r.x2]
         y1 = r.y1 - h - space
         if y > y1 then y = y1 # Make symbol higher
-    x += step
+    x += pitch
     topRects.push
       x1: x1,
       y1: 0,
@@ -95,10 +102,10 @@ module.exports = (symbol, element, icon) ->
   y = bottomY
   bottomPins = []
   bottomRects = []
-  x = -step * bottom.length/2 + step/2
+  x = -pitch*(bottom.length/2 - 0.5)
   for i in bottom
     if i is '-'
-      x += step
+      x += pitch
       continue
     pin = pins[i]
     unless pin? then continue
@@ -107,7 +114,8 @@ module.exports = (symbol, element, icon) ->
     pin.orientation = 'up'
     bottomPins.push pin
 
-    h = pinTextWidth(symbol, pin, schematic.showPinNames) + space
+    h = pinTextWidth(symbol, pin, pinSpace, schematic.showPinNames)
+    if y < (h + space) then y = h + space
     x1 = x - dx
     x2 = x + dx
     # Check whether pin rectangle intersects other rectangles
@@ -115,7 +123,7 @@ module.exports = (symbol, element, icon) ->
       if intersects [x1, x2], [r.x1, r.x2]
         y2 = r.y2 + h + space
         if y < y2 then y = y2 # Make symbol higher
-    x += step
+    x += pitch
     bottomRects.push
       x1: x1,
       y1: -h,
@@ -134,10 +142,10 @@ module.exports = (symbol, element, icon) ->
   dy = settings.fontSize.pin/2 + space
   leftPins = []
   leftRects = []
-  y = -step * left.length/2 + step/2
+  y = -pitch*(left.length/2 - 0.5)
   for i in left
     if i is '-'
-      y += step
+      y += pitch
       continue
     pin = pins[i]
     unless pin? then continue
@@ -146,7 +154,8 @@ module.exports = (symbol, element, icon) ->
     pin.orientation = 'right'
     leftPins.push pin
 
-    w = pinTextWidth(symbol, pin, schematic.showPinNames) + space
+    w = pinTextWidth(symbol, pin, pinSpace, schematic.showPinNames)
+    if x > (-w - space) then x = -w - space
     y1 = y - dy
     y2 = y + dy
     # Check whether pin rectangle intersects other rectangles
@@ -154,7 +163,7 @@ module.exports = (symbol, element, icon) ->
       if intersects [y1, y2], [r.y1, r.y2]
         x1 = r.x1 - w - space
         if x > x1 then x = x1 # Make symbol wider
-    y += step
+    y += pitch
     leftRects.push
       x1: 0,
       y1: y1,
@@ -171,10 +180,10 @@ module.exports = (symbol, element, icon) ->
   # Pins on the right side
   x = rightX
   rightPins = []
-  y = -step * right.length/2 + step/2
+  y = -pitch*(right.length/2 - 0.5)
   for i in right
     if i is '-'
-      y += step
+      y += pitch
       continue
     pin = pins[i]
     unless pin? then continue
@@ -183,7 +192,8 @@ module.exports = (symbol, element, icon) ->
     pin.orientation = 'left'
     rightPins.push pin
 
-    w = pinTextWidth(symbol, pin, schematic.showPinNames) + space
+    w = pinTextWidth(symbol, pin, pinSpace, schematic.showPinNames)
+    if x < (w + space) then x = w + space
     y1 = y - dy
     y2 = y + dy
     # Check whether pin rectangle intersects other rectangles
@@ -191,7 +201,7 @@ module.exports = (symbol, element, icon) ->
       if intersects [y1, y2], [r.y1, r.y2]
         x2 = r.x2 + w + space
         if x < x2 then x = x2 # Make symbol wider
-    y += step
+    y += pitch
 
   rightX = symbol.alignToGrid x, 'ceil'
 
@@ -213,19 +223,27 @@ module.exports = (symbol, element, icon) ->
   for pin in leftPins
     pin.x = -pinLength
     pin.y -= topY
+    pin.space = pinSpace
     symbol.pin pin
+    schematic.pinIcon?.draw pin.x + pinLength + pinIconWidth/2, pin.y
 
   for pin in rightPins
     pin.x = width + pinLength
     pin.y -= topY
+    pin.space = pinSpace
     symbol.pin pin
+    schematic.pinIcon?.draw pin.x - pinLength - pinIconWidth/2, pin.y
 
   for pin in topPins
     pin.x -= leftX
     pin.y = -pinLength
+    pin.space = pinSpace
     symbol.pin pin
+    schematic.pinIcon?.draw pin.x, pin.y + pinLength + pinIconHeight/2
 
   for pin in bottomPins
     pin.x -= leftX
     pin.y = height + pinLength
+    pin.space = pinSpace
     symbol.pin pin
+    schematic.pinIcon?.draw pin.x, pin.y - pinLength - pinIconHeight/2

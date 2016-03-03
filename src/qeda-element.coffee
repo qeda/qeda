@@ -231,8 +231,10 @@ class QedaElement
     dimensions = [
       'bodyDiameter', 'bodyLength', 'bodyWidth', 'bodyHeight',
       'bossDiameter',
+      'columnSpan',
       'height',
       'leadDiameter', 'leadHeight', 'leadLength', 'leadSpan', 'leadWidth',
+      'rowSpan',
       'tabWidth', 'tabLength'
     ]
 

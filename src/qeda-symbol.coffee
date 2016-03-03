@@ -68,8 +68,8 @@ class QedaSymbol
   #
   # Add circle
   #
-  circle: (x, y, radius) ->
-    @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius }
+  circle: (x, y, radius, fill = 'none') ->
+    @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius, fill: fill }
     this
 
   icon: (x, y, iconObj) ->
