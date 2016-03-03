@@ -97,8 +97,8 @@ module.exports =
   tab: (pattern, housing) ->
     hasTab = housing.tabWidth? and housing.tabLength?
     if hasTab
-      housing.tabOffset ?= '0, 0'
-      [x, y] = housing.tabOffset.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
+      housing.tabPosition ?= '0, 0'
+      [x, y] = housing.tabPosition.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
 
       tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount)) + 1
       tabPad =

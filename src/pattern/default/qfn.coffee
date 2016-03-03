@@ -11,13 +11,12 @@ module.exports = (pattern, element) ->
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
   hasTab = housing.tabWidth? and housing.tabLength?
   if hasTab then ++leadCount
-  height = housing.height.max ? housing.height
   pattern.name ?= sprintf "%sQFN%dP%dX%dX%d-%d%s",
     if housing.pullBack? then 'P' else '',
     [housing.pitch*100
     housing.bodyLength.nom*100
     housing.bodyWidth.nom*100
-    height*100
+    housing.height.max*100
     leadCount]
     .map((v) => Math.round v)...,
     settings.densityLevel
@@ -47,5 +46,5 @@ module.exports = (pattern, element) ->
   silkscreen.qfn pattern, housing
   assembly.polarized pattern, housing
   courtyard.qfn pattern, housing, padParams.courtyard
-  
+
   copper.tab pattern, housing

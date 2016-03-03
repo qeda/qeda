@@ -228,6 +228,14 @@ class QedaElement
   # Make dimensions more convenient
   #
   _convertDimensions: (housing) ->
+    dimensions = [
+      'bodyDiameter', 'bodyLength', 'bodyWidth', 'bodyHeight',
+      'bossDiameter',
+      'height',
+      'leadDiameter', 'leadHeight', 'leadLength', 'leadSpan', 'leadWidth',
+      'tabWidth', 'tabLength'
+    ]
+
     for key, value of housing
       if typeof value is 'string' and (/^\d+(\.\d+)?-\d+(\.\d+)?$/.test value)
         value = value.replace(/\s+/g, '').split('-').map((v) -> parseFloat(v))
@@ -236,6 +244,10 @@ class QedaElement
         max = if value.length > 1 then value[1] else min
         nom = (max + min) / 2
         tol = max - min
+        housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
+      else if dimensions.indexOf(key) isnt -1
+        min = nom = max = value
+        tol = 0
         housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
 
   #

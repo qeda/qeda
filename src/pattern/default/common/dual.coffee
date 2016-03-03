@@ -8,7 +8,6 @@ silkscreen = require './silkscreen'
 module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
-  height = housing.height.max ? housing.height
   leadCount = housing.leadCount
   hasTab = housing.tabWidth? and housing.tabLength?
   if hasTab then ++leadCount
@@ -36,7 +35,7 @@ module.exports = (pattern, element) ->
     abbr,
     [housing.pitch*100
     housing.leadSpan.nom*100
-    height*100
+    housing.height.max*100
     leadCount]
     .map((v) => Math.round v)...,
     settings.densityLevel

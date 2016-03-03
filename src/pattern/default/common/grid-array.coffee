@@ -9,7 +9,6 @@ module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
-  height = housing.height.max ? housing.height
 
   abbr = 'BGA'
   option = 'bga'
@@ -23,7 +22,7 @@ module.exports = (pattern, element) ->
     housing.rowCount
     housing.bodyLength.nom*100
     housing.bodyWidth.nom*100
-    height*100]
+    housing.height.max*100]
     .map((v) => Math.round v)...,
     settings.densityLevel
 
