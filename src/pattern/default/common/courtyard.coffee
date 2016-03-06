@@ -1,4 +1,14 @@
 module.exports =
+  connector: (pattern, housing, courtyard) ->
+    bodyWidth = housing.bodyWidth.nom
+    bodyLength = housing.bodyLength.nom
+
+    x = bodyWidth/2 + courtyard
+    y = bodyLength/2 + courtyard
+
+    @_centroid pattern
+      .rectangle  -x, -y, x, y
+
   dual: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom

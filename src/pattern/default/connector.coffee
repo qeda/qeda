@@ -1,5 +1,8 @@
 sprintf = require('sprintf-js').sprintf
+assembly = require './common/assembly'
 calculator = require './common/calculator'
+courtyard = require './common/courtyard'
+silkscreen = require './common/silkscreen'
 
 module.exports = (pattern, element) ->
   housing = element.housing
@@ -19,21 +22,22 @@ module.exports = (pattern, element) ->
   columnPitch = housing.columnPitch ? housing.pitch
   rowCount = housing.rowCount
   columnCount = housing.columnCount
+  throughHole = drillDiameter? or housing.th
 
-  if housing.th # Through hole
+  if throughHole
     padParams = calculator.throughHole pattern, housing
     pad =
       type: 'through-hole'
-      drill: padParams.drill
-      width: padParams.diameter
-      height: padParams.diameter
-      shape: 'circle'
+      drill: housing.drillDiameter ? padParams.drill
+      width: housing.padWidth ? padParams.diameter
+      height: housing.padHeight ? padParams.diameter
+      shape: 'rectangle'
       layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
   else
     pad =
       type: 'smd'
-      width: housing.padWidth ? 1
-      height: housing.padHeight ? 1
+      width: housing.padWidth
+      height: housing.padHeight
       shape: 'rectangle'
       layer: ['topCopper', 'topMask', 'topPaste']
 
@@ -45,5 +49,10 @@ module.exports = (pattern, element) ->
       pad.x = x
       pad.y = y
       pattern.pad num++, pad
+      if throughHole then pad.shape = 'circle'
       x += columnPitch
     y += rowPitch
+
+  silkscreen.connector pattern, housing
+  assembly.polarized pattern, housing
+  courtyard.connector pattern, housing, 1

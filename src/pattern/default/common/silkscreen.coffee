@@ -1,4 +1,19 @@
 module.exports =
+  connector: (pattern, housing) ->
+    settings = pattern.settings
+    lineWidth = settings.lineWidth.silkscreen
+    bodyWidth = housing.bodyWidth.nom
+    bodyLength = housing.bodyLength.nom
+
+    [firstPad, lastPad] = @_pads pattern
+
+    x = bodyWidth/2 + lineWidth/2
+    y = bodyLength/2 + lineWidth/2
+
+    @_refDes pattern
+      .rectangle  -x, -y, x, y
+      .polarityMark -x - lineWidth, firstPad.y
+
   dual: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen

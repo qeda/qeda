@@ -165,6 +165,11 @@ module.exports =
     padDiameter = drill * settings.ratio.padToHole
     if padDiameter < (drill + 2*settings.minimum.ringWidth)
       padDiameter = drill + 2*settings.minimum.ringWidth
+    if housing.pitch? or (housing.rowPitch? and housing.columnPitch?)
+      pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
+      clearance = housing.padSpace ? settings.clearance.padToPad
+      if padDiameter > pitch - clearance
+        padDiameter = pitch - clearance
 
     drill: drill
     diameter: padDiameter
