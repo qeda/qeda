@@ -15,6 +15,9 @@ module.exports = (pattern, element) ->
   if housing.cfp
     abbr = 'CFP'
     option = 'cfp'
+  if housing.flatlead
+    abbr = 'SOPFL'
+    option = 'flatlead'
   else if housing.soic
     abbr = 'SOIC'
     option = 'sop'

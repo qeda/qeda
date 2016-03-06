@@ -3,6 +3,8 @@ module.exports =
     settings = pattern.settings
 
     switch option
+      when 'flatlead'
+        params = @_flatlead pattern, housing
       when 'son'
         params = @_nolead pattern, housing
       when 'sop'
@@ -126,7 +128,12 @@ module.exports =
   sot: (pattern, housing) ->
     settings = pattern.settings
     housing.leadWidth = housing.leadWidth1
-    params = @_gullwing pattern, housing
+
+    if housing.flatlead
+      params = @_flatlead pattern, housing
+    else
+      params = @_gullwing pattern, housing
+
     params.Lmin = housing.leadSpan.min
     params.Lmax = housing.leadSpan.max
     params.body = housing.bodyWidth
@@ -246,6 +253,19 @@ module.exports =
     toes =  { M: 0.55, N: 0.35, L: 0.15 }
     heels = { M: 0.45, N: 0.35, L: 0.25 }
     sides = if housing.pitch > 0.625 then { M: 0.05, N: 0.03, L: 0.01 } else { M: 0.01, N: -0.02, L: -0.04 }
+
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toes[settings.densityLevel]
+    params.Jh = pattern.heel ? heels[settings.densityLevel]
+    params.Js = pattern.side ? sides[settings.densityLevel]
+    params
+
+  _flatlead: (pattern, housing) ->
+    settings = pattern.settings
+
+    toes =  { M: 0.3,  N: 0.2, L: 0.1   }
+    heels = { M: 0,    N: 0,   L: 0     }
+    sides = { M: 0.05, N: 0,   L: -0.05 }
 
     params = @_params pattern, housing
     params.Jt = pattern.toe ? toes[settings.densityLevel]

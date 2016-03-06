@@ -9,7 +9,8 @@ log = require '../../qeda-log'
 module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
-  pattern.name ?= sprintf "SOT%dP%dX%d-%d%s",
+  pattern.name ?= sprintf "SOT%s%dP%dX%d-%d%s",
+    if housing.flatlead then 'FL' else '',
     [housing.pitch*100
     housing.leadSpan.nom*100
     housing.height.max*100

@@ -29,7 +29,7 @@ Features
   - Dual (SOIC, SOP)
   - Grid Array (BGA)
   - Quad (QFN, QFP)
-  - SOT (SOT143, SOT223, SOT23)
+  - SOT (SOT143, SOT223, SOT23, SOTFL)
   - TO (\*PAK)
   - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF, SOD, SODFL)
 * Generating libraries:
@@ -180,7 +180,6 @@ Coming soon
   - PLCC
   - SOJ
   - SON
-  - SOTFL
 * Through-hole land pattern calculation:
   - Axial lead
   - DIP
