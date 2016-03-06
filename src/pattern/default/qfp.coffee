@@ -11,7 +11,8 @@ module.exports = (pattern, element) ->
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
   hasTab = housing.tabWidth? and housing.tabLength?
   if hasTab then ++leadCount
-  pattern.name ?= sprintf "QFP%dP%dX%dX%d-%d%s",
+  pattern.name ?= sprintf "%sQFP%dP%dX%dX%d-%d%s",
+    if housing.cqfp then 'C' else '',
     [housing.pitch*100
     housing.rowSpan.nom*100
     housing.columnSpan.nom*100

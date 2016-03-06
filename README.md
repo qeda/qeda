@@ -26,9 +26,9 @@ Features
   - Industrial (JEDEC)
   - Manufacturer's (NXP)
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
-  - Dual (SOIC, SOP)
+  - Dual (CFP, SOIC, SOJ, SOL, SOP)
   - Grid Array (BGA)
-  - Quad (QFN, QFP)
+  - Quad (CQFP, QFN, QFP)
   - SOT (SOT143, SOT223, SOT23, SOTFL)
   - TO (\*PAK)
   - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF, SOD, SODFL)
@@ -169,16 +169,13 @@ Coming soon
 * Generating libraries:
   - Eagle XML format
 * SMD land pattern calculation:
-  - CFP
   - CGA
-  - CQFP
   - Chip array
   - DFN
   - LGA
   - LCC
   - Oscillator
   - PLCC
-  - SOJ
   - SON
 * Through-hole land pattern calculation:
   - Axial lead

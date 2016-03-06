@@ -5,6 +5,10 @@ module.exports =
     switch option
       when 'flatlead'
         params = @_flatlead pattern, housing
+      when 'soj'
+        params = @_jlead pattern, housing
+      when 'sol'
+        params = @_llead pattern, housing
       when 'son'
         params = @_nolead pattern, housing
       when 'sop'
@@ -304,6 +308,32 @@ module.exports =
     Zmax: Lmin    + 2*Jt + Math.sqrt(Cl*Cl + F*F + P*P)
     Gmin: SmaxRms - 2*Jh - Math.sqrt(Cs*Cs + F*F + P*P)
     Xmax: Wmin    + 2*Js + Math.sqrt(Cw*Cw + F*F + P*P)
+
+  _jlead: (pattern, housing) ->
+    settings = pattern.settings
+
+    toes =  { M: 0.1,  N: 0,    L: -0.1  }
+    heels = { M: 0.55, N: 0.35, L:  0.15 }
+    sides = { M: 0.05, N: 0.03, L:  0.01 }
+
+    params = @_params pattern, housing
+    params.Jt = pattern.heel ? heels[settings.densityLevel] # Heel and toe are ...
+    params.Jh = pattern.toe ? toes[settings.densityLevel]   # ... swapped for J-Lead
+    params.Js = pattern.side ? sides[settings.densityLevel]
+    params
+
+  _llead: (pattern, housing) ->
+    settings = pattern.settings
+
+    toes =  { M: 0.1,  N:  0,    L: -0.1  }
+    heels = { M: 0.55, N:  0.35, L:  0.15 }
+    sides = { M: 0.01, N: -0.02, L: -0.04 }
+
+    params = @_params pattern, housing
+    params.Jt = pattern.heel ? heels[settings.densityLevel] # Heel and toe are ...
+    params.Jh = pattern.toe ? toes[settings.densityLevel]   # ... swapped for L-Lead
+    params.Js = pattern.side ? sides[settings.densityLevel]
+    params
 
   _nolead: (pattern, housing) ->
     settings = pattern.settings
