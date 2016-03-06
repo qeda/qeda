@@ -10,8 +10,15 @@ module.exports = (pattern, element) ->
   settings = pattern.settings
   leadCount = housing.leadCount ? Object.keys(element.pins).length
 
-  abbr = 'BGA'
-  option = 'bga'
+  if housing.cga
+    abbr = 'CGA'
+    option = 'cga'
+  else if housing.lga
+    abbr = 'LGA'
+    option = 'lga'
+  else
+    abbr = 'BGA'
+    option = 'bga'
 
   pattern.name ?= sprintf "%s%d%s%dP%dX%d_%dX%dX%d%s",
     abbr,
@@ -34,7 +41,7 @@ module.exports = (pattern, element) ->
     type: 'smd'
     width: padParams.width
     height: padParams.height
-    shape: 'circle'
+    shape: if housing.lga then 'rectangle' else 'circle'
     layer: ['topCopper', 'topMask', 'topPaste']
 
   copper.gridArray pattern, element, pad

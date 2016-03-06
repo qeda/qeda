@@ -31,15 +31,39 @@ module.exports =
     switch option
       when 'bga'
         adj = if settings.ball.collapsible then 0.8 else 1
-        padSize = housing.leadDiameter.nom * adj
+        padDiameter = housing.leadDiameter.nom * adj
         roundOff = 0.01
-        padSize = Math.round(padSize / roundOff) * roundOff
+        padDiameter = Math.round(padDiameter / roundOff) * roundOff
         courtyard = housing.pitch * 0.8
         roundOff = 0.05
         courtyard = Math.round(courtyard / roundOff) * roundOff
+      when 'cga'
+        padDiameter = housing.leadDiameter.nom + 0.1
+        pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
+        clearance = housing.padSpace ? settings.clearance.padToPad
+        if padDiameter > pitch - clearance
+          padDiameter = pitch - clearance
+        courtyard = 1
+      when 'lga'
+        clearance = housing.padSpace ? settings.clearance.padToPad
 
-    width: padSize
-    height: padSize
+        padWidth = housing.leadLength.nom + 0.1
+        columnPitch = housing.columnPitch ? housing.pitch
+        if padWidth > columnPitch - clearance
+          padWidth = columnPitch - clearance
+
+        padHeight = housing.leadWidth.nom + 0.1
+        rowPitch = housing.columnPitch ? housing.rowPitch
+        if padHeight > rowPitch - clearance
+          padHeight = rowPitch - clearance
+
+        courtyard = 1
+
+    padWidth ?= padDiameter
+    padHeight ?= padDiameter
+
+    width: padWidth
+    height: padHeight
     courtyard: courtyard
 
   pak: (pattern, housing) ->
