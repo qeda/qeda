@@ -23,7 +23,7 @@ module.exports =
     pad = @_pad ipc, pattern
 
     pad.courtyard = params.courtyard
-    pad
+    @_choosePreferred pad, pattern, housing
 
   gridArray: (pattern, housing, option) ->
     settings = pattern.settings
@@ -62,9 +62,11 @@ module.exports =
     padWidth ?= padDiameter
     padHeight ?= padDiameter
 
-    width: padWidth
-    height: padHeight
-    courtyard: courtyard
+    pad =
+      width: padWidth
+      height: padHeight
+      courtyard: courtyard
+    @_choosePreferred pad, pattern, housing
 
   pak: (pattern, housing) ->
     settings = pattern.settings
@@ -83,13 +85,15 @@ module.exports =
     tabIpc = @_ipc7351 params
     tabPad = @_pad tabIpc, pattern
 
-    width1: leadPad.width
-    height1: leadPad.height
-    distance1: leadPad.distance
-    width2: tabPad.width
-    height2: tabPad.height
-    distance2: tabPad.distance
-    courtyard: params.courtyard
+    pad =
+      width1: leadPad.width
+      height1: leadPad.height
+      distance1: leadPad.distance
+      width2: tabPad.width
+      height2: tabPad.height
+      distance2: tabPad.distance
+      courtyard: params.courtyard
+    @_choosePreferred pad, pattern, housing
 
   qfn: (pattern, housing) ->
     settings = pattern.settings
@@ -115,14 +119,16 @@ module.exports =
     columnIpc.pitch = housing.pitch
     columnPad = @_pad columnIpc, pattern
 
-    width1: rowPad.width
-    height1: rowPad.height
-    distance1: rowPad.distance
-    width2: columnPad.width
-    height2: columnPad.height
-    distance2: columnPad.distance
-    trimmed: rowPad.trimmed or columnPad.trimmed
-    courtyard: params.courtyard
+    pad =
+      width1: rowPad.width
+      height1: rowPad.height
+      distance1: rowPad.distance
+      width2: columnPad.width
+      height2: columnPad.height
+      distance2: columnPad.distance
+      trimmed: rowPad.trimmed or columnPad.trimmed
+      courtyard: params.courtyard
+    @_choosePreferred pad, pattern, housing
 
   qfp: (pattern, housing) ->
     settings = pattern.settings
@@ -144,14 +150,16 @@ module.exports =
     columnIpc.body = housing.bodyLength.nom
     columnPad = @_pad columnIpc, pattern
 
-    width1: rowPad.width
-    height1: rowPad.height
-    distance1: rowPad.distance
-    width2: columnPad.width
-    height2: columnPad.height
-    distance2: columnPad.distance
-    trimmed: rowPad.trimmed or columnPad.trimmed
-    courtyard: params.courtyard
+    pad =
+      width1: rowPad.width
+      height1: rowPad.height
+      distance1: rowPad.distance
+      width2: columnPad.width
+      height2: columnPad.height
+      distance2: columnPad.distance
+      trimmed: rowPad.trimmed or columnPad.trimmed
+      courtyard: params.courtyard
+    @_choosePreferred pad, pattern, housing
 
   sot: (pattern, housing) ->
     settings = pattern.settings
@@ -176,13 +184,15 @@ module.exports =
     ipc2.body = housing.bodyWidth.nom
     pad2 = @_pad ipc2, pattern
 
-    width1: pad1.width
-    height1: pad1.height
-    distance: pad1.distance
-    width2: pad2.width
-    height2: pad2.height
-    courtyard: params.courtyard
-    trimmed: pad1.trimmed or pad2.trimmed
+    pad =
+      width1: pad1.width
+      height1: pad1.height
+      distance: pad1.distance
+      width2: pad2.width
+      height2: pad2.height
+      courtyard: params.courtyard
+      trimmed: pad1.trimmed or pad2.trimmed
+    @_choosePreferred pad, pattern, housing
 
   throughHole: (pattern, housing) ->
     settings = pattern.settings
@@ -273,6 +283,31 @@ module.exports =
     pad = @_pad ipc, pattern
 
     pad.courtyard = courtyard ? params.courtyard
+    @_choosePreferred pad, pattern, housing
+
+  _choosePreferred: (pad, pattern, housing) ->
+    settings = pattern.settings
+    if settings.preferManufacturer
+      if housing.padWidth?
+        pad.width = housing.padWidth
+        if housing.padSpace? then pad.distance = housing.padSpace + housing.padWidth
+        if housing.padSpan? then pad.distance = housing.padSpan - housing.padWidth
+      if housing.padWidth1?
+        pad.width1 = housing.padWidth1
+        if housing.padSpace1? then pad.distance = housing.padSpace1 + housing.padWidth1
+        if housing.padSpan1? then pad.distance = housing.padSpan1 - housing.padWidth
+      if housing.padWidth2?
+        pad.width2 = housing.padWidth2
+        if housing.padSpace2? then pad.distance = housing.padSpace2 + housing.padWidth2
+        if housing.padSpan2? then pad.distance = housing.padSpan2 - housing.padWidth
+
+      if housing.padHeight? then pad.height = housing.padHeight
+      if housing.padHeight1? then pad.height1 = housing.padHeight1
+      if housing.padHeight2? then pad.height2 = housing.padHeight2
+
+      if housing.padDistance? then pad.distance = housing.padDistance
+      if housing.padDistance1? then pad.distance1 = housing.padDistance1
+      if housing.padDistance2? then pad.distance2 = housing.padDistance2
     pad
 
   _gullwing: (pattern, housing) ->
@@ -358,6 +393,8 @@ module.exports =
     params.Jh = pattern.toe ? toes[settings.densityLevel]   # ... swapped for L-Lead
     params.Js = pattern.side ? sides[settings.densityLevel]
     params
+
+
 
   _nolead: (pattern, housing) ->
     settings = pattern.settings

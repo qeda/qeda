@@ -39,6 +39,7 @@ class QedaLibrary
       densityLevel: 'N' # Nominal
       decimals: 3
       polarityMark: 'dot'
+      preferManufacturer: true
       tolerance:
         default: 0.1
         fabrication: 0.1
