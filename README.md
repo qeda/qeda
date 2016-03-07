@@ -26,7 +26,7 @@ Features
   - Industrial (JEDEC)
   - Manufacturer's (NXP)
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
-  - Dual (CFP, SOIC, SOJ, SOL, SOP)
+  - Dual (CFP, SOIC, SOJ, SOL, SON, SOP)
   - Grid Array (BGA, CGA, LGA)
   - Quad (CQFP, QFN, QFP)
   - SOT (SOT143, SOT223, SOT23, SOTFL)
@@ -173,7 +173,6 @@ Coming soon
   - LCC
   - Oscillator
   - PLCC
-  - SON
 * Through-hole land pattern calculation:
   - Axial lead
   - DIP

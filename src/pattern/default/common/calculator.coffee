@@ -9,8 +9,6 @@ module.exports =
         params = @_jlead pattern, housing
       when 'sol'
         params = @_llead pattern, housing
-      when 'son'
-        params = @_nolead pattern, housing
       when 'sop'
         params = @_gullwing pattern, housing
 
@@ -19,7 +17,8 @@ module.exports =
     ipc = @_ipc7351 params
     ipc.clearance = settings.clearance.padToPad
     ipc.pitch = housing.pitch
-    ipc.body = housing.bodyWidth.nom
+    if option is 'sop'
+      ipc.body = housing.bodyWidth.nom
     pad = @_pad ipc, pattern
 
     pad.courtyard = params.courtyard
@@ -159,6 +158,30 @@ module.exports =
       distance2: columnPad.distance
       trimmed: rowPad.trimmed or columnPad.trimmed
       courtyard: params.courtyard
+    @_choosePreferred pad, pattern, housing
+
+  son: (pattern, housing, option) ->
+    settings = pattern.settings
+
+    params = @_nolead pattern, housing
+    params.Lmin = housing.bodyWidth.min
+    params.Lmax = housing.bodyWidth.max
+    if housing.pullBack?
+      params.Lmin -= 2*housing.pullBack
+      params.Lmax -= 2*housing.pullBack
+
+    ipc = @_ipc7351 params
+    ipc.clearance = settings.clearance.padToPad
+    ipc.pitch = housing.pitch
+    pad = @_pad ipc, pattern
+    if housing.leadLength2?
+      dw = housing.leadLength2.nom - housing.leadLength.nom
+      space = pad.distance - pad.width
+      if (space - dw) < settings.clearance.padToPad
+        dw = space - settings.clearance.padToPad
+      pad.width2 = pad.width + dw
+
+    pad.courtyard = params.courtyard
     @_choosePreferred pad, pattern, housing
 
   sot: (pattern, housing) ->
@@ -393,8 +416,6 @@ module.exports =
     params.Jh = pattern.toe ? toes[settings.densityLevel]   # ... swapped for L-Lead
     params.Js = pattern.side ? sides[settings.densityLevel]
     params
-
-
 
   _nolead: (pattern, housing) ->
     settings = pattern.settings

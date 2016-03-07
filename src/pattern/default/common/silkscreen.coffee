@@ -148,6 +148,32 @@ module.exports =
 
       .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
 
+  son: (pattern, housing) ->
+    settings = pattern.settings
+    lineWidth = settings.lineWidth.silkscreen
+    bodyWidth = housing.bodyWidth.nom
+    bodyLength = housing.bodyLength.nom
+
+    [firstPad, lastPad] = @_pads pattern
+
+    gap = lineWidth/2 + settings.clearance.padToSilk
+
+    x = bodyWidth/2 + lineWidth/2
+    y1 = -bodyLength/2 - lineWidth/2
+    y2 = firstPad.y - firstPad.height/2 - gap
+    if y1 > y2 then y1 = y2
+    y3 = lastPad.y - lastPad.height/2 - gap
+
+    @_refDes pattern
+      .moveTo  x, y3
+      .lineTo  x, y1
+      .lineTo -x, y1
+      .moveTo  x, -y3
+      .lineTo  x, -y1
+      .lineTo -x, -y1
+      .lineTo -x, -y2
+      .polarityMark firstPad.x - firstPad.width/2 - settings.clearance.padToSilk, firstPad.y
+
   twoPin: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
