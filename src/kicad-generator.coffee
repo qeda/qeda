@@ -261,7 +261,7 @@ class KicadGenerator
     obj.type = 'U'
     if obj.power or obj.ground
       obj.type = 'W' # Power input
-      if obj.output then obj.type = 'w' # Power output
+      if obj.out then obj.type = 'w' # Power output
     else
       if obj.bidir or (obj.in and obj.out)
         obj.type = 'B' # Bidirectional
