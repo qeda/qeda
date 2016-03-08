@@ -43,7 +43,7 @@ module.exports = (pattern, element) ->
     firstPad.x += dx
     firstPad.width = width2
 
-  silkscreen.son pattern, housing
+  silkscreen.dual pattern, housing
   assembly.polarized pattern, housing
   courtyard.dual pattern, housing, padParams.courtyard
 

@@ -94,28 +94,40 @@ module.exports =
       courtyard: params.courtyard
     @_choosePreferred pad, pattern, housing
 
-  qfn: (pattern, housing) ->
+  quad: (pattern, housing, option) ->
     settings = pattern.settings
-    params = @_nolead pattern, housing
-    params.Lmin = housing.bodyWidth.min
-    params.Lmax = housing.bodyWidth.max
-    if housing.pullBack?
-      params.Lmin -= 2*housing.pullBack
-      params.Lmax -= 2*housing.pullBack
-    rowIpc = @_ipc7351 params
-    params.Lmin = housing.bodyLength.min
-    params.Lmax = housing.bodyLength.max
-    if housing.pullBack?
-      params.Lmin -= 2*housing.pullBack
-      params.Lmax -= 2*housing.pullBack
-    columnIpc = @_ipc7351 params
+    switch option
+      when 'qfn'
+        params = @_nolead pattern, housing
+        params.Lmin = housing.bodyWidth.min
+        params.Lmax = housing.bodyWidth.max
+        if housing.pullBack?
+          params.Lmin -= 2*housing.pullBack
+          params.Lmax -= 2*housing.pullBack
+        rowIpc = @_ipc7351 params
+        params.Lmin = housing.bodyLength.min
+        params.Lmax = housing.bodyLength.max
+        if housing.pullBack?
+          params.Lmin -= 2*housing.pullBack
+          params.Lmax -= 2*housing.pullBack
+        columnIpc = @_ipc7351 params
+      when 'qfp'
+        params = @_gullwing pattern, housing
+        params.Lmin = housing.rowSpan.min
+        params.Lmax = housing.rowSpan.max
+        rowIpc = @_ipc7351 params
+        params.Lmin = housing.columnSpan.min
+        params.Lmax = housing.columnSpan.max
+        columnIpc = @_ipc7351 params
 
     rowIpc.clearance = settings.clearance.padToPad
     rowIpc.pitch = housing.pitch
+    if option is 'qfp' then rowIpc.body = housing.bodyWidth.nom
     rowPad = @_pad rowIpc, pattern
 
     columnIpc.clearance = settings.clearance.padToPad
     columnIpc.pitch = housing.pitch
+    if option is 'qfp' then columnIpc.body = housing.bodyLength.nom
     columnPad = @_pad columnIpc, pattern
 
     pad =
@@ -129,38 +141,7 @@ module.exports =
       courtyard: params.courtyard
     @_choosePreferred pad, pattern, housing
 
-  qfp: (pattern, housing) ->
-    settings = pattern.settings
-    params = @_gullwing pattern, housing
-    params.Lmin = housing.rowSpan.min
-    params.Lmax = housing.rowSpan.max
-    rowIpc = @_ipc7351 params
-    params.Lmin = housing.columnSpan.min
-    params.Lmax = housing.columnSpan.max
-    columnIpc = @_ipc7351 params
-
-    rowIpc.clearance = settings.clearance.padToPad
-    rowIpc.pitch = housing.pitch
-    rowIpc.body = housing.bodyWidth.nom
-    rowPad = @_pad rowIpc, pattern
-
-    columnIpc.clearance = settings.clearance.padToPad
-    columnIpc.pitch = housing.pitch
-    columnIpc.body = housing.bodyLength.nom
-    columnPad = @_pad columnIpc, pattern
-
-    pad =
-      width1: rowPad.width
-      height1: rowPad.height
-      distance1: rowPad.distance
-      width2: columnPad.width
-      height2: columnPad.height
-      distance2: columnPad.distance
-      trimmed: rowPad.trimmed or columnPad.trimmed
-      courtyard: params.courtyard
-    @_choosePreferred pad, pattern, housing
-
-  son: (pattern, housing, option) ->
+  son: (pattern, housing) ->
     settings = pattern.settings
 
     params = @_nolead pattern, housing

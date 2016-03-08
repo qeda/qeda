@@ -1,6 +1,6 @@
-qfp = require './qfp'
+quad = require './common/quad'
 
 module.exports = (pattern, element) ->
   housing = element.housing
   housing.cqfp = true
-  qfp pattern, element
+  quad pattern, element

@@ -9,6 +9,29 @@ module.exports =
     @_preamble pattern, housing
       .rectangle -x, -y, x, y
 
+  pak: (pattern, element) ->
+    housing = element.housing
+    bodyWidth = housing.bodyWidth.nom
+    bodyLength = housing.bodyLength.nom
+    leadSpan = housing.leadSpan.nom
+    leadCount = housing.leadCount
+    tabLedge = housing.tabLedge.nom ? housing.tabLedge
+    tabWidth = housing.tabWidth.nom ? housing.tabWidth
+
+    # Assembly
+    x1 = leadSpan/2 - tabLedge
+    x2 = x1 - bodyWidth
+    @_preamble pattern, housing
+      .rectangle x1, -bodyLength/2, x2, bodyLength/2
+      .rectangle x1, -tabWidth/2, x1 + tabLedge, tabWidth/2
+
+    pins = element.pins
+    y = -housing.pitch * (leadCount/2 - 0.5)
+    for i in [1..leadCount]
+      if pins[i]? then pattern.line -leadSpan/2, y, x2, y
+      y += housing.pitch
+
+
   polarized: (pattern, housing) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom

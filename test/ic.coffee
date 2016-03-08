@@ -3,6 +3,7 @@ Qeda = require '../src/qeda'
 process.chdir __dirname
 
 lib = new Qeda.Library
+lib.add 'Altera/5M1270ZT144'
 lib.add 'Analog/AD9393'
 lib.add 'Atmel/ATA6670'
 lib.add 'Atmel/ATtiny25'
