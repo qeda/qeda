@@ -234,23 +234,28 @@ class QedaElement
       'columnSpan',
       'height',
       'leadDiameter', 'leadHeight', 'leadLength', 'leadSpan', 'leadWidth',
+      'leadDiameter1', 'leadHeight1', 'leadLength1', 'leadWidth1',
+      'leadDiameter2', 'leadHeight2', 'leadLength2', 'leadWidth2',
       'rowSpan',
       'tabWidth', 'tabLength'
     ]
 
-    for key, value of housing
-      if typeof value is 'string' and (/^\d+(\.\d+)?-\d+(\.\d+)?$/.test value)
-        value = value.replace(/\s+/g, '').split('-').map((v) -> parseFloat(v))
-      if Array.isArray(value) and value.length > 0
-        min = value[0]
-        max = if value.length > 1 then value[1] else min
+    for k, v of housing
+      if typeof v is 'string' and (/^\d+(\.\d+)?-\d+(\.\d+)?$/.test v)
+        v = v.replace(/\s+/g, '').split('-').map((v) -> parseFloat(v))
+      if Array.isArray(v) and v.length > 0
+        min = v[0]
+        max = if v.length > 1 then v[1] else min
         nom = (max + min) / 2
         tol = max - min
-        housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
-      else if dimensions.indexOf(key) isnt -1
-        min = nom = max = value
+        housing[k] = { min: min,  max: max,  nom: nom, tol: tol }
+      else if dimensions.indexOf(k) isnt -1
+        min = nom = max = v
         tol = 0
-        housing[key] = { min: min,  max: max,  nom: nom, tol: tol }
+        housing[k] = { min: min,  max: max,  nom: nom, tol: tol }
+
+    if housing.units is 'inches'
+      @_inchToMm housing
 
   #
   # Return first valid hadnler
@@ -265,6 +270,15 @@ class QedaElement
         if error.code is 'MODULE_NOT_FOUND' then continue else break
       break
     [handler, handlerError]
+
+  _inchToMm: (value) ->
+    if typeof value is 'object'
+      for k, v of value
+        value[k] = @_inchToMm v
+    else if @isFloat(value)
+      value *= 25.4
+
+    value
 
   #
   # Generate pin object

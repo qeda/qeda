@@ -1,0 +1,62 @@
+pattern: DIP
+units: inches
+
+pitch: 0.1
+bodyWidth: 0.24-0.28
+height: 0.21
+leadWidth: 0.014-0.022
+leadLength: 0.115-0.15
+leadHeight: 0.008-0.01
+leadSpan: 0.3-0.325
+
+AA:
+  bodyLength: 0.735-0.775
+  leadCount: 14
+
+AB:
+  bodyLength: 0.78-0.8
+  leadCount: 16
+
+AC:
+  bodyLength: 0.88-0.92
+  leadCount: 18
+
+AD:
+  bodyLength: 0.98-1.06
+  leadCount: 20
+
+AE:
+  bodyLength: 1.145-1.165
+  leadCount: 22
+
+AF:
+  bodyLength: 1.23-1.28
+  leadCount: 24
+
+AG:
+  bodyLength: 1.385-1.425
+  leadCount: 28
+
+BA:
+  bodyLength: 0.355-0.4
+  leadCount: 8
+
+BB:
+  bodyLength: 0.735-0.775
+  leadCount: 16
+
+BC:
+  bodyLength: 0.845-0.88
+  leadCount: 18
+
+BD:
+  bodyLength: 1.02-1.06
+  leadCount: 22
+
+BE:
+  bodyLength: 1.16-1.195
+  leadCount: 24
+
+BF:
+  bodyLength: 1.345-1.4
+  leadCount: 28

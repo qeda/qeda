@@ -239,8 +239,12 @@ module.exports =
       if padDiameter > pitch - clearance
         padDiameter = pitch - clearance
 
-    drill: drill
-    diameter: padDiameter
+    pad =
+      drill: drill
+      width: padDiameter
+      height: padDiameter
+    @_choosePreferred pad, pattern, housing
+
 
   twoPin: (pattern, housing, option = 'chip') ->
     housing.bodyWidth ?= housing.bodyDiameter
@@ -331,6 +335,8 @@ module.exports =
       if housing.padDistance? then pad.distance = housing.padDistance
       if housing.padDistance1? then pad.distance1 = housing.padDistance1
       if housing.padDistance2? then pad.distance2 = housing.padDistance2
+
+      if housing.drillDiameter? then pad.drill = housing.drillDiameter
     pad
 
   _gullwing: (pattern, housing) ->
