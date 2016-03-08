@@ -53,6 +53,7 @@ class QedaLibrary
         padToHole: 1.5
       minimum:
         ringWidth: 0.2
+        drillDiameter: 0.2
       lineWidth:
         default: 0.2
         silkscreen: 0.12 # IPC-7351C (0.1, 0.12, 0.15)

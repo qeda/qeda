@@ -208,8 +208,9 @@ module.exports =
       h = housing.leadHeight.max
       diameter = Math.sqrt(w*w + h*h) # Pythagorean theorem
     drill = diameter + settings.clearance.holeOverLead
-    drillRoundoff = 0.01
-    drill = Math.round(drill / drillRoundoff ) * drillRoundoff
+    if drill < settings.minimum.drillDiameter then drill = settings.minimum.drillDiameter
+    sizeRoundoff = pattern.sizeRoundoff ? 0.05
+    drill = Math.ceil(drill / sizeRoundoff ) * sizeRoundoff
 
     padDiameter = drill * settings.ratio.padToHole
     if padDiameter < (drill + 2*settings.minimum.ringWidth)
@@ -219,6 +220,8 @@ module.exports =
       clearance = housing.padSpace ? settings.clearance.padToPad
       if padDiameter > pitch - clearance
         padDiameter = pitch - clearance
+
+    padDiameter = Math.round(padDiameter/sizeRoundoff) * sizeRoundoff
 
     pad =
       drill: drill

@@ -277,6 +277,8 @@ class QedaElement
         value[k] = @_inchToMm v
     else if @isFloat(value)
       value *= 25.4
+      roundOff = 0.01
+      value = Math.round(value / roundOff) * roundOff
 
     value
 
