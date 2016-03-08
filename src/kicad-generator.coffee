@@ -82,30 +82,31 @@ class KicadGenerator
       switch patObj.kind
         when 'attribute'
           fs.writeSync(fd,
-            sprintf("  (fp_text %s %s (at #{@f} #{@f}%s) (layer %s)\n",
-            patObj.name, patObj.text, patObj.x, patObj.y,
-            if patObj.angle? then (' ' + patObj.angle.toString()) else ''
-            patObj.layer)
+            sprintf("  (fp_text %s %s (at #{@f} #{@f}%s)%s (layer %s)\n",
+              patObj.name, patObj.text, patObj.x, patObj.y,
+              if patObj.angle? then (' ' + patObj.angle.toString()) else '',
+              unless patObj.visible then ' hide' else '',
+              patObj.layer)
           )
           fs.writeSync(fd,
             sprintf("    (effects (font (size #{@f} #{@f}) (thickness #{@f})))\n",
-            patObj.fontSize, patObj.fontSize, patObj.lineWidth)
+              patObj.fontSize, patObj.fontSize, patObj.lineWidth)
           )
           fs.writeSync fd, "  )\n"
         when 'circle'
           fs.writeSync(fd,
             sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n",
-            patObj.x, patObj.y, patObj.x, patObj.y + patObj.radius, patObj.layer, patObj.lineWidth)
+              patObj.x, patObj.y, patObj.x, patObj.y + patObj.radius, patObj.layer, patObj.lineWidth)
           )
         when 'line'
           fs.writeSync(fd,
             sprintf("  (fp_line (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n"
-            patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
+              patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
           )
         when 'pad'
           fs.writeSync(fd,
             sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
-            patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
+              patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
           )
           if patObj.drill? then fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.drill)
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
@@ -182,6 +183,7 @@ class KicadGenerator
   #
   _patternObj: (shape) ->
     obj = shape
+    obj.visible ?= true
     if obj.shape is 'rectangle' then obj.shape = 'rect'
 
     layers =

@@ -26,7 +26,6 @@ class TransistorIcon extends Icon
     x2 = x1 - dx/4
     y2 = y1 - dy/4
     a = Math.atan dy/dx
-    console.log a
     if @schematic.npn
       x3 = x2 + arrowWidth*Math.sin(a)/2
       y3 = y2 - arrowWidth*Math.cos(a)/2
