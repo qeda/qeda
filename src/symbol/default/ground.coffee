@@ -9,13 +9,13 @@ module.exports = (symbol, element) ->
   symbol
     .attribute 'refDes',
       x: 0
-      y: -1
+      y: -settings.space.attribute
       halign: 'center'
       valign: 'bottom'
       visible: false
     .attribute 'name',
       x: 0
-      y: height + 1.5
+      y: height + settings.space.attribute
       halign: 'center'
       valign: 'top'
     .pin

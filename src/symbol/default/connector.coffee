@@ -22,7 +22,7 @@ module.exports = (symbol, element) ->
 
   numbers = Object.keys element.pins
   if schematic.single
-    numbers.map (v) -> symbol.left.push v
+    numbers.map (v) -> symbol.right.push v
   else if schematic.ccw
     half = Math.ceil numbers.length/2
     for i in [0..(half - 1)]

@@ -1,4 +1,3 @@
-sprintf = require('sprintf-js').sprintf
 twoPin = require './common/two-pin'
 
 module.exports = (pattern, element) ->

@@ -38,12 +38,12 @@ module.exports = (symbol, element) ->
     symbol
       .attribute 'refDes',
         x: 0
-        y: -height/2 - 1
+        y: -height/2 - settings.space.attribute
         halign: 'center'
         valign: 'bottom'
       .attribute 'name',
         x: 0
-        y: height/2 + 1
+        y: height/2 + settings.space.attribute
         halign: 'center'
         valign: 'top'
       .pin

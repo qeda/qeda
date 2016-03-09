@@ -34,7 +34,6 @@ class QedaElement
     @refDes = 'REF' # Should be overriden in element handler
     @symbols = [] # Array of symbols (one for single part or several for multi-part)
 
-
     @pins = [] # Array of pin objects
     @pinGroups = [] # Array of pin groups
 
@@ -79,7 +78,6 @@ class QedaElement
 
     # Create pattern
     if @housing? then @pattern = new QedaPattern this
-
 
   #
   # Check whether number is float

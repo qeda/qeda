@@ -76,11 +76,11 @@ module.exports = (symbol, element) ->
     symbol
       .attribute 'refDes',
         x: 0
-        y: -r - 1
+        y: -r - settings.space.attribute
         halign: 'right'
         valign: 'bottom'
       .attribute 'name',
-        x: r + 1
+        x: r + settings.space.attribute
         y: 0
         halign: 'left'
         valign: 'center'

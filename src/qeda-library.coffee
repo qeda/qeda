@@ -33,6 +33,7 @@ class QedaLibrary
       space:
         default: 2
         pin: 2
+        attribute: 1.5
 
     @pattern =
       style: 'default'

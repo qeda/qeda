@@ -26,19 +26,6 @@ module.exports = (symbol, element, icon) ->
   height = pitch * (Math.max(left.length, right.length) + 1)
   space = settings.space.default
 
-  # Attributes
-  symbol
-    .attribute 'refDes',
-      x: 0
-      y: -settings.fontSize.name - 2
-      halign: 'left'
-      valign: 'bottom'
-    .attribute 'name',
-      x: 0
-      y: -1
-      halign: 'left'
-      valign: 'bottom'
-
   leftX = -width/2
   rightX = width/2
   topY = -height/2
@@ -247,3 +234,48 @@ module.exports = (symbol, element, icon) ->
     pin.space = pinSpace
     symbol.pin pin
     schematic.pinIcon?.draw pin.x, pin.y - pinLength - pinIconHeight/2
+
+  # Attributes
+  attributeSpace = settings.space.attribute
+  if element.parts? # Multi-part
+    symbol
+      .attribute 'refDes',
+        x: 0
+        y: -settings.fontSize.name - 2*attributeSpace
+        halign: 'left'
+        valign: 'bottom'
+      .attribute 'name',
+        x: 0
+        y: -attributeSpace
+        halign: 'left'
+        valign: 'bottom'
+  else
+    if topPins.length > 0
+      symbol
+        .attribute 'refDes',
+          x: 0
+          y: -attributeSpace
+          halign: 'left'
+          valign: 'bottom'
+    else
+      symbol
+        .attribute 'refDes',
+          x: width/2
+          y: -attributeSpace
+          halign: 'center'
+          valign: 'bottom'
+
+    if bottomPins.length > 0
+      symbol
+        .attribute 'name',
+          x: bottomPins[bottomPins.length - 1].x + attributeSpace
+          y: height + attributeSpace
+          halign: 'left'
+          valign: 'top'
+    else
+      symbol
+        .attribute 'name',
+          x: width/2
+          y: height + attributeSpace
+          halign: 'center'
+          valign: 'top'
