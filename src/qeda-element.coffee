@@ -80,6 +80,14 @@ class QedaElement
     if @housing? then @pattern = new QedaPattern this
 
   #
+  # Clone symbol and add it to element
+  #
+  cloneSymbol: (symbol) ->
+    newSymbol = new QedaSymbol(this, symbol.groups, symbol.name)
+    @symbols.push newSymbol
+    newSymbol
+
+  #
   # Check whether number is float
   #
   isFloat: (n) ->

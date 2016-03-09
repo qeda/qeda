@@ -72,6 +72,16 @@ class QedaSymbol
     @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius, fill: fill }
     this
 
+  #
+  # Add dot
+  #
+  dot: (x, y) ->
+    @_addShape 'line', { x1: @cx + x, y1: @cy + y, x2: @cx + x, y2: @cy + y }
+    this
+
+  #
+  # Add icon
+  #
   icon: (x, y, iconObj) ->
     iconObj.draw x, y
     this

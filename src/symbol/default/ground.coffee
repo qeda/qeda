@@ -1,8 +1,5 @@
-module.exports = (symbol, element) ->
-  element.refDes = '#PWR'
-  element.power = true
+groundSymbol = (symbol, element, icon = 'signal') ->
   settings = symbol.settings
-
   width = 5
   height = 5
 
@@ -29,4 +26,32 @@ module.exports = (symbol, element) ->
       invisible: true
     .line 0, 0, 0, height/2
     .lineWidth settings.lineWidth.thick
-    .polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2
+  switch icon
+    when 'signal'
+      symbol.polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2
+    when 'earth'
+      d = width/5
+      symbol
+        .line -width/2, height/2, width/2, height/2
+        .line -width/2 + d, 3*height/4, width/2 - d, 3*height/4
+        .line -width/2 + 2*d, height, width/2 - 2*d, height
+        #.dot 0, height
+    when 'chassis'
+      d = width/4
+      symbol
+        .line -width/2, height/2, width/2, height/2
+        .line -width/2, height/2, -width/2 - d, height
+        .line 0, height/2, -d, height
+        .line width/2, height/2, width/2 - d, height
+    else
+      symbol.line -width/2, height/2, width/2, height/2
+
+module.exports = (symbol, element) ->
+  element.refDes = '#PWR'
+  element.power = true
+
+  groundSymbol symbol, element
+  earth = element.cloneSymbol symbol
+  groundSymbol earth, element, 'earth'
+  chassis = element.cloneSymbol symbol
+  groundSymbol chassis, element, 'chassis'
