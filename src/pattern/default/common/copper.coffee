@@ -94,19 +94,30 @@ module.exports =
       pattern.pad num++, columnPad
       x -= pitch
 
+  parsePosition: (value) ->
+    values = value.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
+    points = []
+    for x in values by 2
+      points.push { x: x }
+    values.shift()
+    for y, i in values by 2
+      points[i/2].y = y
+    points
+
   tab: (pattern, housing) ->
     hasTab = housing.tabWidth? and housing.tabLength?
     if hasTab
       housing.tabPosition ?= '0, 0'
-      [x, y] = housing.tabPosition.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
+      points = @parsePosition housing.tabPosition
 
       tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount)) + 1
-      tabPad =
-        type: 'smd'
-        shape: 'rectangle'
-        width: housing.tabWidth.nom ? housing.tabWidth
-        height: housing.tabLength.nom ? housing.tabLength
-        layer: ['topCopper', 'topMask', 'topPaste']
-        x: x
-        y: y
-      pattern.pad tabNumber, tabPad
+      for p, i in points
+        tabPad =
+          type: 'smd'
+          shape: 'rectangle'
+          width: housing.tabWidth.nom ? housing.tabWidth
+          height: housing.tabLength.nom ? housing.tabLength
+          layer: ['topCopper', 'topMask', 'topPaste']
+          x: p.x
+          y: p.y
+      pattern.pad tabNumber + i, tabPad

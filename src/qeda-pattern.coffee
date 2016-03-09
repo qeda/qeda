@@ -1,4 +1,5 @@
 crc = require 'crc'
+parse = require 'svg-path-parser'
 
 #
 # Class for footprint pattern
@@ -45,6 +46,15 @@ class QedaPattern
   circle: (x, y, radius) ->
     @_addShape 'circle', { x: @cx + x, y: @cy + y, radius: radius }
     this
+
+  #
+  # Return first and last pads
+  #
+  extremePads: ->
+    numbers = Object.keys @pads
+    firstPad = @pads[numbers[0]]
+    lastPad = @pads[numbers[numbers.length - 1]]
+    [firstPad, lastPad]
 
   #
   # Check whether two patterns are equal
@@ -98,6 +108,19 @@ class QedaPattern
     pad.x = @cx + pad.x
     pad.y = @cy + pad.y
     @pads[name] = @_addPad pad
+    this
+
+  #
+  # Add pad
+  #
+  path: (d) ->
+    parts = parse(d)
+    for p in parts
+      switch p.code
+        when 'l' then @lineTo @x + p.x, @y + p.y
+        when 'L' then @lineTo p.x, p.y
+        when 'm' then @moveTo @x + p.x, @y + p.y
+        when 'M' then @moveTo p.x, p.y
     this
 
   #

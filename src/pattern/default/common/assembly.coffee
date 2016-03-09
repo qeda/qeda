@@ -6,7 +6,7 @@ module.exports =
     x = bodyWidth/2
     y = bodyLength/2
 
-    @_preamble pattern, housing
+    @preamble pattern, housing
       .rectangle -x, -y, x, y
 
   pak: (pattern, element) ->
@@ -21,7 +21,7 @@ module.exports =
     # Assembly
     x1 = leadSpan/2 - tabLedge
     x2 = x1 - bodyWidth
-    @_preamble pattern, housing
+    @preamble pattern, housing
       .rectangle x1, -bodyLength/2, x2, bodyLength/2
       .rectangle x1, -tabWidth/2, x1 + tabLedge, tabWidth/2
 
@@ -31,7 +31,6 @@ module.exports =
       if pins[i]? then pattern.line -leadSpan/2, y, x2, y
       y += housing.pitch
 
-
   polarized: (pattern, housing) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
@@ -40,13 +39,17 @@ module.exports =
     y = bodyLength/2
     d = Math.min 1, bodyWidth/2, bodyLength/2
 
-    @_preamble pattern, housing
+    @preamble pattern, housing
       .moveTo -x + d, -y
       .lineTo  x, -y
       .lineTo  x,  y
       .lineTo -x,  y
       .lineTo -x, -y + d
       .lineTo -x + d, -y
+
+  preamble: (pattern, housing, swap = false) ->
+    @_refDes pattern, housing, swap
+    @_value pattern, housing, swap
 
   twoPin: (pattern, housing) ->
     settings = pattern.settings
@@ -56,17 +59,7 @@ module.exports =
 
     x = bodyLength/2
     y = bodyWidth/2
-    @_preamble pattern, housing, true
-    ###  .layer 'topAssembly'
-      .lineWidth settings.lineWidth.assembly
-      .attribute 'value',
-        text: pattern.name
-        x: 0
-        y: y + settings.fontSize.value/2 + 0.5
-        halign: 'center'
-        valign: 'center'
-        visible: false
-    ###
+    @preamble pattern, housing, true
     if housing.cae
       d = Math.min bodyWidth/4, bodyLength/4
       diam = housing.bodyDiameter.nom ? housing.bodyDiameter
@@ -90,10 +83,6 @@ module.exports =
         .lineTo -x, -y
     else
       pattern.rectangle -x, -y, x, y
-
-  _preamble: (pattern, housing, swap = false) ->
-    @_refDes pattern, housing, swap
-    @_value pattern, housing, swap
 
   _refDes: (pattern, housing, swap = false) ->
     settings = pattern.settings

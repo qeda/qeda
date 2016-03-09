@@ -1,16 +1,30 @@
 module.exports =
+  body: (pattern, housing) ->
+    settings = pattern.settings
+    lineWidth = settings.lineWidth.silkscreen
+    bodyWidth = housing.bodyWidth.nom
+    bodyLength = housing.bodyLength.nom
+
+    [firstPad, lastPad] = pattern.extremePads()
+
+    x = bodyWidth/2 + lineWidth/2
+    y = bodyLength/2 + lineWidth/2
+
+    @preamble pattern, housing
+      .rectangle  -x, -y, x, y
+
   connector: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     x = bodyWidth/2 + lineWidth/2
     y = bodyLength/2 + lineWidth/2
 
-    @_refDes pattern
+    @preamble pattern, housing
       .rectangle  -x, -y, x, y
       .polarityMark -x - lineWidth, firstPad.y
 
@@ -20,7 +34,7 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
@@ -38,7 +52,7 @@ module.exports =
     xp = firstPad.x
     yp = (if xp < x2 then y2 else y1) - lineWidth
 
-    @_refDes pattern
+    @preamble pattern, housing
       .polarityMark xp, yp, 'top'
       # Top contour
       .moveTo x1, yl3
@@ -66,7 +80,7 @@ module.exports =
     d = Math.min dx, dy
     len = Math.min 2*housing.columnPitch, 2*housing.rowPitch, x, y
 
-    @_refDes pattern
+    @preamble pattern, housing
       .moveTo -x, -y + len
       .lineTo -x, -y + d
       .lineTo -x + d, -y
@@ -94,7 +108,7 @@ module.exports =
     leadSpan = housing.leadSpan.nom
     tabLedge = housing.tabLedge.nom ? housing.tabLedge
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
@@ -111,7 +125,7 @@ module.exports =
     xp = firstPad.x
     yp = y1 - lineWidth
 
-    @_refDes pattern
+    @preamble pattern, housing
       .polarityMark xp, yp, 'top'
       .moveTo x1, y0
       .lineTo x1, y1
@@ -128,13 +142,26 @@ module.exports =
       .lineTo x4, -ym
       .lineTo x4, -y3
 
+  preamble: (pattern, housing) ->
+    settings = pattern.settings
+    lineWidth = settings.lineWidth.silkscreen
+    pattern
+      .layer 'topSilkscreen'
+      .lineWidth lineWidth
+      .attribute 'refDes',
+        x: 0
+        y: 0
+        halign: 'center'
+        valign: 'center'
+    if housing.silkscreen? then pattern.path(housing.silkscreen) else pattern
+
   quad: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
@@ -156,7 +183,7 @@ module.exports =
     xp = firstPad.x
     yp = (if xp < x2 then y2 else y1) - lineWidth
 
-    @_refDes pattern
+    @preamble pattern, housing
       .polarityMark xp, yp, 'top'
       # Top left contour
       .moveTo x1, y3
@@ -184,7 +211,7 @@ module.exports =
     bodyLength = housing.bodyLength.nom
     leadWidth = housing.leadWidth.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
@@ -192,7 +219,7 @@ module.exports =
     y1 = firstPad.height/2 + gap
     y2 = bodyWidth/2 + lineWidth/2
     y = Math.max y1, y2
-    @_refDes pattern
+    @preamble pattern, housing
     if housing.cae
       d = y2 - y1
       pattern
@@ -224,21 +251,3 @@ module.exports =
        .lineTo x2, y1
        .lineTo -x, y1
        .polarityMark x2 - lineWidth/2, 0
-
-  _pads: (pattern) ->
-    numbers = Object.keys pattern.pads
-    firstPad = pattern.pads[numbers[0]]
-    lastPad = pattern.pads[numbers[numbers.length - 1]]
-    [firstPad, lastPad]
-
-  _refDes: (pattern) ->
-    settings = pattern.settings
-    lineWidth = settings.lineWidth.silkscreen
-    pattern
-      .layer 'topSilkscreen'
-      .lineWidth lineWidth
-      .attribute 'refDes',
-        x: 0
-        y: 0
-        halign: 'center'
-        valign: 'center'

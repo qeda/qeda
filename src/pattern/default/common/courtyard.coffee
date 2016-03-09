@@ -1,4 +1,16 @@
 module.exports =
+  body: (pattern, housing, courtyard) ->
+    settings = pattern.settings
+    courtyard ?=  housing.courtyard ? { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
+    bodyWidth = housing.bodyWidth.nom
+    bodyLength = housing.bodyLength.nom
+
+    x = bodyWidth/2 + courtyard
+    y = bodyLength/2 + courtyard
+
+    @preamble pattern, housing
+      .rectangle  -x, -y, x, y
+
   connector: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
@@ -6,14 +18,14 @@ module.exports =
     x = bodyWidth/2 + courtyard
     y = bodyLength/2 + courtyard
 
-    @_centroid pattern
+    @preamble pattern, housing
       .rectangle  -x, -y, x, y
 
   dual: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     x1 = firstPad.x - firstPad.width/2 - courtyard
     x2 = -bodyWidth/2 - courtyard
@@ -27,7 +39,7 @@ module.exports =
     yr3 = -yr2
     y4 = -y1
 
-    @_centroid pattern
+    @preamble pattern, housing
       .moveTo  x1,  yl2
       .lineTo x2, yl2
       .lineTo x2, y1
@@ -46,14 +58,14 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     x1 = Math.min(-bodyWidth/2, firstPad.x - firstPad.width/2) - courtyard
     y1 = Math.min(-bodyLength/2, firstPad.y - firstPad.height/2) - courtyard
     x2 = Math.max(bodyWidth/2, lastPad.x - lastPad.width/2) + courtyard
     y2 = Math.max(bodyLength/2, lastPad.y - lastPad.height/2) + courtyard
 
-    @_centroid pattern
+    @preamble pattern, housing
       .rectangle x1, y1, x2, y2
 
   pak: (pattern, housing, courtyard) ->
@@ -62,7 +74,7 @@ module.exports =
     leadSpan = housing.leadSpan.nom
     tabLedge = housing.tabLedge.nom ? housing.tabLedge
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     x1 = firstPad.x - firstPad.width/2 - courtyard
     x2 = leadSpan/2 - tabLedge - bodyWidth - courtyard
@@ -74,7 +86,7 @@ module.exports =
     y3 = lastPad.y - lastPad.height/2 - courtyard
     ym = Math.min y2, y3
 
-    @_centroid pattern
+    @preamble pattern, housing
       .moveTo x1, y1
       .lineTo x2, y1
       .lineTo x2, y2
@@ -93,11 +105,14 @@ module.exports =
       .lineTo x1, -y1
       .lineTo x1, y1
 
+  preamble: (pattern, housing) ->
+    @_centroid pattern
+
   quad: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     x1 = firstPad.x - firstPad.width/2 - courtyard
     x2 = -bodyWidth/2  - courtyard
@@ -117,7 +132,7 @@ module.exports =
     y5 = -y2
     y6 = -y1
 
-    @_centroid pattern
+    @preamble pattern, housing
       .moveTo x1, y3
       .lineTo x2, y3
       .lineTo x2, y2
@@ -144,14 +159,14 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = @_pads pattern
+    [firstPad, lastPad] = pattern.extremePads()
 
     x1 = lastPad.x + lastPad.width/2 + courtyard
     x2 = bodyLength/2 + courtyard
     y1 = firstPad.height/2 + courtyard
     y2 = bodyWidth/2 + courtyard
     ym = Math.max y1, y2
-    @_centroid pattern
+    @preamble pattern, housing
       .moveTo -x1, -y1
       .lineTo -x2, -y1
       .lineTo -x2, -ym
@@ -176,9 +191,3 @@ module.exports =
       .circle 0, 0, 0.5
       .line -0.7, 0, 0.7, 0
       .line 0, -0.7, 0, 0.7
-
-  _pads: (pattern) ->
-    numbers = Object.keys pattern.pads
-    firstPad = pattern.pads[numbers[0]]
-    lastPad = pattern.pads[numbers[numbers.length - 1]]
-    [firstPad, lastPad]
