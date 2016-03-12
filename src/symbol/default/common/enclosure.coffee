@@ -15,6 +15,7 @@ module.exports = (symbol, element, icon) ->
   pitch = symbol.alignToGrid(settings.pitch ? 5)
   pinLength = symbol.alignToGrid(settings.pinLength ? 10)
   pinSpace = schematic.pinSpace ? settings.space.pin
+  space = settings.space.default
 
   left = symbol.left
   right = symbol.right
@@ -24,7 +25,6 @@ module.exports = (symbol, element, icon) ->
 
   width = pitch * (Math.max(top.length, bottom.length) + 1)
   height = pitch * (Math.max(left.length, right.length) + 1)
-  space = settings.space.default
 
   leftX = -width/2
   rightX = width/2

@@ -3,23 +3,28 @@ designators =
   DD: ['digital']
 
 purposes =
-  RTX: ['isolator', 'interface', 'transceiver']
-  PLM: ['CPLD']
+  '>': ['opamp']
+  'CMP': ['comparator', 'supervisor', 'reset']
+  'MCU': ['mcu', 'microcontroller']
+  'MPU': ['cpu', 'mpu', 'microprocessor']
+  'PLM': ['cpld', 'fpga']
+  'RTX': ['isolator', 'interface', 'transceiver']
+  '*STU': ['ldo', 'regulator']
 
 updateElement = (element) ->
   unless element.keywords? then return
-  keywords = element.keywords.replace(/\s+/g, '').split(',')
+  keywords = element.keywords.toLowerCase().replace(/\s+/g, '').split(',')
   refWeight = 0
   for designator, classes of designators
     weight = keywords.filter((a) => classes.indexOf(a) isnt -1).length
     if weight > refWeight
       refWeight = weight
       element.refDes = designator
-  porposeWeight = 0
+  purposeWeight = 0
   for purpose, classes of purposes
     weight = keywords.filter((a) => classes.indexOf(a) isnt -1).length
-    if weight > porposeWeight
-      porposeWeight = weight
+    if weight > purposeWeight
+      purposeWeight = weight
       element.purpose = purpose
 
 module.exports = (symbol, element) ->
@@ -33,56 +38,66 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= true
   schematic.showPinNumbers ?= true
 
-  step = 5
-  pinLength = settings.pinLenght ? 10
+  pitch = symbol.alignToGrid(settings.pitch ? 5)
+  pinLength = symbol.alignToGrid(settings.pinLength ? 10)
+  pinSpace = schematic.pinSpace ? settings.space.pin
+  space = settings.space.default
 
   left = symbol.left
-  if symbol.top.length
+  if symbol.top.length # Move top pins to the left side
     left.push '-'
     left = left.concat symbol.top
   right = symbol.right
-  if symbol.bottom.length
+  if symbol.bottom.length # Move bottom pins to the right side
     right.push '-'
     right = right.concat symbol.bottom
 
   pins = element.pins
 
-  space = settings.space.pin
-
   # Attributes
   symbol
     .attribute 'refDes',
       x: 0
-      y: -1
+      y: -settings.space.attribute
       halign: 'center'
       valign: 'bottom'
-    .attribute 'name',
-      x: 0
-      y: -settings.fontSize.refDes - 2
-      halign: 'center'
-      valign: 'bottom'
-      visible: false
     .attribute 'user',
       x: 0
-      y: 3
+      y: 2*settings.space.attribute
       halign: 'center'
       valign: 'top'
       text: element.purpose
 
-  textWidth = element.purpose.length * settings.fontSize.name
+  textWidth = symbol.textWidth(element.purpose, 'name')
 
   width = textWidth
-  height = step * (Math.max(left.length, right.length) + 1)
+  height = pitch * (Math.max(left.length, right.length) + 1)
+
+  if element.parts?
+    symbol
+      .attribute 'name',
+        x: 0
+        y: settings.fontSize.name + 4*settings.space.attribute
+        halign: 'right'
+        valign: 'center'
+        orientation: 'vertical'
+  else
+    symbol
+      .attribute 'name',
+        x: 0
+        y: height + settings.space.attribute
+        halign: 'center'
+        valign: 'top'
 
   # Pins on the left side
   x = -width/2
   leftPins = []
-  leftLines = []
-  y = height/2 - step * left.length/2 + step/2
+  leftYs = []
+  y = height/2 - pitch * left.length/2 + pitch/2
   for i in left
     if i is '-'
-      leftLines.push y1: y, y2: y
-      y += step
+      leftYs.push y
+      y += pitch
       continue
     pin = pins[i]
     unless pin? then continue
@@ -91,22 +106,22 @@ module.exports = (symbol, element) ->
     pin.orientation = 'right'
     leftPins.push pin
 
-    w = pin.name.length*settings.fontSize.pin + space
+    w = symbol.textWidth(pin.name, 'pin') + pinSpace
     x1 = -width/2 - w - space
     if x > x1 then x = x1 # Make symbol wider
-    y += step
+    y += pitch
 
   width = Math.max width, -2*x
 
   # Pins on the right side
   x = width/2
   rightPins = []
-  rightLines = []
-  y = height/2 - step * right.length/2 + step/2
+  rightYs = []
+  y = height/2 - pitch * right.length/2 + pitch/2
   for i in right
     if i is '-'
-      rightLines.push y1: y, y2: y
-      y += step
+      rightYs.push y
+      y += pitch
       continue
     pin = pins[i]
     unless pin? then continue
@@ -115,13 +130,13 @@ module.exports = (symbol, element) ->
     pin.orientation = 'left'
     rightPins.push pin
 
-    w = pin.name.length*settings.fontSize.pin + space
+    w = symbol.textWidth(pin.name, 'pin') + pinSpace
     x2 = textWidth/2 + w + space
     if x < x2 then x = x2 # Make symbol wider
-    y += step
+    y += pitch
 
   width = Math.max width, 2*x
-  width = Math.ceil(width / (2*settings.gridSize)) * 2*settings.gridSize # Align to grid
+  width = symbol.alignToGrid width, 'ceil'
 
   # Box
   symbol
@@ -130,13 +145,14 @@ module.exports = (symbol, element) ->
     .line -textWidth/2 - space, 0, -textWidth/2 - space, height
     .line textWidth/2 + space, 0, textWidth/2 + space, height
 
-
   # Gap lines
-  for line in leftLines
-    symbol.line -width/2, line.y1, -textWidth/2 - space, line.y2
+  x1 = width/2
+  x2 = textWidth/2 + space
+  for y in leftYs
+    symbol.line -x1, y, -x2, y
 
-  for line in rightLines
-    symbol.line width/2, line.y1, textWidth/2 + space, line.y2
+  for y in rightYs
+    symbol.line x1, y, x2, y
 
   # Pins
   for pin in leftPins
