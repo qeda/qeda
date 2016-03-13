@@ -17,3 +17,4 @@ module.exports = (lib) ->
   lib.add 'TI/LM2940'
   lib.add 'TI/LM5050-2'
   lib.add 'TI/TLV710'
+  lib.add 'TI/TMS320F28379DPTP'

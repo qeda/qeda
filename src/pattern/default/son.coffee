@@ -36,7 +36,7 @@ module.exports = (pattern, element) ->
     height: padParams.height
     layer: ['topCopper', 'topMask', 'topPaste']
 
-  copper.dual pattern, padParams
+  copper.dual pattern, element, padParams
   if padParams.width2?
     firstPad = pattern.pads[Object.keys(pattern.pads)[0]]
     width2 = padParams.width2
@@ -48,4 +48,4 @@ module.exports = (pattern, element) ->
   assembly.polarized pattern, housing
   courtyard.dual pattern, housing, padParams.courtyard
 
-  copper.tab pattern, housing
+  copper.tab pattern, element

@@ -1,11 +1,13 @@
 module.exports =
-  dual: (pattern, padParams) ->
+  dual: (pattern, element, padParams) ->
+    housing = element.housing
+    pitch = housing.pitch
+    count = housing.leadCount
     distance = padParams.distance
-    pitch = padParams.pitch
-    count = padParams.count
     pad = padParams.pad
     order = padParams.order ? 'round'
     mirror = padParams.mirror ? false
+    pins = element.pins
     numbers = switch order
       when 'round'
         [1..count/2].concat(i for i in [count..(count/2 + 1)] by -1)
@@ -19,7 +21,7 @@ module.exports =
     y = -pitch * (count/4 - 0.5)
     for i in [0..(count/2 - 1)]
       pad.y = y
-      pattern.pad numbers[i], pad
+      if pins[numbers[i]]? then pattern.pad numbers[i], pad
       y += pitch
 
     # Pads on the right side
@@ -27,7 +29,7 @@ module.exports =
     y = -pitch * (count/4 - 0.5)
     for i in [(count/2)..(count - 1)]
       pad.y = y
-      pattern.pad numbers[i], pad
+      if pins[numbers[i]]? then pattern.pad numbers[i], pad
       y += pitch
 
   gridArray: (pattern, element, pad) ->
@@ -48,18 +50,20 @@ module.exports =
         pad.x = x
         pad.y = y
         name = gridLetters[row] + column
-        if pins[name]? then pattern.pad name, pad # Add only if exists
+        if pins[name]? then pattern.pad name, pad
         x += columnPitch
       y += rowPitch
 
-  quad: (pattern, padParams) ->
-    pitch = padParams.pitch
-    rowCount = padParams.rowCount
-    columnCount = padParams.columnCount
+  quad: (pattern, element, padParams) ->
+    housing = element.housing
+    pitch = housing.pitch
+    rowCount = housing.rowCount
+    columnCount = housing.columnCount
     rowPad = padParams.rowPad
     columnPad = padParams.columnPad
     distance1 = padParams.distance1
     distance2 = padParams.distance2
+    pins = element.pins
 
     # Pads on the left side
     rowPad.x = -distance1 / 2
@@ -67,7 +71,8 @@ module.exports =
     num = 1
     for i in [1..rowCount]
       rowPad.y = y
-      pattern.pad num++, rowPad
+      if pins[num]? then pattern.pad num, rowPad
+      ++num
       y += pitch
 
     # Pads on the bottom side
@@ -75,7 +80,8 @@ module.exports =
     columnPad.y = distance2 / 2
     for i in [1..columnCount]
       columnPad.x = x
-      pattern.pad num++, columnPad
+      if pins[num]? then pattern.pad num, columnPad
+      ++num
       x += pitch
 
     # Pads on the right side
@@ -83,7 +89,8 @@ module.exports =
     y -= pitch
     for i in [1..rowCount]
       rowPad.y = y
-      pattern.pad num++, rowPad
+      if pins[num]? then pattern.pad num, rowPad
+      ++num
       y -= pitch
 
     # Pads on the top side
@@ -91,7 +98,8 @@ module.exports =
     columnPad.y = -distance2 / 2
     for i in [1..columnCount]
       columnPad.x = x
-      pattern.pad num++, columnPad
+      if pins[num]? then pattern.pad num, columnPad
+      ++num
       x -= pitch
 
   parsePosition: (value) ->
@@ -104,13 +112,14 @@ module.exports =
       points[i/2].y = y
     points
 
-  tab: (pattern, housing) ->
+  tab: (pattern, element) ->
+    housing = element.housing
     hasTab = housing.tabWidth? and housing.tabLength?
     if hasTab
       housing.tabPosition ?= '0, 0'
       points = @parsePosition housing.tabPosition
 
-      tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount)) + 1
+      tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount))
       for p, i in points
         tabPad =
           type: 'smd'

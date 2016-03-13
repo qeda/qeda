@@ -35,7 +35,7 @@ module.exports = (pattern, element) ->
     height: padParams.height
     layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
 
-  copper.dual pattern, padParams
+  copper.dual pattern, element, padParams
   firstPad = pattern.pads[Object.keys(pattern.pads)[0]]
   firstPad.shape = 'rectangle'
 

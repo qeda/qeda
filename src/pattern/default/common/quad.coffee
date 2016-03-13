@@ -12,6 +12,8 @@ module.exports = (pattern, element) ->
   leadCount = housing.leadCount ? 2*(housing.rowCount + housing.columnCount)
   hasTab = housing.tabWidth? and housing.tabLength?
   if hasTab then ++leadCount
+  housing.columnSpan ?= housing.leadSpan
+  housing.rowSpan ?= housing.leadSpan
 
   if housing.cqfp
     abbr = 'CQFP'
@@ -41,9 +43,6 @@ module.exports = (pattern, element) ->
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.quad pattern, housing, option
-  padParams.pitch = housing.pitch
-  padParams.rowCount = housing.rowCount
-  padParams.columnCount = housing.columnCount
   padParams.rowPad =
     type: 'smd'
     shape: 'rectangle'
@@ -60,9 +59,9 @@ module.exports = (pattern, element) ->
     distance: padParams.distance2
     layer: ['topCopper', 'topMask', 'topPaste']
 
-  copper.quad pattern, padParams
+  copper.quad pattern, element, padParams
   silkscreen.quad pattern, housing
   assembly.polarized pattern, housing
   courtyard.quad pattern, housing, padParams.courtyard
 
-  copper.tab pattern, housing
+  copper.tab pattern, element

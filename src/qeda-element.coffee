@@ -294,7 +294,7 @@ class QedaElement
   _pinObj: (number, name) ->
     obj = @pins[number]
     if obj?
-      obj.name += '/' +  name
+      unless @library.symbol.shortPinNames then obj.name += '/' +  name
     else
       obj =
         name: name

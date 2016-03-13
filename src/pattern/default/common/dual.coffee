@@ -46,9 +46,6 @@ module.exports = (pattern, element) ->
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.dual pattern, housing, option
-
-  padParams.pitch = housing.pitch
-  padParams.count = housing.leadCount
   padParams.order = 'round'
   padParams.pad =
     type: 'smd'
@@ -57,9 +54,9 @@ module.exports = (pattern, element) ->
     height: padParams.height
     layer: ['topCopper', 'topMask', 'topPaste']
 
-  copper.dual pattern, padParams
+  copper.dual pattern, element, padParams
   silkscreen.dual pattern, housing
   assembly.polarized pattern, housing
   courtyard.dual pattern, housing, padParams.courtyard
 
-  copper.tab pattern, housing
+  copper.tab pattern, element
