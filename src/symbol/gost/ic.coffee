@@ -9,7 +9,7 @@ purposes =
   'MPU': ['cpu', 'mpu', 'microprocessor']
   'PLM': ['cpld', 'fpga']
   'RTX': ['isolator', 'interface', 'transceiver']
-  '*STU': ['ldo', 'regulator']
+  '*STU': ['ac-dc', 'dc-dc', 'ldo', 'regulator']
 
 updateElement = (element) ->
   unless element.keywords? then return
