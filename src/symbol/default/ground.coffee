@@ -24,11 +24,14 @@ groundSymbol = (symbol, element, icon = 'signal') ->
       orientation: 'down'
       ground: true
       invisible: true
-    .line 0, 0, 0, height/2
+    .line 0, 0, 0, (if icon is 'common' then height else height/2)
     .lineWidth settings.lineWidth.thick
   switch icon
     when 'signal'
       symbol.polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2
+    when 'common'
+      symbol
+        .line -width/2, height, width/2, height
     when 'earth'
       d = width/5
       symbol
@@ -51,6 +54,8 @@ module.exports = (symbol, element) ->
   element.power = true
 
   groundSymbol symbol, element
+  common = element.cloneSymbol symbol
+  groundSymbol common, element, 'common'
   earth = element.cloneSymbol symbol
   groundSymbol earth, element, 'earth'
   chassis = element.cloneSymbol symbol
