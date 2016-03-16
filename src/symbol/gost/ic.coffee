@@ -7,6 +7,7 @@ purposes =
   'CMP': ['comparator', 'supervisor', 'reset']
   'MCU': ['mcu', 'microcontroller']
   'MPU': ['cpu', 'mpu', 'microprocessor']
+  'MUX': ['multiplexer']
   'PLM': ['cpld', 'fpga']
   'RTX': ['isolator', 'interface', 'transceiver']
   '*STU': ['ac-dc', 'dc-dc', 'ldo', 'regulator']

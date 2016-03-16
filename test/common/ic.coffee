@@ -1,6 +1,7 @@
 module.exports = (lib) ->
   lib.add 'Altera/5M1270ZT144'
   lib.add 'Analog/AD9393'
+  lib.add 'Analog/ADG508A'
   lib.add 'Atmel/ATA6670'
   lib.add 'Atmel/ATtiny25'
   lib.add 'IRF/AUIRFS8409-7P'
