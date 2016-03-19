@@ -97,6 +97,8 @@ module.exports = (symbol, element) ->
   y = height/2 - pitch * left.length/2 + pitch/2
   for i in left
     if i is '-'
+      unless leftFirst? then leftFirst = leftPins.length - 1
+      leftLast = leftPins.length
       leftYs.push y
       y += pitch
       continue
@@ -121,6 +123,8 @@ module.exports = (symbol, element) ->
   y = height/2 - pitch * right.length/2 + pitch/2
   for i in right
     if i is '-'
+      unless rightFirst? then rightFirst = rightPins.length - 1
+      rightLast = rightPins.length
       rightYs.push y
       y += pitch
       continue
@@ -155,10 +159,39 @@ module.exports = (symbol, element) ->
   for y in rightYs
     symbol.line x1, y, x2, y
 
-  # Pins
+  # Left pins
+  # Align first group to top
+  y = pitch
+  if leftFirst?
+    for i in [0..leftFirst]
+      leftPins[i].y = y
+      y += pitch
+
+  # Align last group to bottom
+  y = height - pitch
+  if leftLast?
+    for i in [(leftPins.length-1)..leftLast] by -1
+      leftPins[i].y = y
+      y -= pitch
+
   for pin in leftPins
     pin.x = -width/2 - pinLength
     symbol.pin pin
+
+  # Right pins
+  # Align first group to top
+  y = pitch
+  if rightFirst?
+    for i in [0..rightFirst]
+      rightPins[i].y = y
+      y += pitch
+
+  # Align last group to bottom
+  y = height - pitch
+  if rightLast?
+    for i in [rightLast..(rightPins.length-1)]
+      rightPins[i].y = y
+      y -= pitch
 
   for pin in rightPins
     pin.x = width/2 + pinLength
