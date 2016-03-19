@@ -107,10 +107,11 @@ class QedaElement
   # Parse pin/group list
   #
   parseMultiple: (input) ->
+    unless input? then return [0]
     result = []
-    groups = input.replace(/\s+/g, '').split(',')
+    groups = input.toString().replace(/\s+/g, '').split(',')
     for group in groups
-      cap = /(.*\D)(\d+)-(\d+)/.exec group
+      cap = /(\D*)(\d+)-(\d+)/.exec group
       if cap
         begin = parseInt cap[2]
         end = parseInt cap[3]

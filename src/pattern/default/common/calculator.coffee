@@ -67,6 +67,20 @@ module.exports =
       courtyard: courtyard
     @_choosePreferred pad, pattern, housing
 
+  padDiameter: (pattern, housing, drillDiameter) ->
+    settings = pattern.settings
+    padDiameter = drillDiameter * settings.ratio.padToHole
+    if padDiameter < (drillDiameter + 2*settings.minimum.ringWidth)
+      padDiameter = drillDiameter + 2*settings.minimum.ringWidth
+    if housing.pitch? or (housing.rowPitch? and housing.columnPitch?)
+      pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
+      clearance = housing.padSpace ? settings.clearance.padToPad
+      if padDiameter > pitch - clearance
+        padDiameter = pitch - clearance
+
+    sizeRoundoff = pattern.sizeRoundoff ? 0.05
+    Math.round(padDiameter/sizeRoundoff) * sizeRoundoff
+
   pak: (pattern, housing) ->
     settings = pattern.settings
     params = @_gullwing pattern, housing
@@ -211,17 +225,7 @@ module.exports =
     if drill < settings.minimum.drillDiameter then drill = settings.minimum.drillDiameter
     sizeRoundoff = pattern.sizeRoundoff ? 0.05
     drill = Math.ceil(drill / sizeRoundoff ) * sizeRoundoff
-
-    padDiameter = drill * settings.ratio.padToHole
-    if padDiameter < (drill + 2*settings.minimum.ringWidth)
-      padDiameter = drill + 2*settings.minimum.ringWidth
-    if housing.pitch? or (housing.rowPitch? and housing.columnPitch?)
-      pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
-      clearance = housing.padSpace ? settings.clearance.padToPad
-      if padDiameter > pitch - clearance
-        padDiameter = pitch - clearance
-
-    padDiameter = Math.round(padDiameter/sizeRoundoff) * sizeRoundoff
+    padDiameter = @padDiameter pattern, housing, drill
 
     pad =
       drill: drill

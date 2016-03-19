@@ -141,7 +141,7 @@ module.exports = (symbol, element) ->
     y += pitch
 
   width = Math.max width, 2*x
-  width = symbol.alignToGrid width, 'ceil'
+  width = 2*symbol.alignToGrid(width/2, 'ceil')
 
   # Box
   symbol

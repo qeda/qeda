@@ -20,32 +20,33 @@ module.exports = (symbol, element) ->
   schematic.showPinNumbers ?= true
   schematic.pinIcon = pinIcon
 
-  numbers = Object.keys element.pins
-  if schematic.single
-    numbers.map (v) -> symbol.right.push v
-  else if schematic.ccw
-    half = Math.ceil numbers.length/2
-    for i in [0..(half - 1)]
-      symbol.left.push numbers[i]
-    for i in [half..(numbers.length - 1)]
-      symbol.right.unshift number
-  else if schematic.cw
-    half = Math.ceil numbers.length/2
-    for i in [0..(half - 1)]
-      symbol.right.push numbers[i]
-    for i in [half..(numbers.length - 1)]
-      symbol.left.unshift number
-  else if schematic.mirror
-    for number in numbers by 2
-      symbol.right.push number
-    numbers.shift()
-    for number in numbers by 2
-      symbol.left.push number
-  else
-    for number in numbers by 2
-      symbol.left.push number
-    numbers.shift()
-    for number in numbers by 2
-      symbol.right.push number
+  unless symbol.left.length and symbol.right.length # Automatic
+    numbers = Object.keys element.pins
+    if schematic.single
+      numbers.map (v) -> symbol.right.push v
+    else if schematic.ccw
+      half = Math.ceil numbers.length/2
+      for i in [0..(half - 1)]
+        symbol.left.push numbers[i]
+      for i in [half..(numbers.length - 1)]
+        symbol.right.unshift number
+    else if schematic.cw
+      half = Math.ceil numbers.length/2
+      for i in [0..(half - 1)]
+        symbol.right.push numbers[i]
+      for i in [half..(numbers.length - 1)]
+        symbol.left.unshift number
+    else if schematic.mirror
+      for number in numbers by 2
+        symbol.right.push number
+      numbers.shift()
+      for number in numbers by 2
+        symbol.left.push number
+    else
+      for number in numbers by 2
+        symbol.left.push number
+      numbers.shift()
+      for number in numbers by 2
+        symbol.right.push number
 
   enclosure symbol, element

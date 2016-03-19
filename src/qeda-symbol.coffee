@@ -12,6 +12,7 @@ class QedaSymbol
     @currentLineWidth = 0
     sides = ['left', 'right', 'top', 'bottom']
     schematic = element.schematic
+    pins = element.pins
     for side in sides
       @[side] = []
       if schematic[side]?
@@ -22,6 +23,8 @@ class QedaSymbol
             if @[side].length > 0
               @[side].push '-' # Insert gap
             @[side] = @[side].concat pinGroup
+          else if pins[group]?
+            @[side].push group
 
     both = @left.filter((v) => (v isnt '-') and (@right.indexOf(v) isnt -1))
     delta = Math.ceil((@right.length - @left.length + both.length) / 2)
