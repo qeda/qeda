@@ -46,11 +46,11 @@ module.exports = (symbol, element) ->
 
   left = symbol.left
   if symbol.top.length # Move top pins to the left side
-    left.push '-'
+    if left.length then left.push '-'
     left = left.concat symbol.top
   right = symbol.right
   if symbol.bottom.length # Move bottom pins to the right side
-    right.push '-'
+    if right.length then right.push '-'
     right = right.concat symbol.bottom
 
   pins = element.pins
