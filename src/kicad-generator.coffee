@@ -173,7 +173,9 @@ class KicadGenerator
             pointCount = symObj.points.length / 2
             polyPoints = symObj.points.reduce((p, v) -> p + ' ' + v)
             fs.writeSync fd, "P #{pointCount} #{i} 1 #{symObj.lineWidth} #{polyPoints} #{symObj.fillStyle}\n"
-
+          when 'text'
+            hidden = if symObj.visible is 'I' then 1 else 0
+            fs.writeSync fd, "T #{symObj.angle} #{symObj.x} #{symObj.y} #{symObj.fontSize} #{hidden} #{i} 1 \"#{symObj.text}\" #{symObj.italic} #{symObj.bold} #{symObj.halign} #{symObj.valign}\n"
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
@@ -259,6 +261,8 @@ class KicadGenerator
       else 'H'
 
     obj.fontSize = Math.round(obj.fontSize)
+    obj.italic = if obj.italic then 'Italic' else 'Normal'
+    obj.bold = if obj.bold then 1 else 0
 
     obj.type = 'U'
     if obj.power or obj.ground

@@ -181,6 +181,14 @@ class QedaSymbol
         shape['points'] = shape['points'].map((v) -> v * factor)
         if needRound then shape['points'] = shape['points'].map((v) -> Math.round(v))
 
+  #
+  # Add text string
+  #
+  text: (text) ->
+    text.fontSize ?= @settings.fontSize.default
+    text.angle ?= 0
+    @_addShape 'text',  text
+    this
 
   #
   # Get text height
