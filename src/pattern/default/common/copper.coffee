@@ -115,11 +115,11 @@ module.exports =
   tab: (pattern, element) ->
     housing = element.housing
     hasTab = housing.tabWidth? and housing.tabLength?
+    tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount)) + 1
     if hasTab
       housing.tabPosition ?= '0, 0'
       points = @parsePosition housing.tabPosition
 
-      tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount))
       for p, i in points
         tabPad =
           type: 'smd'
@@ -129,4 +129,20 @@ module.exports =
           layer: ['topCopper', 'topMask', 'topPaste']
           x: p.x
           y: p.y
-      pattern.pad tabNumber + i, tabPad
+        pattern.pad tabNumber + i, tabPad
+
+    if housing.viaDiameter?
+      viaDiameter = housing.viaDiameter
+      points = @parsePosition housing.viaPosition
+      console.log points
+      for p in points
+        viaPad =
+          type: 'through-hole'
+          shape: 'circle'
+          drill: viaDiameter
+          width: viaDiameter + 0.1
+          height: viaDiameter + 0.1
+          layer: ['topCopper', 'bottomCopper']
+          x: p.x
+          y: p.y
+        pattern.pad tabNumber, viaPad
