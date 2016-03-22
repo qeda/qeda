@@ -1,16 +1,152 @@
 pattern: QFN
 
-leadLength: 0.35-0.75
+leadHeight: 0.2
 
+# First digit code
 V\w\w\w(-\d)?:
   height: 1
 
+W\w\w\w(-\d)?:
+  height: 0.8
+
+# Second digit code
+\wA\w\w(-\d)?:
+  bodyWidth: 1
+
+\wB\w\w(-\d)?:
+  bodyWidth: 1.5
+
+\wC\w\w(-\d)?:
+  bodyWidth: 2
+
+\wD\w\w(-\d)?:
+  bodyWidth: 2.5
+
+\wEw\w(-\d)?:
+  bodyWidth: 3
+
 \wF\w\w(-\d)?:
-  bodyLength: 3.5
+  bodyWidth: 3.5
+
+\wG\w\w(-\d)?:
+  bodyWidth: 4
+
+\wH\w\w(-\d)?:
+  bodyWidth: 5
+
+\wJ\w\w(-\d)?:
+  bodyWidth: 6
+
+\wK\w\w(-\d)?:
+  bodyWidth: 7
+
+\wL\w\w(-\d)?:
+  bodyWidth: 8
+
+\wM\w\w(-\d)?:
+  bodyWidth: 9
+
+\wN\w\w(-\d)?:
+  bodyWidth: 10
+
+\wP\w\w(-\d)?:
+  bodyWidth: 11
+
+\wR\w\w(-\d)?:
+  bodyWidth: 12
+
+\wS\w\w(-\d)?:
+  bodyWidth: 4.5
+
+\wT\w\w(-\d)?:
+  bodyWidth: 5.5
+
+\wU\w\w(-\d)?:
+  bodyWidth: 6.5
+
+# Third digit code
+\w\wA\w(-\d)?:
+  bodyLength: 1
+
+\w\wB\w(-\d)?:
+  bodyLength: 1.5
+
+\w\wC\w(-\d)?:
+  bodyLength: 2
+
+\w\wD\w(-\d)?:
+  bodyLength: 2.5
+
+\w\wEw(-\d)?:
+  bodyLength: 3
 
 \w\wF\w(-\d)?:
-  bodyWidth: 3.5
+  bodyLength: 3.5
+
+\w\wG\w(-\d)?:
+  bodyLength: 4
+
+\w\wH\w(-\d)?:
+  bodyLength: 5
+
+\w\wJ\w(-\d)?:
+  bodyLength: 6
+
+\w\wK\w(-\d)?:
+  bodyLength: 7
+
+\w\wL\w(-\d)?:
+  bodyLength: 8
+
+\w\wM\w\w(-\d)?:
+  bodyLength: 9
+
+\w\wN\w(-\d)?:
+  bodyLength: 10
+
+\w\wP\w(-\d)?:
+  bodyLength: 11
+
+\w\wR\w(-\d)?:
+  bodyLength: 12
+
+\w\wS\w(-\d)?:
+  bodyLength: 4.5
+
+\w\wT\w(-\d)?:
+  bodyLength: 5.5
+
+\w\wU\w(-\d)?:
+  bodyLength: 6.5
+
+# Fourth digit code
+\w\w\wA(-\d)?:
+  pitch: 1
+  leadWidth: 0.3-0.45
+
+\w\w\wB(-\d)?:
+  pitch: 0.8
+  leadWidth: 0.25-0.35
+
+\w\w\wC(-\d)?:
+  pitch: 0.65
+  leadWidth: 0.25-0.35
 
 \w\w\wD(-\d)?:
   pitch: 0.5
   leadWidth: 0.18-0.3
+
+\w\w\wE(-\d)?:
+  pitch: 0.4
+  leadWidth: 0.15-0.25
+
+# Variations
+\wEEB:
+  leadLength: 0.35-0.75
+  rowCount: 1
+  columnCount: 1
+
+\wGEB:
+  leadLength: 0.35-0.75
+  rowCount: 1
+  columnCount: 3

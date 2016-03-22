@@ -1,0 +1,105 @@
+pattern: SON
+
+# First digit code
+V\d{4}\w(-\d)?:
+  height: 1
+
+W\d{4}\w(-\d)?:
+  height: 0.8
+
+U\d{4}\w(-\d)?:
+  height: 0.65
+
+# Second digit code
+\w10\d\d\w(-\d)?:
+  bodyLength: 1
+
+\w15\d\d\w(-\d)?:
+  bodyLength: 1.5
+
+\w20\d\d\w(-\d)?:
+  bodyLength: 2
+
+\w25\d\d\w(-\d)?:
+  bodyLength: 2.5
+
+\w30\d\d\w(-\d)?:
+  bodyLength: 3
+
+\w35\d\d\w(-\d)?:
+  bodyLength: 3.5
+
+\w40\d\d\w(-\d)?:
+  bodyLength: 4
+
+\w45\d\d\w(-\d)?:
+  bodyLength: 4.5
+
+\w50\d\d\w(-\d)?:
+  bodyLength: 5
+
+\w55\d\d\w(-\d)?:
+  bodyLength: 5.5
+
+\w60\d\d\w(-\d)?:
+  bodyLength: 6
+
+# Third digit code
+\w\d\d10\w(-\d)?:
+  bodyWidth: 1
+
+\w\d\d15\w(-\d)?:
+  bodyWidth: 1.5
+
+\w\d\d20\w(-\d)?:
+  bodyWidth: 2
+
+\w\d\d25\w(-\d)?:
+  bodyWidth: 2.5
+
+\w\d\d30\w(-\d)?:
+  bodyWidth: 3
+
+\w\d\d35\w(-\d)?:
+  bodyWidth: 3.5
+
+\w\d\d40\w(-\d)?:
+  bodyWidth: 4
+
+\w\d\d45\w(-\d)?:
+  bodyWidth: 4.5
+
+\w\d\d50\w(-\d)?:
+  bodyWidth: 5
+
+\w\d\d55\w(-\d)?:
+  bodyWidth: 5.5
+
+\w\d\d60\w(-\d)?:
+  bodyWidth: 6
+
+# Fourth digit code
+\w\d{4}A(-\d)?:
+  pitch: 0.95
+  leadWidth: 0.3-0.45
+
+\w\d{4}B(-\d)?:
+  pitch: 0.8
+  leadWidth: 0.25-0.35
+
+\w\d{4}C(-\d)?:
+  pitch: 0.65
+  leadWidth: 0.25-0.35
+
+\w\d{4}D(-\d)?:
+  pitch: 0.5
+  leadWidth: 0.18-0.3
+
+\w\d{4}E(-\d)?:
+  pitch: 0.4
+  leadWidth: 0.15-0.25
+
+# Variations
+\w3020A:
+  leadLength: 0.2-0.45
+  leadCount: 6
