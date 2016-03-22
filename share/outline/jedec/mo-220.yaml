@@ -1,0 +1,16 @@
+pattern: QFN
+
+leadLength: 0.35-0.75
+
+V\w\w\w(-\d)?:
+  height: 1
+
+\wF\w\w(-\d)?:
+  bodyLength: 3.5
+
+\w\wF\w(-\d)?:
+  bodyWidth: 3.5
+
+\w\w\wD(-\d)?:
+  pitch: 0.5
+  leadWidth: 0.18-0.3
