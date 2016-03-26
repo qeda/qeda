@@ -52,6 +52,17 @@ class QedaSymbol
     this
 
   #
+  # Add arrow
+  #
+  arrow: (x1, y1, x2, y2, width) ->
+    a = Math.atan( (y2 - y1) / (x2 - x1) )
+    x11 = x1 + width*Math.sin(a)/2
+    y11 = y1 - width*Math.cos(a)/2
+    x12 = x1 - width*Math.sin(a)/2
+    y12 = y1 + width*Math.cos(a)/2
+    @poly x11, y11, x2, y2, x12, y12, 'background'
+
+  #
   # Add attribute
   #
   attribute: (name, attribute) ->

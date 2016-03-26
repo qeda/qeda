@@ -19,7 +19,7 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connector
-  - Capacitor, crystal, diode, FET, inductor, pushbutton, resistor, transistor
+  - Capacitor, crystal, diode, FET, inductor, LED, pushbutton, resistor, transistor
   - Power supply, ground
   - GOST style alternative
 * Borrowing packages dimensions from standards:
@@ -32,6 +32,7 @@ Features
   - SOT (SOT143, SOT223, SOT23, SOTFL)
   - TO (\*PAK)
   - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF, SOD, SODFL)
+  - Custom element
 * Generating libraries:
   - KiCad format
 
