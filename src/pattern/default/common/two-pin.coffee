@@ -124,6 +124,7 @@ module.exports = (pattern, element) ->
   pad.x = -pad.x
   pattern.pad 2, pad
 
+  copper.mask pattern
   silkscreen.twoPin pattern, housing
   assembly.twoPin pattern, housing
   courtyard.twoPin pattern, housing, padParams.courtyard

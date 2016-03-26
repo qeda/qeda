@@ -32,6 +32,8 @@ module.exports =
       if pins[numbers[i]]? then pattern.pad numbers[i], pad
       y += pitch
 
+    @mask pattern
+
   gridArray: (pattern, element, pad) ->
     housing = element.housing
     rowPitch = housing.rowPitch
@@ -53,6 +55,31 @@ module.exports =
         if pins[name]? then pattern.pad name, pad
         x += columnPitch
       y += rowPitch
+
+    @mask pattern
+
+  mask: (pattern) ->
+    settings = pattern.settings
+    maskWidth = settings.minimum.maskWidth
+    if maskWidth?
+      pads = pattern.pads
+      keys = Object.keys pads
+      last = keys.length - 1
+      for i in [0..last]
+        for j in [(i+1)..last] by 1
+          p1 = pads[keys[i]]
+          p2 = pads[keys[j]]
+          hspace = Math.abs(p2.x - p1.x) - (p1.width + p2.width)/2
+          vspace = Math.abs(p2.y - p1.y) - (p1.height + p2.height)/2
+          space = Math.max hspace, vspace
+          mask = settings.clearance.padToMask
+          if (space - 2*mask) < settings.minimum.maskWidth
+            mask = (space - settings.minimum.maskWidth) / 2
+            if mask < 0 then mask = 0
+          if (not p1.mask?) or (mask < p1.mask) then p1.mask = mask
+          if (not p2.mask?) or (mask < p2.mask) then p2.mask = mask
+
+          #console.log j + ', ' + i + ' -> ' + space + ': ' + mask
 
   quad: (pattern, element, padParams) ->
     housing = element.housing
@@ -102,6 +129,8 @@ module.exports =
       ++num
       x -= pitch
 
+    @mask pattern
+
   parsePosition: (value) ->
     values = value.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
     points = []
@@ -131,10 +160,11 @@ module.exports =
           y: p.y
         pattern.pad tabNumber + i, tabPad
 
+      @mask pattern
+
     if housing.viaDiameter?
       viaDiameter = housing.viaDiameter
       points = @parsePosition housing.viaPosition
-      console.log points
       for p in points
         viaPad =
           type: 'through-hole'

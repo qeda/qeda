@@ -1,5 +1,9 @@
 module.exports = (lib) ->
   lib.add 'Altera/5M1270ZT144'
+  lib.add 'Analog/AD623'
+  lib.add 'Analog/AD822'
+  lib.add 'Analog/AD8226'
+  lib.add 'Analog/AD8515'
   lib.add 'Analog/AD9393'
   lib.add 'Analog/ADG1206YRU'
   lib.add 'Analog/ADG508A'
@@ -21,6 +25,7 @@ module.exports = (lib) ->
   lib.add 'TI/LM27313'
   lib.add 'TI/LM2940'
   lib.add 'TI/LM5050-2'
+  lib.add 'TI/LP2951'
   lib.add 'TI/SN74HC4851'
   lib.add 'TI/TLV710'
   lib.add 'TI/TMS320F28379DPTP'

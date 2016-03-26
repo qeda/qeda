@@ -87,6 +87,7 @@ module.exports = (pattern, element) ->
 
   pattern.center 0, 0
 
+  copper.mask pattern
   silkscreen.body pattern, housing
   assembly.body pattern, housing
   courtyard.body pattern, housing
