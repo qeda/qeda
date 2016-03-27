@@ -4,7 +4,9 @@ designators =
 
 purposes =
   '>': ['opamp']
+  'ADC': ['adc']
   'CMP': ['comparator', 'supervisor', 'reset']
+  'DAC': ['dac']
   'MCU': ['mcu', 'microcontroller']
   'MPU': ['cpu', 'mpu', 'microprocessor']
   'MUX': ['multiplexer']
