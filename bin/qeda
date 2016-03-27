@@ -4,6 +4,7 @@
 
 var fs = require('fs');
 var nopt = require('nopt');
+var path = require('path');
 var yaml = require('js-yaml');
 var pkg = require('../package.json');
 var QedaLibrary = require('../lib/qeda-library');
@@ -189,11 +190,11 @@ function config(param, value) {
 }
 
 function testComponent(componentName) {
-  var lib = new QedaLibrary();
-  var def = lib.load(componentName);
-  var name = def.name.toLowerCase();
-  lib.add(componentName, def);
-  lib.generate('test_' + name);
+  var qedaYaml = readYaml();
+  qedaYaml.config = qedaYaml.config || {};
+  var lib = new QedaLibrary(qedaYaml.config);
+  lib.add(componentName);
+  lib.generate('test_' + path.basename(componentName));
 }
 
 var args = nopt(

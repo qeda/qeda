@@ -76,39 +76,40 @@ class QedaLibrary
   #
   # Add element
   #
-  add: (element, def) ->
-    def ?= @load element
-    if def.abstract
-      console.error "'#{element}': Cannot add abstract component, use it only as base for others"
-      process.exit 1
+  add: (element) ->
+    defs = @load element
     res = []
-    housings = []
-    if typeof def.housing is 'string'
-      keys = def.housing.replace(/\s+/g, '').split(',')
-      for key in keys
-        housing = def[key]
-        housing.suffix ?= key
-        housings.push housing
-    else # Is object
-      def.housing.suffix ?= ''
-      housings.push def.housing
-    name = def.name
-    # Create separate element for each housing
-    for housing in housings
-      suffixes = housing.suffix.replace(/\s+/g, '').split(',')
-      def.name = name + suffixes[0]
-      def.housing = housing
-      aliases = []
-      if def.alias?
-        for alias in def.alias.replace(/\s+/g, '').split(',')
-          aliases = aliases.concat(suffixes.map (v) => alias + v)
-      if suffixes.length > 1
-        aliases = aliases.concat(suffixes[1..].map (v) => name + v)
+    for def in defs
+      if def.abstract
+        console.error "'#{element}': Cannot add abstract component, use it only as base for others"
+        process.exit 1
+      housings = []
+      if typeof def.housing is 'string'
+        keys = def.housing.replace(/\s+/g, '').split(',')
+        for key in keys
+          housing = def[key]
+          housing.suffix ?= key
+          housings.push housing
+      else # Is object
+        def.housing.suffix ?= ''
+        housings.push def.housing
+      name = def.name
+      # Create separate element for each housing
+      for housing in housings
+        suffixes = housing.suffix.replace(/\s+/g, '').split(',')
+        def.name = name + suffixes[0]
+        def.housing = housing
+        aliases = []
+        if def.alias?
+          for alias in def.alias.replace(/\s+/g, '').split(',')
+            aliases = aliases.concat(suffixes.map (v) => alias + v)
+        if suffixes.length > 1
+          aliases = aliases.concat(suffixes[1..].map (v) => name + v)
 
-      def.aliases = aliases
-      newElement = new QedaElement(this, def)
-      @elements.push newElement
-      res.push newElement
+        def.aliases = aliases
+        newElement = new QedaElement(this, def)
+        @elements.push newElement
+        res.push newElement
     res
 
   #
@@ -148,6 +149,36 @@ class QedaLibrary
   # Load element description from remote repository
   #
   load: (element, force = false) ->
+    defs = []
+    def = @loadYaml element, force
+
+    if def.variation? # Base element
+      variations = def.variation.replace(/\s+/g, '').split(',')
+      for variation in variations
+        variationElement = variation
+        if path.dirname(variationElement) is '.' then variationElement = path.dirname(element) + '/' + variationElement
+        variationDef = @loadYaml variationElement, force
+        defs.push variationDef
+    else
+      defs.push def
+
+    for def, i in defs
+      if def.base?
+        unless typeof def.base is 'string' then def.base = def.base.toString()
+        bases = def.base.replace(/\s+/g, '').split(',')
+        delete def.base # We do not need this information now
+        exclude = ['abstract', 'alias', 'variation'] # Exclude these fields from base object
+        for base in bases
+          baseElement = base
+          if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
+          baseDef = @loadYaml baseElement, force
+          for e in exclude
+            if baseDef[e]? then delete baseDef[e]
+          @mergeObjects baseDef, def
+          defs[i] = baseDef
+    defs
+
+  loadYaml: (element, force = false) ->
     elementYaml = element.toLowerCase() + '.yaml'
     localFile = './library/' + elementYaml
     if (not fs.existsSync localFile) or force
@@ -170,19 +201,6 @@ class QedaLibrary
       # TODO: YAML Schema validation
     catch error
       log.error "#{error.message}"
-    if def.base?
-      unless typeof def.base is 'string' then def.base = def.base.toString()
-      bases = def.base.replace(/\s+/g, '').split(',')
-      delete def.base # We do not need this information now
-      exclude = ['abstract', 'alias'] # Exclude these fields from base object
-      for base in bases
-        baseElement = base
-        if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
-        baseDef = @load baseElement
-        for e in exclude
-          if baseDef[e]? then delete baseDef[e]
-        @mergeObjects baseDef, def
-        def = baseDef
     log.ok()
     def
 
