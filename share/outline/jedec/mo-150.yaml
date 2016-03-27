@@ -1,0 +1,47 @@
+pattern: SOP
+
+bodyWidth: 5-5.6
+height: 2
+leadWidth: 0.22-0.38
+leadLength: 0.55-0.95
+leadSpan: 7.4-8.2
+
+AA:
+  bodyLength: 2.7-3.3
+  leadCount: 8
+
+AB:
+  bodyLength: 5.9-6.5
+  leadCount: 14
+
+AC:
+  bodyLength: 5.9-6.5
+  leadCount: 16
+
+AD:
+  bodyLength: 6.9-7.5
+  leadCount: 18
+
+AE:
+  bodyLength: 6.9-7.5
+  leadCount: 20
+
+AF:
+  bodyLength: 7.9-8.5
+  leadCount: 22
+
+AG:
+  bodyLength: 7.9-8.5
+  leadCount: 24
+
+AH:
+  bodyLength: 9.9-10.5
+  leadCount: 28
+
+AJ:
+  bodyLength: 9.9-10.5
+  leadCount: 30
+
+AK:
+  bodyLength: 12.3-12.9
+  leadCount: 38

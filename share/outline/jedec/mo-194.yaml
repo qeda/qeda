@@ -1,0 +1,57 @@
+pattern: SOP
+
+height: 1.2
+leadWidth: 0.13-0.23
+leadLength: 0.45-0.75
+pitch: 0.4
+
+AA\w?:
+  bodyWidth: 4.3-4.5
+  bodyLength: 3.5-3.7
+  leadSpan: 6.2-6.6
+  leadCount: 14
+
+AB\w?:
+  bodyWidth: 4.3-4.5
+  bodyLength: 3.5-3.7
+  leadSpan: 6.2-6.6
+  leadCount: 16
+
+AC\w?:
+  bodyWidth: 4.3-4.5
+  bodyLength: 4.9-5.1
+  leadSpan: 6.2-6.6
+  leadCount: 20
+
+AF\w?:
+  bodyWidth: 4.3-4.5
+  bodyLength: 11.2-11.4
+  leadSpan: 6.2-6.6
+  leadCount: 56
+
+BB\w?:
+  bodyWidth: 6-6.2
+  bodyLength: 20.7-20.9
+  leadSpan: 7.9-8.3
+  leadCount: 100
+
+A\wT:
+  tabWidth: 1.5
+
+B\wT:
+  tabWidth: 2.1
+
+AAT:
+  tabLength: 1.2
+
+ABT:
+  tabLength: 1.2
+
+ACT:
+  tabLength: 1.7
+
+AFT:
+  tabLength: 3.9
+
+BBT:
+  tabLength: 7.2
