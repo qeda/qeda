@@ -5,6 +5,7 @@ height: 2
 leadWidth: 0.22-0.38
 leadLength: 0.55-0.95
 leadSpan: 7.4-8.2
+pitch: 0.65
 
 AA:
   bodyLength: 2.7-3.3
