@@ -76,8 +76,8 @@ class QedaLibrary
   #
   # Add element
   #
-  add: (element) ->
-    def = @load element
+  add: (element, def) ->
+    def ?= @load element
     if def.abstract
       console.error "'#{element}': Cannot add abstract component, use it only as base for others"
       process.exit 1

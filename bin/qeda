@@ -27,6 +27,7 @@ Commands:\n\
   ground NET            Add ground symbol to config\n\
   config PARAM [VALUE]  Set/get config parameter\n\
   generate LIBRARY      Generate libraries according to config\n\
+  test COMPONENT        Generate test library with one component only\n\
 \n\
 Examples: \n\
   qeda reset\n\
@@ -187,6 +188,14 @@ function config(param, value) {
   }
 }
 
+function testComponent(componentName) {
+  var lib = new QedaLibrary();
+  var def = lib.load(componentName);
+  var name = def.name.toLowerCase();
+  lib.add(componentName, def);
+  lib.generate('test_' + name);
+}
+
 var args = nopt(
   {
     help: Boolean,
@@ -254,6 +263,13 @@ switch (command) {
     }
     generateLibrary(args.argv.remain[1]);
     break;
+  case 'test':
+    if (args.argv.remain.length < 2) {
+      displayError('Missing component name after "test" command');
+    }
+    testComponent(args.argv.remain[1]);
+    break;
+
   default:
     displayError('Unknown command "' + command + '"');
 }
