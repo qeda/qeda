@@ -17,7 +17,7 @@ abbrs =
 getAbbr = (element) ->
   abbr = 'U'
   unless element.keywords? then return name
-  keywords = element.keywords.replace(/\s+/g, '').split(',')
+  keywords = element.keywords.toLowerCase().replace(/\s+/g, '').split(',')
   for k, v of abbrs
     if keywords.indexOf(v) isnt -1
       abbr = k
@@ -113,15 +113,15 @@ module.exports = (pattern, element) ->
   pad =
     type: 'smd'
     shape: 'rectangle'
-    width: padParams.width
-    height: padParams.height
+    width: padParams.height
+    height: padParams.width
     layer: ['topCopper', 'topMask', 'topPaste']
-    x: -padParams.distance/2
-    y: 0
+    x: 0
+    y: -padParams.distance/2
 
   # Copper
   pattern.pad 1, pad
-  pad.x = -pad.x
+  pad.y = -pad.y
   pattern.pad 2, pad
 
   copper.mask pattern

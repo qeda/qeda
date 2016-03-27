@@ -215,39 +215,39 @@ module.exports =
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
-    x = bodyLength/2 + lineWidth/2
-    y1 = firstPad.height/2 + gap
-    y2 = bodyWidth/2 + lineWidth/2
-    y = Math.max y1, y2
+    x1 = firstPad.width/2 + gap
+    x2 = bodyWidth/2 + lineWidth/2
+    x = Math.max x1, x2
+    y = bodyLength/2 + lineWidth/2
     @preamble pattern, housing
     if housing.cae
-      d = y2 - y1
+      d = x2 - x1
       pattern
-        .moveTo -x, -y1
-        .lineTo -x + d, -y2
-        .lineTo x, -y2
-        .lineTo x, -y1
-        .moveTo -x, y1
-        .lineTo -x + d, y2
-        .lineTo x, y2
-        .lineTo x, y1
+        .moveTo -x1, -y
+        .lineTo -x2, -y + d
+        .lineTo -x2, y
+        .lineTo -x1, y
+        .moveTo x1, -y
+        .lineTo x2, -y + d
+        .lineTo x2, y
+        .lineTo x1, y
     else
       pattern
-        .line -x, -y, x, -y
-        .line -x, y, x, y
+        .line -x, -y, -x, y
+        .line x, -y, x, y
 
-      if y1 < y2 # Molded
+      if x1 < x2 # Molded
         pattern
-         .line -x, -y1, -x, -y2
-         .line  x, -y1,  x, -y2
-         .line -x,  y1, -x,  y2
-         .line  x,  y1,  x,  y2
+         .line -x1, -y, -x2, -y
+         .line -x1,  y, -x2, y
+         .line  x1, -y,  x2,  -y
+         .line  x1,  y,  x2,  y
 
     if housing.polarized or housing.cae
-      x2 = firstPad.x - firstPad.width/2 - gap
+      y2 = firstPad.y - firstPad.height/2 - gap
       pattern
-       .moveTo -x, -y1
-       .lineTo x2, -y1
-       .lineTo x2, y1
-       .lineTo -x, y1
-       .polarityMark x2 - lineWidth/2, 0
+       .moveTo -x1, -y
+       .lineTo -x1, y2
+       .lineTo x1, y2
+       .lineTo x1, -y
+       .polarityMark 0, y2 - lineWidth/2, 'top'

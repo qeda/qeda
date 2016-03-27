@@ -161,24 +161,24 @@ module.exports =
 
     [firstPad, lastPad] = pattern.extremePads()
 
-    x1 = lastPad.x + lastPad.width/2 + courtyard
-    x2 = bodyLength/2 + courtyard
-    y1 = firstPad.height/2 + courtyard
-    y2 = bodyWidth/2 + courtyard
-    ym = Math.max y1, y2
+    x1 = firstPad.width/2 + courtyard
+    x2 = bodyWidth/2 + courtyard
+    xm = Math.max x1, x2
+    y1 = lastPad.y + lastPad.height/2 + courtyard
+    y2 = bodyLength/2 + courtyard
     @preamble pattern, housing
       .moveTo -x1, -y1
-      .lineTo -x2, -y1
-      .lineTo -x2, -ym
-      .lineTo x2, -ym
-      .lineTo x2, -y1
-      .lineTo x1, -y1
-      .lineTo x1, y1
-      .lineTo x2, y1
-      .lineTo x2, ym
-      .lineTo -x2, ym
-      .lineTo -x2, y1
-      .lineTo -x1, y1
+      .lineTo -x1, -y2
+      .lineTo -xm, -y2
+      .lineTo -xm,  y2
+      .lineTo -x1,  y2
+      .lineTo -x1,  y1
+      .lineTo  x1,  y1
+      .lineTo  x1,  y2
+      .lineTo  xm,  y2
+      .lineTo  xm, -y2
+      .lineTo  x1, -y2
+      .lineTo  x1, -y1
       .lineTo -x1, -y1
 
   _centroid: (pattern) ->
