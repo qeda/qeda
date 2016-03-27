@@ -266,7 +266,7 @@ class QedaElement
         unless @housing[k]? then @housing[k] = v
       else
         unless sk? then return
-        re = new RegExp k
+        re = new RegExp '^' + k + '$'
         if re.test(sk) then @_copyFromOutline outline[k], subkeys
 
   #
