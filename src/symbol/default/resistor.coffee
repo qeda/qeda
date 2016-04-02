@@ -39,3 +39,5 @@ module.exports = (symbol, element) ->
       passive: true
     .lineWidth settings.lineWidth.thick
     .rectangle -width/2, -height/2, width/2, height/2
+
+  [width, height]
