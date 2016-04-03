@@ -56,7 +56,10 @@ module.exports = (pattern, element) ->
 
   copper.dual pattern, element, padParams
   silkscreen.dual pattern, housing
-  assembly.polarized pattern, housing
+  if housing.polarized
+    assembly.polarized pattern, housing
+  else
+    assembly.body pattern, housing
   courtyard.dual pattern, housing, padParams.courtyard
 
   copper.tab pattern, element

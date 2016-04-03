@@ -6,29 +6,47 @@ copper = require './common/copper'
 courtyard = require './common/courtyard'
 silkscreen = require './common/silkscreen'
 
-module.exports = (pattern, element) ->
-  housing = element.housing
-  housing.polarized = true
-  settings = pattern.settings
-  leadCount = housing.leadCount
-  hasTab = housing.tabWidth? and housing.tabLength?
-  if hasTab then ++leadCount
+abbrs =
+  CAP: 'capacitor'
+  IND: 'inductor'
+  RES: 'resistor'
 
-  pattern.name ?= sprintf "%sSON%dP%dX%dX%d-%d%s",
-    if housing.pullBack? then 'P' else '',
+getAbbr = (element) ->
+  abbr = 'U'
+  unless element.keywords? then return name
+  keywords = element.keywords.toLowerCase().replace(/\s+/g, '').split(',')
+  for k, v of abbrs
+    if keywords.indexOf(v) isnt -1
+      abbr = k
+      break
+  abbr
+
+module.exports = (pattern, element) ->
+  settings = pattern.settings
+  housing = element.housing
+  housing.leadSpan ?= housing.bodyWidth
+
+  abbr = getAbbr element
+  abbr += 'CA'
+  if housing.concave
+    abbr += 'V'
+  else if housing['convex-e']
+    abbr += 'XE'
+  else if housing['convex-s']
+    abbr += 'XS'
+  else if housing.flat
+    abbr += 'F'
+  pattern.name = sprintf "%s%dP%dX%dX%d-%d%s",
+    abbr,
     [housing.pitch*100
     housing.bodyLength.nom*100
     housing.bodyWidth.nom*100
     housing.height.max*100
-    leadCount]
+    housing.leadCount]
     .map((v) => Math.round v)...,
     settings.densityLevel
 
-  # Calculate pad dimensions according to IPC-7351
-  padParams = calculator.son pattern, housing
-
-  padParams.pitch = housing.pitch
-  padParams.count = housing.leadCount
+  padParams = calculator.chipArray pattern, housing
   padParams.order = 'round'
   padParams.pad =
     type: 'smd'
@@ -38,15 +56,6 @@ module.exports = (pattern, element) ->
     layer: ['topCopper', 'topMask', 'topPaste']
 
   copper.dual pattern, element, padParams
-  if padParams.width1?
-    firstPad = pattern.pads[Object.keys(pattern.pads)[0]]
-    width1 = padParams.width1
-    dx = width1 - firstPad.width
-    firstPad.x += dx
-    firstPad.width = width1
-
   silkscreen.dual pattern, housing
-  assembly.polarized pattern, housing
+  assembly.body pattern, housing
   courtyard.dual pattern, housing, padParams.courtyard
-
-  copper.tab pattern, element

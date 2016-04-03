@@ -1,4 +1,26 @@
 module.exports =
+  chipArray: (pattern, housing) ->
+    settings = pattern.settings
+    housing.leadSpan ?= housing.bodyWidth
+    
+    toes  = { M:  0.55, N:  0.45, L:  0.35 }
+    heels = { M: -0.05, N: -0.07, L: -0.1  }
+    sides = { M: -0.05, N: -0.07, L: -0.1  }
+    # Dimensions according to IPC-7351
+    params = @_params pattern, housing
+    params.Jt = pattern.toe ? toes[settings.densityLevel]
+    params.Jh = pattern.heel ? heels[settings.densityLevel]
+    params.Js = pattern.side ? sides[settings.densityLevel]
+    params.Lmin = housing.leadSpan.min
+    params.Lmax = housing.leadSpan.max
+    ipc = @_ipc7351 params
+    ipc.clearance = settings.clearance.padToPad
+    ipc.pitch = housing.pitch
+    pad = @_pad ipc, pattern
+
+    pad.courtyard = params.courtyard
+    @_choosePreferred pad, pattern, housing
+
   dual: (pattern, housing, option) ->
     settings = pattern.settings
 
@@ -169,12 +191,12 @@ module.exports =
     ipc.clearance = settings.clearance.padToPad
     ipc.pitch = housing.pitch
     pad = @_pad ipc, pattern
-    if housing.leadLength2?
-      dw = housing.leadLength2.nom - housing.leadLength.nom
+    if housing.leadLength1?
+      dw = housing.leadLength1.nom - housing.leadLength.nom
       space = pad.distance - pad.width
       if (space - dw) < settings.clearance.padToPad
         dw = space - settings.clearance.padToPad
-      pad.width2 = pad.width + dw
+      pad.width1 = pad.width + dw
 
     pad.courtyard = params.courtyard
     @_choosePreferred pad, pattern, housing

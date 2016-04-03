@@ -8,6 +8,7 @@ silkscreen = require './common/silkscreen'
 
 module.exports = (pattern, element) ->
   housing = element.housing
+  housing.polarized = true
   settings = pattern.settings
   pattern.name ?= sprintf "SOT%s%dP%dX%d-%d%s",
     if housing.flatlead then 'FL' else '',

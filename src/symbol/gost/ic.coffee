@@ -1,6 +1,8 @@
 designators =
   DA: ['analog']
+  DC: ['capacitor']
   DD: ['digital']
+  DR: ['resistor']
 
 purposes =
   '1': ['invertor', 'repeater']
@@ -133,6 +135,7 @@ module.exports = (symbol, element) ->
   leftPins = []
   leftYs = []
   y = height/2 - pitch * left.length/2 + pitch/2
+  noLeftText = true
   for i in left
     if i is '-'
       unless leftFirst? then leftFirst = leftPins.length - 1
@@ -147,6 +150,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'right'
     leftPins.push pin
 
+    if pin.name.length then noLeftText = false
     w = symbol.textWidth(pin.name, 'pin') + pinSpace
     x1 = -width/2 - w - space
     if x > x1 then x = x1 # Make symbol wider
@@ -159,6 +163,7 @@ module.exports = (symbol, element) ->
   rightPins = []
   rightYs = []
   y = height/2 - pitch * right.length/2 + pitch/2
+  noRightText = true
   for i in right
     if i is '-'
       unless rightFirst? then rightFirst = rightPins.length - 1
@@ -173,6 +178,7 @@ module.exports = (symbol, element) ->
     pin.orientation = 'left'
     rightPins.push pin
 
+    if pin.name.length then noRightText = false
     w = symbol.textWidth(pin.name, 'pin') + pinSpace
     x2 = textWidth/2 + w + space
     if x < x2 then x = x2 # Make symbol wider
@@ -185,8 +191,8 @@ module.exports = (symbol, element) ->
   symbol
     .lineWidth settings.lineWidth.thick
     .rectangle -width/2, 0, width/2, height, 'foreground'
-    .line -textWidth/2 - space, 0, -textWidth/2 - space, height
-    .line textWidth/2 + space, 0, textWidth/2 + space, height
+  unless noLeftText then symbol.line -textWidth/2 - space, 0, -textWidth/2 - space, height
+  unless noRightText then symbol.line textWidth/2 + space, 0, textWidth/2 + space, height
 
   # Gap lines
   x1 = width/2

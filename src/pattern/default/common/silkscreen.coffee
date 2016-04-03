@@ -53,11 +53,15 @@ module.exports =
     yp = (if xp < x2 then y2 else y1) - lineWidth
 
     @preamble pattern, housing
-      .polarityMark xp, yp, 'top'
-      # Top contour
-      .moveTo x1, yl3
-      .lineTo x1, y2
-      .lineTo x2, y2
+    if housing.polarized
+      pattern
+        .polarityMark xp, yp, 'top'
+        # Top contour
+        .moveTo x1, yl3
+        .lineTo x1, y2
+        .lineTo x2, y2
+    pattern
+      .moveTo x2, y2
       .lineTo x2, y1
       .lineTo x3, y1
       .lineTo x3, yr3
