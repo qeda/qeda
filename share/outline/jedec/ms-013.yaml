@@ -1,0 +1,79 @@
+pattern: SOIC
+
+bodyWidth: 7.4-7.6
+leadLength: 0.4-1.27
+leadSpan: 9.97-10.63
+leadWidth: 0.31-0.51
+pitch: 1.27
+
+AA:
+  bodyLength: 10.1-10.5
+  height: 2.65
+  leadCount: 16
+
+AB:
+  bodyLength: 11.35-11.75
+  height: 2.65
+  leadCount: 18
+
+AC:
+  bodyLength: 12.6-13
+  height: 2.65
+  leadCount: 20
+
+AD:
+  bodyLength: 15.2-15.6
+  height: 2.65
+  leadCount: 24
+
+AE:
+  bodyLength: 17.7-18.1
+  height: 2.65
+  leadCount: 28
+
+AF:
+  bodyLength: 8.8-9.2
+  height: 2.65
+  leadCount: 14
+
+BA:
+  bodyLength: 10.1-10.5
+  height: 2.5
+  leadCount: 16
+  tabWidth: 2
+  tabLength: 3
+
+BB:
+  bodyLength: 11.35-11.75
+  height: 2.5
+  leadCount: 18
+  tabWidth: 2
+  tabLength: 3
+
+BC:
+  bodyLength: 12.6-13
+  height: 2.5
+  leadCount: 20
+  tabWidth: 2
+  tabLength: 3
+
+BD:
+  bodyLength: 15.2-15.6
+  height: 2.5
+  leadCount: 24
+  tabWidth: 2
+  tabLength: 3
+
+BE:
+  bodyLength: 17.7-18.1
+  height: 2.5
+  leadCount: 28
+  tabWidth: 2
+  tabLength: 3
+
+BF:
+  bodyLength: 8.8-9.2
+  height: 2.5
+  leadCount: 14
+  tabWidth: 2
+  tabLength: 3
