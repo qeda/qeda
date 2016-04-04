@@ -46,7 +46,7 @@ purposes =
   'SM': ['adder']
   'SRAM': ['ram', 'sram', 'static']
   '*ST': ['regulator', 'stabilizer']
-  '*STU': ['ac-dc', 'dc-dc', 'ldo', 'regulator']
+  '*STU': ['ac-dc', 'dc-dc', 'ldo', 'regulator', 'reference']
   'SUB': ['subtractor']
   'SW': ['optocoupler', 'relay', 'switch']
   '*T': ['transistor']
