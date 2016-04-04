@@ -2,7 +2,7 @@ module.exports =
   chipArray: (pattern, housing) ->
     settings = pattern.settings
     housing.leadSpan ?= housing.bodyWidth
-    
+
     toes  = { M:  0.55, N:  0.45, L:  0.35 }
     heels = { M: -0.05, N: -0.07, L: -0.1  }
     sides = { M: -0.05, N: -0.07, L: -0.1  }
@@ -331,12 +331,16 @@ module.exports =
         if housing.padSpan? then pad.distance = housing.padSpan - housing.padWidth
       if housing.padWidth1?
         pad.width1 = housing.padWidth1
-        if housing.padSpace1? then pad.distance = housing.padSpace1 + housing.padWidth1
-        if housing.padSpan1? then pad.distance = housing.padSpan1 - housing.padWidth
+        if housing.padSpace? then pad.distance1 = housing.padSpace + housing.padWidth1
+        if housing.padSpace1? then pad.distance1 = housing.padSpace1 + housing.padWidth1
+        if housing.padSpan? then pad.distance1 = housing.padSpan - housing.padWidth1
+        if housing.padSpan1? then pad.distance1 = housing.padSpan1 - housing.padWidth1
       if housing.padWidth2?
         pad.width2 = housing.padWidth2
-        if housing.padSpace2? then pad.distance = housing.padSpace2 + housing.padWidth2
-        if housing.padSpan2? then pad.distance = housing.padSpan2 - housing.padWidth
+        if housing.padSpace? then pad.distance2 = housing.padSpace + housing.padWidth2
+        if housing.padSpace2? then pad.distance2 = housing.padSpace2 + housing.padWidth2
+        if housing.padSpan? then pad.distance2 = housing.padSpan - housing.padWidth2
+        if housing.padSpan2? then pad.distance2 = housing.padSpan2 - housing.padWidth2
 
       if housing.padHeight? then pad.height = housing.padHeight
       if housing.padHeight1? then pad.height1 = housing.padHeight1

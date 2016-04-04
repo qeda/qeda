@@ -75,15 +75,15 @@ module.exports = (symbol, element) ->
     r = width/2
     symbol
       .attribute 'refDes',
-        x: 0
+        x: width/2 - settings.fontSize.pin - settings.space.attribute
         y: -r - settings.space.attribute
         halign: 'right'
         valign: 'bottom'
       .attribute 'name',
-        x: r + settings.space.attribute
-        y: 0
-        halign: 'left'
-        valign: 'center'
+        x: width/2 - settings.fontSize.pin - settings.space.attribute
+        y: r + settings.space.attribute
+        halign: 'right'
+        valign: 'top'
       .lineWidth settings.lineWidth.thick
       .circle 0, 0, r
     icon.draw 0, 0

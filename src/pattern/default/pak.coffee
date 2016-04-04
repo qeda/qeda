@@ -2,6 +2,7 @@ sprintf = require('sprintf-js').sprintf
 
 assembly = require './common/assembly'
 calculator = require './common/calculator'
+copper = require './common/copper'
 courtyard = require './common/courtyard'
 silkscreen = require './common/silkscreen'
 
@@ -44,6 +45,7 @@ module.exports = (pattern, element) ->
   pad.y = 0
   pattern.pad leadCount + 1, pad
 
+  copper.mask pattern
   silkscreen.pak pattern, housing
   assembly.pak pattern, element
   courtyard.pak pattern, housing, padParams.courtyard
