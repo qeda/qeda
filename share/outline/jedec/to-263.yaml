@@ -10,6 +10,7 @@ AA:
   leadSpan: 14.605-15.875
   tabWidth: 9.65-10.67
   tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 AA-1:
@@ -22,6 +23,7 @@ AA-1:
   leadSpan: 14.605-15.875
   tabWidth: 9.65-10.67
   tabLength: 6.86
+  tabLedge: 1.676
   height: 4.065-4.825
 
 AB:
