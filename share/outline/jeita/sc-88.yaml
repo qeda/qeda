@@ -1,0 +1,11 @@
+pattern: SOP
+
+bodyWidth: 1.15-1.35
+bodyLength: 1.8-2.2
+height: 0.8-1.1
+leadWidth: 0.2-0.3
+leadLength: 0.15-0.45
+leadHeight: 0.1-0.25
+leadSpan: 2-2.2
+leadCount: 6
+pitch: 0.65
