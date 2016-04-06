@@ -23,7 +23,7 @@ Features
   - Power supply, ground
   - GOST style alternative
 * Borrowing packages dimensions from standards:
-  - Industrial (JEDEC)
+  - Industrial (JEDEC, JEITA)
   - Manufacturer's (NXP)
 * Land pattern calculation according to IPC-7351 (tending to comply latest IPC-7351C):
   - Chip Array
