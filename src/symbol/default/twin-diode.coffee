@@ -89,11 +89,16 @@ module.exports = (symbol, element, styleIcons) ->
 
     x1 = -width/4
     x2 = width/4
+    
+    symbol
+      .lineWidth settings.lineWidth.thick
+      .rectangle -width/2, -height/2, width/2, height/2, 'foreground'
+
     icon.draw x1, 0, rotateLeft
     icon.draw x2, 0, rotateRight
+
     r = settings.lineWidth.thick
     symbol
-      .rectangle -width/2, -height/2, width/2, height/2
       .line -width/2, 0, x1 - icon.width/2, 0
       .line x1 + icon.width/2, 0, x2 - icon.width/2, 0
       .line x2 + icon.width/2, 0, width/2, 0

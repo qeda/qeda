@@ -48,8 +48,35 @@ module.exports =
       .lineTo -x + d, -y
 
   preamble: (pattern, housing) ->
-    @_refDes pattern, housing
-    @_value pattern, housing
+    settings = pattern.settings
+    [w, h] = [housing.bodyWidth.nom, housing.bodyLength.nom]
+    lineWidth = settings.lineWidth.assembly
+    angle = if w < h then 90 else 0
+    fontSize = settings.fontSize.default
+    maxFontSize = 0.66*Math.min(w, h)
+    if fontSize > maxFontSize then fontSize = maxFontSize
+    textLineWidth = Math.min(lineWidth, fontSize/5)
+    pattern
+      .layer 'topAssembly'
+      .lineWidth textLineWidth
+      .attribute 'value',
+        text: pattern.name
+        x: 0
+        y: 0
+        angle: angle
+        fontSize: fontSize
+        halign: 'center'
+        valign: 'center'
+      .attribute 'user',
+        text: 'REF**'
+        x: 0
+        y: 0
+        angle: angle
+        fontSize: fontSize
+        halign: 'center'
+        valign: 'center'
+        visible: false
+      .lineWidth lineWidth
 
   twoPin: (pattern, housing) ->
     settings = pattern.settings
@@ -76,40 +103,3 @@ module.exports =
       @polarized pattern, housing
     else
       pattern.rectangle -x, -y, x, y
-
-  _refDes: (pattern, housing) ->
-    settings = pattern.settings
-    [w, h] = [housing.bodyWidth.nom, housing.bodyLength.nom]
-    lineWidth = settings.lineWidth.assembly
-    angle = if w < h then 90 else 0
-    fontSize = settings.fontSize.default
-    maxFontSize = 0.66*Math.min(w, h)
-    if fontSize > maxFontSize then fontSize = maxFontSize
-    textLineWidth = Math.min(lineWidth, fontSize/5)
-    pattern
-      .layer 'topAssembly'
-      .lineWidth textLineWidth
-      .attribute 'user',
-        text: 'REF**'
-        x: 0
-        y: 0
-        angle: angle
-        fontSize: fontSize
-        halign: 'center'
-        valign: 'center'
-      .lineWidth lineWidth
-
-  _value: (pattern, housing) ->
-    settings = pattern.settings
-    lineWidth = settings.lineWidth.assembly
-    y = housing.bodyLength.nom/2
-    pattern
-      .layer 'topAssembly'
-      .lineWidth lineWidth
-      .attribute 'value',
-        text: pattern.name
-        x: 0
-        y: y + settings.fontSize.value/2 + 0.5
-        halign: 'center'
-        valign: 'center'
-        visible: false
