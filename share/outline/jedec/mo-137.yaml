@@ -1,0 +1,62 @@
+pattern: SOP
+units: inches
+
+bodyWidth: 0.148-0.16
+leadWidth: 0.008-0.012
+leadLength: 0.016-0.05
+leadSpan: 0.228-0.244
+pitch: 0.025
+
+A\w:
+  height: 0.069
+
+B\w(-\d)?:
+  height: 0.067
+
+AA:
+  bodyLength: 0.189-0.197
+  leadCount: 14
+
+AB:
+  bodyLength: 0.189-0.197
+  leadCount: 16
+
+AC:
+  bodyLength: 0.337-0.345
+  leadCount: 18
+
+AD:
+  bodyLength: 0.337-0.345
+  leadCount: 20
+
+AE:
+  bodyLength: 0.337-0.345
+  leadCount: 24
+
+AF:
+  bodyLength: 0.386-0.394
+  leadCount: 28
+
+BA:
+  bodyLength: 0.189-0.197
+  leadCount: 14
+  tabWidth: 0.082-0.11
+  tabLength: 0.076-0.104
+
+BA-1:
+  bodyLength: 0.189-0.197
+  leadCount: 14
+  tabWidth: 0.076-0.104
+  tabLength: 0.11-0.15
+
+BB:
+  bodyLength: 0.189-0.197
+  leadCount: 16
+  tabWidth: 0.082-0.11
+  tabLength: 0.076-0.104
+
+BB-1:
+  bodyLength: 0.189-0.197
+  leadCount: 16
+  tabWidth: 0.076-0.104
+  tabLength: 0.11-0.15

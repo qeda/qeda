@@ -145,6 +145,14 @@ class QedaElement
     # Pattern processing
     if @pattern?
       log.start "Land pattern for '#{@name}'"
+
+      if @housing.options?
+        options = @housing.options.replace(/\s+/g, '').toLowerCase().split(',')
+        for option in options
+          @housing[option] = true;
+
+      @_convertDimensions @housing
+
       if @housing?.outline?
         cap = @housing.outline.split(' ')
         dirName = cap.shift().toLowerCase()
@@ -154,15 +162,12 @@ class QedaElement
           outline = yaml.safeLoad fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
         catch error
           log.error error.message
-        @_copyFromOutline outline, cap
+        dims = @_processOutline outline, cap
+        @_convertDimensions dims
+        for k, v of dims
+          unless @housing[k]? then @housing[k] = v
         log.ok()
 
-      if @housing.options?
-        options = @housing.options.replace(/\s+/g, '').toLowerCase().split(',')
-        for option in options
-          @housing[option] = true;
-
-      @_convertDimensions @housing
       paths = [
         "./pattern/#{@library.pattern.style.toLowerCase()}/#{@housing.pattern.toLowerCase()}"
         "./pattern/default/#{@housing.pattern.toLowerCase()}"
@@ -256,18 +261,21 @@ class QedaElement
 
     if housing.units is 'inches'
       @_inchToMm housing
+      delete housing.units
 
-  _copyFromOutline: (outline, subkeys) ->
-    unless outline? then return
+  _processOutline: (outline, subkeys, result = {}) ->
+    unless outline? then return result
     sk = subkeys.shift() # TODO: Create copy of 'subkeys'
     for k, v of outline
       valueType = (typeof v is 'number') or (typeof v is 'string')
       if valueType
-        unless @housing[k]? then @housing[k] = v
+        #unless @housing[k]? then @housing[k] = v
+        unless result[k]? then result[k] = v
       else
         unless sk? then return
         re = new RegExp '^' + k + '$'
-        if re.test(sk) then @_copyFromOutline outline[k], subkeys
+        if re.test(sk) then @_processOutline outline[k], subkeys, result
+    result
 
   #
   # Return first valid hadnler
@@ -289,7 +297,7 @@ class QedaElement
         value[k] = @_inchToMm v
     else if @isFloat(value)
       value *= 25.4
-      roundOff = 0.01
+      roundOff = 0.001
       value = Math.round(value / roundOff) * roundOff
 
     value
