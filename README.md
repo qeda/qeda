@@ -19,7 +19,7 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connector
-  - Capacitor, crystal, diode, FET, inductor, LED, pushbutton, resistor, transistor
+  - Capacitor, crystal, diode, FET, inductor, LED, pushbutton, resistor, transistor, TVS
   - Power supply, ground
   - GOST style alternative
 * Borrowing packages dimensions from standards:
