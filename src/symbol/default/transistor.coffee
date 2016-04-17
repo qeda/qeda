@@ -81,7 +81,7 @@ module.exports = (symbol, element) ->
         halign: 'right'
         valign: 'top'
       .lineWidth settings.lineWidth.thick
-      .circle 0, 0, r
+      .circle 0, 0, r, settings.fill
     icon.draw 0, 0
 
     # Base

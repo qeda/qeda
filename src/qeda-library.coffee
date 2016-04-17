@@ -22,6 +22,7 @@ class QedaLibrary
       style: 'default'
       gridSize: 2.5
       shortPinNames: false
+      fill: 'foreground'
       fontSize:
         default: 2.5
         refDes: 2.5

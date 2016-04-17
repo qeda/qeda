@@ -202,7 +202,7 @@ module.exports = (symbol, element, icon) ->
   # Box
   symbol
     .lineWidth settings.lineWidth.thick
-    .rectangle 0, 0, width, height, 'foreground'
+    .rectangle 0, 0, width, height, settings.fill
 
   if icon? then icon.draw -leftX, -topY
 

@@ -16,7 +16,7 @@ abbrs =
 
 getAbbr = (element) ->
   abbr = 'U'
-  unless element.keywords? then return name
+  unless element.keywords? then return abbr
   keywords = element.keywords.toLowerCase().replace(/\s+/g, '').split(',')
   for k, v of abbrs
     if keywords.indexOf(v) isnt -1

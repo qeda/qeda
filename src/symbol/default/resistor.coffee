@@ -38,6 +38,6 @@ module.exports = (symbol, element) ->
       orientation: 'left'
       passive: true
     .lineWidth settings.lineWidth.thick
-    .rectangle -width/2, -height/2, width/2, height/2
+    .rectangle -width/2, -height/2, width/2, height/2, settings.fill
 
   [width, height]

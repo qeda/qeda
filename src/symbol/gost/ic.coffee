@@ -191,7 +191,7 @@ module.exports = (symbol, element) ->
   # Box
   symbol
     .lineWidth settings.lineWidth.thick
-    .rectangle -width/2, 0, width/2, height, 'foreground'
+    .rectangle -width/2, 0, width/2, height, settings.fill
   unless noLeftText then symbol.line -textWidth/2 - space, 0, -textWidth/2 - space, height
   unless noRightText then symbol.line textWidth/2 + space, 0, textWidth/2 + space, height
 
