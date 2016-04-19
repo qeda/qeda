@@ -100,6 +100,518 @@ U\d{4}\w(-\d)?:
   leadWidth: 0.15-0.25
 
 # Variations
-\w3020A:
+V3020A:
   leadLength: 0.2-0.45
   leadCount: 6
+  tabWidth: 0-2.25
+  tabLength: 0-0.65
+
+V3030A-1:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 0.7
+  tabLength: 1.5
+
+\w3030A-2:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 1.2
+  tabLength: 1.5
+
+\w2025B:
+  leadLength: 0.4-0.65
+  leadCount: 4
+  tabWidth: 0.7
+  tabLength: 1
+
+\w2525B:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 0.7
+  tabLength: 1.5
+
+\w2530B:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 1.2
+  tabLength: 1.5
+
+V3030B:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 1.2
+  tabLength: 2.2
+
+W3030B:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 1.2
+  tabLength: 2
+
+\w3040B:
+  leadLength: 0.4-0.65
+  leadCount: 6
+  tabWidth: 2.2
+  tabLength: 2
+
+\w4040B:
+  leadLength: 0.4-0.65
+  leadCount: 8
+  tabWidth: 2.2
+  tabLength: 3
+
+\w4050B:
+  leadLength: 0.4-0.65
+  leadCount: 10
+  tabWidth: 3.2
+  tabLength: 3
+
+\w5050B:
+  leadLength: 0.4-0.65
+  leadCount: 8
+  tabWidth: 3.2
+  tabLength: 4
+
+V2020C:
+  leadLength: 0.2-0.45
+  leadCount: 6
+  tabWidth: 0-0.65
+  tabLength: 0-1.58
+
+V3020C:
+  leadLength: 0.2-0.45
+  leadCount: 8
+  tabWidth: 0-0.65
+  tabLength: 0-2.25
+
+V3030C-1:
+  leadLength: 0.2-0.45
+  leadCount: 8
+  tabWidth: 0-1.3
+  tabLength: 0-2.25
+
+\w3030C-2:
+  leadLength: 0.3-0.5
+  leadCount: 8
+  tabWidth: 1.35-1.75
+  tabLength: 1.6-2.5
+
+\w4040C:
+  leadLength: 0.3-0.5
+  leadCount: 10
+  tabWidth: 2.3-2.8
+  tabLength: 2.8-3.5
+
+\w1510D:
+  leadLength: 0.2-0.4
+  leadCount: 4
+
+\w1515D:
+  leadLength: 0.45-0.65
+  leadCount: 4
+  tabWidth: 0.1
+  tabLength: 0.7
+
+\w2010D-1:
+  leadLength: 0.2-0.4
+  leadCount: 4
+
+\w2010D-2:
+  leadLength: 0.2-0.4
+  leadCount: 6
+
+\w2015D-1:
+  leadLength: 0.45-0.65
+  leadCount: 4
+  tabWidth: 0.1
+  tabLength: 1.2
+
+\w2015D-2:
+  leadLength: 0.45-0.65
+  leadCount: 6
+  tabWidth: 0.1
+  tabLength: 1.2
+
+\w2020D-1:
+  leadLength: 0.45-0.65
+  leadCount: 4
+  tabWidth: 0.6
+  tabLength: 1.2
+
+\w2020D-2:
+  leadLength: 0.45-0.65
+  leadCount: 6
+  tabWidth: 0.6
+  tabLength: 1.2
+
+V2020D-3:
+  leadLength: 0.2-0.45
+  leadCount: 8
+  tabWidth: 0.6
+  tabLength: 1.2
+
+\w2020D-4:
+  leadLength: 0.3-0.5
+  leadCount: 6
+  tabWidth: 0.5-0.8
+  tabLength: 1.3-1.75
+
+\w2025D-1:
+  leadLength: 0.45-0.65
+  leadCount: 6
+  tabWidth: 0.7
+  tabLength: 1
+
+\w2025D-2:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 0-0.8
+  tabLength: 0-1.1
+
+\w2030D-1:
+  leadLength: 0.3-0.5
+  leadCount: 6
+  tabWidth: 0.9-1.2
+  tabLength: 0.6-1
+
+\w2030D-2:
+  leadLength: 0.3-0.5
+  leadCount: 8
+  tabWidth: 1.6-1.9
+  tabLength: 1.5-1.75
+
+\w2030D-3:
+  leadLength: 0.3-0.45
+  leadCount: 8
+  tabWidth: 1.2-1.6
+  tabLength: 1.2-1.6
+
+U2030D:
+  leadLength: 0.3-0.45
+  leadCount: 8
+  tabWidth: 1.2-1.6
+  tabLength: 1.2-1.6
+
+\w2515D-1:
+  leadLength: 0.45-0.65
+  leadCount: 6
+  tabWidth: 0.1
+  tabLength: 1.7
+
+\w2515D-2:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 0.1
+  tabLength: 1.7
+
+\w2520D-1:
+  leadLength: 0.45-0.65
+  leadCount: 4
+  tabWidth: 0.6
+  tabLength: 1.7
+
+\w2520D-2:
+  leadLength: 0.45-0.65
+  leadCount: 6
+  tabWidth: 0.6
+  tabLength: 1.7
+
+\w2520D-3:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 0.6
+  tabLength: 1.7
+
+\w2525D-1:
+  leadLength: 0.45-0.65
+  leadCount: 6
+  tabWidth: 1.1
+  tabLength: 1.7
+
+\w2525D-2:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 1.1
+  tabLength: 1.7
+
+\w2530D:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 1.2
+  tabLength: 1.5
+
+\w3015D-1:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 0.1
+  tabLength: 2.2
+
+\w3015D-2:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 0.1
+  tabLength: 2.2
+
+\w3020D-1:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 0.6
+  tabLength: 2.2
+
+\w3020D-2:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 0.6
+  tabLength: 2.2
+
+V3020D-3:
+  leadLength: 0.2-0.45
+  leadCount: 10
+  tabWidth: 0.6
+  tabLength: 2.2
+
+\w3020D-4:
+  leadLength: 0.3-0.5
+  leadCount: 8
+  tabWidth: 0.4-0.6
+  tabLength: 1.7-2.2
+
+\w3025D-1:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 1.1
+  tabLength: 2.2
+
+\w3025D-2:
+  leadLength: 0.3-0.65
+  leadCount: 10
+  tabWidth: 1.1
+  tabLength: 2.2
+
+V3030D-1:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 1.6
+  tabLength: 2.2
+
+W3030D-1:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 1.2
+  tabLength: 2
+
+V3030D-2:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 1.6
+  tabLength: 2.2
+
+W3030D-2:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 1.2
+  tabLength: 2
+
+V3030D-3:
+  leadLength: 0.2-0.45
+  leadCount: 10
+  tabWidth: 1.6
+  tabLength: 2.2
+
+\w3030D-4:
+  leadLength: 0.3-0.5
+  leadCount: 8
+  tabWidth: 1.4-1.75
+  tabLength: 2.2-2.7
+
+\w3030D-5:
+  leadLength: 0.3-0.5
+  leadCount: 10
+  tabWidth: 1.4-1.75
+  tabLength: 2.2-2.7
+
+\w3030D-6:
+  leadLength: 0.45-0.65
+  leadCount: 8
+  tabWidth: 1.2-1.5
+  tabLength: 2-2.5
+
+\w3030D-7:
+  leadLength: 0.3-0.45
+  leadCount: 8
+  tabWidth: 1.2-1.6
+  tabLength: 1.2-1.6
+
+\w3040D:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 2.2
+  tabLength: 2
+
+\w3525D-1\:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 1.1
+  tabLength: 2.7
+
+\w3525D-2:
+  leadLength: 0.45-0.65
+  leadCount: 12
+  tabWidth: 1.1
+  tabLength: 2.7
+
+\w3530D-1\:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 1.6
+  tabLength: 2.7
+
+\w3530D-2:
+  leadLength: 0.45-0.65
+  leadCount: 12
+  tabWidth: 1.6
+  tabLength: 2.7
+
+\w3535D-1\:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 2.1
+  tabLength: 2.7
+
+\w3535D-2:
+  leadLength: 0.45-0.65
+  leadCount: 12
+  tabWidth: 2.1
+  tabLength: 2.7
+
+\w4030D-1\:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 1.6
+  tabLength: 3.2
+
+\w4030D-2\:
+  leadLength: 0.45-0.65
+  leadCount: 12
+  tabWidth: 1.6
+  tabLength: 3.2
+
+\w4030D-3\:
+  leadLength: 0.45-0.65
+  leadCount: 14
+  tabWidth: 1.6
+  tabLength: 3.2
+
+\w4030D-4\:
+  leadLength: 0.3-0.5
+  leadCount: 12
+  tabWidth: 1.4-1.8
+  tabLength: 3-3.7
+
+V4040D-1:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 2.6
+  tabLength: 3.2
+
+W4040D-1:
+  leadLength: 0.45-0.65
+  leadCount: 10
+  tabWidth: 2.2
+  tabLength: 3
+
+v4040D-2:
+  leadLength: 0.45-0.65
+  leadCount: 12
+  tabWidth: 2.6
+  tabLength: 3.2
+
+W4040D-2:
+  leadLength: 0.45-0.65
+  leadCount: 12
+  tabWidth: 2.2
+  tabLength: 3
+
+V4040D-3:
+  leadLength: 0.45-0.65
+  leadCount: 14
+  tabWidth: 2.6
+  tabLength: 3.2
+
+W4040D-3:
+  leadLength: 0.45-0.65
+  leadCount: 14
+  tabWidth: 2.2
+  tabLength: 3
+
+\w4050D:
+  leadLength: 0.45-0.65
+  leadCount: 14
+  tabWidth: 3.2
+  tabLength: 3
+
+\w5030D-1:
+  leadLength: 0.45-0.65
+  leadCount: 16
+  tabWidth: 1.6
+  tabLength: 4.2
+
+\w5030D-2:
+  leadLength: 0.45-0.65
+  leadCount: 18
+  tabWidth: 1.6
+  tabLength: 4.2
+
+\w5040D-1:
+  leadLength: 0.45-0.65
+  leadCount: 14
+  tabWidth: 2.6
+  tabLength: 4.2
+
+\w5040D-2:
+  leadLength: 0.45-0.65
+  leadCount: 16
+  tabWidth: 2.6
+  tabLength: 4.2
+
+\w5040D-3:
+  leadLength: 0.45-0.65
+  leadCount: 18
+  tabWidth: 2.6
+  tabLength: 4.2
+
+V5050D-1:
+  leadLength: 0.45-0.65
+  leadCount: 16
+  tabWidth: 3.6
+  tabLength: 4.2
+
+W5050D-1:
+  leadLength: 0.45-0.65
+  leadCount: 16
+  tabWidth: 3.2
+  tabLength: 4
+
+V5050D-2:
+  leadLength: 0.45-0.65
+  leadCount: 18
+  tabWidth: 3.6
+  tabLength: 4.2
+
+W5050D-2:
+  leadLength: 0.45-0.65
+  leadCount: 18
+  tabWidth: 3.2
+  tabLength: 4
+
+\w6050D-1:
+  leadLength: 0.45-0.65
+  leadCount: 16
+  tabWidth: 2.8-3.4
+  tabLength: 3.8-4.7
+
+\w6050D-2:
+  leadLength: 0.45-0.65
+  leadCount: 18
+  tabWidth: 2.8-3.4
+  tabLength: 3.8-4.7
