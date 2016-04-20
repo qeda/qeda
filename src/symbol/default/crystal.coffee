@@ -8,12 +8,13 @@ class CrystalIcon extends Icon
     super symbol, element
 
   draw: (x, y) ->
+    settings = @symbol.settings
     gap = 1.5
     d = 2
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
-      .rectangle -@width/2 + gap, -@height/2, @width/2 - gap, @height/2
+      .rectangle -@width/2 + gap, -@height/2, @width/2 - gap, @height/2, settings.fill
       .line -@width/2, -@height/2 + d, -@width/2, @height/2 - d
       .line @width/2, -@height/2 + d, @width/2, @height/2 - d
       .center 0, 0 # Restore default center point

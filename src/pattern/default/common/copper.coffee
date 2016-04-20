@@ -65,21 +65,22 @@ module.exports =
       pads = pattern.pads
       keys = Object.keys pads
       last = keys.length - 1
-      for i in [0..last]
-        for j in [(i+1)..last] by 1
-          p1 = pads[keys[i]]
-          p2 = pads[keys[j]]
-          hspace = Math.abs(p2.x - p1.x) - (p1.width + p2.width)/2
-          vspace = Math.abs(p2.y - p1.y) - (p1.height + p2.height)/2
-          space = Math.max hspace, vspace
-          mask = settings.clearance.padToMask
-          if (space - 2*mask) < settings.minimum.maskWidth
-            mask = (space - settings.minimum.maskWidth) / 2
-            if mask < 0 then mask = 0
-          if (not p1.mask?) or (mask < p1.mask) then p1.mask = mask
-          if (not p2.mask?) or (mask < p2.mask) then p2.mask = mask
-
-          #console.log j + ', ' + i + ' -> ' + space + ': ' + mask
+      unless last
+        pads[keys[last]].mask = settings.minimum.maskWidth
+      else
+        for i in [0..last]
+          for j in [(i+1)..last] by 1
+            p1 = pads[keys[i]]
+            p2 = pads[keys[j]]
+            hspace = Math.abs(p2.x - p1.x) - (p1.width + p2.width)/2
+            vspace = Math.abs(p2.y - p1.y) - (p1.height + p2.height)/2
+            space = Math.max hspace, vspace
+            mask = settings.clearance.padToMask
+            if (space - 2*mask) < settings.minimum.maskWidth
+              mask = (space - settings.minimum.maskWidth) / 2
+              if mask < 0 then mask = 0
+            if (not p1.mask?) or (mask < p1.mask) then p1.mask = mask
+            if (not p2.mask?) or (mask < p2.mask) then p2.mask = mask
 
   quad: (pattern, element, padParams) ->
     housing = element.housing
