@@ -16,6 +16,8 @@ module.exports =
       else # 'columns'
         [1..count]
 
+    @preamble pattern, element
+
     # Pads on the left side
     pad.x = if mirror then (distance / 2) else (-distance / 2)
     y = -pitch * (count/4 - 0.5)
@@ -32,7 +34,7 @@ module.exports =
       if pins[numbers[i]]? then pattern.pad numbers[i], pad
       y += pitch
 
-    @mask pattern
+    @postscriptum pattern
 
   gridArray: (pattern, element, pad) ->
     housing = element.housing
@@ -43,6 +45,8 @@ module.exports =
 
     gridLetters = element.gridLetters
     pins = element.pins
+
+    @preamble pattern, element
 
     # Grid array
     y = -rowPitch * (rowCount/2 - 0.5)
@@ -56,7 +60,7 @@ module.exports =
         x += columnPitch
       y += rowPitch
 
-    @mask pattern
+    @postscriptum pattern
 
   mask: (pattern) ->
     settings = pattern.settings
@@ -82,6 +86,16 @@ module.exports =
             if (not p1.mask?) or (mask < p1.mask) then p1.mask = mask
             if (not p2.mask?) or (mask < p2.mask) then p2.mask = mask
 
+  postscriptum: (pattern) ->
+    pattern.center 0, 0
+    @mask pattern
+
+  preamble: (pattern, element) ->
+    housing = element.housing
+    housing.bodyPosition ?= '0, 0'
+    bodyPosition = @parsePosition housing.bodyPosition
+    pattern.center -bodyPosition[0].x, -bodyPosition[0].y
+
   quad: (pattern, element, padParams) ->
     housing = element.housing
     pitch = housing.pitch
@@ -92,6 +106,8 @@ module.exports =
     distance1 = padParams.distance1
     distance2 = padParams.distance2
     pins = element.pins
+
+    @preamble pattern, element
 
     # Pads on the left side
     rowPad.x = -distance1 / 2
@@ -130,7 +146,7 @@ module.exports =
       ++num
       x -= pitch
 
-    @mask pattern
+    @postscriptum pattern
 
   parsePosition: (value) ->
     values = value.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
