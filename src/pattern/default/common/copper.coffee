@@ -93,7 +93,7 @@ module.exports =
   preamble: (pattern, element) ->
     housing = element.housing
     housing.bodyPosition ?= '0, 0'
-    bodyPosition = @parsePosition housing.bodyPosition
+    bodyPosition = pattern.parsePosition housing.bodyPosition
     pattern.center -bodyPosition[0].x, -bodyPosition[0].y
 
   quad: (pattern, element, padParams) ->
@@ -148,23 +148,13 @@ module.exports =
 
     @postscriptum pattern
 
-  parsePosition: (value) ->
-    values = value.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
-    points = []
-    for x in values by 2
-      points.push { x: x }
-    values.shift()
-    for y, i in values by 2
-      points[i/2].y = y
-    points
-
   tab: (pattern, element) ->
     housing = element.housing
     hasTab = housing.tabWidth? and housing.tabLength?
     tabNumber = (housing.leadCount ? 2*(housing.rowCount + housing.columnCount)) + 1
     if hasTab
       housing.tabPosition ?= '0, 0'
-      points = @parsePosition housing.tabPosition
+      points = pattern.parsePosition housing.tabPosition
 
       for p, i in points
         tabPad =
@@ -181,7 +171,7 @@ module.exports =
 
     if housing.viaDiameter?
       viaDiameter = housing.viaDiameter
-      points = @parsePosition housing.viaPosition
+      points = pattern.parsePosition housing.viaPosition
       for p in points
         viaPad =
           type: 'through-hole'

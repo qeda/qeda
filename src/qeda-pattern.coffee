@@ -48,25 +48,6 @@ class QedaPattern
     this
 
   #
-  # Return corner pads
-  #
-  cornerPads: ->
-    for k, v of @pads
-      if not tl? or ((v.x - v.width/2) <= (tl.x - tl.width/2)) and ((v.y - v.height/2) <= (tl.y - tl.height/2))
-        tl = v
-      if not bl? or ((v.x - v.width/2) <= (bl.x - bl.width/2)) and ((v.y + v.height/2) >= (bl.y + bl.height/2))
-        bl = v
-      if not tr? or ((v.x + v.width/2) >= (tr.x + tr.width/2)) and ((v.y - v.height/2) <= (tr.y - tr.height/2))
-        tr = v
-      if not br? or ((v.x + v.width/2) >= (br.x + br.width/2)) and ((v.y + v.height/2) >= (br.y + br.height/2))
-        br = v
-
-    topLeft: tl
-    bottomLeft: bl
-    topRight: tr
-    bottomRight: br
-
-  #
   # Return first and last pads
   #
   extremePads: ->
@@ -128,6 +109,19 @@ class QedaPattern
     pad.y = @cy + pad.y
     @pads[name] = @_addPad pad
     this
+
+  #
+  # Parse position point(s)
+  #
+  parsePosition: (value) ->
+    values = value.replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
+    points = []
+    for x in values by 2
+      points.push { x: x }
+    values.shift()
+    for y, i in values by 2
+      points[i/2].y = y
+    points
 
   #
   # Add pad

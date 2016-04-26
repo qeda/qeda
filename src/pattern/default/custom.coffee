@@ -35,7 +35,7 @@ copperPads = (pattern, element, suffix = '') ->
 
   if housing['padPosition' + suffix]?
     hasPads = true
-    points = copper.parsePosition housing['padPosition' + suffix]
+    points = pattern.parsePosition housing['padPosition' + suffix]
     for p, i in points
       pad.x = p.x
       pad.y = p.y
@@ -76,7 +76,7 @@ module.exports = (pattern, element) ->
   pattern.name ?= element.name.toUpperCase()
 
   housing.bodyPosition ?= '0, 0'
-  bodyPosition = copper.parsePosition housing.bodyPosition
+  bodyPosition = pattern.parsePosition housing.bodyPosition
   pattern.center -bodyPosition[0].x, -bodyPosition[0].y
 
   pinNumber = 0

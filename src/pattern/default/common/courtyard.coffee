@@ -25,21 +25,25 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    cp = pattern.cornerPads()
+    housing.bodyPosition ?= '0, 0'
+    bodyPosition = pattern.parsePosition housing.bodyPosition
+    [bodyX, bodyY] = [bodyPosition[0].x, bodyPosition[0].y]
 
-    x1 = cp.topLeft.x - cp.topLeft.width/2 - courtyard
+    [firstPad, lastPad] = pattern.extremePads()
+
+    x1 = firstPad.x - firstPad.width/2 - courtyard
     x2 = -bodyWidth/2 - courtyard
     if x1 > x2 then x1 = x2
     x3 = bodyWidth/2 + courtyard
-    x4 = cp.topRight.x + cp.topRight.width/2 + courtyard
+    x4 = lastPad.x + lastPad.width/2 + courtyard
     y1 = -bodyLength/2 - courtyard
-    yl2 = cp.topLeft.y - cp.topLeft.height/2 - courtyard
+    yl2 = firstPad.y - firstPad.height/2 - courtyard
     if y1 > yl2 then y1 = yl2
-    yr2 = cp.topRight.y - cp.topRight.height/2 - courtyard
+    yr2 = lastPad.y - lastPad.height/2 - courtyard
     if y1 > yr2 then y1 = yr2
-    yl3 = cp.bottomLeft.y + cp.bottomLeft.height/2 + courtyard
-    yr3 = cp.bottomRight.y + cp.bottomRight.height/2 + courtyard
-    y4 = -y1
+    yl3 = -yl2 - 2*bodyY
+    yr3 = -yr2 - 2*bodyY
+    y4 = bodyLength/2 + courtyard
 
     @preamble pattern, housing
       .moveTo  x1,  yl2

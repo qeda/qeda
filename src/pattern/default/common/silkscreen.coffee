@@ -34,32 +34,27 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    cp = pattern.cornerPads()
+    housing.bodyPosition ?= '0, 0'
+    bodyPosition = pattern.parsePosition housing.bodyPosition
+    [bodyX, bodyY] = [bodyPosition[0].x, bodyPosition[0].y]
+
+    [firstPad, lastPad] = pattern.extremePads()
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
-    x1 = cp.topLeft.x - cp.topLeft.width/2 - gap
+    x1 = firstPad.x - firstPad.width/2 - gap
     x2 = -bodyWidth/2  - lineWidth/2
     if x1 > x2 then x1 = x2
     x3 = bodyWidth/2 + lineWidth/2
 
-    yl1 = -bodyLength/2 - lineWidth/2
-    yl2 = cp.topLeft.y - cp.topLeft.height/2 - gap
-    if yl1 > yl2 then yl1 = yl2
-    yl3 = cp.topLeft.y + cp.topLeft.height/2 # Polarity
-    yl4 = cp.bottomLeft.y + cp.bottomLeft.height/2 + gap
-    yl5 = bodyLength/2 + lineWidth/2
-    if yl4 > yl5 then yl4 = yl5
+    y1 = -bodyLength/2 - lineWidth/2
+    y2 = firstPad.y - firstPad.height/2 - gap
+    if y1 > y2 then y1 = y2
+    yl3 = firstPad.y + firstPad.height/2
+    yr3 = lastPad.y - lastPad.height/2 - gap
 
-    yr1 = -bodyLength/2 - lineWidth/2
-    yr2 = cp.topRight.y - cp.topRight.height/2 - gap
-    if yr1 > yr2 then yr1 = yr2
-    yr3 = cp.bottomRight.y + cp.bottomRight.height/2 + gap
-    yr4 = bodyLength/2 + lineWidth/2
-    if yr3 > yr4 then yl3 = yr4
-
-    xp = cp.topLeft.x
-    yp = (if xp < x2 then yl2 else yl1) - lineWidth
+    xp = firstPad.x
+    yp = (if xp < x2 then y2 else y1) - lineWidth
 
     @preamble pattern, housing
     if housing.polarized
@@ -67,18 +62,18 @@ module.exports =
         .polarityMark xp, yp, 'top'
         # Top contour
         .moveTo x1, yl3
-        .lineTo x1, yl2
-        .lineTo x2, yl2
+        .lineTo x1, y2
+        .lineTo x2, y2
     pattern
-      .moveTo x2, yl2
-      .lineTo x2, yl1
-      .lineTo x3, yr1
-      .lineTo x3, yr2
-      # Bottom contour
-      .moveTo x2, yl4
-      .lineTo x2, yl5
-      .lineTo x3, yr4
+      .moveTo x2, y2
+      .lineTo x2, y1
+      .lineTo x3, y1
       .lineTo x3, yr3
+      # Bottom contour
+      .moveTo x2, -y2 - 2*bodyY
+      .lineTo x2, -y1
+      .lineTo x3, -y1
+      .lineTo x3, -yr3 - 2*bodyY
 
   gridArray: (pattern, housing) ->
     settings = pattern.settings
