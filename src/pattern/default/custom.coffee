@@ -45,13 +45,16 @@ copperPads = (pattern, element, suffix = '') ->
   else if housing['rowCount' + suffix]? and housing['columnCount' + suffix]?
     hasPads = true
     rowCount = housing['rowCount' + suffix]
-    rowPitch = housing['rowPitch' + suffix] ? housing['pitch' + suffix]
-    rowDXs = element.parseMultiple housing['rowDX' + suffix]
-    rowDYs = element.parseMultiple housing['rowDY' + suffix]
-    columnCounts = element.parseMultiple housing['columnCount' + suffix]
+    if rowCount is 1
+      rowPitch = 0
+    else
+      rowPitch = housing['rowPitch' + suffix] ? housing['pitch' + suffix]
+    rowDXs = pattern.parseArray housing['rowDX' + suffix]
+    rowDYs = pattern.parseArray housing['rowDY' + suffix]
+    columnCounts = pattern.parseArray housing['columnCount' + suffix]
     columnPitch = housing['columnPitch' + suffix] ? housing['pitch' + suffix]
-    columnDXs = element.parseMultiple housing['columnDX' + suffix]
-    columnDYs = element.parseMultiple housing['columnDY' + suffix]
+    columnDXs = pattern.parseArray housing['columnDX' + suffix]
+    columnDYs = pattern.parseArray housing['columnDY' + suffix]
     y = -rowPitch*(rowCount - 1)/2
     for row in [0..(rowCount - 1)]
       columnCount = columnCounts[row] ? columnCounts[0]

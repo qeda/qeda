@@ -111,6 +111,14 @@ class QedaPattern
     this
 
   #
+  # Parse array of floats
+  #
+  parseArray: (input) ->
+    unless input? then return [0]
+    result = input.toString().replace(/\s+/g, '').split(',').map((v) => parseFloat(v))
+    result
+
+  #
   # Parse position point(s)
   #
   parsePosition: (value) ->

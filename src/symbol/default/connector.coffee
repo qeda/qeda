@@ -20,7 +20,7 @@ module.exports = (symbol, element) ->
   schematic.showPinNumbers ?= true
   schematic.pinIcon = pinIcon
 
-  unless symbol.left.length and symbol.right.length # Automatic
+  if (not symbol.left.length) and (not symbol.right.length) # Automatic
     numbers = Object.keys element.pins
     if schematic.single
       numbers.map (v) -> symbol.right.push v
