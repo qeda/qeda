@@ -11,7 +11,7 @@ module.exports =
     y = bodyLength/2 + lineWidth/2
 
     @preamble pattern, housing
-      .rectangle  -x, -y, x, y
+      .silkRectangle -x, -y, x, y
 
   connector: (pattern, housing) ->
     settings = pattern.settings

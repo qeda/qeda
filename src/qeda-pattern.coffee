@@ -205,6 +205,32 @@ class QedaPattern
     this
 
   #
+  # Add line which avoid pad overlapping
+  #
+  silkLine: (x1, y1, x2, y2) ->
+    if (x1 isnt x2) or (y1 isnt y2)
+      lines = [{ x1: @cx + x1, y1: @cy + y1, x2: @cx + x2, y2: @cy + y2 }]
+      for n, pad of @pads
+        newlines = []
+        while lines.length
+          line = lines.shift()
+          parts = @_divideLine(line, pad, @settings.clearance.padToSilk + @settings.lineWidth.silkscreen/2)
+          newlines = newlines.concat parts
+        lines = newlines
+      lines.map (v) => @_addShape 'line', { x1: v.x1, y1: v.y1, x2: v.x2, y2: v.y2 }
+
+    this
+
+  #
+  # Add rectangle which avoid pad overlapping
+  #
+  silkRectangle: (x1, y1, x2, y2) ->
+    @silkLine x1, y1, x2, y1
+    @silkLine x2, y1, x2, y2
+    @silkLine x2, y2, x1, y2
+    @silkLine x1, y2, x1, y1
+
+  #
   # Add pad object
   #
   _addPad: (pad) ->
@@ -231,6 +257,66 @@ class QedaPattern
       if exclude.indexOf(key) isnt -1 then continue
       sum = crc.crc32 "#{key}=#{housing[key]}", sum
     sum
+
+  _divideLine: (line, pad, space) ->
+    px1 = pad.x - pad.width/2 - space
+    px2 = pad.x + pad.width/2 + space
+    py1 = pad.y - pad.height/2 - space
+    py2 = pad.y + pad.height/2 + space
+    lines = []
+    intersect = false
+
+    if line.x1 < line.x2
+      left = { x: line.x1, y: line.y1 }
+      right = { x: line.x2, y: line.y2 }
+    else
+      left = { x: line.x2, y: line.y2 }
+      right = { x: line.x1, y: line.y1 }
+
+    if left.x < px1 and right.x > px1 # May intersect
+      k = (right.y - left.y) / (right.x - left.x)
+      y = left.y + k*(px1 - left.x)
+      if y > py1 and y < py2 # Intersects
+        intersect = true
+        lines.push { x1: left.x, y1: left.y, x2: px1, y2: y }
+
+    if left.x < px2 and right.x > px2 # May intersect
+      k = (right.y - left.y) / (right.x - left.x)
+      y = left.y + k*(px2 - left.x)
+      if y > py1 and y < py2 # Intersects
+        intersect = true
+        lines.push { x1: px2, y1: y, x2: right.x, y2: right.y }
+
+    if line.y1 < line.y2
+      top = { x: line.x1, y: line.y1 }
+      bottom = { x: line.x2, y: line.y2 }
+    else
+      top = { x: line.x2, y: line.y2 }
+      bottom = { x: line.x1, y: line.y1 }
+
+    if top.y < py1 and bottom.y > py1 # May intersect
+      k = (bottom.x - top.x) / (bottom.y - top.y)
+      x = top.x + k*(py1 - top.y)
+      if x > px1 and x < px2 # Intersects
+        intersect = true
+        lines.push { x1: top.x, y1: top.y, x2: x, y2: py1 }
+
+    if top.y < py2 and bottom.y > py2 # May intersect
+      k = (bottom.x - top.x) / (bottom.y - top.y)
+      x = top.x + k*(py2 - top.y)
+      if x > px1 and x < px2 # Intersects
+        intersect = true
+        lines.push { x1: x, y1: py2, x2: bottom.x, y2: bottom.y }
+
+    unless intersect then lines.push line # Return source line
+
+    result = lines.filter (v) => @_lineLength(v) > @settings.lineWidth.silkscreen
+    result
+
+  _lineLength: (line) ->
+    dx = line.x2 - line.x1
+    dy = line.y2- line.y1
+    Math.sqrt(dx*dx + dy*dy)
 
   #
   # Merge two objects
