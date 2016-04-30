@@ -34,46 +34,31 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    housing.bodyPosition ?= '0, 0'
-    bodyPosition = pattern.parsePosition housing.bodyPosition
-    [bodyX, bodyY] = [bodyPosition[0].x, bodyPosition[0].y]
-
     [firstPad, lastPad] = pattern.extremePads()
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
-    x1 = firstPad.x - firstPad.width/2 - gap
-    x2 = -bodyWidth/2  - lineWidth/2
-    if x1 > x2 then x1 = x2
-    x3 = bodyWidth/2 + lineWidth/2
-
-    y1 = -bodyLength/2 - lineWidth/2
-    y2 = firstPad.y - firstPad.height/2 - gap
-    if y1 > y2 then y1 = y2
-    yl3 = firstPad.y + firstPad.height/2
-    yr3 = lastPad.y - lastPad.height/2 - gap
+    x1 = -bodyWidth/2  - lineWidth/2
+    x2 = -x1
+    yb = -bodyLength/2 - lineWidth/2
+    xf = firstPad.x - firstPad.width/2 - gap
+    yf = firstPad.y - firstPad.height/2 - gap
+    y1 = Math.min yb, yf
+    y2 = -y1
 
     xp = firstPad.x
-    yp = (if xp < x2 then y2 else y1) - lineWidth
+    yp = (if xp < x1 then yf else y1) - 1.5*lineWidth
 
     @preamble pattern, housing
+      .silkRectangle x1, y1, x2, y2
+
     if housing.polarized
       pattern
         .polarityMark xp, yp, 'top'
         # Top contour
-        .moveTo x1, yl3
-        .lineTo x1, y2
-        .lineTo x2, y2
-    pattern
-      .moveTo x2, y2
-      .lineTo x2, y1
-      .lineTo x3, y1
-      .lineTo x3, yr3
-      # Bottom contour
-      .moveTo x2, -y2 - 2*bodyY
-      .lineTo x2, -y1
-      .lineTo x3, -y1
-      .lineTo x3, -yr3 - 2*bodyY
+        .moveTo x1, yf
+        .lineTo xf, yf
+        .lineTo xf, yf + firstPad.height + gap
 
   gridArray: (pattern, housing) ->
     settings = pattern.settings
@@ -131,7 +116,7 @@ module.exports =
     ym = Math.min y2, y3
 
     xp = firstPad.x
-    yp = y1 - lineWidth
+    yp = y1 - 1.5*lineWidth
 
     @preamble pattern, housing
       .polarityMark xp, yp, 'top'
@@ -173,44 +158,22 @@ module.exports =
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
-    x1 = firstPad.x - firstPad.width/2 - gap
-    x2 = -bodyWidth/2  - lineWidth/2
-    x3 = lastPad.x - lastPad.width/2 - gap
-    if x1 > x2 then x1 = x2
-    if x2 > x3 then x2 = x3
-    x4 = -x3
-    x5 = -x2
-
+    x1 = -bodyWidth/2  - lineWidth/2
+    x2 = -x1
     y1 = -bodyLength/2 - lineWidth/2
-    y2 = firstPad.y - firstPad.height/2 - gap
-    if y1 > y2 then y1 = y2
-    y3 = firstPad.y + firstPad.height/2
-    y4 = -y2
-    y5 = -y1
+    y2 = -y1
+    xf = firstPad.x - firstPad.width/2 - gap
+    yf = firstPad.y - firstPad.height/2 - gap
 
     xp = firstPad.x
-    yp = (if xp < x2 then y2 else y1) - lineWidth
+    yp = (if xp < x1 then yf else y1) - 1.5*lineWidth
 
     @preamble pattern, housing
+      .silkRectangle x1, y1, x2, y2
       .polarityMark xp, yp, 'top'
-      # Top left contour
-      .moveTo x1, y3
-      .lineTo x1, y2
-      .lineTo x2, y2
-      .lineTo x2, y1
-      .lineTo x3, y1
-      # Top right contour
-      .moveTo x4, y1
-      .lineTo x5, y1
-      .lineTo x5, y2
-      # Bottom left contour
-      .moveTo x2, y4
-      .lineTo x2, y5
-      .lineTo x3, y5
-      # Bottom right contour
-      .moveTo x4, y5
-      .lineTo x5, y5
-      .lineTo x5, y4
+      .moveTo x1, yf
+      .lineTo xf, yf
+      .lineTo xf, yf + firstPad.height + gap
 
   twoPin: (pattern, housing) ->
     settings = pattern.settings

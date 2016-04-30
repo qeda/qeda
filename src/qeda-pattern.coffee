@@ -266,6 +266,13 @@ class QedaPattern
     lines = []
     intersect = false
 
+    # Check whether line is entirely inside the pad
+    if (line.x1 >= px1) and (line.x1 <= px2) and
+    (line.x2 >= px1) and (line.x2 <= px2) and
+    (line.y1 >= py1) and (line.y1 <= py2) and
+    (line.y2 >= py1) and (line.y2 <= py2)
+      return []
+
     if line.x1 < line.x2
       left = { x: line.x1, y: line.y1 }
       right = { x: line.x2, y: line.y2 }

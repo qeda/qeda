@@ -41,7 +41,7 @@ module.exports = (pattern, element) ->
   if padParams.width1?
     firstPad = pattern.pads[Object.keys(pattern.pads)[0]]
     width1 = padParams.width1
-    dx = width1 - firstPad.width
+    dx = (width1 - firstPad.width)/2
     firstPad.x += dx
     firstPad.width = width1
 
