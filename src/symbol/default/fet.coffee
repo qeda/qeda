@@ -71,7 +71,7 @@ module.exports = (symbol, element) ->
     width = icon.width
     height = icon.height
     pinLength = symbol.alignToGrid(settings.pinLength ? 10)
-    step = symbol.alignToGrid 5
+    pitch = symbol.alignToGrid 5
     r = width/2
     symbol
       .attribute 'refDes',
@@ -97,8 +97,8 @@ module.exports = (symbol, element) ->
       pin.length = pinLength
       pin.orientation = 'right'
       symbol.pin pin
-      y += step
-    symbol.line -width/2, 0, -width/2, (gate.length - 1)*step
+      y += pitch
+    symbol.line -width/2, 0, -width/2, (gate.length - 1)*pitch
 
     # Drain
     x = width/2
@@ -109,8 +109,8 @@ module.exports = (symbol, element) ->
       pin.length = pinLength
       pin.orientation = 'down'
       symbol.pin pin
-      x += step
-    symbol.line width/2, -height/2, width/2 + (drain.length - 1)*step, -height/2
+      x += pitch
+    symbol.line width/2, -height/2, width/2 + (drain.length - 1)*pitch, -height/2
 
     # Source
     x = width/2
@@ -121,5 +121,5 @@ module.exports = (symbol, element) ->
       pin.length = pinLength
       pin.orientation = 'up'
       symbol.pin pin
-      x += step
-    symbol.line width/2, height/2, width/2 + (source.length - 1)*step, height/2
+      x += pitch
+    symbol.line width/2, height/2, width/2 + (source.length - 1)*pitch, height/2

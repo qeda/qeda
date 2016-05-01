@@ -16,6 +16,7 @@ module.exports = (symbol, element, styleIcons) ->
   rotateRight = false
   names = Object.keys pinGroups
   for k, v of pins
+    v.name = v.name.replace 'K', 'C'
     switch v.name
       when 'A' # A-|>-CA-|>-C or C-<|AC-<|-A or C1-<|-A-|>-C2
         if names.indexOf('C1') isnt -1
@@ -89,7 +90,7 @@ module.exports = (symbol, element, styleIcons) ->
 
     x1 = -width/4
     x2 = width/4
-    
+
     symbol
       .lineWidth settings.lineWidth.thick
       .rectangle -width/2, -height/2, width/2, height/2, 'foreground'

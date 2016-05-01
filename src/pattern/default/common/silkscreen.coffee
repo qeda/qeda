@@ -105,35 +105,35 @@ module.exports =
 
     gap = lineWidth/2 + settings.clearance.padToSilk
 
-    x1 = firstPad.x - firstPad.width/2 - gap
-    x3 = lastPad.x - lastPad.width/2 - gap
-    x4 = leadSpan/2 - tabLedge
-    x2 = x4 - bodyWidth - lineWidth/2
-    y0 = firstPad.y + firstPad.height/2
-    y1 = firstPad.y - firstPad.height/2 - gap
-    y2 = -bodyLength/2 - lineWidth/2
-    y3 = lastPad.y - lastPad.height/2 - gap
-    ym = Math.min y2, y3
+    dx = leadSpan/2 - tabLedge - bodyWidth/2
+
+    x1 = dx - bodyWidth/2 - lineWidth/2
+    x2 = dx + bodyWidth/2 + lineWidth/2
+    y1 = -bodyLength/2 - lineWidth/2
+    y2 = -y1
+    xf = firstPad.x - firstPad.width/2 - gap
+    yf = firstPad.y - firstPad.height/2 - gap
+    xt = lastPad.x - lastPad.width/2 - gap
+    yt = lastPad.y - lastPad.height/2 - gap
 
     xp = firstPad.x
-    yp = y1 - 1.5*lineWidth
+    yp = (if xp < x1 then yf else y1) - 1.5*lineWidth
 
     @preamble pattern, housing
+      .silkRectangle x1, y1, x2, y2
       .polarityMark xp, yp, 'top'
-      .moveTo x1, y0
-      .lineTo x1, y1
-      .lineTo x2, y1
-      .lineTo x2, y2
-      .lineTo x3, y2
-      .lineTo x3, ym
-      .lineTo x4, ym
-      .lineTo x4, y3
-      .moveTo x2, -y1
-      .lineTo x2, -y2
-      .lineTo x3, -y2
-      .lineTo x3, -ym
-      .lineTo x4, -ym
-      .lineTo x4, -y3
+      .moveTo x1, yf
+      .lineTo xf, yf
+      .lineTo xf, yf + firstPad.height + gap
+
+    if yt < y1 # Tab pad is greater than body
+      pattern
+        .moveTo x2, yt
+        .lineTo xt, yt
+        .lineTo xt, y1
+        .moveTo x2, -yt
+        .lineTo xt, -yt
+        .lineTo xt, -y1
 
   preamble: (pattern, housing) ->
     settings = pattern.settings
@@ -221,4 +221,4 @@ module.exports =
        .lineTo -x1, y2
        .lineTo x1, y2
        .lineTo x1, -y
-       .polarityMark 0, y2 - lineWidth/2, 'top'
+       .polarityMark 0, y2 - 1.5*lineWidth, 'top'
