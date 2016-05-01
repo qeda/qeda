@@ -10,7 +10,7 @@ module.exports = (symbol, element, styleIcons) ->
   decorated = numbers.length > 2
 
   schematic.showPinNames ?= false
-  schematic.showPinNumbers ?= if decorated then true else true
+  schematic.showPinNumbers ?= if decorated then true else false
 
   icon = if styleIcons? then new styleIcons.Diode(symbol, element) else new Icons.Diode(symbol, element)
 
