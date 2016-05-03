@@ -14,10 +14,17 @@ class TransistorIcon extends Icon
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
-      .line -@width/2, 0, 0, 0
       .line 0, -@height/2, 0, @height/2
       .line 0, -@height/4, @width/2, -@height/2
       .line 0, @height/4, @width/2, @height/2
+    if @schematic.igbt
+      space = 1.5
+      @symbol
+        .line -@width/2, 0, -space, 0
+        .line -space, -@height/2, -space, @height/2
+    else
+      @symbol
+        .line -@width/2, 0, 0, 0
 
     dx = @width/2
     dy = @height/4
@@ -26,7 +33,7 @@ class TransistorIcon extends Icon
     x2 = x1 - dx/4
     y2 = y1 - dy/4
     a = Math.atan dy/dx
-    if @schematic.npn
+    if @schematic.npn or @schematic.igbt
       x3 = x2 + arrowWidth*Math.sin(a)/2
       y3 = y2 - arrowWidth*Math.cos(a)/2
       x4 = x2 - arrowWidth*Math.sin(a)/2
@@ -55,6 +62,7 @@ module.exports = (symbol, element) ->
   for k, v of pinGroups
     switch k
       when 'B' then base = v
+      when 'G' then base = v # For IGBT
       when 'C' then collector = v
       when 'E' then emitter = v
       else needEnclosure = true
