@@ -36,6 +36,7 @@ module.exports =
     if x1 > x2 then x1 = x2
     x3 = bodyWidth/2 + courtyard
     x4 = lastPad.x + lastPad.width/2 + courtyard
+    if x4 < x3 then x4 = x3
     y1 = -bodyLength/2 - courtyard
     yl2 = firstPad.y - firstPad.height/2 - courtyard
     if y1 > yl2 then y1 = yl2

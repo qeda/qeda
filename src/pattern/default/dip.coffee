@@ -9,6 +9,8 @@ silkscreen = require './common/silkscreen'
 module.exports = (pattern, element) ->
   housing = element.housing
   housing.polarized = true
+  housing.leadWidth ?= housing.leadDiameter
+  housing.leadHeight ?= housing.leadDiameter
 
   pattern.name ?= sprintf "%sDIP%s%dW%dP%dL%dH%dQ%d",
     if housing.ceramic? then 'C' else '',

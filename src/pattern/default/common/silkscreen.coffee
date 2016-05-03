@@ -55,10 +55,11 @@ module.exports =
     if housing.polarized
       pattern
         .polarityMark xp, yp, 'top'
-        # Top contour
-        .moveTo x1, yf
-        .lineTo xf, yf
-        .lineTo xf, yf + firstPad.height + gap
+      if xf < x1
+        pattern
+          .moveTo x1, yf
+          .lineTo xf, yf
+          .lineTo xf, yf + firstPad.height + gap
 
   gridArray: (pattern, housing) ->
     settings = pattern.settings
