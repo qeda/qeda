@@ -5,7 +5,8 @@ designators =
   DR: ['resistor']
 
 purposes =
-  '1': ['invertor', 'repeater']
+  '1': ['invertor', 'repeater', 'or']
+  '&': ['and']
   '>': ['opamp']
   'ADC': ['adc']
   'BUF': ['buffer']
@@ -29,6 +30,7 @@ purposes =
   'G': ['generator']
   '*L': ['inductor']
   'M': ['memory']
+  'M2': ['xor']
   'MD': ['modulator']
   'MOD': ['modificator']
   'MPU': ['mcu', 'microcontroller', 'microprocessor', 'mpu']
