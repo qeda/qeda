@@ -210,7 +210,7 @@ module.exports = (symbol, element) ->
   # Align first group to top
   y = pitch
   if leftFirst?
-    for i in [0..leftFirst]
+    for i in [0..leftFirst] by 1
       leftPins[i].y = y
       y += pitch
 
@@ -229,14 +229,14 @@ module.exports = (symbol, element) ->
   # Align first group to top
   y = pitch
   if rightFirst?
-    for i in [0..rightFirst]
+    for i in [0..rightFirst] by 1
       rightPins[i].y = y
       y += pitch
 
   # Align last group to bottom
   y = height - pitch
   if rightLast?
-    for i in [rightLast..(rightPins.length-1)]
+    for i in [rightLast..(rightPins.length-1)] by 1
       rightPins[i].y = y
       y -= pitch
 
