@@ -77,6 +77,17 @@ module.exports = (pattern, element) ->
       [housing.bodyLength.nom*10,
       housing.bodyDiameter.nom*10]
       .map((v) => Math.round v)...
+  else if housing.radial # Metal Electrode Leadless Face
+    abbr += 'R'
+    if housing.diameter
+      abbr += 'D'
+    option = 'radial'
+    size = sprintf "%02dW%02dD%02dH%02d",
+      [housing.leadSpan.nom*100,
+      housing.leadDiameter.nom*100,
+      housing.bodyDiameter.nom*100,
+      housing.height.max*100]
+      .map((v) => Math.round v)...
   else if housing.sod # Small Outline Diode
     abbr = 'SOD'
     option = 'sod'

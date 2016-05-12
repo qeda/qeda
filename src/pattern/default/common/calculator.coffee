@@ -293,6 +293,8 @@ module.exports =
         toes =       { M: 0.25, N:  0.15, L:  0.07 }
         heels =      { M: 0.8,  N:  0.5,  L:  0.2  }
         sides =      { M: 0.01, N: -0.05, L: -0.1  }
+      when 'radial'
+        return @throughHole pattern, housing
       when 'sod'
         toes =       { M: 0.55, N: 0.35, L: 0.15 }
         heels =      { M: 0.45, N: 0.35, L: 0.25 }

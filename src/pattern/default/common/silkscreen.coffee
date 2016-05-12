@@ -179,47 +179,54 @@ module.exports =
   twoPin: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
-    bodyWidth = housing.bodyWidth.nom
-    bodyLength = housing.bodyLength.nom
     leadWidth = housing.leadWidth.nom
 
     [firstPad, lastPad] = pattern.extremePads()
 
-    gap = lineWidth/2 + settings.clearance.padToSilk
+    if housing.bodyWidth? and housing.bodyLength? # Rectangular
+      bodyWidth = housing.bodyWidth.nom
+      bodyLength = housing.bodyLength.nom
 
-    x1 = firstPad.width/2 + gap
-    x2 = bodyWidth/2 + lineWidth/2
-    x = Math.max x1, x2
-    y = bodyLength/2 + lineWidth/2
-    @preamble pattern, housing
-    if housing.cae
-      d = x2 - x1
-      pattern
-        .moveTo -x1, -y
-        .lineTo -x2, -y + d
-        .lineTo -x2, y
-        .lineTo -x1, y
-        .moveTo x1, -y
-        .lineTo x2, -y + d
-        .lineTo x2, y
-        .lineTo x1, y
-    else
-      pattern
-        .line -x, -y, -x, y
-        .line x, -y, x, y
+      gap = lineWidth/2 + settings.clearance.padToSilk
 
-      if x1 < x2 # Molded
+      x1 = firstPad.width/2 + gap
+      x2 = bodyWidth/2 + lineWidth/2
+      x = Math.max x1, x2
+      y = bodyLength/2 + lineWidth/2
+      @preamble pattern, housing
+      if housing.cae
+        d = x2 - x1
         pattern
-         .line -x1, -y, -x2, -y
-         .line -x1,  y, -x2, y
-         .line  x1, -y,  x2,  -y
-         .line  x1,  y,  x2,  y
+          .moveTo -x1, -y
+          .lineTo -x2, -y + d
+          .lineTo -x2, y
+          .lineTo -x1, y
+          .moveTo x1, -y
+          .lineTo x2, -y + d
+          .lineTo x2, y
+          .lineTo x1, y
+      else
+        pattern
+          .line -x, -y, -x, y
+          .line x, -y, x, y
 
-    if housing.polarized or housing.cae
-      y2 = firstPad.y - firstPad.height/2 - gap
-      pattern
-       .moveTo -x1, -y
-       .lineTo -x1, y2
-       .lineTo x1, y2
-       .lineTo x1, -y
-       .polarityMark 0, y2 - 1.5*lineWidth, 'top'
+        if x1 < x2 # Molded
+          pattern
+           .line -x1, -y, -x2, -y
+           .line -x1,  y, -x2, y
+           .line  x1, -y,  x2,  -y
+           .line  x1,  y,  x2,  y
+
+      if housing.polarized or housing.cae
+        y2 = firstPad.y - firstPad.height/2 - gap
+        pattern
+         .moveTo -x1, -y
+         .lineTo -x1, y2
+         .lineTo x1, y2
+         .lineTo x1, -y
+         .polarityMark 0, y2 - 1.5*lineWidth, 'top'
+
+    else if housing.bodyDiameter? # Cylindrical
+      r = housing.bodyDiameter.nom/2 + lineWidth/2
+      @preamble pattern, housing
+        .circle 0, 0, r

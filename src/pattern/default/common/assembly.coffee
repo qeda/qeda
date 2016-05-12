@@ -49,6 +49,8 @@ module.exports =
 
   preamble: (pattern, housing) ->
     settings = pattern.settings
+    housing.bodyWidth ?= housing.bodyDiameter
+    housing.bodyLength ?= housing.bodyDiameter
     [w, h] = [housing.bodyWidth.nom, housing.bodyLength.nom]
     lineWidth = settings.lineWidth.assembly
     angle = if w < h then 90 else 0
@@ -81,25 +83,29 @@ module.exports =
   twoPin: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.assembly
-    bodyWidth = housing.bodyWidth.nom
-    bodyLength = housing.bodyLength.nom
 
-    x = bodyWidth/2
-    y = bodyLength/2
     @preamble pattern, housing
-    if housing.cae
-      d = Math.min bodyWidth/4, bodyLength/4
-      diam = housing.bodyDiameter.nom ? housing.bodyDiameter
-      pattern
-        .moveTo -x + d, -y
-        .lineTo -x, -y + d
-        .lineTo -x, y
-        .lineTo x, y
-        .lineTo x, -y + d
-        .lineTo x - d, -y
-        .lineTo -x + d, -y
-      if diam? then  pattern.circle 0, 0, diam/2
-    else if housing.polarized
-      @polarized pattern, housing
-    else
-      pattern.rectangle -x, -y, x, y
+
+    if housing.bodyWidth? and housing.bodyLength?
+      bodyWidth = housing.bodyWidth.nom
+      bodyLength = housing.bodyLength.nom
+      x = bodyWidth/2
+      y = bodyLength/2
+      if housing.cae
+        d = Math.min bodyWidth/4, bodyLength/4
+        diam = housing.bodyDiameter.nom ? housing.bodyDiameter
+        pattern
+          .moveTo -x + d, -y
+          .lineTo -x, -y + d
+          .lineTo -x, y
+          .lineTo x, y
+          .lineTo x, -y + d
+          .lineTo x - d, -y
+          .lineTo -x + d, -y
+        if diam? then  pattern.circle 0, 0, diam/2
+      else if housing.polarized
+        @polarized pattern, housing
+      else
+        pattern.rectangle -x, -y, x, y
+    else if housing.bodyDiameter?
+      pattern.circle 0, 0, housing.bodyDiameter.nom/2
