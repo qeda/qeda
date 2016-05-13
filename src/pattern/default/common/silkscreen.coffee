@@ -5,13 +5,46 @@ module.exports =
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = pattern.extremePads()
-
     x = bodyWidth/2 + lineWidth/2
     y = bodyLength/2 + lineWidth/2
 
     @preamble pattern, housing
       .silkRectangle -x, -y, x, y
+
+    if housing.polarized
+      [firstPad, lastPad] = pattern.extremePads()
+      gap = lineWidth/2 + settings.clearance.padToSilk
+      xl = -bodyWidth/2
+      xr = -xl
+      yt = -bodyLength/2
+      yb = -yt
+      x = firstPad.x
+      y = firstPad.y
+      w = firstPad.width
+      h = firstPad.height
+      dxl = Math.abs(x - xl)
+      dxr = Math.abs(x - xr)
+      dyt = Math.abs(y - yt)
+      dyb = Math.abs(y - yb)
+      pos = 'top'
+      delta = dyt
+      xp = x
+      yp = Math.min(yt - 1.5*lineWidth, y - h/2 - gap)
+      if dxl < delta
+        delta = dxl
+        pos = 'left'
+        xp = Math.min(xl - 1.5*lineWidth, x - w/2 - gap)
+        yp = y
+      if dxr < delta
+        delta = dxr
+        pos = 'right'
+        xp = Math.max(xr + 1.5*lineWidth, x + w/2 + gap)
+        yp = y
+      if dyb < delta
+        pos = 'bottom'
+        xp = x
+        yp = Math.max(yb + 1.5*lineWidth, y + h/2 + gap)
+      pattern.polarityMark xp, yp, pos
 
   connector: (pattern, housing) ->
     settings = pattern.settings
