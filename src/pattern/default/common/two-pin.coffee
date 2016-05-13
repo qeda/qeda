@@ -77,7 +77,7 @@ module.exports = (pattern, element) ->
       [housing.bodyLength.nom*10,
       housing.bodyDiameter.nom*10]
       .map((v) => Math.round v)...
-  else if housing.radial # Metal Electrode Leadless Face
+  else if housing.radial # Radial
     abbr += 'R'
     if housing.diameter
       abbr += 'D'
@@ -120,19 +120,27 @@ module.exports = (pattern, element) ->
 
   # Calculate pad dimensions according to IPC-7351
   padParams = calculator.twoPin pattern, housing, option
-
   pad =
-    type: 'smd'
     shape: 'rectangle'
-    width: padParams.height
-    height: padParams.width
-    layer: ['topCopper', 'topMask', 'topPaste']
     x: 0
     y: -padParams.distance/2
+    width: padParams.height
+    height: padParams.width
+
+  if padParams.drill?
+    unless housing.polarized?
+      pad.shape = 'circle'
+    pad.type = 'through-hole'
+    pad.drill = padParams.drill
+    pad.layer = ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
+  else
+    pad.type = 'smd'
+    pad.layer = ['topCopper', 'topMask', 'topPaste']
 
   # Copper
   pattern.pad 1, pad
   pad.y = -pad.y
+  if pad.drill? then pad.shape = 'circle'
   pattern.pad 2, pad
 
   copper.mask pattern

@@ -163,30 +163,35 @@ module.exports =
       .lineTo x1, y3
 
   twoPin: (pattern, housing, courtyard) ->
-    bodyWidth = housing.bodyWidth.nom
-    bodyLength = housing.bodyLength.nom
+    if housing.bodyWidth? and housing.bodyHeight?
+      bodyWidth = housing.bodyWidth.nom
+      bodyLength = housing.bodyLength.nom
 
-    [firstPad, lastPad] = pattern.extremePads()
+      [firstPad, lastPad] = pattern.extremePads()
 
-    x1 = firstPad.width/2 + courtyard
-    x2 = bodyWidth/2 + courtyard
-    xm = Math.max x1, x2
-    y1 = lastPad.y + lastPad.height/2 + courtyard
-    y2 = bodyLength/2 + courtyard
-    @preamble pattern, housing
-      .moveTo -x1, -y1
-      .lineTo -x1, -y2
-      .lineTo -xm, -y2
-      .lineTo -xm,  y2
-      .lineTo -x1,  y2
-      .lineTo -x1,  y1
-      .lineTo  x1,  y1
-      .lineTo  x1,  y2
-      .lineTo  xm,  y2
-      .lineTo  xm, -y2
-      .lineTo  x1, -y2
-      .lineTo  x1, -y1
-      .lineTo -x1, -y1
+      x1 = firstPad.width/2 + courtyard
+      x2 = bodyWidth/2 + courtyard
+      xm = Math.max x1, x2
+      y1 = lastPad.y + lastPad.height/2 + courtyard
+      y2 = bodyLength/2 + courtyard
+      @preamble pattern, housing
+        .moveTo -x1, -y1
+        .lineTo -x1, -y2
+        .lineTo -xm, -y2
+        .lineTo -xm,  y2
+        .lineTo -x1,  y2
+        .lineTo -x1,  y1
+        .lineTo  x1,  y1
+        .lineTo  x1,  y2
+        .lineTo  xm,  y2
+        .lineTo  xm, -y2
+        .lineTo  x1, -y2
+        .lineTo  x1, -y1
+        .lineTo -x1, -y1
+    else if housing.bodyDiameter?
+      @preamble pattern, housing
+        .circle 0, 0, housing.bodyDiameter.nom/2 + courtyard
+
 
   _centroid: (pattern) ->
     settings = pattern.settings

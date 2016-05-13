@@ -179,17 +179,16 @@ module.exports =
   twoPin: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
-    leadWidth = housing.leadWidth.nom
 
     [firstPad, lastPad] = pattern.extremePads()
+
+    gap = lineWidth/2 + settings.clearance.padToSilk
+    x1 = firstPad.width/2 + gap
 
     if housing.bodyWidth? and housing.bodyLength? # Rectangular
       bodyWidth = housing.bodyWidth.nom
       bodyLength = housing.bodyLength.nom
 
-      gap = lineWidth/2 + settings.clearance.padToSilk
-
-      x1 = firstPad.width/2 + gap
       x2 = bodyWidth/2 + lineWidth/2
       x = Math.max x1, x2
       y = bodyLength/2 + lineWidth/2
@@ -230,3 +229,8 @@ module.exports =
       r = housing.bodyDiameter.nom/2 + lineWidth/2
       @preamble pattern, housing
         .circle 0, 0, r
+      if housing.polarized
+        y = firstPad.y + firstPad.height/2 + gap
+        pattern
+          .rectangle -x1, -r, x1, y
+          .polarityMark 0, -r - 1.5*lineWidth, 'top'

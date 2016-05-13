@@ -49,9 +49,8 @@ module.exports =
 
   preamble: (pattern, housing) ->
     settings = pattern.settings
-    housing.bodyWidth ?= housing.bodyDiameter
-    housing.bodyLength ?= housing.bodyDiameter
-    [w, h] = [housing.bodyWidth.nom, housing.bodyLength.nom]
+    w = if housing.bodyWidth? then housing.bodyWidth.nom else housing.bodyDiameter.nom
+    h = if housing.bodyLength? then housing.bodyLength.nom else housing.bodyDiameter.nom
     lineWidth = settings.lineWidth.assembly
     angle = if w < h then 90 else 0
     fontSize = settings.fontSize.default
