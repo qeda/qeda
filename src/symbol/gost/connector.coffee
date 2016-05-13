@@ -14,7 +14,15 @@ module.exports = (symbol, element) ->
   space = settings.space.default
 
   pins = element.pins
-  numbers = Object.keys pins
+  numbers = []
+  if symbol.left.length
+    numbers = numbers.concat symbol.left
+  if symbol.right.length
+    numbers = numbers.concat symbol.right
+  if symbol.top.length
+    numbers = numbers.concat symbol.top
+  if symbol.bottom.length
+    numbers = numbers.concat symbol.bottom
 
   # Attributes
   symbol
@@ -25,22 +33,6 @@ module.exports = (symbol, element) ->
       valign: 'bottom'
 
   height = pitch*(numbers.length + 1)
-
-  if element.parts?
-    symbol
-      .attribute 'name',
-        x: 0
-        y: settings.fontSize.name + 4*settings.space.attribute
-        halign: 'right'
-        valign: 'center'
-        orientation: 'vertical'
-  else
-    symbol
-      .attribute 'name',
-        x: 0
-        y: height + settings.space.attribute
-        halign: 'center'
-        valign: 'top'
 
   firstText = 'Цепь'
   firstWidth = 30
@@ -69,6 +61,22 @@ module.exports = (symbol, element) ->
   firstWidth = 2*symbol.alignToGrid(firstWidth/2, 'ceil')
   secondWidth = 2*symbol.alignToGrid(secondWidth/2, 'ceil')
   width = firstWidth + secondWidth
+
+  if element.parts?
+    symbol
+      .attribute 'name',
+        x: -width/2 - settings.space.attribute
+        y: 0
+        halign: 'right'
+        valign: 'bottom'
+        orientation: 'vertical'
+  else
+    symbol
+      .attribute 'name',
+        x: 0
+        y: height + settings.space.attribute
+        halign: 'center'
+        valign: 'top'
 
   # Box
   symbol
