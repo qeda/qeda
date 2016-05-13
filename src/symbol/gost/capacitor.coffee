@@ -40,16 +40,13 @@ module.exports = (symbol, element) ->
       passive: true
     .lineWidth settings.lineWidth.thick
     .line -width/2, -height/2, -width/2, height/2
+    .line width/2, -height/2, width/2, height/2
+
   if schematic.polarized
     d = 1
     x = -width/2 - 2*d
     y = -height/4
-    r = 6*width
-    a = 180 * Math.asin(height/(2*r)) / Math.PI
     symbol
-      .arc r + width/2, 0, r, 180 - a, 180 + a
       .lineWidth settings.lineWidth.thin
       .line x - d, y, x + d, y
       .line x, y - d, x, y + d
-  else
-    symbol.line width/2, -height/2, width/2, height/2

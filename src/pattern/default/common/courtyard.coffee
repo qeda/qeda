@@ -163,7 +163,7 @@ module.exports =
       .lineTo x1, y3
 
   twoPin: (pattern, housing, courtyard) ->
-    if housing.bodyWidth? and housing.bodyHeight?
+    if housing.bodyWidth? and housing.bodyLength?
       bodyWidth = housing.bodyWidth.nom
       bodyLength = housing.bodyLength.nom
 
