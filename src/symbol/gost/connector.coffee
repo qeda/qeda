@@ -23,6 +23,7 @@ module.exports = (symbol, element) ->
     numbers = numbers.concat symbol.top
   if symbol.bottom.length
     numbers = numbers.concat symbol.bottom
+  if numbers.length is 0 then numbers = Object.keys pins
 
   # Attributes
   symbol
