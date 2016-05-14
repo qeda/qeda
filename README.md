@@ -30,6 +30,7 @@ Features
   - Dual (CFP, DIP, SOIC, SOJ, SOL, SON, SOP)
   - Grid Array (BGA, CGA, LGA)
   - Quad (CQFP, QFN, QFP)
+  - Radial lead (Cylindrical)
   - SOT (SOT143, SOT223, SOT23, SOTFL)
   - TO (\*PAK)
   - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF, SOD, SODFL)
