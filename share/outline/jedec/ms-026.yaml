@@ -2,13 +2,284 @@ pattern: QFP
 
 leadLength: 0.45-0.75
 
-BFB:
+# Height
+
+A\w\w(-H\w)?:
+  height: 1.2
+
+B\w\w(-H\w)?:
+  height: 1.6
+
+# Thermal tab
+
+\w\w\w-H\w:
+  tabWidth: 2
+  tabLength: 2
+
+# Body size
+
+\wA\w(-H\w)?:
+  bodyWidth: 4.8-5.2
+  bodyLength: 4.8-5.2
+  rowSpan: 6.8-7.2
+  columnSpan: 6.8-7.2
+
+\wB\w(-H\w)?:
+  bodyWidth: 6.8-7.2
+  bodyLength: 6.8-7.2
+  rowSpan: 8.8-9.2
+  columnSpan: 8.8-9.2
+
+\wC\w(-H\w)?:
+  bodyWidth: 9.8-10.2
+  bodyLength: 9.8-10.2
+  rowSpan: 11.8-12.2
+  columnSpan: 11.8-12.2
+
+\wD\w(-H\w)?:
+  bodyWidth: 11.8-12.2
+  bodyLength: 11.8-12.2
+  rowSpan: 13.8-14.2
+  columnSpan: 13.8-14.2
+
+\wE\w(-H\w)?:
+  bodyWidth: 13.8-14.2
+  bodyLength: 13.8-14.2
+  rowSpan: 15.8-16.2
+  columnSpan: 15.8-16.2
+
+\wF\w(-H\w)?:
+  bodyWidth: 19.8-20.2
+  bodyLength: 19.8-20.2
+  rowSpan: 21.8-22.2
+  columnSpan: 21.8-22.2
+
+\wG\w(-H\w)?:
+  bodyWidth: 23.8-24.2
+  bodyLength: 23.8-24.2
+  rowSpan: 25.8-26.2
+  columnSpan: 25.8-26.2
+
+\wH\w(-H\w)?:
+  bodyWidth: 13.8-14.2
+  bodyLength: 19.8-20.2
+  rowSpan: 15.8-16.2
+  columnSpan: 21.8-22.2
+
+BJ\w(-H\w)?:
+  bodyWidth: 27.8-28.2
+  bodyLength: 27.8-28.2
+  rowSpan: 29.8-30.2
+  columnSpan: 29.8-30.2
+
+\wK\w(-H\w)?:
+  bodyWidth: 3.8-4.2
+  bodyLength: 3.8-4.2
+  rowSpan: 5.8-6.2
+  columnSpan: 5.8-6.2
+
+# Variations
+
+\wAA(-H\w)?:
+  rowCount: 8
+  columnCount: 8
+  leadWidth: 0.17-0.27
   pitch: 0.5
-  bodyLength: 19.80-20.20
-  bodyWidth: 19.80-20.20
-  height: 1.60
+
+\wAB(-H\w)?:
+  rowCount: 10
+  columnCount: 10
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wBA(-H\w)?:
+  rowCount: 8
+  columnCount: 8
+  leadWidth: 0.3-0.45
+  pitch: 0.8
+
+\wBB(-H\w)?:
+  rowCount: 10
+  columnCount: 10
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wBC(-H\w)?:
+  rowCount: 12
+  columnCount: 12
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wBD(-H\w)?:
+  rowCount: 16
+  columnCount: 16
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wCA(-H\w)?:
+  rowCount: 9
+  columnCount: 9
+  leadWidth: 0.35-0.5
+  pitch: 1
+
+\wCB(-H\w)?:
+  rowCount: 11
+  columnCount: 11
+  leadWidth: 0.3-0.45
+  pitch: 0.8
+
+\wCC(-H\w)?:
+  rowCount: 13
+  columnCount: 13
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wCD(-H\w)?:
+  rowCount: 16
+  columnCount: 16
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wCE(-H\w)?:
+  rowCount: 20
+  columnCount: 20
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wDA(-H\w)?:
+  rowCount: 9
+  columnCount: 9
+  leadWidth: 0.35-0.5
+  pitch: 1
+
+\wDB(-H\w)?:
+  rowCount: 13
+  columnCount: 13
+  leadWidth: 0.3-0.45
+  pitch: 0.8
+
+\wDC(-H\w)?:
+  rowCount: 16
+  columnCount: 16
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wDD(-H\w)?:
+  rowCount: 20
+  columnCount: 20
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wDE(-H\w)?:
+  rowCount: 25
+  columnCount: 25
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wEA(-H\w)?:
+  rowCount: 13
+  columnCount: 13
+  leadWidth: 0.35-0.5
+  pitch: 1
+
+\wEB(-H\w)?:
+  rowCount: 16
+  columnCount: 16
+  leadWidth: 0.3-0.45
+  pitch: 0.8
+
+\wEC(-H\w)?:
+  rowCount: 20
+  columnCount: 20
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wED(-H\w)?:
+  rowCount: 25
+  columnCount: 25
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wEE(-H\w)?:
+  rowCount: 30
+  columnCount: 30
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wFA(-H\w)?:
+  rowCount: 28
+  columnCount: 28
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wFB(-H\w)?:
   rowCount: 36
   columnCount: 36
-  rowSpan: 21.80-22.20
-  columnSpan: 21.80-22.20
   leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wFC(-H\w)?:
+  rowCount: 44
+  columnCount: 44
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wGA(-H\w)?:
+  rowCount: 44
+  columnCount: 44
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wGB(-H\w)?:
+  rowCount: 54
+  columnCount: 54
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+\wHA(-H\w)?:
+  rowCount: 30
+  columnCount: 20
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wHB(-H\w)?:
+  rowCount: 38
+  columnCount: 26
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wKA(-H\w)?:
+  rowCount: 5
+  columnCount: 5
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+\wKB(-H\w)?:
+  rowCount: 6
+  columnCount: 6
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+\wKC(-H\w)?:
+  rowCount: 8
+  columnCount: 8
+  leadWidth: 0.13-0.23
+  pitch: 0.4
+
+BJA(-H\w)?:
+  rowCount: 40
+  columnCount: 40
+  leadWidth: 0.22-0.38
+  pitch: 0.65
+
+BJB(-H\w)?:
+  rowCount: 52
+  columnCount: 52
+  leadWidth: 0.17-0.27
+  pitch: 0.5
+
+BJC(-H\w)?:
+  rowCount: 64
+  columnCount: 64
+  leadWidth: 0.13-0.23
+  pitch: 0.4
