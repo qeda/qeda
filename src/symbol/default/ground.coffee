@@ -2,6 +2,7 @@ groundSymbol = (symbol, element, icon = 'signal') ->
   settings = symbol.settings
   width = 5
   height = 5
+  schematic = element.schematic
 
   symbol
     .attribute 'refDes',
@@ -24,39 +25,32 @@ groundSymbol = (symbol, element, icon = 'signal') ->
       orientation: 'down'
       ground: true
       invisible: true
-    .line 0, 0, 0, (if icon is 'common' then height else height/2)
+    .line 0, 0, 0, (if schematic.signal or schematic.earth or schematic.chassis then height/2 else height)
     .lineWidth settings.lineWidth.thick
-  switch icon
-    when 'signal'
-      symbol.polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2
-    when 'common'
-      symbol
-        .line -width/2, height, width/2, height
-    when 'earth'
-      d = width/5
-      symbol
-        .line -width/2, height/2, width/2, height/2
-        .line -width/2 + d, 3*height/4, width/2 - d, 3*height/4
-        .line -width/2 + 2*d, height, width/2 - 2*d, height
-        #.dot 0, height
-    when 'chassis'
-      d = width/4
-      symbol
-        .line -width/2, height/2, width/2, height/2
-        .line -width/2, height/2, -width/2 - d, height
-        .line 0, height/2, -d, height
-        .line width/2, height/2, width/2 - d, height
-    else
-      symbol.line -width/2, height/2, width/2, height/2
+  if schematic.signal
+    element.description = 'Signal Ground Symbol'
+    symbol.polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2
+  else if schematic.earth
+    element.description = 'Earth Ground Symbol'
+    d = width/5
+    symbol
+      .line -width/2, height/2, width/2, height/2
+      .line -width/2 + d, 3*height/4, width/2 - d, 3*height/4
+      .line -width/2 + 2*d, height, width/2 - 2*d, height
+  else if schematic.chassis
+    element.description = 'Chassis Ground Symbol'
+    d = width/4
+    symbol
+      .line -width/2, height/2, width/2, height/2
+      .line -width/2, height/2, -width/2 - d, height
+      .line 0, height/2, -d, height
+      .line width/2, height/2, width/2 - d, height
+  else
+    element.description = 'Ground Symbol'
+    symbol.line -width/2, height, width/2, height
 
 module.exports = (symbol, element) ->
   element.refDes = '#PWR'
   element.power = true
 
   groundSymbol symbol, element
-  common = element.cloneSymbol symbol
-  groundSymbol common, element, 'common'
-  earth = element.cloneSymbol symbol
-  groundSymbol earth, element, 'earth'
-  chassis = element.cloneSymbol symbol
-  groundSymbol chassis, element, 'chassis'

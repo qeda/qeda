@@ -1,6 +1,7 @@
 module.exports = (symbol, element) ->
   element.refDes = '#PWR'
   element.power = true
+  element.description = 'Power Symbol'
   settings = symbol.settings
 
   width = 2.5

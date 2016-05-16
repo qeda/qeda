@@ -64,6 +64,9 @@ qeda add ti/iso722
 qeda power +5VDC
 qeda power +3V3DC
 qeda ground GNDDC
+qeda ground signal/GNDS
+qeda ground earth/GNDE
+qeda ground chassis/GNDCH
 qeda generate mylib
 ```
 And find generated files in `./kicad` directory.
@@ -86,6 +89,9 @@ lib.add 'TI/ISO722' # Add Texas Instruments digital isolator
 lib.power '+5VDC' # Add power supply symbol
 lib.power '+3V3DC' # Add another power supply symbol
 lib.ground 'GNDDC' # Add ground symbol
+lib.ground 'Signal/GNDS' # Add signal ground symbol
+lib.ground 'Earth/GNDE' # Add earth ground symbol
+lib.ground 'Chassis/GNDCH' # Add chassis ground symbol
 lib.generate 'mylib'
 ```
 

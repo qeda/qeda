@@ -1,3 +1,4 @@
+enclosure = require './common/enclosure'
 Icons = require './common/icons'
 
 module.exports = (symbol, element, styleIcons) ->
@@ -26,6 +27,7 @@ module.exports = (symbol, element, styleIcons) ->
           left = v
       when 'A1' then left = v # A1-|>-C-<|-A2
       when 'A2' then right = v # A1-|>-C-<|-A2
+      when 'A3' then middle = v # A1-|>/<|-A3-|>/<|-A2
       when 'AC' then middle = v # C-<|AC-<|-A
       when 'C' # A-|>-CA-|>-C or C-<|AC-<|-A or A1-|>-C-<|-A2
         if names.indexOf('A1') isnt -1

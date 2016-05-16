@@ -21,10 +21,13 @@ lib.add 'CK/KMR2'
 
 # Circuits
 lib.add 'TI/TPS65217'
-lib.add 'TI/SN74LVC1G07DCK'
+#lib.add 'TI/SN74LVC1G07DCK'
 
 # Power supply
 lib.power '+5VDC'
 lib.ground 'GNDDC'
+lib.ground 'signal/GNDS'
+lib.ground 'chassis/GNDCH'
+lib.ground 'earth/GNDE'
 
 lib.generate 'qeda_bbb'

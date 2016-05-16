@@ -1,0 +1,11 @@
+pattern: SOT
+
+bodyWidth: 1.3-1.7
+bodyLength: 2.7-3.1
+height: 0.9-1.1
+leadWidth: 0.25-0.4
+leadLength: 0.2-0.6
+leadHeight: 0.1-0.26
+leadSpan: 2.5-3
+leadCount: 5
+pitch: 0.95

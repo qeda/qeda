@@ -117,10 +117,16 @@ class QedaLibrary
   # Add symbol
   #
   addSymbol: (symbol, name) ->
+    schematic =
+      symbol: symbol
+    words = name.split('/')
+    if words.length > 1
+      for i in [0..(words.length-2)]
+        schematic[words[i].toLowerCase()] = true
+      name = words[words.length - 1]
     def =
       name: name
-      schematic:
-        symbol: symbol
+      schematic: schematic
     newElement = new QedaElement(this, def)
     @elements.push newElement
     newElement
@@ -184,7 +190,7 @@ class QedaLibrary
     localFile = './library/' + elementYaml
     if (not fs.existsSync localFile) or force
       log.start "Load '#{element}'"
-      elementYaml = elementYaml.split('/').map((a) -> encodeURIComponent(a)).join('/')
+      elementYaml = elementYaml.split('/').map((v) -> encodeURIComponent(v)).join('/')
       try
         res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml,
           timeout: @connection.timeout
