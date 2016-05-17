@@ -1,0 +1,86 @@
+pattern: SON
+
+# First digit code
+U\w{3}:
+  height: 0.65
+
+X1\w{3}:
+  height: 0.5
+
+X2\w{3}:
+  height: 0.4
+
+# Second digit code
+\w\d?A\w\w:
+  bodyLength: 1
+
+\w\d?B\w\w:
+  bodyLength: 1.1
+
+\w\d?C\w\w:
+  bodyLength: 1.2
+
+\w\d?D\w\w:
+  bodyLength: 1.3
+
+\w\d?E\w\w:
+  bodyLength: 1.4
+
+\w\d?F\w\w:
+  bodyLength: 1.5
+
+\w\d?G\w\w:
+  bodyLength: 1.6
+
+# Third digit code
+\w\d?\wA\w:
+  bodyWidth: 1
+
+\w\d?\wB\w:
+  bodyWidth: 1.1
+
+\w\d?\wC\w:
+  bodyWidth: 1.2
+
+\w\d?\wD\w:
+  bodyWidth: 1.3
+
+\w\d?\wE\w:
+  bodyWidth: 1.4
+
+\w\d?\wF\w:
+  bodyWidth: 1.5
+
+\w\d?\wG\w:
+  bodyWidth: 1.6
+
+# Fourth digit code
+\w\d?\w\wD:
+  pitch: 0.5
+  leadWidth: 0.15-0.25
+
+\w\d?\w\wE:
+  pitch: 0.4
+  leadWidth: 0.15-0.25
+
+\w\d?\w\wF:
+  pitch: 0.35
+  leadWidth: 0.14-0.2
+
+# Variations
+\w\d?AAF:
+  leadLength: 0.35-0.45
+  leadCount: 6
+
+\w\d?EAF:
+  leadLength: 0.2-0.4
+  leadCount: 8
+
+\w\d?FAD:
+  leadLength: 0.25
+  pullBack: 0-0.15
+  leadCount: 6
+
+\w\d?GCE:
+  leadLength: 0.3-0.5
+  leadCount: 8

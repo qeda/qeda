@@ -1,0 +1,280 @@
+pattern: BGA
+
+# First digit code
+A\w:
+  height: 1.2
+  pitch: 0.4
+  leadDiameter: 0.15-0.19
+
+B\w:
+  height: 1.2
+  pitch: 0.5
+  leadDiameter: 0.15-0.19
+
+C\w:
+  height: 1
+  pitch: 0.5
+  leadDiameter: 0.15-0.19
+
+D\w:
+  height: 1
+  pitch: 0.5
+  leadDiameter: 0.25-0.35
+
+E\w:
+  height: 0.5
+  pitch: 0.5
+  leadDiameter: 0.15-0.19
+
+# Variations
+AA:
+  bodyWidth: 0.95
+  bodyLength: 0.95
+  rowCount: 2
+  columnCount: 2
+
+AB:
+  bodyWidth: 0.95
+  bodyLength: 1.35
+  rowCount: 3
+  columnCount: 2
+
+AC:
+  bodyWidth: 1.35
+  bodyLength: 1.35
+  rowCount: 3
+  columnCount: 3
+
+AD:
+  bodyWidth: 1.75
+  bodyLength: 1.75
+  rowCount: 4
+  columnCount: 4
+
+AE:
+  bodyWidth: 1.75
+  bodyLength: 2.15
+  rowCount: 5
+  columnCount: 4
+
+AF:
+  bodyWidth: 2.15
+  bodyLength: 2.15
+  rowCount: 5
+  columnCount: 5
+
+AG:
+  bodyWidth: 2.55
+  bodyLength: 2.55
+  rowCount: 6
+  columnCount: 6
+
+AH:
+  bodyWidth: 1.35
+  bodyLength: 1.75
+  rowCount: 4
+  columnCount: 3
+
+AJ:
+  bodyWidth: 2.15
+  bodyLength: 2.55
+  rowCount: 6
+  columnCount: 5
+
+BA:
+  bodyWidth: 1.15
+  bodyLength: 1.15
+  rowCount: 2
+  columnCount: 2
+
+BB:
+  bodyWidth: 1.15
+  bodyLength: 1.65
+  rowCount: 3
+  columnCount: 2
+
+BC:
+  bodyWidth: 1.65
+  bodyLength: 1.65
+  rowCount: 3
+  columnCount: 3
+
+BD:
+  bodyWidth: 2.15
+  bodyLength: 2.15
+  rowCount: 4
+  columnCount: 4
+
+BE:
+  bodyWidth: 2.15
+  bodyLength: 2.65
+  rowCount: 5
+  columnCount: 4
+
+BF:
+  bodyWidth: 2.65
+  bodyLength: 2.65
+  rowCount: 5
+  columnCount: 5
+
+BG:
+  bodyWidth: 3.15
+  bodyLength: 3.15
+  rowCount: 6
+  columnCount: 6
+
+BH:
+  bodyWidth: 1.65
+  bodyLength: 2.15
+  rowCount: 4
+  columnCount: 3
+
+BJ:
+  bodyWidth: 2.65
+  bodyLength: 3.15
+  rowCount: 6
+  columnCount: 5
+
+CA:
+  bodyWidth: 1.15
+  bodyLength: 1.15
+  rowCount: 2
+  columnCount: 2
+
+CB:
+  bodyWidth: 1.15
+  bodyLength: 1.65
+  rowCount: 3
+  columnCount: 2
+
+CC:
+  bodyWidth: 1.65
+  bodyLength: 1.65
+  rowCount: 3
+  columnCount: 3
+
+CD:
+  bodyWidth: 2.15
+  bodyLength: 2.15
+  rowCount: 4
+  columnCount: 4
+
+CE:
+  bodyWidth: 2.15
+  bodyLength: 2.65
+  rowCount: 5
+  columnCount: 4
+
+CF:
+  bodyWidth: 2.65
+  bodyLength: 2.65
+  rowCount: 6
+  columnCount: 6
+
+CG:
+  bodyWidth: 3.15
+  bodyLength: 3.15
+  rowCount: 6
+  columnCount: 6
+
+CH:
+  bodyWidth: 1.65
+  bodyLength: 2.15
+  rowCount: 4
+  columnCount: 3
+
+CJ:
+  bodyWidth: 2.65
+  bodyLength: 3.15
+  rowCount: 6
+  columnCount: 5
+
+DA:
+  bodyWidth: 1.3
+  bodyLength: 1.3
+  rowCount: 2
+  columnCount: 2
+
+DB:
+  bodyWidth: 1.3
+  bodyLength: 1.8
+  rowCount: 3
+  columnCount: 2
+
+DC:
+  bodyWidth: 1.3
+  bodyLength: 2.3
+  rowCount: 4
+  columnCount: 2
+
+DD:
+  bodyWidth: 1.8
+  bodyLength: 1.8
+  rowCount: 3
+  columnCount: 3
+
+DE:
+  bodyWidth: 1.8
+  bodyLength: 2.3
+  rowCount: 4
+  columnCount: 3
+
+DF:
+  bodyWidth: 2.3
+  bodyLength: 2.3
+  rowCount: 4
+  columnCount: 4
+
+DG:
+  bodyWidth: 2.3
+  bodyLength: 2.8
+  rowCount: 5
+  columnCount: 4
+
+DH:
+  bodyWidth: 2.8
+  bodyLength: 2.8
+  rowCount: 5
+  columnCount: 5
+
+DJ:
+  bodyWidth: 2.8
+  bodyLength: 3.3
+  rowCount: 6
+  columnCount: 5
+
+DK:
+  bodyWidth: 3.3
+  bodyLength: 3.3
+  rowCount: 6
+  columnCount: 6
+
+EA:
+  bodyWidth: 0.9
+  bodyLength: 1.4
+  rowCount: 3
+  columnCount: 2
+
+EB:
+  bodyWidth: 0.9
+  bodyLength: 1.9
+  rowCount: 4
+  columnCount: 2
+
+EC:
+  bodyWidth: 0.9
+  bodyLength: 0.9
+  rowCount: 2
+  columnCount: 2
+
+ED:
+  bodyWidth: 1.4
+  bodyLength: 1.4
+  rowCount: 3
+  columnCount: 3
+
+EE:
+  bodyWidth: 1.4
+  bodyLength: 1.9
+  rowCount: 4
+  columnCount: 4
