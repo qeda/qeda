@@ -241,6 +241,7 @@ class QedaElement
       'leadDiameter', 'leadHeight', 'leadLength', 'leadSpan', 'leadWidth',
       'leadDiameter1', 'leadHeight1', 'leadLength1', 'leadWidth1',
       'leadDiameter2', 'leadHeight2', 'leadLength2', 'leadWidth2',
+      'pullBack',
       'rowSpan',
       'tabWidth', 'tabLength'
     ]

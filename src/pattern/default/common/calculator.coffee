@@ -138,14 +138,14 @@ module.exports =
         params.Lmin = housing.bodyWidth.min
         params.Lmax = housing.bodyWidth.max
         if housing.pullBack?
-          params.Lmin -= 2*housing.pullBack
-          params.Lmax -= 2*housing.pullBack
+          params.Lmin -= 2*housing.pullBack.nom
+          params.Lmax -= 2*housing.pullBack.nom
         rowIpc = @_ipc7351 params
         params.Lmin = housing.bodyLength.min
         params.Lmax = housing.bodyLength.max
         if housing.pullBack?
-          params.Lmin -= 2*housing.pullBack
-          params.Lmax -= 2*housing.pullBack
+          params.Lmin -= 2*housing.pullBack.nom
+          params.Lmax -= 2*housing.pullBack.nom
         columnIpc = @_ipc7351 params
       when 'qfp'
         params = @_gullwing pattern, housing
@@ -184,8 +184,8 @@ module.exports =
     params.Lmin = housing.bodyWidth.min
     params.Lmax = housing.bodyWidth.max
     if housing.pullBack?
-      params.Lmin -= 2*housing.pullBack
-      params.Lmax -= 2*housing.pullBack
+      params.Lmin -= 2*housing.pullBack.nom
+      params.Lmax -= 2*housing.pullBack.nom
 
     ipc = @_ipc7351 params
     ipc.clearance = settings.clearance.padToPad

@@ -7,11 +7,14 @@ courtyard = require './courtyard'
 silkscreen = require './silkscreen'
 
 abbrs =
+  BEAD: 'bead'
   CAP: 'capacitor'
   DIO: 'diode'
   IND: 'inductor'
+  FUS: 'fuse'
   LED: 'led'
   RES: 'resistor'
+  VAR: 'varistor'
   XTAL: 'crystal'
 
 getAbbr = (element) ->
