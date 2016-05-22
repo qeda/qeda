@@ -142,7 +142,7 @@ class KicadGenerator
     powerSymbol = 'N'
     if element.power then powerSymbol = 'P'
 
-    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} F #{powerSymbol}\n"
+    fs.writeSync fd, "DEF #{element.name} #{element.refDes} 0 #{pinNameSpace} #{showPinNumbers} #{showPinNames} #{element.symbols.length} L #{powerSymbol}\n"
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} #{refObj.visible} #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} #{nameObj.visible} #{nameObj.halign} #{nameObj.valign}NN\n"
     fs.writeSync fd, "F2 \"#{patternName}\" 0 0 0 H I C CNN\n"
