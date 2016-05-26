@@ -21,6 +21,23 @@ module.exports =
     pad.courtyard = params.courtyard
     @_choosePreferred pad, pattern, housing
 
+  cornerConcave: (pattern, housing) ->
+    settings = pattern.settings
+
+    outPeriph = { M: 0.35, N: 0.25, L: 0.15 }[settings.densityLevel]
+    inPeriph = { M: 0.1, N: 0.0, L: -0.05 }[settings.densityLevel]
+
+    params = @_params pattern, housing
+
+    pad =
+      width: params.Tmax + outPeriph + inPeriph
+      height: params.Wmax + outPeriph + inPeriph
+      distance1: housing.rowSpan.nom - params.Tmax + outPeriph/2 - inPeriph/2
+      distance2: housing.columnSpan.nom - params.Wmax + outPeriph/2 - inPeriph/2
+      courtyard: params.courtyard
+
+    @_choosePreferred pad, pattern, housing
+
   dual: (pattern, housing, option) ->
     settings = pattern.settings
 

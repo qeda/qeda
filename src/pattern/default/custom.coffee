@@ -93,4 +93,4 @@ module.exports = (pattern, element) ->
   copper.mask pattern
   silkscreen.body pattern, housing
   assembly.body pattern, housing
-  courtyard.body pattern, housing
+  courtyard.boundary pattern, housing

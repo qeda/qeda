@@ -36,7 +36,7 @@ module.exports = (pattern, element) ->
     abbr += 'XS'
   else if housing.flat
     abbr += 'F'
-  pattern.name = sprintf "%s%dP%dX%dX%d-%d%s",
+  pattern.name ?= sprintf "%s%dP%dX%dX%d-%d%s",
     abbr,
     [housing.pitch*100
     housing.bodyLength.nom*100

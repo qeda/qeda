@@ -21,6 +21,20 @@ module.exports =
     @preamble pattern, housing
       .rectangle  -x, -y, x, y
 
+  boundary: (pattern, housing, courtyard) ->
+    pads = pattern.pads
+    xmin = -housing.bodyWidth.nom/2
+    ymin = -housing.bodyLength.nom/2
+    xmax = housing.bodyWidth.nom/2
+    ymax = housing.bodyLength.nom/2
+    for k, v of pads
+      if xmin > v.x - v.width/2 then xmin = v.x - v.width/2
+      if xmax < v.x + v.width/2 then xmax = v.x + v.width/2
+      if ymin > v.y - v.height/2 then ymin = v.y - v.height/2
+      if ymax < v.y + v.height/2 then ymax = v.y + v.height/2
+    @preamble pattern, housing
+      .rectangle xmin - courtyard, ymin - courtyard, xmax + courtyard, ymax + courtyard
+
   dual: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
     bodyLength = housing.bodyLength.nom
@@ -191,7 +205,6 @@ module.exports =
     else if housing.bodyDiameter?
       @preamble pattern, housing
         .circle 0, 0, housing.bodyDiameter.nom/2 + courtyard
-
 
   _centroid: (pattern) ->
     settings = pattern.settings
