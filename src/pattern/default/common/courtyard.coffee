@@ -22,6 +22,8 @@ module.exports =
       .rectangle  -x, -y, x, y
 
   boundary: (pattern, housing, courtyard) ->
+    settings = pattern.settings
+    courtyard ?=  housing.courtyard ? { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
     pads = pattern.pads
     xmin = -housing.bodyWidth.nom/2
     ymin = -housing.bodyLength.nom/2

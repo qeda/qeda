@@ -57,8 +57,8 @@ module.exports = (pattern, element) ->
       layer: ['topCopper', 'topMask', 'topPaste']
 
     copper.dual pattern, element, padParams
-    silkscreen.body pattern, housing
-    assembly.body pattern, housing
+    silkscreen.dual pattern, housing
+    assembly.polarized pattern, housing
     courtyard.boundary pattern, housing, padParams.courtyard
   else if housing.dfn
     # TODO: Add DFN

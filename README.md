@@ -29,6 +29,7 @@ Features
   - Chip Array
   - Dual (CFP, DIP, SOIC, SOJ, SOL, SON, SOP)
   - Grid Array (BGA, CGA, LGA)
+  - Oscillator (corner concave, side concave, side flat)
   - Quad (CQFP, QFN, QFP)
   - Radial lead (Cylindrical)
   - SOT (SOT143, SOT223, SOT23, SOTFL)
@@ -178,9 +179,7 @@ Coming soon
 * Generating libraries:
   - Eagle XML format
 * SMD land pattern calculation:
-  - Chip array
   - LCC
-  - Oscillator
   - PLCC
 * Through-hole land pattern calculation:
   - Axial lead
