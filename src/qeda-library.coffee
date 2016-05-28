@@ -209,6 +209,8 @@ class QedaLibrary
     catch error
       log.error "#{error.message}"
     log.ok()
+    if element.indexOf('/') isnt -1
+      def.group ?= element.substr(0, element.indexOf('/')).toUpperCase()
     def
 
   #

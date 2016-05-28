@@ -76,7 +76,7 @@ copperPads = (pattern, element, suffix = '') ->
 
 module.exports = (pattern, element) ->
   housing = element.housing
-  pattern.name ?= element.name.toUpperCase()
+  pattern.name ?= element.group + '_' + element.name.toUpperCase()
 
   housing.bodyPosition ?= '0, 0'
   bodyPosition = pattern.parsePosition housing.bodyPosition
@@ -92,5 +92,8 @@ module.exports = (pattern, element) ->
 
   copper.mask pattern
   silkscreen.body pattern, housing
-  assembly.body pattern, housing
+  if housing.polarized
+    assembly.polarized pattern, housing
+  else
+    assembly.body pattern, housing
   courtyard.boundary pattern, housing
