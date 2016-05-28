@@ -45,7 +45,7 @@ module.exports = (symbol, element, styleIcons) ->
     schematic.showPinNames = true
     enclosure symbol, element, icon
   else
-    space = icon.width/2
+    space = icon.height/2
     width = 2*icon.width + 4*space
     width = 2*symbol.alignToGrid(width/2, 'ceil')
     height = icon.height + 2*space
