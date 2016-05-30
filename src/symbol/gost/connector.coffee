@@ -49,6 +49,7 @@ module.exports = (symbol, element) ->
     pin.y = y
     pin.length = pinLength
     pin.orientation = 'left'
+    pin.passive = true
     w = symbol.textWidth(pin.name, 'pin') + 2*space
     if firstWidth < w then firstWidth = w
     names.push pin.name

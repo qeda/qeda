@@ -24,7 +24,7 @@ groundSymbol = (symbol, element, icon = 'signal') ->
       length: 0
       orientation: 'down'
       ground: true
-      invisible: true
+      out: true
     .line 0, 0, 0, (if schematic.signal or schematic.earth or schematic.chassis then height/2 else height)
     .lineWidth settings.lineWidth.thick
   if schematic.signal
@@ -52,5 +52,9 @@ groundSymbol = (symbol, element, icon = 'signal') ->
 module.exports = (symbol, element) ->
   element.refDes = '#PWR'
   element.power = true
+
+  schematic = element.schematic
+  schematic.showPinNames ?= false
+  schematic.showPinNumbers ?= false
 
   groundSymbol symbol, element

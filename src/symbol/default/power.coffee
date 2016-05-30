@@ -4,6 +4,10 @@ module.exports = (symbol, element) ->
   element.description = 'Power Symbol'
   settings = symbol.settings
 
+  schematic = element.schematic
+  schematic.showPinNames ?= false
+  schematic.showPinNumbers ?= false
+
   width = 2.5
   height = 5
   arrowHeight = 2.5
@@ -28,7 +32,7 @@ module.exports = (symbol, element) ->
       length: 0
       orientation: 'up'
       power: true
-      invisible: true
+      out: true
     .line 0, 0, 0, -height
     .lineWidth settings.lineWidth.thick
     .line 0, -height, width/2, -height + arrowHeight

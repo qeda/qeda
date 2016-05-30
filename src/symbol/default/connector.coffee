@@ -49,4 +49,8 @@ module.exports = (symbol, element) ->
       for number in numbers by 2
         symbol.right.push number
 
+  pins = element.pins
+  for k, v of pins
+    pins[k].passive = true
+
   enclosure symbol, element
