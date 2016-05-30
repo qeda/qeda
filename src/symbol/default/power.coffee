@@ -32,7 +32,6 @@ module.exports = (symbol, element) ->
       length: 0
       orientation: 'up'
       power: true
-      out: true
     .line 0, 0, 0, -height
     .lineWidth settings.lineWidth.thick
     .line 0, -height, width/2, -height + arrowHeight
