@@ -19,7 +19,13 @@ module.exports =
     pad = @_pad ipc, pattern
 
     pad.courtyard = params.courtyard
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad = (pad.distance + pad.width - housing.leadSpan.nom) / 2
+    if leadToPad < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad
+      pad.width += d
+      pad.distance += d
+    pad
 
   cornerConcave: (pattern, housing) ->
     settings = pattern.settings
@@ -36,7 +42,18 @@ module.exports =
       distance2: housing.columnSpan.nom - params.Wmax + outPeriph/2 - inPeriph/2
       courtyard: params.courtyard
 
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad1 = (pad.distance1 + pad.width - housing.rowSpan.nom) / 2
+    leadToPad2 = (pad.distance2 + pad.height - housing.columnSpan.nom) / 2
+    if leadToPad1 < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad1
+      pad.width += d
+      pad.distance1 += d
+    if leadToPad2 < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad2
+      pad.height += d
+      pad.distance2 += d
+    pad
 
   dual: (pattern, housing, option) ->
     settings = pattern.settings
@@ -61,7 +78,13 @@ module.exports =
     pad = @_pad ipc, pattern
 
     pad.courtyard = params.courtyard
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad = (pad.distance + pad.width - housing.leadSpan.nom) / 2
+    if leadToPad < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad
+      pad.width += d
+      pad.distance += d
+    pad
 
   gridArray: (pattern, housing, option) ->
     settings = pattern.settings
@@ -145,7 +168,18 @@ module.exports =
       height2: tabPad.height
       distance2: tabPad.distance
       courtyard: params.courtyard
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad1 = (pad.distance1 + pad.width1 - housing.leadSpan.nom) / 2
+    leadToPad2 = (pad.distance2 + pad.width2 - housing.leadSpan.nom) / 2
+    if leadToPad1 < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad1
+      pad.width1 += d
+      pad.distance1 += d
+    if leadToPad2 < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad2
+      pad.width2 += d
+      pad.distance2 += d
+    pad
 
   quad: (pattern, housing, option) ->
     settings = pattern.settings
@@ -164,6 +198,8 @@ module.exports =
           params.Lmin -= 2*housing.pullBack.nom
           params.Lmax -= 2*housing.pullBack.nom
         columnIpc = @_ipc7351 params
+        rowSpan = housing.bodyWidth.nom
+        columnSpan = housing.bodyLength.nom
       when 'qfp'
         params = @_gullwing pattern, housing
         params.Lmin = housing.rowSpan.min
@@ -172,6 +208,8 @@ module.exports =
         params.Lmin = housing.columnSpan.min
         params.Lmax = housing.columnSpan.max
         columnIpc = @_ipc7351 params
+        rowSpan = housing.rowSpan.nom
+        columnSpan = housing.columnSpan.nom
 
     rowIpc.clearance = settings.clearance.padToPad
     rowIpc.pitch = housing.pitch
@@ -192,7 +230,19 @@ module.exports =
       distance2: columnPad.distance
       trimmed: rowPad.trimmed or columnPad.trimmed
       courtyard: params.courtyard
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad1 = (pad.distance1 + pad.width1 - rowSpan) / 2
+    leadToPad2 = (pad.distance2 + pad.width2 - columnSpan) / 2
+    if leadToPad1 < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad1
+      pad.width1 += d
+      pad.distance1 += d
+      leadToPad1 = (pad.distance1 + pad.width1 - rowSpan) / 2
+    if leadToPad2 < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad2
+      pad.width2 += d
+      pad.distance2 += d
+    pad
 
   son: (pattern, housing) ->
     settings = pattern.settings
@@ -216,7 +266,13 @@ module.exports =
       pad.width1 = pad.width + dw
 
     pad.courtyard = params.courtyard
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad = (pad.distance + pad.width - housing.bodyWidth.nom) / 2
+    if leadToPad < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad
+      pad.width += d
+      pad.distance += d
+    pad
 
   sot: (pattern, housing) ->
     settings = pattern.settings
@@ -249,7 +305,14 @@ module.exports =
       height2: pad2.height
       courtyard: params.courtyard
       trimmed: pad1.trimmed or pad2.trimmed
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad = (pad.distance + pad.width1/2 + pad.width2/2 - housing.leadSpan.nom) / 2
+    if leadToPad < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad
+      pad.width1 += d
+      pad.width2 += d
+      pad.distance += d
+    pad
 
   throughHole: (pattern, housing) ->
     settings = pattern.settings
@@ -260,7 +323,7 @@ module.exports =
       w = housing.leadWidth.max
       h = housing.leadHeight.max
       diameter = Math.sqrt(w*w + h*h) # Pythagorean theorem
-    drill = diameter + settings.clearance.holeOverLead
+    drill = diameter + 2*settings.clearance.leadToHole
     if drill < settings.minimum.drillDiameter then drill = settings.minimum.drillDiameter
     sizeRoundoff = pattern.sizeRoundoff ? 0.05
     drill = Math.ceil(drill / sizeRoundoff ) * sizeRoundoff
@@ -271,7 +334,6 @@ module.exports =
       width: padDiameter
       height: padDiameter
     @_choosePreferred pad, pattern, housing
-
 
   twoPin: (pattern, housing, option = 'chip') ->
     unless option is 'radial'
@@ -343,7 +405,13 @@ module.exports =
     pad = @_pad ipc, pattern
 
     pad.courtyard = courtyard ? params.courtyard
-    @_choosePreferred pad, pattern, housing
+    pad = @_choosePreferred pad, pattern, housing
+    leadToPad = (pad.distance + pad.width - housing.leadSpan.nom) / 2
+    if leadToPad < settings.clearance.leadToPad
+      d = settings.clearance.leadToPad - leadToPad
+      pad.width += d
+      pad.distance += d
+    pad
 
   _choosePreferred: (pad, pattern, housing) ->
     settings = pattern.settings

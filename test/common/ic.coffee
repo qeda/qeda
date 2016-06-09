@@ -1,4 +1,5 @@
 module.exports = (lib) ->
+  lib.add 'Abracon/ASEAIG'
   lib.add 'Altera/5M1270ZT144'
   lib.add 'Analog/AD623'
   lib.add 'Analog/AD822'
@@ -9,6 +10,7 @@ module.exports = (lib) ->
   lib.add 'Analog/ADG508A'
   lib.add 'Atmel/ATA6670'
   lib.add 'Atmel/ATtiny25'
+  lib.add 'Bourns/CAT16-F4'
   lib.add 'IRF/AUIRFS8409-7P'
   lib.add 'IRF/IRFL014N'
   lib.add 'Maxim/MAX1735'

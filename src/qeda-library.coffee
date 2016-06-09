@@ -19,10 +19,10 @@ class QedaLibrary
       timeout: 5000
 
     @symbol =
-      style: 'default'
-      gridSize: 2.5
-      shortPinNames: false
-      fill: 'foreground'
+      style: 'default' # Options: default, GOST
+      gridSize: 2.5 # Grid cell size
+      shortPinNames: false # Add alternate pin functions to pin name or not
+      fill: 'foreground' # Options: none, background, foreground
       fontSize:
         default: 2.5
         refDes: 2.5
@@ -38,7 +38,7 @@ class QedaLibrary
         attribute: 1.5
 
     @pattern =
-      style: 'default'
+      style: 'default' #
       densityLevel: 'N' # Nominal
       decimals: 3
       polarityMark: 'dot'
@@ -51,7 +51,8 @@ class QedaLibrary
         padToSilk: 0.2
         padToPad: 0.2
         padToMask: 0.05
-        holeOverLead: 0.2
+        leadToHole: 0.1
+        leadToPad: 0
       ratio:
         padToHole: 1.5
       minimum:
