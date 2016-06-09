@@ -164,15 +164,26 @@ function generateLibrary(libraryName) {
 function config(param, value) {
   var qedaYaml = readYaml();
   qedaYaml.config = qedaYaml.config || {};
+  var libConfig = new QedaLibrary();
   var keys = param.split('.');
   var key = keys[0];
   var obj = qedaYaml.config;
-  for (var i = 1; i < keys.length; ++i) {
-    if (typeof obj[key] === 'undefined' || obj[key] === null) {
-      obj[key] = {};
+  for (var i = 1; i <= keys.length; ++i) {
+    if (typeof libConfig[key] === 'undefined' || libConfig[key] === null) {
+      console.error('Error: Wrong parameter name \'' + param + '\'');
+      process.exit(1);
     }
-    obj = obj[key];
-    key = keys[i];
+    libConfig = libConfig[key];
+    if (i < keys.length) {
+      if (typeof obj[key] === 'undefined' || obj[key] === null) {
+        obj[key] = {};
+      }
+      obj = obj[key];
+      key = keys[i];
+    } else if (typeof libConfig === 'object') {
+      console.error('Error: Parameter name \'' + param + '\' is not complete');
+      process.exit(1);
+    }
   }
 
   if (typeof value === 'undefined' || value === null) { // Only display
@@ -184,6 +195,10 @@ function config(param, value) {
       console.log(value);
     }
   } else { // Change value
+    var floatValue = parseFloat(value);
+    if (!isNaN(floatValue)) {
+      value = floatValue
+    }
     obj[key] = value;
     writeYaml(qedaYaml);
   }
@@ -241,22 +256,22 @@ switch (command) {
     loadComponent(args.argv.remain[1]);
     break;
   case 'power':
-    if (args.argv.remain.length < 2) {
+    if (args.argv.original.length < 2) {
       displayError('Missing net name after "power" command');
     }
-    addPower(args.argv.remain[1]);
+    addPower(args.argv.original[1]);
     break;
   case 'ground':
-    if (args.argv.remain.length < 2) {
+    if (args.argv.original.length < 2) {
       displayError('Missing net name after "ground" command');
     }
-    addGround(args.argv.remain[1]);
+    addGround(args.argv.original[1]);
     break;
   case 'config':
-    if (args.argv.remain.length < 2) {
+    if (args.argv.original.length < 2) {
       displayError('Missing parameter after "config" command');
     }
-    config(args.argv.remain[1], args.argv.remain[2]);
+    config(args.argv.original[1], args.argv.original[2]);
     break;
   case 'generate':
     if (args.argv.remain.length < 2) {
