@@ -55,7 +55,7 @@ module.exports = (symbol, element) ->
     .polyline -width/2, -height/2, width/2, 0, -width/2, height/2, -width/2, -height/2
     .line width/2, -height/2, width/2, height/2
     .line -r, 0, r, 0
-    .circle 0, 0, r
+    .circle 0, 0, r, settings.fill
     .line x1, y1, x1 + len, y1 - len
     .arrow x1 + len/2, y1 - len/2, x1 + len, y1 - len, arrowWidth
     .line x2, y2, x2 + len, y2 - len
