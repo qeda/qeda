@@ -226,7 +226,7 @@ class KicadGenerator
       types =
         'smd': 'smd'
         'through-hole': 'thru_hole'
-        'mount': 'np_thru_hole'
+        'mounting-hole': 'np_thru_hole'
       obj.type = types[obj.type]
 
     obj

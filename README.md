@@ -29,10 +29,12 @@ Features
   - Chip Array
   - Dual (CFP, DIP, SOIC, SOJ, SOL, SON, SOP)
   - Grid Array (BGA, CGA, LGA)
+  - Mounting hole
   - Oscillator (corner concave, side concave, side flat)
   - Quad (CQFP, QFN, QFP)
   - Radial lead (Cylindrical)
   - SOT (SOT143, SOT223, SOT23, SOTFL)
+  - Test point
   - TO (\*PAK)
   - Two Pin (Aluminum Electrolytic Capacitor, Chip, Crystal, Molded body, MELF, SOD, SODFL)
   - Custom element
@@ -183,12 +185,10 @@ Coming soon
   - PLCC
 * Through-hole land pattern calculation:
   - Axial lead
-  - Mounting holes
   - Oscillator
   - PGA
   - Radial lead
   - SIP
-  - Test point
   - TO (Flange mount)
   - TO (Cylindrical)
   - Wire
