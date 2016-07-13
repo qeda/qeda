@@ -7,6 +7,7 @@ module.exports = (symbol, element) ->
   schematic.showPinNumbers ?= false
 
   r = 2.5
+  d = 1.5
   pinLength = settings.pinLength ? 2.5
   pinLength = symbol.alignToGrid(pinLength + r, 'ceil') - r
 
@@ -32,7 +33,6 @@ module.exports = (symbol, element) ->
       passive: true
     .lineWidth settings.lineWidth.thick
     .circle 0, 0, r, settings.fill
-    .line -r, 0, r, 0
-    .line 0, -r, 0, r
+    .circle 0, 0, r - d, settings.fill
 
   [2*r, 2*r]

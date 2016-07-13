@@ -78,6 +78,11 @@ function readYaml() {
 function writeYaml(obj) {
   var yamlName = '.qeda.yaml';
   try {
+    for (var k in obj) {
+      if (Array.isArray(obj[k])) {
+        obj[k].sort();
+      }
+    }
     var data = yaml.safeDump(obj, {sortKeys: true});
     fs.writeFileSync(yamlName, data);
   } catch(error) {
