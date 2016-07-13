@@ -23,6 +23,10 @@ module.exports =
     y = -pitch * (count/4 - 0.5)
     for i in [0..(count/2 - 1)]
       pad.y = y
+      if (numbers[i] is 1) and padParams.height1?
+        pad.height = padParams.height1
+      else
+        pad.height = padParams.height
       if pins[numbers[i]]? then pattern.pad numbers[i], pad
       y += pitch
 
@@ -31,6 +35,10 @@ module.exports =
     y = -pitch * (count/4 - 0.5)
     for i in [(count/2)..(count - 1)]
       pad.y = y
+      if (numbers[i] is 1) and padParams.height1?
+        pad.height = padParams.height1
+      else
+        pad.height = padParams.height
       if pins[numbers[i]]? then pattern.pad numbers[i], pad
       y += pitch
 
