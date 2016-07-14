@@ -26,6 +26,8 @@ Commands:\n\
   load COMPONENT        Load component definition from global repository\n\
   power NET             Add power supply symbol to config\n\
   ground NET            Add ground symbol to config\n\
+  sort                  Sort components and nets in config alphabetically\n\
+                        (use with caution due to possible annotation issues)\n\
   config PARAM [VALUE]  Set/get config parameter\n\
   generate LIBRARY      Generate libraries according to config\n\
   test COMPONENT        Generate test library with one component only\n\
@@ -78,11 +80,6 @@ function readYaml() {
 function writeYaml(obj) {
   var yamlName = '.qeda.yaml';
   try {
-    for (var k in obj) {
-      if (Array.isArray(obj[k])) {
-        obj[k].sort();
-      }
-    }
     var data = yaml.safeDump(obj, {sortKeys: true});
     fs.writeFileSync(yamlName, data);
   } catch(error) {
@@ -164,6 +161,16 @@ function generateLibrary(libraryName) {
     lib.ground(qedaYaml.ground[i]);
   }
   lib.generate(libraryName);
+}
+
+function sort() {
+  var qedaYaml = readYaml();
+  for (var k in qedaYaml) {
+    if (Array.isArray(qedaYaml[k])) {
+      qedaYaml[k].sort();
+    }
+  }
+  writeYaml(qedaYaml);
 }
 
 function config(param, value) {
@@ -277,6 +284,9 @@ switch (command) {
       displayError('Missing parameter after "config" command');
     }
     config(args.argv.original[1], args.argv.original[2]);
+    break;
+  case 'sort':
+    sort();
     break;
   case 'generate':
     if (args.argv.remain.length < 2) {
