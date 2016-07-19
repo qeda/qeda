@@ -24,6 +24,7 @@ groundSymbol = (symbol, element, icon = 'signal') ->
       length: 0
       orientation: 'down'
       ground: true
+      invisible: true
     .line 0, 0, 0, (if schematic.signal or schematic.earth or schematic.chassis then height/2 else height)
     .lineWidth settings.lineWidth.thick
   if schematic.signal
