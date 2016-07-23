@@ -146,8 +146,8 @@ class KicadGenerator
     fs.writeSync fd, "F0 \"#{element.refDes}\" #{refObj.x} #{refObj.y} #{refObj.fontSize} #{refObj.orientation} #{refObj.visible} #{refObj.halign} #{refObj.valign}NN\n"
     fs.writeSync fd, "F1 \"#{element.name}\" #{nameObj.x} #{nameObj.y} #{nameObj.fontSize} #{nameObj.orientation} #{nameObj.visible} #{nameObj.halign} #{nameObj.valign}NN\n"
     fs.writeSync fd, "F2 \"#{patternName}\" 0 0 0 H I C CNN\n"
-    element.datasheet ?= ""
-    fs.writeSync fd, "F3 \"#{element.datasheet}\" 0 0 0 H I C CNN\n"
+    if element.datasheet?
+      fs.writeSync fd, "F3 \"#{element.datasheet}\" 0 0 0 H I C CNN\n"
     i = 0
     for shape in symbol.shapes
       if (shape.kind is 'attribute') and (shape.name isnt 'refDes') and (shape.name isnt 'name')
