@@ -168,7 +168,7 @@ Result:
 License
 =======
 
-Source code is licensed under [MIT license](./LICENSE.md).
+Source code is licensed under [MIT license](./LICENSE).
 
 Coming soon
 ===========
