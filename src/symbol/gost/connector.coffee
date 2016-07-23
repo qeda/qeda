@@ -107,6 +107,12 @@ module.exports = (symbol, element) ->
     symbol
       .pin pin
       .line -width/2, y, width/2, y
+      .attribute 'Net' + pin.number,
+        text: 'NET'+ pin.number
+        x: -width/2 + firstWidth/2
+        y: y + pitch/2
+        halign: 'center'
+        valign: 'center'
     if names[i].length
       symbol.text
         x: -width/2 + firstWidth/2

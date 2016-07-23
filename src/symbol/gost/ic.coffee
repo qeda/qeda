@@ -105,7 +105,7 @@ module.exports = (symbol, element) ->
       y: -settings.space.attribute
       halign: 'center'
       valign: 'bottom'
-    .attribute 'user',
+    .attribute 'Function',
       x: 0
       y: 2*settings.space.attribute
       halign: 'center'
