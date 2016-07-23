@@ -48,6 +48,25 @@ module.exports = (pattern, element) ->
       viaPad.y = r*Math.sin(angle)
       pattern.pad 1, viaPad
 
+  housing.keepout ?= { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
+
   courtyard
     .preamble pattern, housing
-    .circle 0, 0, pad.width/2 + { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
+    .circle 0, 0, pad.width/2 + housing.keepout
+
+  # Assembly layer
+  pattern
+    .layer 'topAssembly'
+    .lineWidth settings.lineWidth.assembly
+    .attribute 'refDes',
+      x: 0
+      y: 0
+      halign: 'center'
+      valign: 'center'
+    .attribute 'value',
+      text: pattern.name
+      x: 0
+      y: 0
+      halign: 'center'
+      valign: 'center'
+      visible: false
