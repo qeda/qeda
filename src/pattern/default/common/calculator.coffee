@@ -21,8 +21,8 @@ module.exports =
     pad.courtyard = params.courtyard
     pad = @_choosePreferred pad, pattern, housing
     leadToPad = (pad.distance + pad.width - housing.leadSpan.nom) / 2
-    if leadToPad < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad
+    if leadToPad < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad
       pad.width += d
       pad.distance += d
     pad
@@ -45,12 +45,12 @@ module.exports =
     pad = @_choosePreferred pad, pattern, housing
     leadToPad1 = (pad.distance1 + pad.width - housing.rowSpan.nom) / 2
     leadToPad2 = (pad.distance2 + pad.height - housing.columnSpan.nom) / 2
-    if leadToPad1 < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad1
+    if leadToPad1 < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad1
       pad.width += d
       pad.distance1 += d
-    if leadToPad2 < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad2
+    if leadToPad2 < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad2
       pad.height += d
       pad.distance2 += d
     pad
@@ -80,8 +80,8 @@ module.exports =
     pad.courtyard = params.courtyard
     pad = @_choosePreferred pad, pattern, housing
     leadToPad = (pad.distance + pad.width - housing.leadSpan.nom) / 2
-    if leadToPad < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad
+    if leadToPad < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad
       pad.width += d
       pad.distance += d
     pad
@@ -171,12 +171,12 @@ module.exports =
     pad = @_choosePreferred pad, pattern, housing
     leadToPad1 = (pad.distance1 + pad.width1 - housing.leadSpan.nom) / 2
     leadToPad2 = (pad.distance2 + pad.width2 - housing.leadSpan.nom) / 2
-    if leadToPad1 < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad1
+    if leadToPad1 < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad1
       pad.width1 += d
       pad.distance1 += d
-    if leadToPad2 < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad2
+    if leadToPad2 < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad2
       pad.width2 += d
       pad.distance2 += d
     pad
@@ -233,13 +233,13 @@ module.exports =
     pad = @_choosePreferred pad, pattern, housing
     leadToPad1 = (pad.distance1 + pad.width1 - rowSpan) / 2
     leadToPad2 = (pad.distance2 + pad.width2 - columnSpan) / 2
-    if leadToPad1 < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad1
+    if leadToPad1 < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad1
       pad.width1 += d
       pad.distance1 += d
       leadToPad1 = (pad.distance1 + pad.width1 - rowSpan) / 2
-    if leadToPad2 < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad2
+    if leadToPad2 < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad2
       pad.width2 += d
       pad.distance2 += d
     pad
@@ -268,8 +268,8 @@ module.exports =
     pad.courtyard = params.courtyard
     pad = @_choosePreferred pad, pattern, housing
     leadToPad = (pad.distance + pad.width - housing.bodyWidth.nom) / 2
-    if leadToPad < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad
+    if leadToPad < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad
       pad.width += d
       pad.distance += d
     pad
@@ -307,8 +307,8 @@ module.exports =
       trimmed: pad1.trimmed or pad2.trimmed
     pad = @_choosePreferred pad, pattern, housing
     leadToPad = (pad.distance + pad.width1/2 + pad.width2/2 - housing.leadSpan.nom) / 2
-    if leadToPad < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad
+    if leadToPad < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad
       pad.width1 += d
       pad.width2 += d
       pad.distance += d
@@ -407,8 +407,8 @@ module.exports =
     pad.courtyard = courtyard ? params.courtyard
     pad = @_choosePreferred pad, pattern, housing
     leadToPad = (pad.distance + pad.width - housing.leadSpan.nom) / 2
-    if leadToPad < settings.clearance.leadToPad
-      d = settings.clearance.leadToPad - leadToPad
+    if leadToPad < settings.minimum.spaceForIron
+      d = settings.minimum.spaceForIron - leadToPad
       pad.width += d
       pad.distance += d
     pad

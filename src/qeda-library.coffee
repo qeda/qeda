@@ -52,13 +52,13 @@ class QedaLibrary
         padToPad: 0.2
         padToMask: 0.05
         leadToHole: 0.1
-        leadToPad: 0
       ratio:
         padToHole: 1.5
       minimum:
         ringWidth: 0.2
         drillDiameter: 0.2
         maskWidth: 0.2
+        spaceForIron: 0
       lineWidth:
         default: 0.2
         silkscreen: 0.12 # IPC-7351C (0.1, 0.12, 0.15)
