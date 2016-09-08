@@ -1,6 +1,6 @@
 {
   "name": "qeda",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "bin": {

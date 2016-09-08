@@ -12,8 +12,8 @@ class QedaElement
   #
   # Constructor
   #
-  constructor: (@library, definition) ->
-    @mergeObjects this, definition
+  constructor: (@library, description) ->
+    @mergeObjects this, description
 
     if @suffix?
       @aliases ?= []

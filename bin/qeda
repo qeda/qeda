@@ -228,7 +228,7 @@ function testComponent(componentName) {
   qedaYaml.config = qedaYaml.config || {};
   var lib = new QedaLibrary(qedaYaml.config);
   lib.add(componentName);
-  lib.generate('test_' + path.basename(componentName));
+  lib.generate('test_' + path.basename(componentName.toLowerCase()));
 }
 
 var args = nopt(
