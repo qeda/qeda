@@ -29,7 +29,7 @@ groundSymbol = (symbol, element, icon = 'signal') ->
     .lineWidth settings.lineWidth.thick
   if schematic.signal
     element.description = 'Signal Ground Symbol'
-    symbol.polyline -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2
+    symbol.poly -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2, settings.fill
   else if schematic.earth
     element.description = 'Earth Ground Symbol'
     d = width/5
