@@ -5,7 +5,7 @@ module.exports = (symbol, element) ->
   gap = 1.2
   dx = width / 8
   dy = height/2 - gap
-  if element.keywords?
+  if element.keywords? and (not element.schematic.trimpot)
     keywords = element.keywords.toLowerCase().replace(/\s+/g, '').split(',')
     if keywords.indexOf('1/10w') isnt -1
       space = width / 4

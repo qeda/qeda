@@ -1,5 +1,8 @@
 Icon = require './icon'
 
+#
+# Diode
+#
 class DiodeIcon extends Icon
   constructor: (symbol, element) ->
     @width = 4
@@ -49,12 +52,12 @@ class DiodeIcon extends Icon
         len = f*3
         arrowWidth = 1
 
-        x = Math.max(@width, @height)/2
-        y = -x
-        x1 = x
-        y1 = y - d
-        x2 = x + d
-        y2 = y
+        xa = Math.max(@width, @height)/2
+        ya = -xa
+        x1 = xa
+        y1 = ya - d
+        x2 = xa + d
+        y2 = ya
         @symbol
           .line x1, y1, x1 + len, y1 - len
           .arrow x1 + len/2, y1 - len/2, x1 + len, y1 - len, arrowWidth
@@ -63,6 +66,32 @@ class DiodeIcon extends Icon
 
     @symbol.center 0, 0 # Restore default center point
 
+#
+# Resistor
+#
+class ResistorIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 10
+    @height = 4
+    super symbol, element
+    if @schematic.trimpot then @space = @height/2
+  draw: (x, y) ->
+    settings = @symbol.settings
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .rectangle -@width/2, -@height/2, @width/2, @height/2, settings.fill
+    if @schematic.trimpot
+      d = 1
+      @symbol
+        .line -@height, @height,  @height, -@height
+        .line @height - d, -@height - d,  @height + d, -@height + d
+    @symbol.center 0, 0 # Restore default center point
+
+#
+# Export object
+#
 Icons = {}
 Icons.Diode = DiodeIcon
+Icons.Resistor = ResistorIcon
 module.exports = Icons
