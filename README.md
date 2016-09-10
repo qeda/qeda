@@ -69,6 +69,8 @@ qeda generate mylib
 ```
 And find generated files in `./kicad` directory.
 
+[Read more](http://qeda.org/doc/qeda/utility/) about available commands.
+
 From script
 -----------
 
@@ -98,8 +100,6 @@ Run it:
     coffee script.coffee
 
 And find generated files in `./kicad` directory.
-
-_API will be documented soon._
 
 Custom component description
 ----------------------------
@@ -137,7 +137,7 @@ housing:
   outline: JEDEC MS-012 AA
 ```
 
-_Available YAML fields will be documented soon._
+[Read more](http://qeda.org/doc/qeda/component/) about component description.  
 
 Then run in terminal:
 
@@ -164,6 +164,11 @@ Result:
 
 ![Symbol](./doc/images/dummy.png)
 ![Footprint](./doc/images/soic.png)
+
+Documentation
+=============
+
+Please refer to [Documentation](http://qeda.org/doc/) section on the website for additional information.
 
 License
 =======
