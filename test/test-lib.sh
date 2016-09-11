@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+rm -rf library
+git clone https://github.com/qeda/library.git --depth 1
+
 ../bin/qeda reset
 
 for d in library/*/ ; do

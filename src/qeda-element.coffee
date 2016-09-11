@@ -59,6 +59,8 @@ class QedaElement
     for key, value of @groups
       @pinGroups[key] = @_concatenateGroups value
 
+    @_parseProperties()
+
     if @schematic?.options?
       options = @schematic.options.replace(/\s+/g, '').toLowerCase().split(',')
       for option in options
@@ -187,10 +189,12 @@ class QedaElement
     result = []
     unless pinOrGroup? then return result
     if typeof pinOrGroup is 'object' # Group of pins
-      for key, value of pinOrGroup
-        pinName = if @delimiter[name]? then name + @delimiter[name] + key else key
-        pins = @_addPins pinName, value
-        @pinGroups[key] = pins
+      @pinGroups[name] ?= []
+      for k, v of pinOrGroup
+        pinName = if @delimiter[name]? then (name + @delimiter[name] + k) else k
+        pins = @_addPins pinName, v
+        #@pinGroups[key] = pins
+        @pinGroups[name] = @pinGroups[name].concat pins
         result = result.concat pins
     else # Pin number(s)
       if typeof pinOrGroup is 'number' then pinOrGroup = pinOrGroup.toString()
@@ -209,18 +213,24 @@ class QedaElement
             for col in [col1..col2]
               result.push @gridLetters[row] + col
       names = @parseMultiple name
+      names.map((v) => @pinGroups[v] ?= [])
       if names.length > 1
         # Dearraying
         if names.length isnt result.length
           console.error 'Error: Pin count does not correspond pad count'
           process.exit 1
-        for i in [0..(names.length-1)]
-          @pins[result[i]] = @_pinObj result[i], names[i]
+        for v, i in names
+          @pins[result[i]] = @_pinObj result[i], v
+          @pinGroups[v] = @pinGroups[v].concat result[i]
       else
+        @pinGroups[name] = @pinGroups[name].concat result
         for number in result
           @pins[number] = @_pinObj number, name
     result
 
+  #
+  # Concatenate groups
+  #
   _concatenateGroups: (groups) ->
     result = []
     groups = @parseMultiple groups
@@ -264,22 +274,8 @@ class QedaElement
       @_inchToMm housing
       delete housing.units
 
-  _processOutline: (outline, subkeys, result = {}) ->
-    unless outline? then return result
-    sk = subkeys.shift() # TODO: Create copy of 'subkeys'
-    for k, v of outline
-      valueType = (typeof v is 'number') or (typeof v is 'string')
-      if valueType
-        #unless @housing[k]? then @housing[k] = v
-        unless result[k]? then result[k] = v
-      else
-        unless sk? then return
-        re = new RegExp '^' + k + '$'
-        if re.test(sk) then @_processOutline outline[k], subkeys, result
-    result
-
   #
-  # Return first valid hadnler
+  # Return first valid handler
   #
   _firstHandler: (paths) ->
     for handlerPath in paths
@@ -292,6 +288,9 @@ class QedaElement
       break
     [handler, handlerError]
 
+  #
+  # Convert inches to millimeters
+  #
   _inchToMm: (value) ->
     if typeof value is 'object'
       for k, v of value
@@ -302,6 +301,18 @@ class QedaElement
       value = Math.round(value / roundOff) * roundOff
 
     value
+
+  #
+  # Add properties to pins
+  #
+  _parseProperties: () ->
+    if @properties?
+      props = ['analog', 'bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
+      for prop in props
+        if @properties[prop]?
+          groups = @parseMultiple @properties[prop]
+          for group in groups
+            @pinGroups[group]?.map((v) => @pins[v]?[prop] = true)
 
   #
   # Generate pin object
@@ -315,13 +326,22 @@ class QedaElement
         name: name
         number: number
 
-    if @properties?
-      props = ['analog', 'bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
-      for prop in props
-        if @properties[prop]?
-          pins = @parseMultiple @properties[prop]
-          obj[prop] ?= false
-          if (pins.indexOf(name) isnt -1) then obj[prop] = true
     obj
+
+  #
+  # Add dimensions from outline
+  #
+  _processOutline: (outline, subkeys, result = {}) ->
+    unless outline? then return result
+    sk = subkeys.shift() # TODO: Create copy of 'subkeys'
+    for k, v of outline
+      valueType = (typeof v is 'number') or (typeof v is 'string')
+      if valueType
+        unless result[k]? then result[k] = v
+      else
+        unless sk? then return
+        re = new RegExp '^' + k + '$'
+        if re.test(sk) then @_processOutline outline[k], subkeys, result
+    result
 
 module.exports = QedaElement
