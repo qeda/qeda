@@ -69,25 +69,12 @@ class QedaElement
     # Create symbol(s)
     if @parts? # Multi-part element
       for name, part of @parts
-        @symbols.push new QedaSymbol(this, @parseMultiple(part), name)
+        @symbols.push new QedaSymbol(this, name, @parseMultiple(part))
     else # Single-part element
-      part = []
-      if @groups?
-        part.push key for key of @groups
-      else
-        part.push key for key of @pinout
-      @symbols.push new QedaSymbol(this, part)
+      @symbols.push new QedaSymbol(this)
 
     # Create pattern
     if @housing? then @pattern = new QedaPattern this
-
-  #
-  # Clone symbol and add it to element
-  #
-  cloneSymbol: (symbol) ->
-    newSymbol = new QedaSymbol(this, symbol.groups, symbol.name)
-    @symbols.push newSymbol
-    newSymbol
 
   #
   # Check whether number is float

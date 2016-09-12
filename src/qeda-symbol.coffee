@@ -5,7 +5,7 @@ class QedaSymbol
   #
   # Constructor
   #
-  constructor: (element, @groups, @name) ->
+  constructor: (element, @name, part) ->
     @settings = element.library.symbol
     @shapes = []
     @attributes = []
@@ -17,14 +17,13 @@ class QedaSymbol
       @[side] = []
       if schematic[side]?
         groups = element.parseMultiple schematic[side]
+        if part? then groups = groups.filter((v) => part.indexOf(v) isnt -1)
         for group in groups
-          pinGroup = element.pinGroups[group]
-          if (@groups.indexOf(group) isnt -1) and pinGroup?
+          if element.pinGroups[group]?
+            pinGroup = element.pinGroups[group]
             if @[side].length > 0
               @[side].push '-' # Insert gap
             @[side] = @[side].concat pinGroup
-          else if pins[group]?
-            @[side].push group
 
     both = @left.filter((v) => (v isnt '-') and (@right.indexOf(v) isnt -1))
     delta = Math.ceil((@right.length - @left.length + both.length) / 2)
