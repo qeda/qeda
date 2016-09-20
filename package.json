@@ -19,6 +19,9 @@
     "library"
   ],
   "author": "Noviga",
+  "contributors": [
+    "Filippo Savi <filssavi@gmail.com>"
+  ],
   "homepage": "http://qeda.org",
   "license": "MIT",
   "bugs": {
