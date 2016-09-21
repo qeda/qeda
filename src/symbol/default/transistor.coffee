@@ -65,6 +65,7 @@ module.exports = (symbol, element) ->
       when 'G' then base = v # For IGBT
       when 'C' then collector = v
       when 'E' then emitter = v
+      when ''  then continue # Do nothing
       else needEnclosure = true
   valid = base? and collector? and emitter?
 

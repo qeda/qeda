@@ -53,7 +53,12 @@ class QedaElement
         @delimiter[group] = value
 
     # Create pin objects and groups
-    @_addPins '', @pinout
+    if typeof @pinout is 'string' # Unnamed pins
+      pins = @parseMultiple @pinout
+      for pin in pins
+        @_addPins pin, pin
+    else
+      @_addPins '', @pinout
 
     # Forming groups
     for key, value of @groups
@@ -180,7 +185,6 @@ class QedaElement
       for k, v of pinOrGroup
         pinName = if @delimiter[name]? then (name + @delimiter[name] + k) else k
         pins = @_addPins pinName, v
-        #@pinGroups[key] = pins
         @pinGroups[name] = @pinGroups[name].concat pins
         result = result.concat pins
     else # Pin number(s)
