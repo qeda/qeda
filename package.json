@@ -1,6 +1,6 @@
 {
   "name": "qeda",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "bin": {
@@ -18,7 +18,7 @@
     "electronics",
     "library"
   ],
-  "author": "Noviga",
+  "author": "QEDA Authors",
   "contributors": [
     "Filippo Savi <filssavi@gmail.com>"
   ],
@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prepublish": "coffee -o lib -c src/",
-    "install": "node install.js",
+    "install": "scripts/install.js",
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {

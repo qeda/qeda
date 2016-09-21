@@ -71,6 +71,9 @@ updateElement = (element) ->
       purposeWeight = weight
       element.purpose = purpose
 
+pinTextWidth = (symbol, pin, space, visible) ->
+  if visible then (symbol.textWidth(pin.name, 'pin') + space) else 0
+
 module.exports = (symbol, element) ->
   element.refDes = 'D'
   element.purpose = ''
@@ -154,7 +157,7 @@ module.exports = (symbol, element) ->
     leftPins.push pin
 
     if pin.name.length then noLeftText = false
-    w = symbol.textWidth(pin.name, 'pin') + pinSpace
+    w = pinTextWidth(symbol, pin, pinSpace, schematic.showPinNames)
     x1 = -width/2 - w - space
     if x > x1 then x = x1 # Make symbol wider
     y += pitch
@@ -182,7 +185,7 @@ module.exports = (symbol, element) ->
     rightPins.push pin
 
     if pin.name.length then noRightText = false
-    w = symbol.textWidth(pin.name, 'pin') + pinSpace
+    w = pinTextWidth(symbol, pin, pinSpace, schematic.showPinNames)
     x2 = textWidth/2 + w + space
     if x < x2 then x = x2 # Make symbol wider
     y += pitch
@@ -194,8 +197,8 @@ module.exports = (symbol, element) ->
   symbol
     .lineWidth settings.lineWidth.thick
     .rectangle -width/2, 0, width/2, height, settings.fill
-  unless noLeftText then symbol.line -textWidth/2 - space, 0, -textWidth/2 - space, height
-  unless noRightText then symbol.line textWidth/2 + space, 0, textWidth/2 + space, height
+  if schematic.showPinNames then symbol.line -textWidth/2 - space, 0, -textWidth/2 - space, height
+  if schematic.showPinNames then symbol.line textWidth/2 + space, 0, textWidth/2 + space, height
 
   # Gap lines
   x1 = width/2

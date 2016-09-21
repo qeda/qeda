@@ -1,4 +1,4 @@
-_qeda() 
+_qeda()
 {
     local cur prev opts base
     COMPREPLY=()
@@ -8,8 +8,8 @@ _qeda()
     #
     #  The basic options we'll complete.
     #
-    opts="--help --verbose --version reset add load power ground config generage test"
-    COMPREPLY=($(compgen -W "${opts}" -- ${cur}))  
+    opts="--help --verbose --version reset add load power ground config generate test"
+    COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
     return 0
 }
 complete -F _qeda qeda
