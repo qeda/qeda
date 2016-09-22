@@ -1,3 +1,16 @@
+#
+# qeda command completion script
+#
+# Installation:
+#     source <(qeda completion)
+# ... or:
+#     qeda completion >> ~/.bashrc  (or ~/.zshrc)
+# ... or:
+#     qeda completion > /usr/local/etc/bash_completion.d/qeda
+# ... or:
+#     qeda completion > /etc/bash_completion.d/qeda
+#
+
 _qeda()
 {
     local cur prev opts base
