@@ -19,6 +19,9 @@
     "library"
   ],
   "author": "QEDA Authors",
+  "contributors": [
+    "Filippo Savi <filssavi@gmail.com>"
+  ],
   "homepage": "http://qeda.org",
   "license": "MIT",
   "bugs": {
@@ -26,6 +29,7 @@
   },
   "scripts": {
     "prepublish": "coffee -o lib -c src/",
+    "install": "scripts/install.js",
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {
