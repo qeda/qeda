@@ -1,6 +1,6 @@
 {
   "name": "qeda",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "bin": {
@@ -29,7 +29,6 @@
   },
   "scripts": {
     "prepublish": "coffee -o lib -c src/",
-    "install": "scripts/install.js",
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {

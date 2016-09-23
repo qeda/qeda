@@ -13,6 +13,12 @@ class QedaSymbol
     sides = ['left', 'right', 'top', 'bottom']
     schematic = element.schematic
     pins = element.pins
+
+    if part?
+      @part = {}
+      for k, v of element.pinGroups
+        if part.indexOf(k) isnt -1 then @part[k] = v
+
     for side in sides
       @[side] = []
       if schematic[side]?

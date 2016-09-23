@@ -53,20 +53,25 @@ module.exports = (symbol, element) ->
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
-  pinGroups = element.pinGroups
 
   schematic.showPinNumbers = true
 
   icon = new TransistorIcon(symbol, element)
 
-  for k, v of pinGroups
-    switch k
-      when 'B' then base = v
-      when 'G' then base = v # For IGBT
-      when 'C' then collector = v
-      when 'E' then emitter = v
-      when ''  then continue # Do nothing
-      else needEnclosure = true
+  groups = symbol.part ? element.pinGroups
+  for k, v of groups
+    k = k.toUpperCase()
+    if (k.match /^B/) or (k.match /^G/) # `G` for IGBT
+      base = v
+    else if k.match /^C/
+      collector = v
+    else if k.match /^E/
+      emitter = v
+    else if k is '' # Root group
+      continue
+    else
+      needEnclosure = true
+        
   valid = base? and collector? and emitter?
 
   if (not valid) or needEnclosure

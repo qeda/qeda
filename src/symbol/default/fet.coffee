@@ -50,18 +50,25 @@ module.exports = (symbol, element) ->
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
-  pinGroups = element.pinGroups
 
   schematic.showPinNumbers = true
 
   icon = new FetIcon(symbol, element)
 
-  for k, v of pinGroups
-    switch k
-      when 'G' then gate = v
-      when 'D' then drain = v
-      when 'S' then source = v
-      else needEnclosure = true
+  groups = symbol.part ? element.pinGroups
+  for k, v of groups
+    k = k.toUpperCase()
+    if k.match /^G/
+      gate = v
+    else if k.match /^D/
+      drain = v
+    else if k.match /^S/
+      source = v
+    else if k is '' # Root group
+      continue
+    else
+      needEnclosure = true
+
   valid = gate? and drain? and source?
 
   if (not valid) or needEnclosure
