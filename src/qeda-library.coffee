@@ -186,8 +186,8 @@ class QedaLibrary
     [elementName, filterVariation] = element.split '@'
     elementYaml = elementName + '.yaml'
     localFile = './library/' + elementYaml
-    if (not fs.existsSync localFile) or force
-      log.start "Load '#{elementName}'"
+    if (not fs.existsSync elementName) or force
+      log.start "Load Remote '#{elementName}'"
       elementYaml = elementYaml.split('/').map((v) -> encodeURIComponent(v)).join('/')
       try
         res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml,
@@ -200,13 +200,21 @@ class QedaLibrary
         log.ok()
       else
         log.warning res.statusCode
-    log.start "Read '#{elementName}'"
-    try
-      obj = yaml.safeLoad fs.readFileSync(localFile)
-      # TODO: YAML Schema validation
-    catch error
-      log.error "#{error.message}"
-    log.ok()
+      log.start "Read '#{localFile}'"
+      try
+        obj = yaml.safeLoad fs.readFileSync(localFile)
+          # TODO: YAML Schema validation
+      catch error
+        log.error "#{error.message}"
+      log.ok()
+    else
+      log.start "Read '#{elementName}'"
+      try
+        obj = yaml.safeLoad fs.readFileSync(elementName)
+        # TODO: YAML Schema validation
+      catch error
+        log.error "#{error.message}"
+      log.ok()
 
     @check obj
 
