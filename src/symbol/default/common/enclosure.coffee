@@ -126,6 +126,9 @@ module.exports = (symbol, element, icon) ->
 
   # Pins on the left side
   x = leftX
+  if top.length > 0
+    w = symbol.textWidth('U???', 'refDes')
+    if x > (-w - space) then x = -w - space
   dy = settings.fontSize.pin/2 + space
   leftPins = []
   leftRects = []
