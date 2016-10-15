@@ -15,15 +15,16 @@ module.exports = (symbol, element) ->
 
   pins = element.pins
   numbers = []
+  if symbol.top.length
+    numbers = numbers.concat symbol.top
   if symbol.left.length
     numbers = numbers.concat symbol.left
   if symbol.right.length
     numbers = numbers.concat symbol.right
-  if symbol.top.length
-    numbers = numbers.concat symbol.top
   if symbol.bottom.length
     numbers = numbers.concat symbol.bottom
   if numbers.length is 0 then numbers = Object.keys pins
+  numbers = numbers.filter((v) -> v isnt '-')
 
   # Attributes
   symbol
@@ -113,7 +114,7 @@ module.exports = (symbol, element) ->
         y: y + pitch/2
         halign: 'center'
         valign: 'center'
-    if names[i].length
+    if names[i].length and schematic.showPinNames
       symbol.text
         x: -width/2 + firstWidth/2
         y: y + pitch/2
@@ -122,3 +123,5 @@ module.exports = (symbol, element) ->
         text: names[i]
         fontSize: settings.fontSize.pin
     y += pitch
+
+  schematic.showPinNames = true
