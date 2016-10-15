@@ -108,12 +108,7 @@ module.exports = (symbol, element) ->
     symbol
       .pin pin
       .line -width/2, y, width/2, y
-      .attribute 'Net' + pin.number,
-        text: 'NET'+ pin.number
-        x: -width/2 + firstWidth/2
-        y: y + pitch/2
-        halign: 'center'
-        valign: 'center'
+
     if names[i].length and schematic.showPinNames
       symbol.text
         x: -width/2 + firstWidth/2
@@ -122,6 +117,14 @@ module.exports = (symbol, element) ->
         valign: 'center'
         text: names[i]
         fontSize: settings.fontSize.pin
+    else
+      symbol.attribute 'Net' + pin.number,
+        text: 'NET'+ pin.number
+        x: -width/2 + firstWidth/2
+        y: y + pitch/2
+        halign: 'center'
+        valign: 'center'
+
     y += pitch
 
   schematic.showPinNames = true

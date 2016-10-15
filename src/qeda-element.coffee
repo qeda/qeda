@@ -54,6 +54,7 @@ class QedaElement
 
     # Create pin objects and groups
     if typeof @pinout is 'string' # Unnamed pins
+      @schematic.simpified = true
       pins = @parseMultiple @pinout
       for pin in pins
         @_addPins pin, pin

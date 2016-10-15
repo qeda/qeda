@@ -27,7 +27,7 @@ class QedaSymbol
         for group in groups
           if element.pinGroups[group]?
             pinGroup = element.pinGroups[group]
-            if @[side].length > 0
+            if @[side].length and (not schematic.simpified)
               @[side].push '-' # Insert gap
             @[side] = @[side].concat pinGroup
 
@@ -37,6 +37,8 @@ class QedaSymbol
     toRight = both[delta..]
     @left = @left.filter((v) => toRight.indexOf(v) is -1)
     @right = @right.filter((v) => toLeft.indexOf(v) is -1)
+
+    if schematic.simpified then schematic.showPinNames ?= false
 
     @x = 0
     @y = 0

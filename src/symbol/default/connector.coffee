@@ -3,12 +3,17 @@ Icon = require './common/icon'
 
 class PinIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 2.5
-    @height = 2.5
+    @width = 5
+    @height = 5
+    @pinShape = element.schematic.pinShape?.toLowerCase()
     super symbol, element
 
   draw: (x, y) ->
-    @symbol.circle x, y, @width/2, 'background'
+    r = @width/4
+    if @pinShape is 'square'
+      @symbol.poly x - r, y - r, x + r, y - r, x + r, y + r, x - r, y + r, x - r, y - r, 'background'
+    else
+      @symbol.circle x, y, r, 'background'
 
 module.exports = (symbol, element) ->
   schematic = element.schematic
@@ -19,6 +24,7 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= true
   schematic.showPinNumbers ?= true
   schematic.pinIcon = pinIcon
+  schematic.symmetrical = true
 
   if (not symbol.left.length) and (not symbol.right.length) # Automatic
     numbers = Object.keys element.pins
