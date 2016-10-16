@@ -7,13 +7,13 @@ module.exports = (pattern, element) ->
   settings = pattern.settings
   pattern.name ?= element.name.toUpperCase()
 
-  if housing.drillDiameter?
-    housing.padDiameter ?= calculator.padDiameter pattern, housing, housing.drillDiameter
+  if housing.holeDiameter?
+    housing.padDiameter ?= calculator.padDiameter pattern, housing, housing.holeDiameter
     housing.padWidth ?= housing.padDiameter
     housing.padHeight ?= housing.padDiameter
     pad =
       type: 'through-hole'
-      drill: housing.drillDiameter
+      hole: housing.holeDiameter
       shape: 'circle'
       layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
   else

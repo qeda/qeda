@@ -184,7 +184,7 @@ module.exports =
         viaPad =
           type: 'through-hole'
           shape: 'circle'
-          drill: viaDiameter
+          hole: viaDiameter
           width: viaDiameter + 0.1
           height: viaDiameter + 0.1
           layer: ['topCopper', 'bottomCopper']

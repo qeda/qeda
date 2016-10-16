@@ -29,7 +29,7 @@ module.exports = (pattern, element) ->
         bossPad =
           type: 'mount'
           name: 'MH'
-          drill: 0.65
+          hole: 0.65
           x: -0.6
           y: -(padParams.pitch * padParams.count/2 + 0.5) / 2
           layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']

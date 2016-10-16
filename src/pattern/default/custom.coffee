@@ -10,17 +10,17 @@ copperPads = (pattern, element, suffix = '') ->
   housing = element.housing
   pins = element.pins
   numbers = Object.keys pins
-  unless (housing['drillDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
+  unless (housing['holeDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
     return false
   hasPads = false
-  if housing['drillDiameter' + suffix]?
-    drillDiameter = housing['drillDiameter' + suffix]
-    padDiameter = calculator.padDiameter pattern, housing, drillDiameter
+  if housing['holeDiameter' + suffix]?
+    holeDiameter = housing['holeDiameter' + suffix]
+    padDiameter = calculator.padDiameter pattern, housing, holeDiameter
     padWidth = housing['padWidth' + suffix] ? padDiameter
     padHeight = housing['padHeight' + suffix] ? padDiameter
     pad =
       type: 'through-hole'
-      drill: housing['drillDiameter' + suffix]
+      hole: housing['holeDiameter' + suffix]
       width: padWidth
       height: padHeight
       shape: unless pinNumber then 'rectangle' else 'circle'
@@ -40,7 +40,7 @@ copperPads = (pattern, element, suffix = '') ->
       pad.x = p.x
       pad.y = p.y
       pattern.pad numbers[pinNumber++], pad
-      if housing['drillDiameter' + suffix]?
+      if housing['holeDiameter' + suffix]?
         pad.shape = 'circle'
   else if housing['rowCount' + suffix]? and housing['columnCount' + suffix]?
     hasPads = true
@@ -67,7 +67,7 @@ copperPads = (pattern, element, suffix = '') ->
         pad.x = x + rowDX + columnDX
         pad.y = y + rowDY + columnDY
         pattern.pad numbers[pinNumber++], pad
-        if housing['drillDiameter' + suffix]?
+        if housing['holeDiameter' + suffix]?
           pad.shape = 'circle'
         x += columnPitch
       y += rowPitch

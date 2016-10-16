@@ -11,7 +11,7 @@ module.exports = (pattern, element) ->
   pad =
     x: 0
     y: 0
-    drill: housing.drillDiameter
+    hole: housing.holeDiameter
     shape: 'circle'
 
   if housing.padDiameter? or housing.padWidth? or housing.padHeight?
@@ -24,8 +24,8 @@ module.exports = (pattern, element) ->
   else
     pad.type = 'mounting-hole'
     pad.layer = ['topCopper', 'topMask', 'bottomCopper', 'bottomMask']
-    pad.width = housing.drillDiameter
-    pad.height = housing.drillDiameter
+    pad.width = housing.holeDiameter
+    pad.height = housing.holeDiameter
     pad.shape = 'circle'
 
   pattern.pad 1, pad
@@ -36,12 +36,12 @@ module.exports = (pattern, element) ->
     viaPad =
       type: 'through-hole'
       shape: 'circle'
-      drill: housing.viaDiameter
+      hole: housing.viaDiameter
       width: housing.viaDiameter + settings.minimum.ringWidth
       height: housing.viaDiameter + settings.minimum.ringWidth
       layer: ['topCopper', 'bottomCopper']
     count = housing.viaCount ? 8
-    r = housing.drillDiameter/2 + ((housing.padDiameter ? housing.padWidth) - housing.drillDiameter)/4
+    r = housing.holeDiameter/2 + ((housing.padDiameter ? housing.padWidth) - housing.holeDiameter)/4
     for i in [0..(count-1)]
       angle = i*2*Math.PI/count
       viaPad.x = r*Math.cos(angle)

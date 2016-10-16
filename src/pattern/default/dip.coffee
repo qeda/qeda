@@ -33,7 +33,7 @@ module.exports = (pattern, element) ->
   padParams.pad =
     type: 'through-hole'
     shape: 'circle'
-    drill: padParams.drill
+    hole: padParams.hole
     width: padParams.width
     height: padParams.height
     layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']

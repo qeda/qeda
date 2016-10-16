@@ -23,13 +23,13 @@ module.exports = (pattern, element) ->
   columnPitch = housing.columnPitch ? housing.pitch
   rowCount = housing.rowCount
   columnCount = housing.columnCount
-  throughHole = drillDiameter? or housing.th
+  throughHole = housing.holeDiameter? or housing.th
 
   if throughHole
     padParams = calculator.throughHole pattern, housing
     pad =
       type: 'through-hole'
-      drill: housing.drillDiameter ? padParams.drill
+      hole: housing.holeDiameter ? padParams.hole
       width: housing.padWidth ? padParams.diameter
       height: housing.padHeight ? padParams.diameter
       shape: 'rectangle'

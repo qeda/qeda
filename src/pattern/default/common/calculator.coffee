@@ -129,11 +129,11 @@ module.exports =
       courtyard: courtyard
     @_choosePreferred pad, pattern, housing
 
-  padDiameter: (pattern, housing, drillDiameter) ->
+  padDiameter: (pattern, housing, holeDiameter) ->
     settings = pattern.settings
-    padDiameter = drillDiameter * settings.ratio.padToHole
-    if padDiameter < (drillDiameter + 2*settings.minimum.ringWidth)
-      padDiameter = drillDiameter + 2*settings.minimum.ringWidth
+    padDiameter = holeDiameter * settings.ratio.padToHole
+    if padDiameter < (holeDiameter + 2*settings.minimum.ringWidth)
+      padDiameter = holeDiameter + 2*settings.minimum.ringWidth
     if housing.pitch? or (housing.rowPitch? and housing.columnPitch?)
       pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
       clearance = housing.padSpace ? settings.clearance.padToPad
@@ -323,14 +323,14 @@ module.exports =
       w = housing.leadWidth.max
       h = housing.leadHeight.max
       diameter = Math.sqrt(w*w + h*h) # Pythagorean theorem
-    drill = diameter + 2*settings.clearance.leadToHole
-    if drill < settings.minimum.drillDiameter then drill = settings.minimum.drillDiameter
+    hole = diameter + 2*settings.clearance.leadToHole
+    if hole < settings.minimum.holeDiameter then hole = settings.minimum.holeDiameter
     sizeRoundoff = pattern.sizeRoundoff ? 0.05
-    drill = Math.ceil(drill / sizeRoundoff ) * sizeRoundoff
-    padDiameter = @padDiameter pattern, housing, drill
+    hole = Math.ceil(hole / sizeRoundoff ) * sizeRoundoff
+    padDiameter = @padDiameter pattern, housing, hole
 
     pad =
-      drill: drill
+      hole: hole
       width: padDiameter
       height: padDiameter
     @_choosePreferred pad, pattern, housing
@@ -441,7 +441,7 @@ module.exports =
       if housing.padDistance1? then pad.distance1 = housing.padDistance1
       if housing.padDistance2? then pad.distance2 = housing.padDistance2
 
-      if housing.drillDiameter? then pad.drill = housing.drillDiameter
+      if housing.holeDiameter? then pad.hole = housing.holeDiameter
     pad
 
   _gullwing: (pattern, housing) ->

@@ -130,11 +130,11 @@ module.exports = (pattern, element) ->
     width: padParams.height
     height: padParams.width
 
-  if padParams.drill?
+  if padParams.hole?
     unless housing.polarized?
       pad.shape = 'circle'
     pad.type = 'through-hole'
-    pad.drill = padParams.drill
+    pad.hole = padParams.hole
     pad.layer = ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
   else
     pad.type = 'smd'
@@ -143,7 +143,7 @@ module.exports = (pattern, element) ->
   # Copper
   pattern.pad 1, pad
   pad.y = -pad.y
-  if pad.drill? then pad.shape = 'circle'
+  if pad.hole? then pad.shape = 'circle'
   pattern.pad 2, pad
 
   copper.mask pattern

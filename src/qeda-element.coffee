@@ -163,6 +163,8 @@ class QedaElement
           unless @housing[k]? then @housing[k] = v
         log.ok()
 
+      @_legacy @housing # TODO: Remove in v1.0
+
       paths = [
         "./pattern/#{@library.pattern.style.toLowerCase()}/#{@housing.pattern.toLowerCase()}"
         "./pattern/default/#{@housing.pattern.toLowerCase()}"
@@ -293,6 +295,19 @@ class QedaElement
       value = Math.round(value / roundOff) * roundOff
 
     value
+
+  #
+  # Process obsolete parameter names
+  #
+  _legacy: (housing) ->
+    convertations = [
+      [/^drillDiameter(.*)/, 'holeDiameter$1']
+    ]
+    for k, v of housing
+      for convertation in convertations
+        if k.match convertation[0]
+          k = k.replace convertation[0], convertation[1]
+          housing[k] = v
 
   #
   # Add properties to pins

@@ -56,7 +56,7 @@ class QedaLibrary
         padToHole: 1.5
       minimum:
         ringWidth: 0.2
-        drillDiameter: 0.2
+        holeDiameter: 0.2
         maskWidth: 0.2
         spaceForIron: 0
       lineWidth:
@@ -72,6 +72,7 @@ class QedaLibrary
         collapsible: true
 
     @mergeObjects this, config
+    @pattern.minimum.drillDiameter = @pattern.minimum.holeDiameter # TODO: Remove in v1.0
 
     @elements = []
 

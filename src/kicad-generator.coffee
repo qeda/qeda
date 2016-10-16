@@ -108,7 +108,7 @@ class KicadGenerator
             sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
               patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
           )
-          if patObj.drill? then fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.drill)
+          if patObj.hole? then fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.hole)
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
           if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
           fs.writeSync fd, ")\n"
@@ -225,8 +225,8 @@ class KicadGenerator
           obj.fontSize ?= @library.pattern.fontSize.default
     else if obj.kind is 'pad'
       if obj.type is 'mount' then obj.shape ?= 'circle'
-      obj.width ?= obj.drill ? obj.size
-      obj.height ?= obj.drill ? obj.size
+      obj.width ?= obj.hole ? obj.size
+      obj.height ?= obj.hole ? obj.size
 
       types =
         'smd': 'smd'
