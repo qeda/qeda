@@ -40,7 +40,7 @@ class KicadGenerator
 
     log.start "KiCad library doc '#{@name}.dcm'"
     fd = fs.openSync "#{dir}/#{@name}.dcm", 'w'
-    fs.writeSync fd, "EESchema-DOCLIB Version 2.0 Date: #{timestamp}\n#\n"
+    fs.writeSync fd, "EESchema-DOCLIB  Version 2.0 Date: #{timestamp}\n#\n"
     for element in @library.elements
       @_generateDoc fd, element
     fs.writeSync fd, '# End Doc Library\n'
