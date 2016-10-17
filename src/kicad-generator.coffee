@@ -155,7 +155,7 @@ class KicadGenerator
         fs.writeSync fd, "F#{4 + i} \"#{attrObj.text}\" #{attrObj.x} #{attrObj.y} #{attrObj.fontSize} #{attrObj.orientation} V #{attrObj.halign} #{attrObj.valign}NN \"#{attrObj.name}\"\n"
         ++i
 
-    if element.aliases? then fs.writeSync fd, "ALIAS #{element.aliases.join(' ')}\n"
+    if element.aliases? and element.aliases.length then fs.writeSync fd, "ALIAS #{element.aliases.join(' ')}\n"
     if element.pattern?
       fs.writeSync fd, "$FPLIST\n"
       fs.writeSync fd, "  #{element.pattern.name}\n"
