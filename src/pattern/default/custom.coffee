@@ -46,21 +46,21 @@ copperPads = (pattern, element, suffix = '') ->
     hasPads = true
     rowCount = housing['rowCount' + suffix]
     if rowCount is 1
-      rowPitch = 0
+      verticalPitch = 0
     else
-      rowPitch = housing['rowPitch' + suffix] ? housing['pitch' + suffix]
+      verticalPitch = housing['verticalPitch' + suffix] ? housing['pitch' + suffix]
     rowDXs = pattern.parseArray housing['rowDX' + suffix]
     rowDYs = pattern.parseArray housing['rowDY' + suffix]
     columnCounts = pattern.parseArray housing['columnCount' + suffix]
-    columnPitch = housing['columnPitch' + suffix] ? housing['pitch' + suffix]
+    horizontalPitch = housing['horizontalPitch' + suffix] ? housing['pitch' + suffix]
     columnDXs = pattern.parseArray housing['columnDX' + suffix]
     columnDYs = pattern.parseArray housing['columnDY' + suffix]
-    y = -rowPitch*(rowCount - 1)/2
+    y = -verticalPitch*(rowCount - 1)/2
     for row in [0..(rowCount - 1)]
       columnCount = columnCounts[row] ? columnCounts[0]
       rowDX = rowDXs[row] ? rowDXs[0]
       rowDY = rowDYs[row] ? rowDYs[0]
-      x = -columnPitch*(columnCount - 1)/2
+      x = -horizontalPitch*(columnCount - 1)/2
       for column in [0..(columnCount - 1)]
         columnDX = columnDXs[row] ? columnDXs[0]
         columnDY = columnDYs[row] ? columnDYs[0]
@@ -69,8 +69,8 @@ copperPads = (pattern, element, suffix = '') ->
         pattern.pad numbers[pinNumber++], pad
         if housing['holeDiameter' + suffix]?
           pad.shape = 'circle'
-        x += columnPitch
-      y += rowPitch
+        x += horizontalPitch
+      y += verticalPitch
 
   hasPads
 

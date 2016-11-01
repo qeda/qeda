@@ -102,10 +102,10 @@ module.exports =
 
     x = bodyWidth/2 + lineWidth/2
     y = bodyLength/2 + lineWidth/2
-    dx = x - housing.columnPitch * (housing.columnCount/2 - 0.5)
-    dy = y - housing.rowPitch * (housing.rowCount/2 - 0.5)
+    dx = x - housing.horizontalPitch * (housing.columnCount/2 - 0.5)
+    dy = y - housing.verticalPitch * (housing.rowCount/2 - 0.5)
     d = Math.min dx, dy
-    len = Math.min 2*housing.columnPitch, 2*housing.rowPitch, x, y
+    len = Math.min 2*housing.horizontalPitch, 2*housing.verticalPitch, x, y
 
     @preamble pattern, housing
       .moveTo -x, -y + len

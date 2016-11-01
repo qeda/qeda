@@ -100,7 +100,7 @@ module.exports =
         courtyard = Math.round(courtyard / roundOff) * roundOff
       when 'cga'
         padDiameter = housing.leadDiameter.nom + 0.1
-        pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
+        pitch = housing.pitch ? Math.min(housing.horizontalPitch, housing.verticalPitch)
         clearance = housing.padSpace ? settings.clearance.padToPad
         if padDiameter > pitch - clearance
           padDiameter = pitch - clearance
@@ -109,14 +109,14 @@ module.exports =
         clearance = housing.padSpace ? settings.clearance.padToPad
 
         padWidth = housing.leadLength.nom + 0.1
-        columnPitch = housing.columnPitch ? housing.pitch
-        if padWidth > columnPitch - clearance
-          padWidth = columnPitch - clearance
+        horizontalPitch = housing.horizontalPitch ? housing.pitch
+        if padWidth > horizontalPitch - clearance
+          padWidth = horizontalPitch - clearance
 
         padHeight = housing.leadWidth.nom + 0.1
-        rowPitch = housing.columnPitch ? housing.rowPitch
-        if padHeight > rowPitch - clearance
-          padHeight = rowPitch - clearance
+        verticalPitch = housing.verticalPitch ? housing.pitch
+        if padHeight > verticalPitch - clearance
+          padHeight = verticalPitch - clearance
 
         courtyard = 1
 
@@ -134,8 +134,8 @@ module.exports =
     padDiameter = holeDiameter * settings.ratio.padToHole
     if padDiameter < (holeDiameter + 2*settings.minimum.ringWidth)
       padDiameter = holeDiameter + 2*settings.minimum.ringWidth
-    if housing.pitch? or (housing.rowPitch? and housing.columnPitch?)
-      pitch = housing.pitch ? Math.min(housing.rowPitch, housing.columnPitch)
+    if housing.pitch? or (housing.horizontalPitch? and housing.verticalPitch?)
+      pitch = housing.pitch ? Math.min(housing.horizontalPitch, housing.verticalPitch)
       clearance = housing.padSpace ? settings.clearance.padToPad
       if padDiameter > pitch - clearance
         padDiameter = pitch - clearance

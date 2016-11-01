@@ -34,8 +34,8 @@ module.exports = (pattern, element) ->
     .map((v) => Math.round v)...,
     settings.densityLevel
 
-  housing.rowPitch ?= housing.pitch
-  housing.columnPitch ?= housing.pitch
+  housing.verticalPitch ?= housing.pitch
+  housing.horizontalPitch ?= housing.pitch
 
   padParams = calculator.gridArray pattern, housing, option
   pad =

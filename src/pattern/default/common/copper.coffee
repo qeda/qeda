@@ -46,8 +46,8 @@ module.exports =
 
   gridArray: (pattern, element, pad) ->
     housing = element.housing
-    rowPitch = housing.rowPitch
-    columnPitch = housing.columnPitch
+    verticalPitch = housing.verticalPitch
+    horizontalPitch = housing.horizontalPitch
     rowCount = housing.rowCount
     columnCount = housing.columnCount
 
@@ -57,16 +57,16 @@ module.exports =
     @preamble pattern, element
 
     # Grid array
-    y = -rowPitch * (rowCount/2 - 0.5)
+    y = -verticalPitch * (rowCount/2 - 0.5)
     for row in [1..rowCount]
-      x = -columnPitch * (columnCount/2 - 0.5)
+      x = -horizontalPitch * (columnCount/2 - 0.5)
       for column in [1..columnCount]
         pad.x = x
         pad.y = y
         name = gridLetters[row] + column
         if pins[name]? then pattern.pad name, pad
-        x += columnPitch
-      y += rowPitch
+        x += horizontalPitch
+      y += verticalPitch
 
     @postscriptum pattern
 
