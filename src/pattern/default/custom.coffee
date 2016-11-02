@@ -5,6 +5,7 @@ courtyard = require './common/courtyard'
 silkscreen = require './common/silkscreen'
 
 pinNumber = 0
+mountingHole = 1
 
 copperPads = (pattern, element, suffix = '') ->
   housing = element.housing
@@ -15,7 +16,7 @@ copperPads = (pattern, element, suffix = '') ->
   hasPads = false
   if housing['holeDiameter' + suffix]?
     holeDiameter = housing['holeDiameter' + suffix]
-    padDiameter = calculator.padDiameter pattern, housing, holeDiameter
+    padDiameter = housing['padDiameter' + suffix] ? calculator.padDiameter pattern, housing, holeDiameter
     padWidth = housing['padWidth' + suffix] ? padDiameter
     padHeight = housing['padHeight' + suffix] ? padDiameter
     pad =
@@ -25,12 +26,21 @@ copperPads = (pattern, element, suffix = '') ->
       height: padHeight
       shape: unless pinNumber then 'rectangle' else 'circle'
       layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
+    if (padWidth < holeDiameter) or (padHeight < holeDiameter)
+      pad.type = 'mounting-hole'
+      pad.layer = ['topCopper', 'topMask', 'bottomCopper', 'bottomMask']
+      pad.width = holeDiameter
+      pad.height = holeDiameter
+      pad.shape = 'circle'
   else
+    padDiameter = housing['padDiameter' + suffix]
+    padWidth = housing['padWidth' + suffix] ? padDiameter
+    padHeight = housing['padHeight' + suffix] ? padDiameter
     pad =
       type: 'smd'
       width: housing['padWidth' + suffix]
       height: housing['padHeight' + suffix]
-      shape: 'rectangle'
+      shape: if padDiameter? then 'circle' else 'rectangle'
       layer: ['topCopper', 'topMask', 'topPaste']
 
   if housing['padPosition' + suffix]?
@@ -39,7 +49,8 @@ copperPads = (pattern, element, suffix = '') ->
     for p, i in points
       pad.x = p.x
       pad.y = p.y
-      pattern.pad numbers[pinNumber++], pad
+      number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? 'NC')
+      pattern.pad number, pad
       if housing['holeDiameter' + suffix]?
         pad.shape = 'circle'
   else if housing['rowCount' + suffix]? and housing['columnCount' + suffix]?
@@ -66,7 +77,8 @@ copperPads = (pattern, element, suffix = '') ->
         columnDY = columnDYs[row] ? columnDYs[0]
         pad.x = x + rowDX + columnDX
         pad.y = y + rowDY + columnDY
-        pattern.pad numbers[pinNumber++], pad
+        number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? 'NC')
+        pattern.pad number, pad
         if housing['holeDiameter' + suffix]?
           pad.shape = 'circle'
         x += horizontalPitch
