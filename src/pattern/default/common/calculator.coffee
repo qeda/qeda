@@ -135,7 +135,7 @@ module.exports =
     if padDiameter < (holeDiameter + 2*settings.minimum.ringWidth)
       padDiameter = holeDiameter + 2*settings.minimum.ringWidth
     if housing.pitch? or (housing.horizontalPitch? and housing.verticalPitch?)
-      pitch = housing.pitch ? Math.min(housing.horizontalPitch, housing.verticalPitch)
+      pitch = housing.pitch ? Math.min(Math.abs(housing.horizontalPitch), Math.abs(housing.verticalPitch))
       clearance = housing.padSpace ? settings.clearance.padToPad
       if padDiameter > pitch - clearance
         padDiameter = pitch - clearance
