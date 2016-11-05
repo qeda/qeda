@@ -57,6 +57,7 @@ module.exports = (symbol, element) ->
 
   pins = element.pins
   for k, v of pins
-    pins[k].passive = true
+    if pins[k].nc isnt true
+      pins[k].passive = true
 
   enclosure symbol, element
