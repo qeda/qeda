@@ -43,6 +43,12 @@ module.exports =
       courtyard: params.courtyard
 
     pad = @_choosePreferred pad, pattern, housing
+    if settings.preferManufacturer
+      if housing.padSpace1? then pad.distance1 = housing.padSpace1 + housing.padWidth
+      if housing.padSpan1? then pad.distance1 = housing.padSpan1 - housing.padWidth
+      if housing.padSpace2? then pad.distance2 = housing.padSpace2 + housing.padHeight
+      if housing.padSpan2? then pad.distance2 = housing.padSpan2 - housing.padHeight
+
     leadToPad1 = (pad.distance1 + pad.width - housing.rowSpan.nom) / 2
     leadToPad2 = (pad.distance2 + pad.height - housing.columnSpan.nom) / 2
     if leadToPad1 < settings.minimum.spaceForIron
@@ -231,6 +237,13 @@ module.exports =
       trimmed: rowPad.trimmed or columnPad.trimmed
       courtyard: params.courtyard
     pad = @_choosePreferred pad, pattern, housing
+    if settings.preferManufacturer
+      if housing.padWidth?
+        if housing.padSpace1? then pad.distance1 = housing.padSpace1 + housing.padWidth
+        if housing.padSpan1? then pad.distance1 = housing.padSpan1 - housing.padWidth
+        if housing.padSpace2? then pad.distance2 = housing.padSpace2 + housing.padWidth
+        if housing.padSpan2? then pad.distance2 = housing.padSpan2 - housing.padWidth
+
     leadToPad1 = (pad.distance1 + pad.width1 - rowSpan) / 2
     leadToPad2 = (pad.distance2 + pad.width2 - columnSpan) / 2
     if leadToPad1 < settings.minimum.spaceForIron
@@ -419,9 +432,7 @@ module.exports =
       if housing.padWidth?
         pad.width = housing.padWidth
         if housing.padSpace? then pad.distance = housing.padSpace + housing.padWidth
-        if housing.padSpace1? then pad.distance1 = housing.padSpace1 + housing.padWidth
         if housing.padSpan? then pad.distance = housing.padSpan - housing.padWidth
-        if housing.padSpan1? then pad.distance1 = housing.padSpan1 - housing.padWidth
       if housing.padWidth1?
         pad.width1 = housing.padWidth1
         if housing.padSpace? then pad.distance1 = housing.padSpace + housing.padWidth1
@@ -435,11 +446,7 @@ module.exports =
         if housing.padSpan? then pad.distance2 = housing.padSpan - housing.padWidth2
         if housing.padSpan2? then pad.distance2 = housing.padSpan2 - housing.padWidth2
 
-      if housing.padHeight?
-        pad.height = housing.padHeight
-        if housing.padSpace2? then pad.distance2 = housing.padSpace2 + housing.padHeight
-        if housing.padSpan2? then pad.distance2 = housing.padSpan2 - housing.padHeight
-
+      if housing.padHeight? then pad.height = housing.padHeight
       if housing.padHeight1? then pad.height1 = housing.padHeight1
       if housing.padHeight2? then pad.height2 = housing.padHeight2
 
