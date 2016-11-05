@@ -293,6 +293,12 @@ class QedaElement
       value *= 25.4
       roundOff = 0.001
       value = Math.round(value / roundOff) * roundOff
+    else if typeof value is 'string'
+      if /([-0-9.]+\s*,?\s*)+/.test value
+        value = value.replace(/\s+/g, '')
+          .split(',')
+          .map((v) => @_inchToMm(v))
+          .reduce((a, v) => a + ', ' + v)
 
     value
 

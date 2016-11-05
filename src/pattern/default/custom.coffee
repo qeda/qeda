@@ -73,8 +73,8 @@ copperPads = (pattern, element, suffix = '') ->
       rowDY = rowDYs[row] ? rowDYs[0]
       x = -horizontalPitch*(columnCount - 1)/2
       for column in [0..(columnCount - 1)]
-        columnDX = columnDXs[row] ? columnDXs[0]
-        columnDY = columnDYs[row] ? columnDYs[0]
+        columnDX = columnDXs[column] ? columnDXs[0]
+        columnDY = columnDYs[column] ? columnDYs[0]
         pad.x = x + rowDX + columnDX
         pad.y = y + rowDY + columnDY
         number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? 'NC')
