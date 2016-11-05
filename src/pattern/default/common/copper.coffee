@@ -84,13 +84,14 @@ module.exports =
           for j in [(i+1)..last] by 1
             p1 = pads[keys[i]]
             p2 = pads[keys[j]]
-            hspace = Math.abs(p2.x - p1.x) - (p1.width + p2.width)/2
-            vspace = Math.abs(p2.y - p1.y) - (p1.height + p2.height)/2
-            space = Math.max hspace, vspace
             mask = settings.clearance.padToMask
-            if (space - 2*mask) < settings.minimum.maskWidth
-              mask = (space - settings.minimum.maskWidth) / 2
-              if mask < 0 then mask = 0
+            if (p1.type isnt 'mounting-hole') and (p2.type isnt 'mounting-hole')
+              hspace = Math.abs(p2.x - p1.x) - (p1.width + p2.width)/2
+              vspace = Math.abs(p2.y - p1.y) - (p1.height + p2.height)/2
+              space = Math.max hspace, vspace
+              if (space - 2*mask) < settings.minimum.maskWidth
+                mask = (space - settings.minimum.maskWidth) / 2
+                if mask < 0 then mask = 0
             if (not p1.mask?) or (mask < p1.mask) then p1.mask = mask
             if (not p2.mask?) or (mask < p2.mask) then p2.mask = mask
 
