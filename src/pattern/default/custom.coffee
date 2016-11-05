@@ -95,6 +95,7 @@ module.exports = (pattern, element) ->
   pattern.center -bodyPosition[0].x, -bodyPosition[0].y
 
   pinNumber = 0
+  mountingHole = 1
   copperPads pattern, element
   i = 1
   loop
