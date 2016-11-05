@@ -297,7 +297,7 @@ class QedaElement
       if /([-0-9.]+\s*,?\s*)+/.test value
         value = value.replace(/\s+/g, '')
           .split(',')
-          .map((v) => @_inchToMm(v))
+          .map((v) => @_inchToMm(parseFloat v))
           .reduce((a, v) => a + ', ' + v)
 
     value
