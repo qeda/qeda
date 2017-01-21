@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:power
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268

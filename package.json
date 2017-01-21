@@ -39,9 +39,9 @@
     "crc": "^3.4.0",
     "js-yaml": "^3.5.3",
     "mkdirp": "^0.5.1",
-    "nopt": "^3.0.6",
+    "nopt": "^4.0.1",
     "sprintf-js": "^1.0.3",
     "svg-path-parser": "^1.0.1",
-    "sync-request": "^3.0.0"
+    "sync-request": "^4.0.1"
   }
 }
