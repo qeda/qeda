@@ -4,4 +4,5 @@ lib/*
 node_modules/*
 test/kicad/*
 test/library/*
+*.bak
 *-cache.lib

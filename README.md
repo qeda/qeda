@@ -168,7 +168,7 @@ Result:
 Documentation
 =============
 
-Please refer to [Documentation](http://qeda.org/doc/) section on the website for additional information.
+Please refer to [Documentation](http://doc.qeda.org/) section on the website for additional information.
 
 License
 =======
