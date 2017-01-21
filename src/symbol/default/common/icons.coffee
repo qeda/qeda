@@ -119,10 +119,16 @@ class FetIcon extends Icon
       w = @width/8
       h = w/2 * Math.tan(Math.PI/3)
       @symbol
-        .polyline x, -h/2, x + w, -h/2, x + w/2, h/2, x, -h/2
-        .line x, h/2, x + w, h/2
         .line x + w/2, -(@height + gap)/3, x + w/2, -h/2
         .line x + w/2, h/2, x + w/2, (@height + gap)/3
+      if @schematic.n
+        @symbol
+          .polyline x, h/2, x + w, h/2, x + w/2, -h/2, x, h/2
+          .line x, -h/2, x + w, -h/2
+      else if @schematic.p
+        @symbol
+          .polyline x, -h/2, x + w, -h/2, x + w/2, h/2, x, -h/2
+          .line x, h/2, x + w, h/2
 
     @symbol.center 0, 0 # Restore default center point
 
