@@ -12,6 +12,7 @@ module.exports = (symbol, element) ->
 
   if element.pins.length > 2 # With enclosure
     schematic.showPinNumbers = true
+    schematic.showPinNames = true
     enclosure symbol, element, icon
   else
     width = icon.width

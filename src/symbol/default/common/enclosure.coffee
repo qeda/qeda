@@ -49,6 +49,7 @@ module.exports = (symbol, element, icon) ->
   dx = settings.fontSize.pin/2 + space
   y = topY
   if schematic.pinIcon? and top.length then y -= schematic.pinIcon.height
+  if icon? and (not top.length) then y -= pinSpace
   topPins = []
   topRects = []
   x = -pitch*(top.length/2 - 0.5)
@@ -89,6 +90,7 @@ module.exports = (symbol, element, icon) ->
   # Pins on the bottom side
   y = bottomY
   if schematic.pinIcon? and bottom.length then y += schematic.pinIcon.height
+  if icon? and (not bottom.length) then y += pinSpace
   bottomPins = []
   bottomRects = []
   x = -pitch*(bottom.length/2 - 0.5)
@@ -129,6 +131,7 @@ module.exports = (symbol, element, icon) ->
   # Pins on the left side
   x = leftX
   if schematic.pinIcon? and left.length then x -= schematic.pinIcon.width
+  if icon? and (not left.length) then x -= pinSpace
   if top.length > 0
     w = symbol.textWidth('U???', 'refDes')
     if x > (-w - space) then x = -w - space
@@ -174,6 +177,7 @@ module.exports = (symbol, element, icon) ->
   # Pins on the right side
   x = rightX
   if schematic.pinIcon? and right.length then x += schematic.pinIcon.width
+  if icon? and (not right.length) then x += pinSpace
   rightPins = []
   y = -pitch*(right.length/2 - 0.5)
   for i in right
