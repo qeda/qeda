@@ -33,6 +33,6 @@ module.exports = (symbol, element) ->
       passive: true
     .lineWidth settings.lineWidth.thick
     .circle 0, 0, r, settings.fill
-    .circle 0, 0, r - d, settings.fill
+    .circle 0, 0, r - d, 'none'
 
   [2*r, 2*r]
