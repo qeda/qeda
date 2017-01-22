@@ -9,7 +9,7 @@ module.exports = (symbol, element) ->
 
   schematic.showPinNumbers = true
 
-  icon = new Icons.FetIcon(symbol, element)
+  icon = new Icons.Fet(symbol, element)
 
   groups = symbol.part ? element.pinGroups
   for k, v of groups

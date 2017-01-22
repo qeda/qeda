@@ -1,6 +1,28 @@
 Icon = require './icon'
 
 #
+# Crystal
+#
+
+class CrystalIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 6
+    @height = 8
+    super symbol, element
+
+  draw: (x, y) ->
+    settings = @symbol.settings
+    gap = 1.5
+    d = 2
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .rectangle -@width/2 + gap, -@height/2, @width/2 - gap, @height/2, settings.fill
+      .line -@width/2, -@height/2 + d, -@width/2, @height/2 - d
+      .line @width/2, -@height/2 + d, @width/2, @height/2 - d
+      .center 0, 0 # Restore default center point
+
+#
 # Diode
 #
 class DiodeIcon extends Icon
@@ -133,6 +155,26 @@ class FetIcon extends Icon
     @symbol.center 0, 0 # Restore default center point
 
 #
+# Pushbutton
+#
+class PushbuttonIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 10
+    @height = 8
+    super symbol, element
+
+  draw: (x, y) ->
+    r = 1
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .circle -@width/2 + r, @height/2 - r, r
+      .circle @width/2 - r, @height/2 - r, r
+      .line -@width/2, 0, @width/2, 0
+      .line 0, 0, 0, -@height/2
+      .center 0, 0 # Restore default center point
+
+#
 # Resistor
 #
 class ResistorIcon extends Icon
@@ -158,7 +200,9 @@ class ResistorIcon extends Icon
 # Export object
 #
 Icons = {}
+Icons.Crystal = CrystalIcon
 Icons.Diode = DiodeIcon
-Icons.FetIcon = FetIcon
+Icons.Fet = FetIcon
+Icons.Pushbutton = PushbuttonIcon
 Icons.Resistor = ResistorIcon
 module.exports = Icons

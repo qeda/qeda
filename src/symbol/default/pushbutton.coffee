@@ -1,29 +1,12 @@
 enclosure = require './common/enclosure'
-Icon = require './common/icon'
-
-class PushbuttonIcon extends Icon
-  constructor: (symbol, element) ->
-    @width = 10
-    @height = 8
-    super symbol, element
-
-  draw: (x, y) ->
-    r = 1
-    @symbol
-      .lineWidth @lineWidth
-      .center x, y # Set center to (x, y)
-      .circle -@width/2 + r, @height/2 - r, r
-      .circle @width/2 - r, @height/2 - r, r
-      .line -@width/2, 0, @width/2, 0
-      .line 0, 0, 0, -@height/2
-      .center 0, 0 # Restore default center point
+Icons = require './common/icons'
 
 module.exports = (symbol, element) ->
   element.refDes = 'S'
   schematic = element.schematic
   settings = symbol.settings
 
-  icon = new PushbuttonIcon(symbol, element)
+  icon = new Icons.Pushbutton(symbol, element)
 
   if element.pins.length > 2 # With enclosure
     schematic.showPinNumbers = true
