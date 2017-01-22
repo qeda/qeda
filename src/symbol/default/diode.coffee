@@ -1,4 +1,6 @@
+enclosure = require './common/enclosure'
 Icons = require './common/icons'
+twoSided = require './common/two-sided'
 
 module.exports = (symbol, element, styleIcons) ->
   element.refDes = 'D'
@@ -10,75 +12,38 @@ module.exports = (symbol, element, styleIcons) ->
   decorated = numbers.length > 2
 
   schematic.showPinNames ?= false
-  schematic.showPinNumbers ?= if decorated then true else false
 
   icon = if styleIcons? then new styleIcons.Diode(symbol, element) else new Icons.Diode(symbol, element)
 
-  cathode = 1
-  anode = 2
-  nc = []
-  for k, v of pins
-    v.name = v.name.replace 'K', 'C'
-    switch v.name
-      when 'A'
-        anode = v.number
-      when 'C'
-        cathode = v.number
-      when 'NC'
-        nc.push v.number
-      else needEnclosure = true
+  groups = symbol.part ? element.pinGroups
+  for k, v of groups
+    k = k.toUpperCase().replace('K', 'C')
+    if k.match /^A/
+      anode = v.map((e) => pins[e])
+    else if k.match /^C/
+      cathode = v.map((e) => pins[e])
+    else if k.match /^NC/
+      nc = v.map((e) => pins[e])
+    else if k is '' # Root group
+      continue
+    else
+      needEnclosure = true
+
+  anode ?= [
+    name: 'A'
+    number: 2
+  ]
+
+  cathode ?= [
+    name: 'C'
+    number: 1
+  ]
 
   if needEnclosure
     schematic.showPinNames = true
+    schematic.showPinNumbers = true
     enclosure symbol, element, icon
   else
-    width = icon.width
-    height = icon.height
+    twoSided symbol, element, icon, anode, cathode, nc
 
-    pinLength = settings.pinLength ? (if decorated then 5 else 2.5)
-    pinLength = (2*symbol.alignToGrid(width/2 + pinLength, 'ceil') - width) / 2
-
-    symbol
-      .attribute 'refDes',
-        x: 0
-        y: -height/2 - settings.space.attribute
-        halign: 'center'
-        valign: 'bottom'
-      .attribute 'name',
-        x: 0
-        y: height/2 + settings.space.attribute
-        halign: 'center'
-        valign: 'top'
-      .pin
-        number: cathode
-        name: 'C'
-        x: width/2 + pinLength
-        y: 0
-        length: pinLength
-        orientation: 'left'
-        passive: true
-      .pin
-        number: anode
-        name: 'A'
-        x: -width/2 - pinLength
-        y: 0
-        length: pinLength
-        orientation: 'right'
-        passive: true
-
-      pitch = symbol.alignToGrid 5
-      for v, i in nc
-        symbol
-          .pin
-            number: v
-            name: 'NC'
-            x: (i - (nc.length - 1)/2)*pitch
-            y: height/2 + pinLength
-            length: pinLength
-            orientation: 'up'
-            nc: true
-            invisible: true
-
-    icon.draw 0, 0
-
-  [width, height]
+  [icon.width, icon.height]
