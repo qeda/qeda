@@ -15,11 +15,11 @@ module.exports = (symbol, element) ->
   for k, v of groups
     k = k.toUpperCase()
     if k.match /^G/
-      gate = v
+      gate = v.map((e) => pins[e])
     else if k.match /^D/
-      drain = v
+      drain = v.map((e) => pins[e])
     else if k.match /^S/
-      source = v
+      source = v.map((e) => pins[e])
     else if k is '' # Root group
       continue
     else
@@ -53,8 +53,7 @@ module.exports = (symbol, element) ->
 
     # Gate
     y = height/2
-    for g in gate
-      pin = pins[g]
+    for pin in gate
       pin.x = -width/2 - pinLength
       pin.y = y
       pin.length = pinLength
@@ -65,8 +64,7 @@ module.exports = (symbol, element) ->
 
     # Drain
     x = width/2
-    for d in drain
-      pin = pins[d]
+    for pin in drain
       pin.x = x
       pin.y = -height/2 - pinLength
       pin.length = pinLength
@@ -77,8 +75,7 @@ module.exports = (symbol, element) ->
 
     # Source
     x = width/2
-    for s in source
-      pin = pins[s]
+    for pin in source
       pin.x = x
       pin.y = height/2 + pinLength
       pin.length = pinLength
