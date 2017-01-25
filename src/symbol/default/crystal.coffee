@@ -1,14 +1,12 @@
 enclosure = require './common/enclosure'
 Icons = require './common/icons'
 
-module.exports = (symbol, element) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'Y'
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
-  pinGroups = element.pinGroups
-
-  icon = new Icons.Crystal(symbol, element)
+  icon = new icons.Crystal(symbol, element)
 
   if element.pins.length > 2 # With enclosure
     schematic.showPinNumbers = true

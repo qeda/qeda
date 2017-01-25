@@ -1,77 +1,29 @@
 enclosure = require './common/enclosure'
-Icon = require './common/icon'
+Icons = require './common/icons'
 
-class TransistorIcon extends Icon
-  constructor: (symbol, element) ->
-    width = 12
-    height = 9
-    @width = 2 * symbol.alignToGrid(width/2, 'ceil')
-    @height = 2 * symbol.alignToGrid(height/2, 'ceil')
-    super symbol, element
-
-  draw: (x, y) ->
-    arrowWidth = 1.5
-    @symbol
-      .lineWidth @lineWidth
-      .center x, y # Set center to (x, y)
-      .line 0, -@height/2, 0, @height/2
-      .line 0, -@height/4, @width/2, -@height/2
-      .line 0, @height/4, @width/2, @height/2
-    if @schematic.igbt
-      space = 1.5
-      @symbol
-        .line -@width/2, 0, -space, 0
-        .line -space, -@height/2, -space, @height/2
-    else
-      @symbol
-        .line -@width/2, 0, 0, 0
-
-    dx = @width/2
-    dy = @height/4
-    x1 = dx/2
-    y1 = @height/4 + dy/2
-    x2 = x1 - dx/4
-    y2 = y1 - dy/4
-    a = Math.atan dy/dx
-    if @schematic.npn or @schematic.igbt
-      x3 = x2 + arrowWidth*Math.sin(a)/2
-      y3 = y2 - arrowWidth*Math.cos(a)/2
-      x4 = x2 - arrowWidth*Math.sin(a)/2
-      y4 = y2 + arrowWidth*Math.cos(a)/2
-      @symbol.poly x1, y1, x3, y3, x4, y4, 'background'
-    if @schematic.pnp
-      x3 = x1 + arrowWidth*Math.sin(a)/2
-      y3 = y1 - arrowWidth*Math.cos(a)/2
-      x4 = x1 - arrowWidth*Math.sin(a)/2
-      y4 = y1 + arrowWidth*Math.cos(a)/2
-      @symbol.poly x2, y2, x3, y3, x4, y4, 'background'
-
-    @symbol.center 0, 0 # Restore default center point
-
-module.exports = (symbol, element) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'VT'
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
+  icon = new icons.Transistor(symbol, element)
 
   schematic.showPinNumbers = true
-
-  icon = new TransistorIcon(symbol, element)
 
   groups = symbol.part ? element.pinGroups
   for k, v of groups
     k = k.toUpperCase()
     if (k.match /^B/) or (k.match /^G/) # `G` for IGBT
-      base = v
+      base = v.map((e) => pins[e])
     else if k.match /^C/
-      collector = v
+      collector = v.map((e) => pins[e])
     else if k.match /^E/
-      emitter = v
+      emitter = v.map((e) => pins[e])
     else if k is '' # Root group
       continue
     else
       needEnclosure = true
-        
+
   valid = base? and collector? and emitter?
 
   if (not valid) or needEnclosure
@@ -100,8 +52,7 @@ module.exports = (symbol, element) ->
 
     # Base
     y = 0
-    for b in base
-      pin = pins[b]
+    for pin in base
       pin.x = -width/2 - pinLength
       pin.y = y
       pin.length = pinLength
@@ -112,8 +63,7 @@ module.exports = (symbol, element) ->
 
     # Collector
     x = width/2
-    for c in collector
-      pin = pins[c]
+    for pin in collector
       pin.x = x
       pin.y = -height/2 - pinLength
       pin.length = pinLength
@@ -124,8 +74,7 @@ module.exports = (symbol, element) ->
 
     # Emitter
     x = width/2
-    for e in emitter
-      pin = pins[e]
+    for pin in emitter
       pin.x = x
       pin.y = height/2 + pinLength
       pin.length = pinLength

@@ -1,15 +1,14 @@
 enclosure = require './common/enclosure'
 Icons = require './common/icons'
 
-module.exports = (symbol, element) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'VT'
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
+  icon = new icons.Fet(symbol, element)
 
   schematic.showPinNumbers = true
-
-  icon = new Icons.Fet(symbol, element)
 
   groups = symbol.part ? element.pinGroups
   for k, v of groups

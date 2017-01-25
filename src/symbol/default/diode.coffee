@@ -2,18 +2,14 @@ enclosure = require './common/enclosure'
 Icons = require './common/icons'
 twoSided = require './common/two-sided'
 
-module.exports = (symbol, element, styleIcons) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'D'
   schematic = element.schematic
   settings = symbol.settings
-
   pins = element.pins
-  numbers = Object.keys pins
-  decorated = numbers.length > 2
+  icon = new icons.Diode(symbol, element)
 
   schematic.showPinNames ?= false
-
-  icon = if styleIcons? then new styleIcons.Diode(symbol, element) else new Icons.Diode(symbol, element)
 
   groups = symbol.part ? element.pinGroups
   for k, v of groups

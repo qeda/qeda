@@ -1,17 +1,16 @@
 enclosure = require './common/enclosure'
 Icons = require './common/icons'
 
-module.exports = (symbol, element) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'S'
   schematic = element.schematic
   settings = symbol.settings
-
-  icon = new Icons.Pushbutton(symbol, element)
+  pins = element.pins
+  icon = new icons.Pushbutton(symbol, element)
 
   if element.pins.length > 2 # With enclosure
     schematic.showPinNumbers = true
     schematic.showPinNames = true
-    pins = element.pins
     for k, v of pins
       if pins[k].nc isnt true
         pins[k].passive = true

@@ -1,50 +1,46 @@
+enclosure = require './common/enclosure'
 Icons = require './common/icons'
+twoSided = require './common/two-sided'
 
-module.exports = (symbol, element) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'R'
   schematic = element.schematic
   settings = symbol.settings
 
+  pins = element.pins
   schematic.showPinNames ?= false
-  schematic.showPinNumbers ?= false
 
-  icon = if styleIcons? then new styleIcons.Resistor(symbol, element) else new Icons.Resistor(symbol, element)
-  width = icon.width
-  height = icon.height
-  space = icon.space ? 0
-  pinLength = settings.pinLength ? 2.5
-  pinLength = (2*symbol.alignToGrid(width/2 + pinLength, 'ceil') - width) / 2
+  icon = new icons.Resistor(symbol, element)
 
-  symbol
-    .attribute 'refDes',
-      x: 0
-      y: -height/2 - space - settings.space.attribute
-      halign: 'center'
-      valign: 'bottom'
-    .attribute 'name',
-      x: 0
-      y: height/2 + space + settings.space.attribute
-      halign: 'center'
-      valign: 'top'
-    .pin
-      number: 1
-      name: 1
-      x: -width/2 - pinLength
-      y: 0
-      length: pinLength
-      orientation: 'right'
-      passive: true
-    .pin
-      number: 2
-      name: 2
-      x: width/2 + pinLength
-      y: 0
-      length: pinLength
-      orientation: 'left'
-      passive: true
+  groups = symbol.part ? element.pinGroups
+  for k, v of groups
+    k = k.toUpperCase()
+    if k.match /^L/
+      left = v.map((e) => pins[e])
+    else if k.match /^R/
+      right = v.map((e) => pins[e])
+    else if k.match /^NC/
+      nc = v.map((e) => pins[e])
+    else if k is '' # Root group
+      continue
+    else
+      needEnclosure = true
 
-  icon.draw 0, 0
-  #  .lineWidth settings.lineWidth.thick
-  #  .rectangle -width/2, -height/2, width/2, height/2, settings.fill
+  left ?= [
+    name: 'L'
+    number: 1
+  ]
 
-  [width, height]
+  right ?= [
+    name: 'R'
+    number: 2
+  ]
+
+  if needEnclosure
+    schematic.showPinNames = true
+    schematic.showPinNumbers = true
+    enclosure symbol, element, icon
+  else
+    twoSided symbol, element, icon, left, right, nc
+
+  [icon.width, icon.height]

@@ -196,6 +196,53 @@ class ResistorIcon extends Icon
         .line @height - d, -@height - d,  @height + d, -@height + d
     @symbol.center 0, 0 # Restore default center point
 
+class TransistorIcon extends Icon
+  constructor: (symbol, element) ->
+    width = 12
+    height = 9
+    @width = 2 * symbol.alignToGrid(width/2, 'ceil')
+    @height = 2 * symbol.alignToGrid(height/2, 'ceil')
+    super symbol, element
+
+  draw: (x, y) ->
+    arrowWidth = 1.5
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .line 0, -@height/2, 0, @height/2
+      .line 0, -@height/4, @width/2, -@height/2
+      .line 0, @height/4, @width/2, @height/2
+    if @schematic.igbt
+      space = 1.5
+      @symbol
+        .line -@width/2, 0, -space, 0
+        .line -space, -@height/2, -space, @height/2
+    else
+      @symbol
+        .line -@width/2, 0, 0, 0
+
+    dx = @width/2
+    dy = @height/4
+    x1 = dx/2
+    y1 = @height/4 + dy/2
+    x2 = x1 - dx/4
+    y2 = y1 - dy/4
+    a = Math.atan dy/dx
+    if @schematic.npn or @schematic.igbt
+      x3 = x2 + arrowWidth*Math.sin(a)/2
+      y3 = y2 - arrowWidth*Math.cos(a)/2
+      x4 = x2 - arrowWidth*Math.sin(a)/2
+      y4 = y2 + arrowWidth*Math.cos(a)/2
+      @symbol.poly x1, y1, x3, y3, x4, y4, 'background'
+    if @schematic.pnp
+      x3 = x1 + arrowWidth*Math.sin(a)/2
+      y3 = y1 - arrowWidth*Math.cos(a)/2
+      x4 = x1 - arrowWidth*Math.sin(a)/2
+      y4 = y1 + arrowWidth*Math.cos(a)/2
+      @symbol.poly x2, y2, x3, y3, x4, y4, 'background'
+
+    @symbol.center 0, 0 # Restore default center point
+
 #
 # Export object
 #
@@ -205,4 +252,5 @@ Icons.Diode = DiodeIcon
 Icons.Fet = FetIcon
 Icons.Pushbutton = PushbuttonIcon
 Icons.Resistor = ResistorIcon
+Icons.Transistor = TransistorIcon
 module.exports = Icons
