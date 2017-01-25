@@ -8,6 +8,7 @@ module.exports = (symbol, element, icon, left, right, nc) ->
 
   width = icon.width
   height = icon.height
+  space = icon.space ? 0
 
   pinLength2 = symbol.alignToGrid(settings.pinLength ? (if decorated then 5 else 2.5), 'ceil')
   pinLength1 = (2*symbol.alignToGrid(width/2 + pinLength2, 'ceil') - width) / 2
@@ -18,12 +19,12 @@ module.exports = (symbol, element, icon, left, right, nc) ->
   symbol
     .attribute 'refDes',
       x: 0
-      y: -height/2 - settings.space.attribute
+      y: -height/2 - space - settings.space.attribute
       halign: 'center'
       valign: 'bottom'
     .attribute 'name',
       x: 0
-      y: Math.max(height, pinAreaHeight)/2 + settings.space.attribute
+      y: Math.max(height, pinAreaHeight)/2 + space + settings.space.attribute
       halign: 'center'
       valign: 'top'
   icon.draw 0, 0
