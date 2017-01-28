@@ -1,47 +1,10 @@
-enclosure = require './common/enclosure'
 Icons = require './common/icons'
+twoSided = require './common/two-sided'
 
 module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'Y'
-  schematic = element.schematic
-  settings = symbol.settings
-  pins = element.pins
   icon = new icons.Crystal(symbol, element)
 
-  if element.pins.length > 2 # With enclosure
-    schematic.showPinNumbers = true
-    schematic.showPinNames = true
-    enclosure symbol, element, icon
-  else
-    width = icon.width
-    height = icon.height
-    pinLength = settings.pinLength ? 2.5
-    pinLength = (2*symbol.alignToGrid(width/2 + pinLength, 'ceil') - width) / 2
-    symbol
-      .attribute 'refDes',
-        x: 0
-        y: -height/2 - settings.space.attribute
-        halign: 'center'
-        valign: 'bottom'
-      .attribute 'name',
-        x: 0
-        y: height/2 + settings.space.attribute
-        halign: 'center'
-        valign: 'top'
-      .pin
-        number: 1
-        name: 1
-        x: -width/2 - pinLength
-        y: 0
-        length: pinLength
-        orientation: 'right'
-        passive: true
-      .pin
-        number: 2
-        name: 2
-        x: width/2 + pinLength
-        y: 0
-        length: pinLength
-        orientation: 'left'
-        passive: true
-    icon.draw 0, 0
+  twoSided symbol, element, icon
+
+  [icon.width, icon.height]

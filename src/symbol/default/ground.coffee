@@ -1,8 +1,9 @@
 groundSymbol = (symbol, element, icon = 'signal') ->
   settings = symbol.settings
-  width = 5
-  height = 5
   schematic = element.schematic
+
+  width = 5 * settings.factor
+  height = 5 * settings.factor
 
   symbol
     .attribute 'refDes',

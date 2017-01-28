@@ -1,25 +1,68 @@
 Icon = require './icon'
 
 #
+# Capacitor
+#
+class CapacitorIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 1.5
+    @height = 8
+    super symbol, element
+    @d =
+      w: @width
+      h: @height
+      gap: @width/1.5
+      r: 6*@width
+
+  draw: (x, y) ->
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      # Left plate
+      .line -@d.w/2, -@d.h/2, -@d.w/2, @d.h/2
+    if @schematic.polarized
+      # Right plate
+      a = 180 * Math.asin(@d.h/(2*@d.r)) / Math.PI
+      @symbol.arc @d.r + @d.w/2, 0, @d.r, 180 - a, 180 + a
+      # Plus sign
+      x = -@d.w/2 - 2*@d.gap
+      y = -@d.h/4
+      @symbol
+        .lineWidth @settings.lineWidth.thin
+        .line x - @d.gap, y, x + @d.gap, y
+        .line x, y - @d.gap, x, y + @d.gap
+        .lineWidth @lineWidth
+    else
+      # Right plate
+      @symbol.line @d.w/2, -@d.h/2, @d.w/2, @d.h/2
+
+    @symbol.center 0, 0 # Restore default center point
+
+#
 # Crystal
 #
-
 class CrystalIcon extends Icon
   constructor: (symbol, element) ->
     @width = 6
     @height = 8
     super symbol, element
+    @d =
+      w: @width
+      h: @height
+      gap: @width/4
+      dy: @height/4
 
   draw: (x, y) ->
     settings = @symbol.settings
-    gap = 1.5
-    d = 2
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
-      .rectangle -@width/2 + gap, -@height/2, @width/2 - gap, @height/2, settings.fill
-      .line -@width/2, -@height/2 + d, -@width/2, @height/2 - d
-      .line @width/2, -@height/2 + d, @width/2, @height/2 - d
+      # Body
+      .rectangle -@d.w/2 + @d.gap, -@height/2, @d.w/2 - @d.gap, @height/2, settings.fill
+      # Left plate
+      .line -@d.w/2, -@d.h/2 + @d.dy, -@d.w/2, @d.h/2 - @d.dy
+      # Right plate
+      .line @d.w/2, -@d.h/2 + @d.dy, @d.w/2, @d.h/2 - @d.dy
       .center 0, 0 # Restore default center point
 
 #
@@ -31,60 +74,72 @@ class DiodeIcon extends Icon
     @height = 5
     super symbol, element
     if @schematic.tvs then @width *= 2
+    @d =
+      w: @width
+      h: @height
+      d: @width/4
+      gap: Math.max(@height, @width)/4
+      aw: @width/4
+    if @schematic.tvs or @schematic.zener then @height += 2*@d.d
 
   draw: (x, y, rotated = false) ->
     settings = @symbol.settings
     f = if rotated then -1 else 1
-    x1 = f * (-@width/2)
-    y1 = f * (-@height/2)
-    x2 = f * @width/2
-    y2 = f * @height/2
+    x1 = f * (-@d.w/2)
+    y1 = f * (-@d.h/2)
+    x2 = f * @d.w/2
+    y2 = f * @d.h/2
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
     if @schematic.tvs
-      d = f*1
+      d = f*@d.d
       @symbol
+        # Left triangle
         .poly x1, y1, 0, 0, x1, y2, x1, y1, settings.fill
+        # Right triangle
         .poly x2, y1, 0, 0, x2, y2, x2, y1, settings.fill
+        # Central line
         .line 0, y1, 0, y2
         .line 0, y1, -d, y1 - d
         .line 0, y2, d, y2 + d
     else
       @symbol
+        # Triangle & line
         .poly x1, y1, x2, 0, x1, y2, x1, y1, settings.fill
         .line x2, y1, x2, y2
       if @schematic.schottky
-        d = f*1
+        d = f*@d.d
         @symbol
+          # Bottom twirl
           .moveTo x2, y2
           .lineTo x2 - d, y2
           .lineTo x2 - d, y2 - d
+          # Top twirl
           .moveTo x2, y1
           .lineTo x2 + d, y1
           .lineTo x2 + d, y1 + d
       else if @schematic.zener
-        d = f*1
+        d = f*@d.d
         @symbol
           .line x2, y1, x2 - d, y1 - d
           .line x2, y2, x2 + d, y2 + d
       else if @schematic.led
-        space = 1
-        d = f*1.5
-        len = f*3
-        arrowWidth = 1
+        d = f*@d.gap
+        len = 2*d
 
-        xa = Math.max(@width, @height)/2
+        xa = Math.max(@d.w, @d.h)/2
         ya = -xa
         x1 = xa
         y1 = ya - d
         x2 = xa + d
         y2 = ya
+        # Arrows
         @symbol
           .line x1, y1, x1 + len, y1 - len
-          .arrow x1 + len/2, y1 - len/2, x1 + len, y1 - len, arrowWidth
+          .arrow x1 + len/2, y1 - len/2, x1 + len, y1 - len, @d.aw
           .line x2, y2, x2 + len, y2 - len
-          .arrow x2 + len/2, y2 - len/2, x2 + len, y2 - len, arrowWidth
+          .arrow x2 + len/2, y2 - len/2, x2 + len, y2 - len, @d.aw
 
     @symbol.center 0, 0 # Restore default center point
 
@@ -98,51 +153,58 @@ class FetIcon extends Icon
     @width = 2 * symbol.alignToGrid(width/2, 'ceil')
     @height = 2 * symbol.alignToGrid(height/2, 'ceil')
     super symbol, element
+    @d =
+      w: @width
+      h: @height
+      space: @width/10
+      gap: @height/9
+      aw: @width/10
 
   draw: (x, y) ->
-    space = 1.5
-    gap = 1
-    arrowWidth = 1.5
-    dx = if @schematic.diode and (not @schematic.jfet) then -@width/8 else 0
+    dx = if @schematic.diode and (not @schematic.jfet) then -@d.w/8 else 0
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
     if @schematic.depletion or @schematic.jfet
-      @symbol.line dx, -@height/2, dx, @height/2
+      # Central line
+      @symbol.line dx, -@d.h/2, dx, @d.h/2
     else # Enhancement
-      y = -@height/2
-      l = (@height - 2*gap)/3
+      # Three dashes
+      y = -@d.h/2
+      l = (@d.h - 2*@d.gap)/3
       for i in [1..3]
         @symbol.line dx, y, dx, y + l
-        y += l + gap
+        y += l + @d.gap
 
-    y = (@height + gap)/3
+    y = (@d.h + @d.gap)/3
     @symbol
-      .line dx, y, @width/2, y
-      .line @width/2, y, @width/2, @height/2
-      .line dx, -y, @width/2, -y
-      .line @width/2, -y, @width/2, -@height/2
+      .line dx, y, @d.w/2, y
+      .line @d.w/2, y, @d.w/2, @d.h/2
+      .line dx, -y, @d.w/2, -y
+      .line @d.w/2, -y, @d.w/2, -@d.h/2
 
     if @schematic.jfet
-      @symbol.line -@width/2, @height/2, dx, @height/2
-      if @schematic.n then @symbol.poly dx - @width/8, @height/2 + arrowWidth/2, dx, @height/2, dx - @width/8, @height/2 - arrowWidth/2, 'background'
-      if @schematic.p then @symbol.poly dx - @width/4, @height/2, dx - @width/8, @height/2 + arrowWidth/2, dx - @width/8, @height/2 - arrowWidth/2, 'background'
+      @symbol.line -@d.w/2, @d.h/2, dx, @d.h/2
+      if @schematic.n then @symbol.arrow dx - @d.w/8, @d.h/2, dx, @d.h/2, @d.aw
+      if @schematic.p then @symbol.arrow dx - @d.w/8, @d.h/2, dx - @d.w/4, @d.h/2, @d.aw
     else
       @symbol
-        .line -@width/2, @height/2, dx - space, @height/2
-        .line dx - space, -@height/2, dx - space, @height/2
-        .line dx, 0, dx + @width/4, 0
-        .line dx + @width/4, 0, dx + @width/4, (@height + gap)/3
-      if @schematic.n then @symbol.poly dx, 0, dx + @width/8, arrowWidth/2, dx + @width/8, -arrowWidth/2, 'background'
-      if @schematic.p then @symbol.poly dx + @width/8, arrowWidth/2, dx + @width/4, 0, dx + @width/8, -arrowWidth/2, 'background'
+        .line -@d.w/2, @d.h/2, dx - @d.space, @d.h/2
+        .line dx - @d.space, -@d.h/2, dx - @d.space, @d.h/2
+        .line dx, 0, dx + @d.w/4, 0
+        .line dx + @d.w/4, 0, dx + @width/4, (@d.h + @d.gap)/3
+      if @schematic.n then @symbol.arrow dx + @d.w/8, 0, dx, 0, @d.aw
+      if @schematic.p then @symbol.arrow dx + @d.w/8, 0, dx + @d.w/4, 0, @d.aw
 
     if @schematic.diode
-      x = @width/8 + space
-      w = @width/8
+      x = @d.w/8 + @d.space
+      w = @d.w/8
       h = w/2 * Math.tan(Math.PI/3)
+      # Diode "pins"
       @symbol
-        .line x + w/2, -(@height + gap)/3, x + w/2, -h/2
-        .line x + w/2, h/2, x + w/2, (@height + gap)/3
+        .line x + w/2, -(@d.h + @d.gap)/3, x + w/2, -h/2
+        .line x + w/2, h/2, x + w/2, (@d.h + @d.gap)/3
+      # Triangle and line
       if @schematic.n
         @symbol
           .polyline x, h/2, x + w, h/2, x + w/2, -h/2, x, h/2
@@ -155,23 +217,78 @@ class FetIcon extends Icon
     @symbol.center 0, 0 # Restore default center point
 
 #
+# Fuse
+#
+class FuseIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 10
+    @height = 4
+    super symbol, element
+    @d =
+      w: @width
+      h: @height
+
+  draw: (x, y) ->
+    settings = @symbol.settings
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .rectangle -@d.w/2, -@d.h/2, @d.w/2, @d.h/2, settings.fill
+      .line -@d.w/2, 0, @d.w/2, 0
+
+    @symbol.center 0, 0 # Restore default center point
+
+#
+# Inductor
+#
+class InductorIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 20
+    @height = @width/8
+    super symbol, element
+    @d =
+      w: @width
+      h: @height
+      r: @width/8
+    @y1 = -@height
+    @y2 = 0
+
+  draw: (x, y) ->
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+
+    x = -3*@d.r
+    for i in [1..4]
+      @symbol.arc x, 0, @d.r, 180, 0
+      x += 2*@d.r
+
+    @symbol.center 0, 0 # Restore default center point
+
+#
 # Pushbutton
 #
 class PushbuttonIcon extends Icon
   constructor: (symbol, element) ->
     @width = 10
-    @height = 8
+    @height = 6
     super symbol, element
+    @d =
+      w: @width
+      h: @height
+      r: @height/6
+    @y1 = -@height
+    @y2 = @d.r
+    @height += @d.r
 
   draw: (x, y) ->
-    r = 1
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
-      .circle -@width/2 + r, @height/2 - r, r
-      .circle @width/2 - r, @height/2 - r, r
-      .line -@width/2, 0, @width/2, 0
-      .line 0, 0, 0, -@height/2
+      .circle -@d.w/2 + @d.r, 0, @d.r
+      .circle @d.w/2 - @d.r, 0, @d.r
+      .line -@d.w/2, -@d.h/2, @d.w/2, -@d.h/2
+      .line 0, -@d.h/2, 0, -@d.h
       .center 0, 0 # Restore default center point
 
 #
@@ -182,20 +299,30 @@ class ResistorIcon extends Icon
     @width = 10
     @height = 4
     super symbol, element
-    if @schematic.trimpot then @space = @height/2
+    @d =
+      w: @width
+      h: @height
+      d: @height/4
+    if @schematic.trimpot
+      @height = 2*@height + @d.d
+      @y1 = -@height/2 - @d.d
+      @y2 = @height/2
+
   draw: (x, y) ->
     settings = @symbol.settings
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
-      .rectangle -@width/2, -@height/2, @width/2, @height/2, settings.fill
+      .rectangle -@d.w/2, -@d.h/2, @d.w/2, @d.h/2, settings.fill
     if @schematic.trimpot
-      d = 1
       @symbol
-        .line -@height, @height,  @height, -@height
-        .line @height - d, -@height - d,  @height + d, -@height + d
+        .line -@d.h, @d.h,  @d.h, -@d.h
+        .line @d.h - @d.d, -@d.h - @d.d,  @d.h + @d.d, -@d.h + @d.d
     @symbol.center 0, 0 # Restore default center point
 
+#
+# Transistor
+#
 class TransistorIcon extends Icon
   constructor: (symbol, element) ->
     width = 12
@@ -203,42 +330,45 @@ class TransistorIcon extends Icon
     @width = 2 * symbol.alignToGrid(width/2, 'ceil')
     @height = 2 * symbol.alignToGrid(height/2, 'ceil')
     super symbol, element
+    @d =
+      w: @width
+      h: @height
+      gap: @width/8
+      aw: @width/8
 
   draw: (x, y) ->
-    arrowWidth = 1.5
     @symbol
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
-      .line 0, -@height/2, 0, @height/2
-      .line 0, -@height/4, @width/2, -@height/2
-      .line 0, @height/4, @width/2, @height/2
+      .line 0, -@d.h/2, 0, @d.h/2
+      .line 0, -@d.h/4, @d.w/2, -@d.h/2
+      .line 0, @d.h/4, @d.w/2, @d.h/2
     if @schematic.igbt
-      space = 1.5
       @symbol
-        .line -@width/2, 0, -space, 0
-        .line -space, -@height/2, -space, @height/2
+        .line -@d.w/2, 0, -@d.gap, 0
+        .line -@d.gap, -@d.h/2, -@d.gap, @height/2
     else
       @symbol
-        .line -@width/2, 0, 0, 0
+        .line -@d.w/2, 0, 0, 0
 
-    dx = @width/2
-    dy = @height/4
+    dx = @d.w/2
+    dy = @d.h/4
     x1 = dx/2
-    y1 = @height/4 + dy/2
+    y1 = @d.h/4 + dy/2
     x2 = x1 - dx/4
     y2 = y1 - dy/4
     a = Math.atan dy/dx
     if @schematic.npn or @schematic.igbt
-      x3 = x2 + arrowWidth*Math.sin(a)/2
-      y3 = y2 - arrowWidth*Math.cos(a)/2
-      x4 = x2 - arrowWidth*Math.sin(a)/2
-      y4 = y2 + arrowWidth*Math.cos(a)/2
+      x3 = x2 + @d.aw*Math.sin(a)/2
+      y3 = y2 - @d.aw*Math.cos(a)/2
+      x4 = x2 - @d.aw*Math.sin(a)/2
+      y4 = y2 + @d.aw*Math.cos(a)/2
       @symbol.poly x1, y1, x3, y3, x4, y4, 'background'
     if @schematic.pnp
-      x3 = x1 + arrowWidth*Math.sin(a)/2
-      y3 = y1 - arrowWidth*Math.cos(a)/2
-      x4 = x1 - arrowWidth*Math.sin(a)/2
-      y4 = y1 + arrowWidth*Math.cos(a)/2
+      x3 = x1 + @d.aw*Math.sin(a)/2
+      y3 = y1 - @d.aw*Math.cos(a)/2
+      x4 = x1 - @d.aw*Math.sin(a)/2
+      y4 = y1 + @d.aw*Math.cos(a)/2
       @symbol.poly x2, y2, x3, y3, x4, y4, 'background'
 
     @symbol.center 0, 0 # Restore default center point
@@ -247,10 +377,15 @@ class TransistorIcon extends Icon
 # Export object
 #
 Icons = {}
+
+Icons.Capacitor = CapacitorIcon
 Icons.Crystal = CrystalIcon
 Icons.Diode = DiodeIcon
 Icons.Fet = FetIcon
+Icons.Fuse = FuseIcon
+Icons.Inductor = InductorIcon
 Icons.Pushbutton = PushbuttonIcon
 Icons.Resistor = ResistorIcon
 Icons.Transistor = TransistorIcon
+
 module.exports = Icons

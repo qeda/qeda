@@ -33,7 +33,7 @@ module.exports = (symbol, element, icons = Icons) ->
     width = icon.width
     height = icon.height
     pinLength = symbol.alignToGrid(settings.pinLength ? 10)
-    pitch = symbol.alignToGrid 5
+    pitch = symbol.alignToGrid settings.pitch
     r = width/2
     symbol
       .attribute 'refDes',

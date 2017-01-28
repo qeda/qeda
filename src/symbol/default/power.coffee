@@ -8,9 +8,9 @@ module.exports = (symbol, element) ->
   schematic.showPinNames ?= false
   schematic.showPinNumbers ?= false
 
-  width = 2.5
-  height = 5
-  arrowHeight = 2.5
+  width = 2.5 * settings.factor
+  height = 5 * settings.factor
+  arrowHeight = width
 
   symbol
     .attribute 'refDes',

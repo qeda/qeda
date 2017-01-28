@@ -1,23 +1,21 @@
 enclosure = require './common/enclosure'
 Icons = require './common/icons'
 
-module.exports = (symbol, element, styleIcons) ->
+module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'D'
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
   pinGroups = element.pinGroups
+  icon = new icons.Diode(symbol, element)
 
   schematic.showPinNames ?= false
   schematic.showPinNumbers ?= true
-
-  icon = if styleIcons? then new styleIcons.Diode(symbol, element) else new Icons.Diode(symbol, element)
 
   rotateLeft = false
   rotateRight = false
   names = Object.keys pinGroups
   for k, v of pins
-    v.name = v.name.replace 'K', 'C'
     switch v.name
       when 'A' # A-|>-CA-|>-C or C-<|AC-<|-A or C1-<|-A-|>-C2
         if names.indexOf('C1') isnt -1
@@ -43,9 +41,10 @@ module.exports = (symbol, element, styleIcons) ->
 
   if (not valid) or needEnclosure
     schematic.showPinNames = true
+    schematic.showPinNumbers = true
     enclosure symbol, element, icon
   else
-    space = icon.height/2
+    space = settings.space.default
     width = 2*icon.width + 4*space
     width = 2*symbol.alignToGrid(width/2, 'ceil')
     height = icon.height + 2*space

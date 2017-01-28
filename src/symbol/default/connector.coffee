@@ -5,16 +5,17 @@ class PinIcon extends Icon
   constructor: (symbol, element) ->
     @width = 5
     @height = 5
-    @pinShape = element.schematic.pinShape?.toLowerCase() # TODO: Deprecated, remove in next release
-    @schematic = element.schematic
     super symbol, element
+    @d =
+      r: @width/4
 
   draw: (x, y) ->
-    r = @width/4
-    if (@pinShape is 'square') or (@schematic['square-pin'])
-      @symbol.poly x - r, y - r, x + r, y - r, x + r, y + r, x - r, y + r, x - r, y - r, 'background'
+    if @schematic['square-pin']
+      @symbol.poly x - @d.r, y - @d.r, x + @d.r, y - @d.r,
+                   x + @d.r, y + @d.r, x - @d.r, y + @d.r,
+                   x - @d.r, y - @d.r, 'background'
     else
-      @symbol.circle x, y, r, 'background'
+      @symbol.circle x, y, @d.r, 'background'
 
 module.exports = (symbol, element) ->
   schematic = element.schematic

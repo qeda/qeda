@@ -175,6 +175,10 @@ class QedaSymbol
     for i in [0..(count - 1)]
       points[2*i] = @cx + points[2*i]
       points[2*i + 1] = @cy + points[2*i + 1]
+    # Close polyline
+    if (points[0] != points[points.length - 2]) and (points[1] != points[points.length - 1])
+      points.push points[0]
+      points.push points[1]
     @_addShape 'poly', { points: points, fill: fill }
     this
 

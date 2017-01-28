@@ -12,7 +12,7 @@ module.exports = (symbol, element, icon) ->
   schematic = element.schematic
   settings = symbol.settings
 
-  pitch = symbol.alignToGrid(settings.pitch ? 5)
+  pitch = symbol.alignToGrid settings.pitch
   pinLength = symbol.alignToGrid(settings.pinLength ? 10)
   pinSpace = schematic.pinSpace ? settings.space.pin
   space = settings.space.default
@@ -35,10 +35,16 @@ module.exports = (symbol, element, icon) ->
 
   if icon?
     rects.push
-      x1: -icon.width/2
-      y1: -icon.height/2
-      x2: icon.width/2
-      y2: icon.height/2
+      x1: (icon.x1 ? -icon.width/2) - space
+      y1: (icon.y1 ? -icon.height/2) - space
+      x2: (icon.x2 ? icon.width/2) + space
+      y2: (icon.y2 ? icon.height/2) + space
+
+  for rect in rects
+    if leftX > rect.x1 then leftX = rect.x1
+    if rightX < rect.x2 then rightX = rect.x2
+    if topY > rect.y1 then topY = rect.y1
+    if bottomY < rect.y2 then bottomY = rect.y2
 
   if schematic.pinIcon?
     pinSpace += schematic.pinIcon.width
@@ -49,7 +55,7 @@ module.exports = (symbol, element, icon) ->
   dx = settings.fontSize.pin/2 + space
   y = topY
   if schematic.pinIcon? and top.length then y -= schematic.pinIcon.height
-  if icon? and (not top.length) then y -= pinSpace
+  #if icon? and (not top.length) then y -= pinSpace
   topPins = []
   topRects = []
   x = -pitch*(top.length/2 - 0.5)
@@ -90,7 +96,7 @@ module.exports = (symbol, element, icon) ->
   # Pins on the bottom side
   y = bottomY
   if schematic.pinIcon? and bottom.length then y += schematic.pinIcon.height
-  if icon? and (not bottom.length) then y += pinSpace
+  #if icon? and (not bottom.length) then y += pinSpace
   bottomPins = []
   bottomRects = []
   x = -pitch*(bottom.length/2 - 0.5)
@@ -131,7 +137,7 @@ module.exports = (symbol, element, icon) ->
   # Pins on the left side
   x = leftX
   if schematic.pinIcon? and left.length then x -= schematic.pinIcon.width
-  if icon? and (not left.length) then x -= pinSpace
+  #if icon? and (not left.length) then x -= pinSpace
   if top.length > 0
     w = symbol.textWidth('U???', 'refDes')
     if x > (-w - space) then x = -w - space
@@ -177,7 +183,7 @@ module.exports = (symbol, element, icon) ->
   # Pins on the right side
   x = rightX
   if schematic.pinIcon? and right.length then x += schematic.pinIcon.width
-  if icon? and (not right.length) then x += pinSpace
+  #if icon? and (not right.length) then x += pinSpace
   rightPins = []
   y = -pitch*(right.length/2 - 0.5)
   for i in right

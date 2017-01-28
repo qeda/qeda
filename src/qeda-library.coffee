@@ -21,6 +21,8 @@ class QedaLibrary
     @symbol =
       style: 'default' # Options: default, GOST
       gridSize: 2.5 # Grid cell size
+      factor: 1 # Symbol factor
+      pitch: 5 # Default pin pitch
       shortPinNames: false # Add alternate pin functions to pin name or not
       fill: 'foreground' # Options: none, background, foreground
       fontSize:
