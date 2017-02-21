@@ -173,6 +173,19 @@ class QedaElement
       [handler, error] = @_firstHandler paths
       if error then log.exception error
       handler @pattern, this
+
+      # Box
+      @pattern.box =
+        x: 0
+        y: 0
+        width: if @housing.bodyWidth? then @housing.bodyWidth.nom else 0
+        length: if @housing.bodyLength? then @housing.bodyLength.nom else 0
+        height: if @housing.height? then @housing.height.max else 0
+      if @housing.bodyPosition?
+        bodyPosition = @pattern.parsePosition @housing.bodyPosition
+        @pattern.box.x = bodyPosition[0].x
+        @pattern.box.y = bodyPosition[0].y
+
       log.ok()
 
     @_rendered = true

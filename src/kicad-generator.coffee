@@ -20,7 +20,7 @@ class KicadGenerator
   generate: (@name) ->
     dir = './kicad'
     mkdirp.sync "#{dir}/#{@name}.pretty"
-    patterns = {}
+    mkdirp.sync "#{dir}/#{@name}.3dshapes"
 
     now = new Date
     timestamp = sprintf "%02d/%02d/%d %02d:%02d:%02d",
@@ -31,6 +31,8 @@ class KicadGenerator
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
     fs.writeSync fd, '#encoding utf-8\n'
     patterns = {}
+
+    # Symbols
     for element in @library.elements
       @_generateSymbol fd, element
       if element.pattern? then patterns[element.pattern.name] = element.pattern
@@ -38,6 +40,7 @@ class KicadGenerator
     fs.closeSync fd
     log.ok()
 
+    # Doc
     log.start "KiCad library doc '#{@name}.dcm'"
     fd = fs.openSync "#{dir}/#{@name}.dcm", 'w'
     fs.writeSync fd, "EESchema-DOCLIB  Version 2.0 Date: #{timestamp}\n#\n"
@@ -47,10 +50,19 @@ class KicadGenerator
     fs.closeSync fd
     log.ok()
 
+    # Footprints
     for patternName, pattern of patterns
       log.start "KiCad footprint '#{patternName}.kicad_mod'"
       fd = fs.openSync "#{dir}/#{@name}.pretty/#{patternName}.kicad_mod", 'w'
       @_generatePattern fd, pattern
+      fs.closeSync fd
+      log.ok()
+
+    # 3D shapes
+    for patternName, pattern of patterns
+      log.start "KiCad 3D shape '#{patternName}.wrl'"
+      fd = fs.openSync "#{dir}/#{@name}.3dshapes/#{patternName}.wrl", 'w'
+      @_generateVrml fd, pattern
       fs.closeSync fd
       log.ok()
 
@@ -112,6 +124,12 @@ class KicadGenerator
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
           if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
           fs.writeSync fd, ")\n"
+
+    fs.writeSync fd, "  (model #{pattern.name}.wrl\n"
+    fs.writeSync fd, "    (at (xyz 0 0 0))\n"
+    fs.writeSync fd, "    (scale (xyz 0.3937 0.3937 0.3937))\n"
+    fs.writeSync fd, "    (rotate (xyz 0 0 0 ))\n"
+    fs.writeSync fd, "  )\n" # model
 
     fs.writeSync fd, ")\n" # module
 
@@ -184,6 +202,57 @@ class KicadGenerator
       ++i
     fs.writeSync fd, "ENDDRAW\n"
     fs.writeSync fd, "ENDDEF\n"
+
+  #
+  # Write 3D shape file in VRML format
+  #
+  _generateVrml: (fd, pattern) ->
+    x1 =  pattern.box.x - pattern.box.width/2
+    x2 =  pattern.box.x + pattern.box.width/2
+    y1 =  pattern.box.y - pattern.box.length/2
+    y2 =  pattern.box.y + pattern.box.length/2
+    z1 = 0
+    z2 = pattern.box.height
+
+    fs.writeSync fd, "#VRML V2.0 utf8\n"
+    fs.writeSync fd, "Shape {\n"
+    fs.writeSync fd, "  appearance Appearance {\n"
+    fs.writeSync fd, "    material Material {\n"
+    fs.writeSync fd, "    diffuseColor 0.37 0.37 0.37\n"
+    fs.writeSync fd, "    emissiveColor 0.0 0.0 0.0\n"
+    fs.writeSync fd, "    specularColor 1.0 1.0 1.0\n"
+    fs.writeSync fd, "    ambientIntensity 1.0\n"
+    fs.writeSync fd, "    transparency 0.5\n"
+    fs.writeSync fd, "    shininess 1.0\n"
+    fs.writeSync fd, "    }\n" # Material
+    fs.writeSync fd, "  }\n" # Appearance
+
+    fs.writeSync fd, "  geometry IndexedFaceSet {\n"
+    fs.writeSync fd, "    coord Coordinate {\n"
+    fs.writeSync fd, "      point [\n"
+    fs.writeSync fd, "        #{x1} #{y1} #{z1},\n"
+    fs.writeSync fd, "        #{x2} #{y1} #{z1},\n"
+    fs.writeSync fd, "        #{x2} #{y2} #{z1},\n"
+    fs.writeSync fd, "        #{x1} #{y2} #{z1},\n"
+    fs.writeSync fd, "        #{x1} #{y1} #{z2},\n"
+    fs.writeSync fd, "        #{x2} #{y1} #{z2},\n"
+    fs.writeSync fd, "        #{x2} #{y2} #{z2},\n"
+    fs.writeSync fd, "        #{x1} #{y2} #{z2}\n"
+    fs.writeSync fd, "      ]\n" # point
+    fs.writeSync fd, "    }\n" # Coordinate
+
+    fs.writeSync fd, "    coordIndex [\n"
+    fs.writeSync fd, "      0,1,2,3,-1\n" # bottom
+    fs.writeSync fd, "      4,5,6,7,-1\n" # top
+    fs.writeSync fd, "      0,1,5,4,-1\n" # front
+    fs.writeSync fd, "      2,3,7,6,-1\n" # back
+    fs.writeSync fd, "      0,3,7,4,-1\n" # left
+    fs.writeSync fd, "      1,2,6,5,-1\n" # right
+    fs.writeSync fd, "    ]\n" # coordIndex
+
+    fs.writeSync fd, "  }\n" # IndexedFaceSet
+
+    fs.writeSync fd, "}\n" # Shape
 
   #
   # Convert definition to pattern object
