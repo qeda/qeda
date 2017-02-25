@@ -11,7 +11,7 @@ copperPads = (pattern, element, suffix = '') ->
   housing = element.housing
   pins = element.pins
   numbers = Object.keys pins
-  unless (housing['holeDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
+  unless (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
     return false
   hasPads = false
   if housing['holeDiameter' + suffix]?
