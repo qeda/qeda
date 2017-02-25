@@ -116,6 +116,11 @@ class KicadGenerator
               patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
           )
         when 'pad'
+          if patObj.shape is 'rect' and @library.pattern.smoothPadCorners
+            cornerRadius = Math.min(patObj.width, patObj.height) * @library.pattern.ratio.cornerToWidth
+            if cornerRadius > @library.pattern.maximum.cornerRadius then cornerRadius = @library.pattern.maximum.cornerRadius
+            if cornerRadius > 0 then patObj.shape = 'roundrect'
+
           fs.writeSync(fd,
             sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
               patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
@@ -123,6 +128,10 @@ class KicadGenerator
           if patObj.hole? then fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.hole)
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
           if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
+
+          if patObj.shape is 'roundrect'
+            ratio = cornerRadius / Math.min(patObj.width, patObj.height)
+            fs.writeSync fd, sprintf("\n    (roundrect_rratio #{@f})", ratio)
           fs.writeSync fd, ")\n"
 
     fs.writeSync fd, "  (model #{pattern.name}.wrl\n"

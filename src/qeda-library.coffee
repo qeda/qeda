@@ -45,6 +45,7 @@ class QedaLibrary
       decimals: 3
       polarityMark: 'dot'
       preferManufacturer: true
+      smoothPadCorners: false # Use ratio.cornerToWidth and maximum.cornerRadius
       tolerance:
         default: 0.1
         fabrication: 0.1
@@ -56,11 +57,14 @@ class QedaLibrary
         leadToHole: 0.1
       ratio:
         padToHole: 1.5
+        cornerToWidth: 0.25
       minimum:
         ringWidth: 0.2
         holeDiameter: 0.2
         maskWidth: 0.2
         spaceForIron: 0
+      maximum:
+        cornerRadius: 0.2
       lineWidth:
         default: 0.2
         silkscreen: 0.12 # IPC-7351C (0.1, 0.12, 0.15)
