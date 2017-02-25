@@ -10,6 +10,7 @@ module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
   leadCount = housing.leadCount ? Object.keys(element.pins).length
+  housing.pitch ?= Math.max housing.horizontalPitch, housing.verticalPitch
 
   if housing.cga
     abbr = 'CGA'
