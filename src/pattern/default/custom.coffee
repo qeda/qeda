@@ -24,7 +24,7 @@ copperPads = (pattern, element, suffix = '') ->
       hole: housing['holeDiameter' + suffix]
       width: padWidth
       height: padHeight
-      shape: unless pinNumber then 'rectangle' else 'circle'
+      shape: if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle'
       layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
     if (padWidth < holeDiameter) or (padHeight < holeDiameter)
       pad.type = 'mounting-hole'
