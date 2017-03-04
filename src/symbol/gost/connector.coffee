@@ -24,7 +24,7 @@ module.exports = (symbol, element) ->
   if symbol.bottom.length
     numbers = numbers.concat symbol.bottom
   if numbers.length is 0 then numbers = Object.keys pins
-  numbers = numbers.filter((v) -> v isnt '-')
+  numbers = numbers.filter((v) -> v isnt '--')
 
   # Attributes
   symbol

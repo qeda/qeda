@@ -60,7 +60,7 @@ module.exports = (symbol, element, icon) ->
   topRects = []
   x = -pitch*(top.length/2 - 0.5)
   for i in top
-    if i is '-'
+    if i is '--'
       x += pitch
       continue
     pin = pins[i]
@@ -101,7 +101,7 @@ module.exports = (symbol, element, icon) ->
   bottomRects = []
   x = -pitch*(bottom.length/2 - 0.5)
   for i in bottom
-    if i is '-'
+    if i is '--'
       x += pitch
       continue
     pin = pins[i]
@@ -147,7 +147,7 @@ module.exports = (symbol, element, icon) ->
   leftRects = []
   y = -pitch*(left.length/2 - 0.5)
   for i in left
-    if i is '-'
+    if i is '--'
       y += pitch
       continue
     pin = pins[i]
@@ -187,7 +187,7 @@ module.exports = (symbol, element, icon) ->
   rightPins = []
   y = -pitch*(right.length/2 - 0.5)
   for i in right
-    if i is '-'
+    if i is '--'
       y += pitch
       continue
     pin = pins[i]

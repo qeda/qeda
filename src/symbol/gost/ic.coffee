@@ -92,11 +92,11 @@ module.exports = (symbol, element) ->
 
   left = symbol.left
   if symbol.top.length # Move top pins to the left side
-    if left.length then left.push '-'
+    if left.length then left.push '--'
     left = left.concat symbol.top
   right = symbol.right
   if symbol.bottom.length # Move bottom pins to the right side
-    if right.length then right.push '-'
+    if right.length then right.push '--'
     right = right.concat symbol.bottom
 
   pins = element.pins
@@ -143,7 +143,7 @@ module.exports = (symbol, element) ->
   y = height/2 - pitch * left.length/2 + pitch/2
   noLeftText = true
   for i in left
-    if i is '-'
+    if i is '--'
       unless leftFirst? then leftFirst = leftPins.length - 1
       leftLast = leftPins.length
       leftYs.push y
@@ -171,7 +171,7 @@ module.exports = (symbol, element) ->
   y = height/2 - pitch * right.length/2 + pitch/2
   noRightText = true
   for i in right
-    if i is '-'
+    if i is '--'
       unless rightFirst? then rightFirst = rightPins.length - 1
       rightLast = rightPins.length
       rightYs.push y

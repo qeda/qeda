@@ -28,10 +28,10 @@ class QedaSymbol
           if element.pinGroups[group]?
             pinGroup = element.pinGroups[group]
             if @[side].length and (not schematic.simpified)
-              @[side].push '-' # Insert gap
+              @[side].push '--' # Insert gap
             @[side] = @[side].concat pinGroup
     # Divide common pins between left and right evenly
-    both = @left.filter((v) => (v isnt '-') and (@right.indexOf(v) isnt -1))
+    both = @left.filter((v) => (v isnt '--') and (@right.indexOf(v) isnt -1))
     delta = Math.ceil((@right.length - @left.length + both.length) / 2)
     toLeft = both[0..(delta-1)]
     toRight = both[delta..]
@@ -39,7 +39,7 @@ class QedaSymbol
     @right = @right.filter((v) => toLeft.indexOf(v) is -1)
 
     # Divide common pins between top and bottom evenly
-    both = @top.filter((v) => (v isnt '-') and (@bottom.indexOf(v) isnt -1))
+    both = @top.filter((v) => (v isnt '--') and (@bottom.indexOf(v) isnt -1))
     delta = Math.ceil((@bottom.length - @top.length + both.length) / 2)
     toTop = both[0..(delta-1)]
     toBottom = both[delta..]
