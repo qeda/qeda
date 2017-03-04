@@ -321,6 +321,27 @@ class ResistorIcon extends Icon
     @symbol.center 0, 0 # Restore default center point
 
 #
+# Switch
+#
+class SwitchIcon extends Icon
+  constructor: (symbol, element) ->
+    @width = 4
+    @height = 8
+    super symbol, element
+    @d =
+      w: @width
+      h: @height
+
+  draw: (x, y) ->
+    settings = @symbol.settings
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .rectangle -@d.w/2, -@d.h/2, @d.w/2, 0, 'none'
+      .rectangle -@d.w/2, 0, @d.w/2, @d.h/2, 'background'
+    @symbol.center 0, 0 # Restore default center point
+
+#
 # Transistor
 #
 class TransistorIcon extends Icon
@@ -386,6 +407,7 @@ Icons.Fuse = FuseIcon
 Icons.Inductor = InductorIcon
 Icons.Pushbutton = PushbuttonIcon
 Icons.Resistor = ResistorIcon
+Icons.Switch = SwitchIcon
 Icons.Transistor = TransistorIcon
 
 module.exports = Icons

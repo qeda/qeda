@@ -14,7 +14,7 @@ Features
 * Generating schematic symbols:
   - Single and multi part IC (dual-in-line, quad)
   - Connector
-  - Capacitor, crystal, diode, FET, fuse, inductor, LED, pushbutton, resistor, test point, transistor, TVS
+  - Capacitor, crystal, diode, FET, fuse, inductor, LED, pushbutton, resistor, switch, test point, transistor, TVS
   - Power supply, ground
   - GOST style alternative
 * Borrowing packages dimensions from standards:
@@ -35,6 +35,7 @@ Features
   - Custom element
 * Generating libraries:
   - KiCad format
+* 3D models generation
 
 Installation
 ============
@@ -192,4 +193,3 @@ Coming soon
   - TO (Flange mount)
   - TO (Cylindrical)
   - Wire
-* 3D models generation
