@@ -6,6 +6,7 @@ silkscreen = require './common/silkscreen'
 
 pinNumber = 0
 mountingHole = 1
+ncPad = 1
 
 copperPads = (pattern, element, suffix = '') ->
   housing = element.housing
@@ -49,7 +50,7 @@ copperPads = (pattern, element, suffix = '') ->
     for p, i in points
       pad.x = p.x
       pad.y = p.y
-      number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? 'NC')
+      number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? ('NC' + ncPad++))
       pattern.pad number, pad
       if housing['holeDiameter' + suffix]?
         pad.shape = 'circle'
@@ -77,7 +78,7 @@ copperPads = (pattern, element, suffix = '') ->
         columnDY = columnDYs[column] ? columnDYs[0]
         pad.x = x + rowDX + columnDX
         pad.y = y + rowDY + columnDY
-        number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? 'NC')
+        number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? ('NC' + ncPad++))
         pattern.pad number, pad
         if housing['holeDiameter' + suffix]?
           pad.shape = 'circle'
@@ -96,6 +97,7 @@ module.exports = (pattern, element) ->
 
   pinNumber = 0
   mountingHole = 1
+  ncPad = 1
   copperPads pattern, element
   i = 1
   loop
