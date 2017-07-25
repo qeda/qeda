@@ -93,7 +93,9 @@ module.exports = (pattern, element) ->
 
   housing.bodyPosition ?= '0, 0'
   bodyPosition = pattern.parsePosition housing.bodyPosition
-  pattern.center -bodyPosition[0].x, -bodyPosition[0].y
+  housing.basePoint ?= '0, 0'
+  basePoint = pattern.parsePosition housing.basePoint
+  pattern.center -bodyPosition[0].x + basePoint[0].x, -bodyPosition[0].y + basePoint[0].y
 
   pinNumber = 0
   mountingHole = 1
