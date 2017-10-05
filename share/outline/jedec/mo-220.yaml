@@ -135,7 +135,6 @@ W\w\w\w(-\d)?:
 \w\w\wD(-\d)?:
   pitch: 0.5
   leadWidth: 0.18-0.3
-  leadLength: 0.30-0.50
 
 \w\w\wE(-\d)?:
   pitch: 0.4
