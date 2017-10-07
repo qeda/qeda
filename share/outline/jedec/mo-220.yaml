@@ -150,3 +150,21 @@ W\w\w\w(-\d)?:
   leadLength: 0.35-0.75
   rowCount: 1
   columnCount: 3
+  
+\wLLD:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+  
+\wLLD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 13
+  columnCount: 13
+  
+\wLLD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 14
+  columnCount: 14
