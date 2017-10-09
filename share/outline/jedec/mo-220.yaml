@@ -140,17 +140,729 @@ W\w\w\w(-\d)?:
   pitch: 0.4
   leadWidth: 0.15-0.25
 
-# Variations
+# Data according MO-220K01 Table 6A
 \wEEB:
   leadLength: 0.35-0.75
+  pullBack: 0
   rowCount: 1
   columnCount: 1
 
 \wGEB:
   leadLength: 0.35-0.75
+  pullBack: 0
   rowCount: 1
   columnCount: 3
-  
+ 
+\wGGB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 3
+
+\wGGB-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 4
+ 
+\wGHB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 2
+ 
+\wHGB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 4
+ 
+\wHGB-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 5
+ 
+\wHHB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+# Data according MO-220K01 Table 6B
+\wHHB-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 6
+ 
+\wJHB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 5
+ 
+\wJHB-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 6
+ 
+\wJJB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wJJB-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 7
+ 
+\wJJB-2:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 7
+  columnCount: 5
+ 
+\wKKB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+ 
+\wLLB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+# Data according MO-220K01 Table 6C
+\wLLB-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 6
+  columnCount: 8
+ 
+\wMMB:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+ 
+# Data according MO-220K01 Table 7A
+\wEEC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 2
+  columnCount: 2
+ 
+\wEEC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 3
+  columnCount: 3
+ 
+\wEEC-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 2
+  columnCount: 2
+ 
+\wEEC-3:
+  leadLength: 0.35-0.50
+  pullBack: 0
+  rowCount: 2
+  columnCount: 2
+ 
+\wGEC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 2
+  columnCount: 4
+ 
+\wGGC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wGGC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 3
+  columnCount: 3
+ 
+\wGGC-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wGGC-3:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+# Data according MO-220K01 Table 7B
+\wGGC-4:
+  leadLength: 0.45-0.65
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wHGC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 5
+ 
+\wHGC-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 4
+  columnCount: 5
+ 
+\wHHC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wHHC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+\wHHC-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wHJC:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 6
+  columnCount: 5
+ 
+\wJHC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 6
+ 
+\wJJC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+ 
+# Data according MO-220K01 Table 7C
+\wJJC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+\wJJC-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wJJC-3:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+ 
+\wJJC-4:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+ 
+\wKKC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wKKC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+ 
+\wKKC-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wKMC:
+  leadLength: 0.45-0.65
+  pullBack: 0
+  rowCount: 11
+  columnCount: 8
+ 
+# Data according MO-220K01 Table 7D
+\wLLC:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+ 
+\wLLC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+ 
+\wLLC-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+\wLLC-3:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+ 
+\wLLC-4:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+\wMMC:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+ 
+\wMMC-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+\wMMC-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+\wMMC-3:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+# Data according MO-220K01 Table 8A
+\wCCD:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 2
+  columnCount: 2
+ 
+\wEED-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 3
+ 
+\wEED-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wEED-3:
+  leadLength: 0.35-0.55
+  pullBack: 0
+  rowCount: 3
+  columnCount: 3
+ 
+\wEED-4:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wEED-5:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 3
+  columnCount: 3
+ 
+\wEED-6:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wEED-7:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wFFD:
+  leadLength: 0.50-0.60
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+# Data according MO-220K01 Table 8B
+\wFFD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wFSD:
+  leadLength: 0.50-0.60
+  pullBack: 0
+  rowCount: 8
+  columnCount: 4
+ 
+\wFSD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 8
+  columnCount: 4
+ 
+\wFSD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 8
+  columnCount: 4
+ 
+\wGED:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 5
+ 
+\wGGD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wGGD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+\wGGD-3:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 3
+  columnCount: 4
+ 
+\wGGD-4:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+# Data according MO-220K01 Table 8C
+\wGGD-5:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wGGD-6:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+\wGGD-7:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 8
+  columnCount: 6
+ 
+\wGGD-8:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+\wGGD-9:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+\wGGD-10:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+ 
+\wGGD-11:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+ 
+\wGHD:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 8
+  columnCount: 6
+ 
+\wGHD-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 7
+  columnCount: 5
+ 
+\wGHD-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 6
+  columnCount: 6
+ 
+# Data according MO-220K01 Table 8D
+\wGHD-3:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 8
+  columnCount: 6
+ 
+\wSTD:
+  leadLength: 0.50-0.60
+  pullBack: 0
+  rowCount: 10
+  columnCount: 6
+ 
+\wSTD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 10
+  columnCount: 6
+ 
+\wSUD:
+  leadLength: 0.50-0.60
+  pullBack: 0
+  rowCount: 12
+  columnCount: 6
+ 
+\wSUD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 12
+  columnCount: 6
+ 
+\wHGD:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 5
+  columnCount: 7
+ 
+\wHHD-1:
+  leadLength: 0.45-0.75
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+ 
+\wHHD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wHHD-3:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+ 
+\wHHD-4:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+# Data according MO-220K01 Table 8E
+\wHHD-5:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wHHD-6:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wHJD:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 9
+  columnCount: 7
+ 
+\wHKD:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 12
+  columnCount: 7
+ 
+\wHKD-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 12
+  columnCount: 7
+ 
+\wHKD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 12
+  columnCount: 8
+ 
+\wTUD:
+  leadLength: 0.50-0.60
+  pullBack: 0
+  rowCount: 12
+  columnCount: 8
+ 
+\wTUD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 12
+  columnCount: 8
+ 
+\wJHD:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 7
+  columnCount: 9
+ 
+# Data according MO-220K01 Table 8F
+\wJJD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+ 
+\wJJD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+ 
+\wJJD-3:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 9
+  columnCount: 10
+ 
+\wJJD-4:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+ 
+\wJJD-5:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+ 
+\wJJD-6:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+ 
+\wJJD-7:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 8
+  columnCount: 8
+ 
+\wJJD-8:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+ 
+\wKHD:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 7
+  columnCount: 12
+ 
+# Data according MO-220K01 Table 8G
+\wKKD:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+ 
+\wKKD-1:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+\wKKD-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+ 
+\wKKD-3:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 11
+  columnCount: 11
+ 
+\wKKD-4:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+ 
+\wKKD-5:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 10
+  columnCount: 12
+ 
+\wKKD-6:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+ 
+\wKKD-7:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 12
+  columnCount: 10
+ 
+\wKKD-8:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 13
+  columnCount: 11
+ 
+# Data according MO-220K01 Table 8H
 \wLLD:
   leadLength: 0.35-0.45
   pullBack: 0
@@ -168,3 +880,211 @@ W\w\w\w(-\d)?:
   pullBack: 0
   rowCount: 14
   columnCount: 14
+ 
+\wLLD-3:
+  leadLength: 0.35-0.75
+  pullBack: 0
+  rowCount: 11
+  columnCount: 13
+
+\wLLD-4:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 13
+  columnCount: 13
+  
+\wLLD-5:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 14
+  columnCount: 14
+
+\wLLD-6:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 14
+  columnCount: 14
+
+\wMMD:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 16
+  columnCount: 16
+
+\wMMD-1:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 15
+  columnCount: 15
+
+# Data according MO-220K01 Table 8I
+\wMMD-2:
+  leadLength: 0.35-0.45
+  pullBack: 0
+  rowCount: 14
+  columnCount: 14
+
+\wMMD-3:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 16
+  columnCount: 16
+
+\wMMD-4:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 16
+  columnCount: 16
+
+\wNND-1:
+  leadLength: 0.45-0.65
+  pullBack: 0
+  rowCount: 16
+  columnCount: 16
+
+\wNND-2:
+  leadLength: 0.45-0.65
+  pullBack: 0
+  rowCount: 17
+  columnCount: 17
+
+\wNND-3:
+  leadLength: 0.45-0.55
+  pullBack: 0
+  rowCount: 18
+  columnCount: 18
+
+\wNND-4:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 18
+  columnCount: 18
+  
+\wRRD:
+  leadLength: 0.45-0.65
+  pullBack: 0
+  rowCount: 20
+  columnCount: 20
+ 
+# Data according MO-220K01 Table 9A
+\wEEE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 5
+  columnCount: 5
+
+\wEEE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 4
+  columnCount: 4
+
+\wGGE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 7
+  columnCount: 7
+
+\wHHE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 9
+  columnCount: 9
+
+\wHHE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 10
+  columnCount: 10
+
+\wJJE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+
+\wJJE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 12
+  columnCount: 12
+
+\wGHE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 9
+  columnCount: 7
+
+\wGHE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 10
+  columnCount: 7
+  
+# Data according MO-220K01 Table 9B
+\wLLE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 17
+  columnCount: 17
+
+\wLLE-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 16
+  columnCount: 16
+  
+\wMME:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 18
+  columnCount: 18
+  
+\wMME-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 19
+  columnCount: 19
+  
+\wNNE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 22
+  columnCount: 22
+  
+\wNNE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 22
+  columnCount: 22
+  
+\wKKE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 14
+  columnCount: 14
+  
+\wLLE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 16
+  columnCount: 16
+  
+# Data according MO-220K01 Table 9C
+\wRRE:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 25
+  columnCount: 25
+  
+\wRRE-1:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 25
+  columnCount: 25
+  
+\wRRE-2:
+  leadLength: 0.30-0.50
+  pullBack: 0
+  rowCount: 27
+  columnCount: 27
