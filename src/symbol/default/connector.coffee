@@ -3,9 +3,7 @@ Icon = require './common/icon'
 
 class PinIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 5
-    @height = 5
-    super symbol, element
+    super symbol, element, width=5, height=5
     @d =
       r: @width/4
 

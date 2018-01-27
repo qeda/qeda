@@ -2,9 +2,7 @@ Icon = require '../../default/common/icon'
 
 class DiodeIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 4
-    @height = 5
-    super symbol, element
+    super symbol, element, width=4, height=5
     if @schematic.tvs then @width *= 2
 
   draw: (x, y, rotated = false) ->
