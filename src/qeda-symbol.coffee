@@ -198,18 +198,32 @@ class QedaSymbol
   #
   # Resize symbol to new grid size
   #
-  resize: (gridSize, needRound = false) ->
+  resize: (gridSize, needRound = false, shift_x = 0, shift_y = 0) ->
     factor = gridSize / @settings.gridSize
-    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length', 'lineWidth', 'fontSize', 'space', 'radius']
+    resize_value = (value) =>
+      value = value * factor
+      return if needRound then Math.round value else value
+
+    for prop in ['width', 'height']
+      this[prop] = resize_value(this[prop])
+
+    props = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'width', 'height', 'length',
+             'lineWidth', 'fontSize', 'space', 'radius']
     for shape in @shapes
       for prop in props
         if shape[prop]?
-           value = shape[prop] * factor
-           if needRound then value = Math.round value
-           shape[prop] = value
-      if shape['points']?
-        shape['points'] = shape['points'].map((v) -> v * factor)
-        if needRound then shape['points'] = shape['points'].map((v) -> Math.round(v))
+          if prop in ['x', 'x1', 'x2']
+            shape[prop] += shift_x
+          else if prop in ['y', 'y1', 'y2']
+            shape[prop] += shift_y
+          shape[prop] = resize_value(shape[prop])
+      if shape.points?
+        for [i, c] from shape.points.entries()
+          if i % 2 == 0
+            shape.points[i] += shift_x
+          else
+            shape.points[i] += shift_y
+          shape.points[i] = resize_value(shape.points[i])
 
   #
   # Add text string
