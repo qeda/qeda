@@ -5,9 +5,7 @@ Icon = require './icon'
 #
 class CapacitorIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 1.5
-    @height = 8
-    super symbol, element
+    super symbol, element, width=1.5, height=8
     @d =
       w: @width
       h: @height
@@ -43,9 +41,7 @@ class CapacitorIcon extends Icon
 #
 class CrystalIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 6
-    @height = 8
-    super symbol, element
+    super symbol, element, width=6, height=8
     @d =
       w: @width
       h: @height
@@ -70,9 +66,7 @@ class CrystalIcon extends Icon
 #
 class DiodeIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 4
-    @height = 5
-    super symbol, element
+    super symbol, element, width=4, height=5
     if @schematic.tvs then @width *= 2
     @d =
       w: @width
@@ -150,9 +144,9 @@ class FetIcon extends Icon
   constructor: (symbol, element) ->
     width = 15
     height = 9
-    @width = 2 * symbol.alignToGrid(width/2, 'ceil')
-    @height = 2 * symbol.alignToGrid(height/2, 'ceil')
-    super symbol, element
+    width = 2 * symbol.alignToGrid(width/2, 'ceil')
+    height = 2 * symbol.alignToGrid(height/2, 'ceil')
+    super symbol, element, width, height
     @d =
       w: @width
       h: @height
@@ -221,9 +215,7 @@ class FetIcon extends Icon
 #
 class FuseIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 10
-    @height = 4
-    super symbol, element
+    super symbol, element, width=10, height=4
     @d =
       w: @width
       h: @height
@@ -243,9 +235,8 @@ class FuseIcon extends Icon
 #
 class InductorIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 20
-    @height = @width/8
-    super symbol, element
+    width = 20
+    super symbol, element, width, height=width/8
     @d =
       w: @width
       h: @height
@@ -270,9 +261,7 @@ class InductorIcon extends Icon
 #
 class PushbuttonIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 10
-    @height = 6
-    super symbol, element
+    super symbol, element, width=10, height=6
     @d =
       w: @width
       h: @height
@@ -296,9 +285,7 @@ class PushbuttonIcon extends Icon
 #
 class ResistorIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 10
-    @height = 4
-    super symbol, element
+    super symbol, element, width=10, height=4
     @d =
       w: @width
       h: @height
@@ -325,9 +312,7 @@ class ResistorIcon extends Icon
 #
 class SwitchIcon extends Icon
   constructor: (symbol, element) ->
-    @width = 4
-    @height = 8
-    super symbol, element
+    super symbol, element, width=4, height=8
     @d =
       w: @width
       h: @height
@@ -348,9 +333,9 @@ class TransistorIcon extends Icon
   constructor: (symbol, element) ->
     width = 12
     height = 9
-    @width = 2 * symbol.alignToGrid(width/2, 'ceil')
-    @height = 2 * symbol.alignToGrid(height/2, 'ceil')
-    super symbol, element
+    width = 2 * symbol.alignToGrid(width/2, 'ceil')
+    height = 2 * symbol.alignToGrid(height/2, 'ceil')
+    super symbol, element, width, height
     @d =
       w: @width
       h: @height

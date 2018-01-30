@@ -2,6 +2,7 @@
 kicad/*
 lib/*
 node_modules/*
+test/.qeda.yaml
 test/kicad/*
 test/library/*
 *.bak
