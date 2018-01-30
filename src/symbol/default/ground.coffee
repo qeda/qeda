@@ -26,8 +26,8 @@ groundSymbol = (symbol, element, icon = 'signal') ->
       orientation: 'down'
       ground: true
       invisible: true
-    .line 0, 0, 0, (if schematic.signal or schematic.earth or schematic.chassis then height/2 else height)
     .lineWidth settings.lineWidth.thick
+    .line 0, 0, 0, (if schematic.signal or schematic.earth or schematic.chassis then height/2 else height)
   if schematic.signal
     element.description = 'Signal Ground Symbol'
     symbol.poly -width/2, height/2, width/2, height/2, 0, height, -width/2, height/2, settings.fill
