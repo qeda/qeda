@@ -4,6 +4,7 @@ lib/*
 node_modules/*
 test/.qeda.yaml
 test/kicad/*
+test/svg/*
 test/library/*
 *.bak
 *-cache.lib

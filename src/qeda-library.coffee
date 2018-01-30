@@ -5,6 +5,7 @@ request = require 'sync-request'
 yaml = require 'js-yaml'
 
 KicadGenerator = require './kicad-generator'
+SvgGenerator = require './svg-generator'
 QedaElement = require './qeda-element'
 log = require './qeda-log'
 
@@ -150,6 +151,7 @@ class QedaLibrary
     generator = null
     switch @output
       when 'kicad' then generator = new KicadGenerator(this)
+      when 'svg' then generator = new SvgGenerator(this)
     if generator
       log.start "Generate output for '#{name}'"
       generator.generate name
