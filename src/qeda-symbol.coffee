@@ -9,6 +9,7 @@ class QedaSymbol
     @settings = element.library.symbol
     @shapes = []
     @attributes = []
+    @orientations = [0]
     @currentLineWidth = 0
     sides = ['left', 'right', 'top', 'bottom']
     schematic = element.schematic

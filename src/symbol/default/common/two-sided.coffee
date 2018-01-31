@@ -4,7 +4,6 @@ module.exports = (symbol, element, icon, leftName = 'L', rightName = 'R') ->
   schematic = element.schematic
   settings = symbol.settings
   pins = element.pins
-
   schematic.showPinNames ?= false
 
   leftRegEx = new RegExp("^" + leftName)
@@ -37,6 +36,7 @@ module.exports = (symbol, element, icon, leftName = 'L', rightName = 'R') ->
     schematic.showPinNames = true
     schematic.showPinNumbers = true
     enclosure symbol, element, icon
+    symbol.orientations = [0]
   else
     decorated = (left.length > 1) or (right.length > 1) or (nc?.length)
 
