@@ -26,6 +26,7 @@ Commands:\n\
   load COMPONENT        Load component definition from global repository\n\
   power NET             Add power supply symbol to config\n\
   ground NET            Add ground symbol to config\n\
+  port                  Add port symbols to config\n\
   sort                  Sort components and nets in config alphabetically\n\
                         (use with caution due to possible annotation issues)\n\
   config PARAM [VALUE]  Set/get config parameter\n\
@@ -136,6 +137,12 @@ function addGround(netName) {
   }
 }
 
+function addPort() {
+  var qedaYaml = readYaml();
+  qedaYaml.port = true;
+  writeYaml(qedaYaml);
+}
+
 function generateLibrary(libraryName) {
   var qedaYaml = readYaml();
   qedaYaml.library = qedaYaml.library || [];
@@ -160,6 +167,9 @@ function generateLibrary(libraryName) {
   }
   for (var i = 0; i < qedaYaml.ground.length; ++i) {
     lib.ground(qedaYaml.ground[i]);
+  }
+  if (qedaYaml.port === true) {
+    lib.port()
   }
   lib.generate(libraryName);
 }
@@ -286,6 +296,9 @@ switch (command) {
       displayError('Missing net name after "ground" command');
     }
     addGround(args.argv.original[1]);
+    break;
+  case 'port':
+    addPort()
     break;
   case 'config':
     if (args.argv.original.length < 2) {
