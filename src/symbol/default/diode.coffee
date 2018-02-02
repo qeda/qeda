@@ -3,6 +3,9 @@ twoSided = require './common/two-sided'
 
 module.exports = (symbol, element, icons = Icons) ->
   element.refDes = 'D'
+  symbol.orientations = [0, 90]
+  if element.schematic.zener == true
+    symbol.orientations = [180, 270]
   icon = new icons.Diode(symbol, element)
 
   # Cathode on the right but has number 1

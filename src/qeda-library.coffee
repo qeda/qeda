@@ -5,6 +5,7 @@ request = require 'sync-request'
 yaml = require 'js-yaml'
 
 KicadGenerator = require './kicad-generator'
+SvgGenerator = require './svg-generator'
 QedaElement = require './qeda-element'
 log = require './qeda-log'
 
@@ -117,9 +118,10 @@ class QedaLibrary
   #
   # Add symbol
   #
-  addSymbol: (symbol, name) ->
+  addSymbol: (symbol, name, options="") ->
     schematic =
       symbol: symbol
+      options: options
     words = name.split('/')
     if words.length > 1
       for i in [0..(words.length-2)]
@@ -149,6 +151,7 @@ class QedaLibrary
     generator = null
     switch @output
       when 'kicad' then generator = new KicadGenerator(this)
+      when 'svg' then generator = new SvgGenerator(this)
     if generator
       log.start "Generate output for '#{name}'"
       generator.generate name
@@ -252,6 +255,13 @@ class QedaLibrary
   #
   power: (name) ->
     @addSymbol 'power', name
+
+  #
+  # Add port symbols
+  #
+  port: () ->
+    input = @addSymbol 'port', 'inputExt', 'input'
+    output = @addSymbol 'port', 'outputExt', 'output'
 
   #
   # Render elements
