@@ -81,7 +81,8 @@ module.exports =
         pads[keys[last]].mask = settings.minimum.maskWidth
       else
         for i in [0..last]
-          for j in [(i+1)..last] by 1
+          j = i
+          while ++j <= last
             p1 = pads[keys[i]]
             p2 = pads[keys[j]]
             mask = settings.clearance.padToMask

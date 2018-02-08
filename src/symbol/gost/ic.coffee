@@ -211,18 +211,20 @@ module.exports = (symbol, element) ->
 
   # Left pins
   # Align first group to top
-  y = pitch
   if leftFirst?
+    y = pitch
     for i in [0..leftFirst] by 1
       leftPins[i].y = y
       y += pitch
 
   # Align last group to bottom
-  y = height - pitch
   if leftLast?
-    for i in [(leftPins.length-1)..leftLast] by -1
+    y = height - (leftPins.length - leftLast)*pitch
+    i = leftLast
+    while i < leftPins.length
       leftPins[i].y = y
-      y -= pitch
+      y += pitch
+      ++i
 
   for pin in leftPins
     pin.x = -width/2 - pinLength
@@ -230,18 +232,20 @@ module.exports = (symbol, element) ->
 
   # Right pins
   # Align first group to top
-  y = pitch
   if rightFirst?
+    y = pitch
     for i in [0..rightFirst] by 1
       rightPins[i].y = y
       y += pitch
 
   # Align last group to bottom
-  y = height - pitch
   if rightLast?
-    for i in [rightLast..(rightPins.length-1)] by 1
+    y = height - (rightPins.length - rightLast)*pitch
+    i = rightLast
+    while i < rightPins.length
       rightPins[i].y = y
-      y -= pitch
+      y += pitch
+      ++i
 
   for pin in rightPins
     pin.x = width/2 + pinLength

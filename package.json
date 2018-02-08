@@ -32,16 +32,16 @@
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {
-    "coffee-script": "^1.10.0",
+    "coffeescript": "^2.2.1",
     "rm-r": "^1.0.2"
   },
   "dependencies": {
-    "crc": "^3.4.0",
-    "js-yaml": "^3.5.3",
+    "crc": "^3.5.0",
+    "js-yaml": "^3.10.0",
     "mkdirp": "^0.5.1",
     "nopt": "^4.0.1",
-    "sprintf-js": "^1.0.3",
-    "svg-path-parser": "^1.0.1",
-    "sync-request": "^4.0.1"
+    "sprintf-js": "^1.1.1",
+    "svg-path-parser": "^1.1.0",
+    "sync-request": "^5.0.0"
   }
 }

@@ -6,6 +6,13 @@ module.exports = (symbol, element, icon, leftName = 'L', rightName = 'R') ->
   pins = element.pins
   schematic.showPinNames ?= false
 
+  # Add pins if no any
+  unless element.pinGroups.length
+    element.pins[1] = { name: leftName, number: 1 }
+    element.pins[2] = { name: rightName, number: 2 }
+    element.pinGroups[leftName] = [1]
+    element.pinGroups[rightName] = [2]
+
   leftRegEx = new RegExp("^" + leftName)
   rightRegEx = new RegExp("^" + rightName)
   groups = symbol.part ? element.pinGroups
