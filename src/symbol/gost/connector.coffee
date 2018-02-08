@@ -1,3 +1,15 @@
+compareFunction = (a, b) ->
+  cap = /([A-Z]*)(\d+)/.exec a
+  unless cap then return 0
+  aLetter = cap[1]
+  aNumber = cap[2]
+  cap = /([A-Z]*)(\d+)/.exec b
+  unless cap then return 0
+  bLetter = cap[1]
+  bNumber = cap[2]
+  if aLetter != bLetter then return (aLetter - bLetter)
+  aNumber - bNumber
+
 module.exports = (symbol, element) ->
   element.refDes = 'X'
 
@@ -25,7 +37,7 @@ module.exports = (symbol, element) ->
     numbers = numbers.concat symbol.bottom
   if numbers.length is 0 then numbers = Object.keys pins
   numbers = numbers.filter((v) -> v isnt '--')
-  numbers.sort((a, b) -> a - b)
+  numbers.sort compareFunction
 
   # Attributes
   symbol

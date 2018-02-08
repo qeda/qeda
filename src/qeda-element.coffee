@@ -38,7 +38,7 @@ class QedaElement
     @pinGroups = [] # Array of pin groups
 
     # Grid-array row letters
-    @gridLetters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y']
+    @gridLetters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'Y', 'Z']
     # Make pairs
     last = @gridLetters.length - 1
     for i in [1..last]
