@@ -11,7 +11,8 @@ ncPad = 1
 copperPads = (pattern, element, suffix = '') ->
   housing = element.housing
   pins = element.pins
-  numbers = Object.keys pins
+  if housing['numbers' + suffix]? then housing['numbers' + suffix] = element.parsePinNumbers housing['numbers' + suffix]
+  numbers = housing['numbers' + suffix] ? Object.keys pins
   unless (housing['holeDiameter' + suffix]?) or (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
     return false
   hasPads = false

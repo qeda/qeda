@@ -117,6 +117,28 @@ class QedaElement
     result
 
   #
+  # Parse pin numbers
+  #
+  parsePinNumbers: (input) ->
+    unless input? then return []
+    result = []
+    numbers = input.replace(/\s+/g, '').split(',')
+    for number in numbers
+      cap = /([A-Z]*)(\d+)-([A-Z]*)(\d+)/.exec number
+      unless cap
+        result.push number
+      else
+        row1 = @gridLetters.indexOf cap[1]
+        row2 = @gridLetters.indexOf cap[3]
+        if row2 is '' then row2 = row1
+        col1 = parseInt cap[2]
+        col2 = parseInt cap[4]
+        for row in [row1..row2]
+          for col in [col1..col2]
+            result.push @gridLetters[row] + col
+    result
+
+  #
   # Generate symbols and patterns
   #
   render: ->
@@ -205,20 +227,7 @@ class QedaElement
         result = result.concat pins
     else # Pin number(s)
       if typeof pinOrGroup is 'number' then pinOrGroup = pinOrGroup.toString()
-      numbers = pinOrGroup.replace(/\s+/g, '').split(',')
-      for number in numbers
-        cap = /([A-Z]*)(\d+)-([A-Z]*)(\d+)/.exec number
-        unless cap
-          result.push number
-        else
-          row1 = @gridLetters.indexOf cap[1]
-          row2 = @gridLetters.indexOf cap[3]
-          if row2 is '' then row2 = row1
-          col1 = parseInt cap[2]
-          col2 = parseInt cap[4]
-          for row in [row1..row2]
-            for col in [col1..col2]
-              result.push @gridLetters[row] + col
+      result = result.concat(@parsePinNumbers pinOrGroup)
       names = @parseMultiple name
       names.map((v) => @pinGroups[v] ?= [])
       if names.length > 1
