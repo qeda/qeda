@@ -50,9 +50,9 @@ module.exports = (symbol, element) ->
   height = pitch*(numbers.length + 1)
 
   firstText = 'Цепь'
-  firstWidth = 30
+  firstWidth = 35
   secondText = 'Конт.'
-  secondWidth = symbol.textWidth(secondText, 'name') + 2*space
+  secondWidth = 15
 
   y = 1.5 * pitch
   names = []
