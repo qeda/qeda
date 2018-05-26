@@ -7,8 +7,7 @@ log = require './qeda-log'
 svg_head = """
 <svg xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     xmlns:s="https://github.com/nturley/netlistsvg">
-
+     xmlns:s="https://github.com/nturley/netlistsvg"
 """
 
 svg_tail = """
@@ -315,7 +314,7 @@ class SvgGenerator
     log.start "SVG symbols skin '#{@name}.svg'"
     mkdirp.sync "#{@dir}"
     fd = fs.openSync "#{@dir}/#{@name}.svg", 'w'
-    fs.writeSync fd, svg_head
+    fs.writeSync fd, svg_head + '>\n'
     fs.writeSync fd, netlistsvg_properties
     fs.writeSync fd, netlistsvg_style
     fs.writeSync fd, netlistsvg_builtins
@@ -334,8 +333,6 @@ class SvgGenerator
       log.start "SVG footprint '#{patternName}.svg'"
       mkdirp.sync "#{@dir}/#{@name}"
       fd = fs.openSync "#{@dir}/#{@name}/#{patternName}.svg", 'w'
-      fs.writeSync fd, svg_head
-      fs.writeSync fd, pcbsvg_style
       @_generatePattern fd, pattern
       fs.writeSync fd, svg_tail
       fs.closeSync fd
@@ -407,9 +404,18 @@ class SvgGenerator
     # Bounding box
     [minx, miny, width, height] = @_getBoundingBox(pattern)
 
+    fs.writeSync fd, """
+        #{svg_head}
+             width="#{width}mm"
+             height="#{height}mm"
+             viewBox="0 0 #{width} #{height}">
+
+    """
+    fs.writeSync fd, pcbsvg_style
+
     # Pattern start
     fs.writeSync fd, """
-    <g transform="translate(10, 10) scale(100, 100) translate(#{width/2}, #{height/2})">
+    <g transform="translate(#{width/2}, #{height/2})">
 
     """
 
