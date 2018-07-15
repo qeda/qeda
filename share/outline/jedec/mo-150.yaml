@@ -1,11 +1,21 @@
+# plastic shrink small outline package (SSOP) - 5.3 mm body width, 0.65 mm pitch, 1.25 mm lead length (R-PDSO-G)
+# dimensions from https://www.jedec.org/system/files/docs/Mo-150b.pdf
 pattern: SOP
 
+# dimension: E1
 bodyWidth: 5-5.6
+# dimension: A
 height: 2
+# dimension: b
 leadWidth: 0.22-0.38
+# dimension: L
 leadLength: 0.55-0.95
+# dimension: E
 leadSpan: 7.4-8.2
+# dimension: e
 pitch: 0.65
+# bodyLength dimension: D
+# leadCount dimension: N
 
 AA:
   bodyLength: 2.7-3.3
