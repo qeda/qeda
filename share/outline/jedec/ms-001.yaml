@@ -1,13 +1,24 @@
+# dual inline plastic family (R-PDIP-T) .300 inch row spacing
+# dimensions from https://www.jedec.org/system/files/docs/Ms-001d.pdf
 pattern: DIP
 units: inches
 
+# dimension: e
 pitch: 0.1
+# dimension: E1
 bodyWidth: 0.24-0.28
+# dimension: A
 height: 0.21
+# dimension: b
 leadWidth: 0.014-0.022
+# dimension: L
 leadLength: 0.115-0.15
-leadHeight: 0.008-0.01
+# dimension: c
+leadHeight: 0.008-0.014
+# dimension: E
 leadSpan: 0.3-0.325
+# bodyLength dimension: D
+# leadCount dimension: N
 
 AA:
   bodyLength: 0.735-0.775
