@@ -1,6 +1,6 @@
 KicadGenerator = require './kicad-generator'
 SvgGenerator = require './svg-generator'
-PcbGenerator = require './pcb-generator'
+GedaPcbGenerator = require './geda-pcb-generator'
 QedaLibrary = require './qeda-library'
 
 Qeda = {}

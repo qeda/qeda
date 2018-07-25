@@ -5,10 +5,10 @@ sprintf = require('sprintf-js').sprintf
 log = require './qeda-log'
 
 #
-# Generator of footprint in pcb format
+# Generator of footprint in gEDA pcb format
 # the pcb format is documented at http://pcb.geda-project.org/pcb-cvs/pcb.html#File-Formats 
 #
-class PcbGenerator
+class GedaPcbGenerator
   #
   # Constructor
   #
@@ -117,4 +117,4 @@ class PcbGenerator
 
     fs.writeSync fd, ")\n" # end of Element
 
-module.exports = PcbGenerator
+module.exports = GedaPcbGenerator
