@@ -6,7 +6,7 @@ log = require './qeda-log'
 
 #
 # Generator of footprint in gEDA pcb format
-# the pcb format is documented at http://pcb.geda-project.org/pcb-cvs/pcb.html#File-Formats 
+# the pcb format is documented at http://pcb.geda-project.org/pcb-cvs/pcb.html#File-Formats
 #
 class GedaPcbGenerator
   #
@@ -19,13 +19,13 @@ class GedaPcbGenerator
   # Generate footprint files
   #
   generate: (@name) ->
-    dir = "./pcb/#{@name}"
+    dir = "./geda/#{@name}"
     mkdirp.sync "#{dir}"
 
     # Footprints
     for element in @library.elements
       next if !element.pattern?
-      log.start "pcb footprint '#{element.pattern.name}.fp'"
+      log.start "gEDA footprint '#{element.pattern.name}.fp'"
       fd = fs.openSync "#{dir}/#{element.pattern.name}.fp", 'w'
       @_generatePattern fd, element.pattern
       fs.closeSync fd
