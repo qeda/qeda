@@ -185,10 +185,10 @@ class GedaGenerator
             # end pin attributes
             fs.writeSync fd, "}\n"
           when 'poly'
-            fs.writeSync fd, "H 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1 #{shape.points.length/2}\n"
+            fs.writeSync fd, "H 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1 #{shape.points.length/2+1}\n"
             for i from [0..(shape.points.length-1)]
                if i % 2 == 0
-                 fs.writeSync fd, "#{if i == 0 then M else L} #{shape.points[i]} #{shape.points[i+1]}\n"
+                 fs.writeSync fd, "#{if i == 0 then 'M' else 'L'} #{shape.points[i]} #{shape.points[i+1]}\n"
             fs.writeSync fd, "z\n"
            when 'text'
              alignment = switch shape.valign
