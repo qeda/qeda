@@ -6,8 +6,7 @@ yaml = require 'js-yaml'
 
 KicadGenerator = require './kicad-generator'
 SvgGenerator = require './svg-generator'
-GedaPcbGenerator = require './geda-pcb-generator'
-GedaGschemGenerator = require './geda-gschem-generator'
+GedaGenerator = require './geda-generator'
 QedaElement = require './qeda-element'
 log = require './qeda-log'
 
@@ -154,8 +153,7 @@ class QedaLibrary
     switch @output
       when 'kicad' then generator = new KicadGenerator(this)
       when 'svg' then generator = new SvgGenerator(this)
-      when 'geda/pcb' then generator = new GedaPcbGenerator(this)
-      when 'geda/gschem' then generator = new GedaGschemGenerator(this)
+      when 'geda' then generator = new GedaGenerator(this)
     if generator
       log.start "Generate output for '#{name}'"
       generator.generate name
