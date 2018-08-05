@@ -260,11 +260,14 @@ class GedaGenerator
         when 'pad'
           shape.clearance ?= pattern.settings.clearance.padToPad
           shape.mask ?= pattern.settings.clearance.padToMask
-          if (shape.type is 'through-hole')
+          if (shape.type is 'through-hole' or shape.type is 'mounting-hole')
             if (shape.width == shape.height)
+              flags = []
+              if shape.hole >= shape.width then flags.push('hole')
+              if shape.shape is 'rectangle' then flags.push('square')
               fs.writeSync(fd,
                 sprintf("  Pin [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" \"%s\"]\n",
-                  shape.x, shape.y, shape.width, shape.clearance, shape.width+2*shape.mask, shape.hole, shape.name, (if shape.shape is 'rectangle' then 'square' else ''))
+                  shape.x, shape.y, shape.width, shape.clearance, shape.width+2*shape.mask, shape.hole, shape.name, flags.join(','))
               )
             else
               width = if shape.width < shape.height then shape.width else shape.height
