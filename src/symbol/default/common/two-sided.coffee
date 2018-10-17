@@ -7,7 +7,7 @@ module.exports = (symbol, element, icon, leftName = 'L', rightName = 'R') ->
   schematic.showPinNames ?= false
 
   # Add pins if no any
-  unless element.pinGroups.length
+  unless Object.keys(element.pinGroups).length
     element.pins[1] = { name: leftName, number: 1 }
     element.pins[2] = { name: rightName, number: 2 }
     element.pinGroups[leftName] = [1]
