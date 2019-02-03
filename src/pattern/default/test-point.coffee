@@ -15,7 +15,7 @@ module.exports = (pattern, element) ->
       type: 'through-hole'
       hole: housing.holeDiameter
       shape: 'circle'
-      layer: ['topCopper', 'topMask', 'topPaste', 'intCopper', 'bottomCopper', 'bottomMask', 'bottomPaste']
+      layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
   else
     housing.padWidth ?= housing.padDiameter
     housing.padHeight ?= housing.padDiameter
