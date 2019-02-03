@@ -189,7 +189,7 @@ module.exports =
           hole: viaDiameter
           width: viaDiameter + 0.1
           height: viaDiameter + 0.1
-          layer: ['topCopper', 'bottomCopper']
+          layer: ['topCopper', 'intCopper', 'bottomCopper']
           x: p.x
           y: p.y
         pattern.pad tabNumber, viaPad

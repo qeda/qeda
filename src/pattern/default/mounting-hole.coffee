@@ -18,12 +18,12 @@ module.exports = (pattern, element) ->
     housing.padWidth ?= housing.padDiameter
     housing.padHeight ?= housing.padDiameter
     pad.type = 'through-hole'
-    pad.layer = ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
+    pad.layer = ['topCopper', 'topMask', 'topPaste', 'intCopper', 'bottomCopper', 'bottomMask', 'bottomPaste']
     pad.width = housing.padDiameter ? housing.padWidth
     pad.height = housing.padDiameter ? housing.padHeight
   else
     pad.type = 'mounting-hole'
-    pad.layer = ['topCopper', 'topMask', 'bottomCopper', 'bottomMask']
+    pad.layer = ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
     pad.width = housing.holeDiameter
     pad.height = housing.holeDiameter
     pad.shape = 'circle'

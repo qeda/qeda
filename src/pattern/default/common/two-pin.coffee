@@ -135,7 +135,7 @@ module.exports = (pattern, element) ->
       pad.shape = 'circle'
     pad.type = 'through-hole'
     pad.hole = padParams.hole
-    pad.layer = ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
+    pad.layer = ['topCopper', 'topMask', 'topPaste', 'intCopper', 'bottomCopper', 'bottomMask', 'bottomPaste']
   else
     pad.type = 'smd'
     pad.layer = ['topCopper', 'topMask', 'topPaste']
