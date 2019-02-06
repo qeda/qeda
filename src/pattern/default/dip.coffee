@@ -36,7 +36,7 @@ module.exports = (pattern, element) ->
     hole: padParams.hole
     width: padParams.width
     height: padParams.height
-    layer: ['topCopper', 'topMask', 'topPaste', 'bottomCopper', 'bottomMask', 'bottomPaste']
+    layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
 
   copper.dual pattern, element, padParams
   firstPad = pattern.pads[Object.keys(pattern.pads)[0]]
