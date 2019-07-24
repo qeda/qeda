@@ -272,7 +272,7 @@ class GedaGenerator
             else
               width = if shape.width < shape.height then shape.width else shape.height
               fs.writeSync(fd,
-                sprintf("  Pin [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" ""]\n",
+                sprintf("  Pin [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" \"\"]\n",
                   shape.x, shape.y, width, shape.clearance, width+2*shape.mask, shape.hole, shape.name)
               )
               # let the next section handle drawing the non-square pad
