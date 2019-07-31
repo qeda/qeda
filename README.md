@@ -35,6 +35,7 @@ Features
   - Custom element
 * Generating libraries:
   - KiCad format
+  - [coralEDA](http://repo.hu/projects/coraleda/) [pcb-rnb](http://repo.hu/projects/pcb-rnd/)
 * 3D models generation
 
 Installation
