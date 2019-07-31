@@ -90,7 +90,7 @@ copperPads = (pattern, element, suffix = '') ->
 
 module.exports = (pattern, element) ->
   housing = element.housing
-  pattern.name ?= element.group + '_' + element.name.toUpperCase()
+  pattern.name ?= (element.group || 'custom') + '_' + element.name.toUpperCase()
 
   housing.bodyPosition ?= '0, 0'
   bodyPosition = pattern.parsePosition housing.bodyPosition
