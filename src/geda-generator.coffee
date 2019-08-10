@@ -138,7 +138,7 @@ class GedaGenerator
                 yt -= shape.space
                 angle = 90
                 alignment = 6
-            name = shape.name
+            name = shape.name.toString()
             if name.includes('~') or shape.inverted
               name = name.replace(/^~/,'').replace(/~$/,'')
               name = "\\_#{name}\\_"
