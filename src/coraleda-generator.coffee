@@ -98,16 +98,42 @@ class CoraledaGenerator
       fs.writeSync(fd, "    ha:ps_proto_v6.#{id + index} {\n")
       fs.writeSync(fd, "     htop = 0\n")
       fs.writeSync(fd, "     hbottom = 0\n")
-      if (padstack.type == 'through-hole' or padstack.type == 'mounting-hole') and padstack.hole?
-        fs.writeSync(fd, sprintf("     hdia = #{@f}mm\n", padstack.hole))
-        if padstack.width > padstack.hole or padstack.height > padstack.hole
-          fs.writeSync(fd, "     hplated = 1\n")
-        else
-          fs.writeSync(fd, "     hplated = 0\n")
+      if (padstack.type == 'through-hole' or padstack.type == 'mounting-hole')
+        if padstack.slotWidth? and padstack.slotHeight?
+          fs.writeSync(fd, "     hdia = 0\n")
+          if padstack.width > padstack.slotWidth or padstack.height > padstack.slotHeight
+            fs.writeSync(fd, "     hplated = 1\n")
+          else
+            fs.writeSync(fd, "     hplated = 0\n")
+        else if padstack.hole?
+          fs.writeSync(fd, sprintf("     hdia = #{@f}mm\n", padstack.hole))
+          if padstack.width > padstack.hole or padstack.height > padstack.hole
+            fs.writeSync(fd, "     hplated = 1\n")
+          else
+            fs.writeSync(fd, "     hplated = 0\n")
       else
         fs.writeSync(fd, "     hdia = 0\n")
         fs.writeSync(fd, "     hplated = 0\n")
       fs.writeSync(fd, "     li:shape {\n")
+      if padstack.slotWidth? and padstack.slotHeight?
+        slot_thickness = if padstack.slotWidth > padstack.slotHeight then padstack.slotHeight else padstack.slotWidth
+        fs.writeSync(fd, "      ha:ps_shape_v4 {\n")
+        fs.writeSync(fd, "       clearance = 0\n")
+        fs.writeSync(fd, "       ha:ps_line {\n")
+        fs.writeSync(fd, sprintf("        x1 = #{@f}mm\n", padstack.slotWidth / -2 + slot_thickness / 2))
+        fs.writeSync(fd, sprintf("        y1 = #{@f}mm\n", padstack.slotHeight / -2 + slot_thickness / 2))
+        fs.writeSync(fd, sprintf("        x2 = #{@f}mm\n", padstack.slotWidth / 2 - slot_thickness / 2))
+        fs.writeSync(fd, sprintf("        y2 = #{@f}mm\n", padstack.slotHeight / 2 - slot_thickness / 2))
+        fs.writeSync(fd, sprintf("        thickness = #{@f}mm\n", slot_thickness))
+        fs.writeSync(fd, "        square = 0\n") # 0=round cap; 1=square cap
+        fs.writeSync(fd, "       }\n") # end line
+        fs.writeSync(fd, "       ha:layer_mask {\n")
+        fs.writeSync(fd, "        mech = 1\n")
+        fs.writeSync(fd, "       }\n") # end layer_mask
+        fs.writeSync(fd, "       ha:combining {\n")
+        fs.writeSync(fd, "        auto = 1\n")
+        fs.writeSync(fd, "       }\n") # end combining
+        fs.writeSync(fd, "      }\n") # end ps_shape_v4
       for layer in padstack.layer
         fs.writeSync(fd, "      ha:ps_shape_v4 {\n")
         if layer.endsWith("Copper")
@@ -116,18 +142,27 @@ class CoraledaGenerator
           fs.writeSync(fd, "       clearance = 0\n")
         switch padstack.shape
           when 'circle'
-            fs.writeSync(fd, "       ha:ps_circ {\n")
-            fs.writeSync(fd, "        x = 0\n")
-            fs.writeSync(fd, "        y = 0\n")
-            dia = 0
-            if padstack.width > padstack.height
+            if padstack.width == padstack.height
+              fs.writeSync(fd, "       ha:ps_circ {\n")
+              fs.writeSync(fd, "        x = 0\n")
+              fs.writeSync(fd, "        y = 0\n")
               dia = padstack.width
-            else
-              dia = padstack.height
-            if layer.endsWith("Mask")
-              dia += (padstack.mask || pattern.settings.clearance.padToMask || 0)
-            fs.writeSync(fd, sprintf("        dia = #{@f}mm\n", dia))
-            fs.writeSync(fd, "       }\n") # end ps_circ
+              if layer.endsWith("Mask")
+                dia += (padstack.mask || pattern.settings.clearance.padToMask || 0)
+              fs.writeSync(fd, sprintf("        dia = #{@f}mm\n", dia))
+              fs.writeSync(fd, "       }\n") # end ps_circ
+            else # padstack.width != padstack.height
+              line_thickness = if padstack.width > padstack.height then padstack.height else padstack.width
+              if layer.endsWith("Mask")
+                line_thickness += 2 * (padstack.mask || pattern.settings.clearance.padToMask || 0)
+              fs.writeSync(fd, "       ha:ps_line {\n")
+              fs.writeSync(fd, sprintf("        x1 = #{@f}mm\n", padstack.width / -2 + line_thickness / 2))
+              fs.writeSync(fd, sprintf("        y1 = #{@f}mm\n", padstack.height / -2 + line_thickness / 2))
+              fs.writeSync(fd, sprintf("        x2 = #{@f}mm\n", padstack.width / 2 - line_thickness / 2))
+              fs.writeSync(fd, sprintf("        y2 = #{@f}mm\n", padstack.height / 2 - line_thickness / 2))
+              fs.writeSync(fd, sprintf("        thickness = #{@f}mm\n", line_thickness))
+              fs.writeSync(fd, "        square = 0\n") # 0=round cap; 1=square cap
+              fs.writeSync(fd, "       }\n") # end line
           when 'rectangle'
             width = padstack.width
             height = padstack.height
@@ -190,7 +225,7 @@ class CoraledaGenerator
     # write lines in layers
     fs.writeSync(fd, "   li:layers {\n")
     lid = 0 # layer ID
-    # subc-aux is a special layer to defin the origin/scale/rotation
+    # subc-aux is a special layer to define the origin/scale/rotation
     fs.writeSync(fd, "    ha:subc-aux {\n")
     fs.writeSync(fd, "     lid = #{lid++}\n")
     fs.writeSync(fd, "     ha:type {\n")
