@@ -125,7 +125,10 @@ class KicadGenerator
             sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
               patObj.name, patObj.type, patObj.shape, patObj.x, patObj.y, patObj.width, patObj.height, patObj.layer)
           )
-          if patObj.hole? then fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.hole)
+          if patObj.slotWidth? and patObj.slotHeight?
+            fs.writeSync fd, sprintf("\n    (drill oval #{@f} #{@f})", patObj.slotWidth, patObj.slotHeight)
+          else if patObj.hole?
+            fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.hole)
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
           if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
 
@@ -270,6 +273,7 @@ class KicadGenerator
     obj = shape
     obj.visible ?= true
     if obj.shape is 'rectangle' then obj.shape = 'rect'
+    if obj.shape is 'circle' and obj.width != obj.height then obj.shape = 'oval'
 
     layers =
       topCopper: 'F.Cu'
