@@ -13,10 +13,36 @@ copperPads = (pattern, element, suffix = '') ->
   pins = element.pins
   if housing['numbers' + suffix]? then housing['numbers' + suffix] = element.parsePinNumbers housing['numbers' + suffix]
   numbers = housing['numbers' + suffix] ? Object.keys pins
-  unless (housing['holeDiameter' + suffix]?) or (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
+  unless (housing['holeDiameter' + suffix]?) or (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?) or (housing['slotWidth' + suffix]? and housing['slotHeight' + suffix]?)
     return false
   hasPads = false
-  if housing['holeDiameter' + suffix]?
+  if housing['slotWidth' + suffix]? and housing['slotHeight' + suffix]?
+    slotWidth = housing['slotWidth' + suffix]
+    slotHeight = housing['slotHeight' + suffix]
+    holeDiameter = if slotWidth > slotHeight then slotWidth else slotHeight
+    if slotWidth > slotHeight
+      padHeight = housing['padHeight' + suffix] ? calculator.padDiameter pattern, housing, slotHeight
+      padWidth = housing['padWidth' + suffix] ? slotWidth + (padHeight - slotHeight)
+      padDiameter = housing['padDiameter' + suffix] ? holeDiameter + (padHeight - slotHeight)
+    else
+      padWidth = housing['padWidth' + suffix] ? calculator.padDiameter pattern, housing, slotWidth
+      padHeight = housing['padHeight' + suffix] ? slotHeight + (padWidth - slotWidth)
+      padDiameter = housing['padDiameter' + suffix] ? holeDiameter + (padWidth - slotWidth)
+    pad =
+      type: 'through-hole'
+      slotWidth: slotWidth
+      slotHeight: slotHeight
+      width: padWidth
+      height: padHeight
+      shape: if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle'
+      layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
+    if (padWidth < slotWidth) and (padHeight < slotHeight)
+      pad.type = 'mounting-hole'
+      pad.layer = ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
+      pad.width = slotWidth
+      pad.height = slotHeight
+      pad.shape = 'circle'
+  else if housing['holeDiameter' + suffix]?
     holeDiameter = housing['holeDiameter' + suffix]
     padDiameter = housing['padDiameter' + suffix] ? calculator.padDiameter pattern, housing, holeDiameter
     padWidth = housing['padWidth' + suffix] ? padDiameter
@@ -34,7 +60,7 @@ copperPads = (pattern, element, suffix = '') ->
       pad.width = holeDiameter
       pad.height = holeDiameter
       pad.shape = 'circle'
-  else
+  else if (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
     padDiameter = housing['padDiameter' + suffix]
     padWidth = housing['padWidth' + suffix] ? padDiameter
     padHeight = housing['padHeight' + suffix] ? padDiameter
