@@ -138,7 +138,7 @@ class GedaGenerator
                 yt -= shape.space
                 angle = 90
                 alignment = 6
-            name = shape.name
+            name = shape.name.toString()
             if name.includes('~') or shape.inverted
               name = name.replace(/^~/,'').replace(/~$/,'')
               name = "\\_#{name}\\_"
@@ -261,22 +261,39 @@ class GedaGenerator
           shape.clearance ?= pattern.settings.clearance.padToPad
           shape.mask ?= pattern.settings.clearance.padToMask
           if (shape.type is 'through-hole' or shape.type is 'mounting-hole')
-            if (shape.width == shape.height)
-              flags = []
-              if shape.hole >= shape.width then flags.push('hole')
-              if shape.shape is 'rectangle' then flags.push('square')
-              fs.writeSync(fd,
-                sprintf("  Pin [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" \"%s\"]\n",
-                  shape.x, shape.y, shape.width, shape.clearance, shape.width+2*shape.mask, shape.hole, shape.name, flags.join(','))
-              )
-            else
-              width = if shape.width < shape.height then shape.width else shape.height
-              fs.writeSync(fd,
-                sprintf("  Pin [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" \"\"]\n",
-                  shape.x, shape.y, width, shape.clearance, width+2*shape.mask, shape.hole, shape.name)
-              )
-              # let the next section handle drawing the non-square pad
-              shape.type = 'smd'
+            flags = []
+            hole = 0
+            thickness = 0
+            mask = 0
+            # gEDA pcb Pin shapes are very restrictive: the don't allow slots or oblong annulus
+            if shape.hole? # a hole
+              hole = shape.hole
+              # use smallest dimension, and let the next section draw the rectangle part
+              if shape.width <= shape.hole and shape.height <= shape.hole
+                thickness = 0
+              else if shape.width == shape.height
+                thickness = shape.width
+              else if shape.width < shape.height
+                thickness = shape.width
+              else
+                thickness = shape.height
+              shape.type = 'smd' # let the next section handle drawing the non-square pad
+            else if shape.slotWidth? and shape.slotHeight? # a slot
+              if shape.slotWidth > shape.slotHeight
+                hole = shape.slotWidth
+                thickness = shape.width
+              else
+                hole = shape.slotHeight
+                thickness = shape.height
+            if shape.shape is 'rectangle' then flags.push('square')
+            if thickness <= hole and shape.height <= hole
+              thickness = 0
+              flags.push('hole')
+            mask = if (thickness == 0) then 0 else thickness+2*shape.mask
+            fs.writeSync(fd,
+              sprintf("  Pin [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" \"%s\"]\n",
+                shape.x, shape.y, thickness, shape.clearance, mask, hole, shape.name, flags.join(','))
+            )
           if (shape.type is 'smd')
             shape.shape = 'rounded' if pattern.settings.smoothPadCorners and pattern.settings.maximum.cornerRadius>0.0
             width = 0
