@@ -153,14 +153,19 @@ class CoraledaGenerator
               fs.writeSync(fd, "       }\n") # end ps_circ
             else # padstack.width != padstack.height
               line_thickness = if padstack.width > padstack.height then padstack.height else padstack.width
-              if layer.endsWith("Mask")
-                line_thickness += 2 * (padstack.mask || pattern.settings.clearance.padToMask || 0)
               fs.writeSync(fd, "       ha:ps_line {\n")
-              fs.writeSync(fd, sprintf("        x1 = #{@f}mm\n", padstack.width / -2 + line_thickness / 2))
-              fs.writeSync(fd, sprintf("        y1 = #{@f}mm\n", padstack.height / -2 + line_thickness / 2))
-              fs.writeSync(fd, sprintf("        x2 = #{@f}mm\n", padstack.width / 2 - line_thickness / 2))
-              fs.writeSync(fd, sprintf("        y2 = #{@f}mm\n", padstack.height / 2 - line_thickness / 2))
-              fs.writeSync(fd, sprintf("        thickness = #{@f}mm\n", line_thickness))
+              if padstack.width > padstack.height
+                fs.writeSync(fd, sprintf("        x1 = #{@f}mm\n", padstack.width / -2 + line_thickness / 2))
+                fs.writeSync(fd, sprintf("        y1 = #{@f}mm\n", 0))
+                fs.writeSync(fd, sprintf("        x2 = #{@f}mm\n", padstack.width / 2 - line_thickness / 2))
+                fs.writeSync(fd, sprintf("        y2 = #{@f}mm\n", 0))
+              else
+                fs.writeSync(fd, sprintf("        x1 = #{@f}mm\n", 0))
+                fs.writeSync(fd, sprintf("        y1 = #{@f}mm\n", padstack.height / -2 + line_thickness / 2))
+                fs.writeSync(fd, sprintf("        x2 = #{@f}mm\n", 0))
+                fs.writeSync(fd, sprintf("        y2 = #{@f}mm\n", padstack.height / 2 - line_thickness / 2))
+              mask = if layer.endsWith("Mask") then (padstack.mask || pattern.settings.clearance.padToMask || 0) else 0
+              fs.writeSync(fd, sprintf("        thickness = #{@f}mm\n", line_thickness + mask * 2))
               fs.writeSync(fd, "        square = 0\n") # 0=round cap; 1=square cap
               fs.writeSync(fd, "       }\n") # end line
           when 'rectangle'
