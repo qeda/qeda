@@ -286,11 +286,19 @@ class CoraledaGenerator
         fs.writeSync(fd, "     lid = #{lid}\n")
         fs.writeSync(fd, "     ha:type {\n")
         fs.writeSync(fd, "      #{side} = 1\n")
-        if type == 'Silkscreen'
-          fs.writeSync(fd, "      silk = 1\n")
-        else
-          fs.writeSync(fd, "      doc = 1\n")
+        switch type
+          when 'Silkscreen'
+            fs.writeSync(fd, "      silk = 1\n")
+          when 'Assembly'
+            fs.writeSync(fd, "      doc = 1\n")
+          when 'Courtyard'
+            fs.writeSync(fd, "      doc = 1\n")
         fs.writeSync(fd, "     }\n") # end type
+        switch type
+          when 'Assembly'
+            fs.writeSync(fd, "     purpose = assy\n")
+          when 'Courtyard'
+            fs.writeSync(fd, "     purpose = ko.courtyard\n")
         fs.writeSync(fd, "     li:objects {\n")
         for shape in pattern.shapes
           continue if !shape.layer.includes(side+type)
