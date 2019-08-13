@@ -14,9 +14,6 @@ pkg = require('../package.json')
 # board layout editor: pcb-rnd http://repo.hu/projects/pcb-rnd/
 # lihata subcirctuit pattern format: http://repo.hu/projects/pcb-rnd/developer/lihata_format/
 #
-# rounded pads are not implemented yet
-# the subcircuit format does not support rounded rectangles
-# rounded corner need to be approximated using polygon lines
 
 class CoraledaGenerator
   #
@@ -174,16 +171,50 @@ class CoraledaGenerator
             if layer.endsWith("Mask")
               width += 2 * (padstack.mask || pattern.settings.clearance.padToMask || 0)
               height += 2 * (padstack.mask || pattern.settings.clearance.padToMask || 0)
-            fs.writeSync(fd, "       li:ps_poly {\n")
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", width / -2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", height / -2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", width / 2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", height / -2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", width / 2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", height / 2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", width / -2))
-            fs.writeSync(fd, sprintf("        #{@f}mm\n", height / 2))
-            fs.writeSync(fd, "       }\n") # end ps_poly
+            if pattern.settings.smoothPadCorners
+              corner = if width < height then width else height
+              corner *= pattern.settings.ratio.cornerToWidth
+              if corner > pattern.settings.maximum.cornerRadius
+                corner = pattern.settings.maximum.cornerRadius
+              angle_step = 10
+              # draw rounded rectangle using line approximation (arcs are not possible in polygons)
+              fs.writeSync(fd, "       li:ps_poly {\n")
+              # top right corner
+              for angle in [0..90] by angle_step
+                angle_x = Math.cos(Math.PI * 2 / 360 * angle) * corner
+                angle_y = Math.sin(Math.PI * 2 / 360 * angle) * corner
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", width / 2 - corner + angle_x))
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", height / -2 + corner - angle_y))
+              # top left corner
+              for angle in [90..180] by angle_step
+                angle_x = Math.cos(Math.PI * 2 / 360 * angle) * corner
+                angle_y = Math.sin(Math.PI * 2 / 360 * angle) * corner
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", width / -2 + corner + angle_x))
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", height / -2 + corner - angle_y))
+              # bottom left corner
+              for angle in [180..270] by angle_step
+                angle_x = Math.cos(Math.PI * 2 / 360 * angle) * corner
+                angle_y = Math.sin(Math.PI * 2 / 360 * angle) * corner
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", width / -2 + corner + angle_x))
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", height / 2 - corner - angle_y))
+              # bottom right corner
+              for angle in [270..360] by angle_step
+                angle_x = Math.cos(Math.PI * 2 / 360 * angle) * corner
+                angle_y = Math.sin(Math.PI * 2 / 360 * angle) * corner
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", width / 2 - corner + angle_x))
+                fs.writeSync(fd, sprintf("        #{@f}mm\n", height / 2 - corner - angle_y))
+              fs.writeSync(fd, "       }\n") # end ps_poly
+            else
+              fs.writeSync(fd, "       li:ps_poly {\n")
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", width / -2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", height / -2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", width / 2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", height / -2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", width / 2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", height / 2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", width / -2))
+              fs.writeSync(fd, sprintf("        #{@f}mm\n", height / 2))
+              fs.writeSync(fd, "       }\n") # end ps_poly
         fs.writeSync(fd, "       ha:layer_mask {\n")
         if layer.startsWith("top")
           fs.writeSync(fd, "        top = 1\n")
