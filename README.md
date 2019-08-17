@@ -35,6 +35,7 @@ Features
   - Custom element
 * Generating libraries:
   - KiCad format
+  - [gEDA](http://www.geda-project.org/) [gschem](http://wiki.geda-project.org/geda:gaf) and [pcb](http://pcb.geda-project.org/)
   - [coralEDA](http://repo.hu/projects/coraleda/) [pcb-rnb](http://repo.hu/projects/pcb-rnd/)
 * 3D models generation
 
