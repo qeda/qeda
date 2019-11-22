@@ -368,7 +368,7 @@ class CoraledaGenerator
               else
                 fs.writeSync(fd, "       rot = 0\n")
               if shape.fontSize?
-                fs.writeSync(fd, "       scale = #{shape.fontSize * 100}\n")
+                fs.writeSync(fd, "       scale = #{Math.round(shape.fontSize * 100)}\n")
               else
                 fs.writeSync(fd, "       scale = 100\n")
               if shape.name == 'refDes'
