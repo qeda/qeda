@@ -171,7 +171,7 @@ class QedaLibrary
   # Load element description from remote repository
   #
   load: (element, force = false) ->
-    obj = @loadYaml element, force
+    [obj, filterVariation] = @loadYaml element, force
 
     objs = []
     if obj.variations?
@@ -224,7 +224,7 @@ class QedaLibrary
 
     @check obj
 
-    # Load base descrition
+    # Load base description
     if obj.base?
       unless typeof obj.base is 'string' then obj.base = obj.base.toString()
       bases = obj.base.replace(/\s+/g, '').split(',')
@@ -242,7 +242,7 @@ class QedaLibrary
     if element.indexOf('/') isnt -1
       obj.group ?= element.substr(0, element.indexOf('/')).toUpperCase()
 
-    obj
+    [obj, filterVariation]
 
   #
   # Merge two objects
