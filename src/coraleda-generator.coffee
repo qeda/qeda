@@ -256,6 +256,10 @@ class CoraledaGenerator
       fs.writeSync(fd, "      term = #{shape.name}\n")
       fs.writeSync(fd, "      name = #{shape.name}\n")
       fs.writeSync(fd, "     }\n") # end attributes
+      fs.writeSync(fd, sprintf("     clearance = #{@f}mm\n", padstack.clearance || pattern.settings.clearance.padToPad || 0))
+      fs.writeSync(fd, "     ha:flags {\n")
+      fs.writeSync(fd, "      clearline = 1\n")
+      fs.writeSync(fd, "     }\n") # end attributes
       fs.writeSync(fd, "    }\n") # end padstack_ref
     fs.writeSync(fd, "   }\n") # end objects
     # write lines in layers
@@ -299,7 +303,7 @@ class CoraledaGenerator
     fs.writeSync(fd, "      }\n") # end line
     # y-axis
     fs.writeSync(fd, "      ha:line.#{id++} {\n")
-    fs.writeSync(fd, "       clearance = 0.0\n")
+    fs.writeSync(fd, "       clearance = 0\n")
     fs.writeSync(fd, "       thickness = 0.1mm\n")
     fs.writeSync(fd, "       ha:attributes {\n")
     fs.writeSync(fd, "        subc-role = y\n")
@@ -364,7 +368,7 @@ class CoraledaGenerator
               else
                 fs.writeSync(fd, "       rot = 0\n")
               if shape.fontSize?
-                fs.writeSync(fd, "       scale = #{shape.fontSize * 100}\n")
+                fs.writeSync(fd, "       scale = #{Math.round(shape.fontSize * 100)}\n")
               else
                 fs.writeSync(fd, "       scale = 100\n")
               if shape.name == 'refDes'
