@@ -68,7 +68,7 @@ class CoraledaGenerator
     now = new Date
     timestamp = sprintf("%d-%02d-%02d %02d:%02d:%02d", now.getYear() + 1900, now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds())
     id = 1 # subc global 32-bits unique identity field
-    fs.writeSync(fd, "# subcircuit generated using QEDA v#{pkg.version} on #{timestamp}\n")
+    fs.writeSync(fd, "# subcircuit generated using QEDA\n")
     fs.writeSync(fd, "li:pcb-rnd-subcircuit-v6 {\n")
     fs.writeSync(fd, " ha:subc.#{id++} {\n")
     uid = pattern.name + "........................" # pad
