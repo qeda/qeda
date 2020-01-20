@@ -11,6 +11,7 @@ ncPad = 1
 copperPads = (pattern, element, suffix = '') ->
   housing = element.housing
   pins = element.pins
+  pinNumberGroup = 0
   if housing['numbers' + suffix]? then housing['numbers' + suffix] = element.parsePinNumbers housing['numbers' + suffix]
   numbers = housing['numbers' + suffix] ? Object.keys pins
   unless (housing['holeDiameter' + suffix]?) or (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?) or (housing['slotWidth' + suffix]? and housing['slotHeight' + suffix]?)
@@ -77,7 +78,7 @@ copperPads = (pattern, element, suffix = '') ->
     for p, i in points
       pad.x = p.x
       pad.y = p.y
-      number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? ('NC' + ncPad++))
+      number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumberGroup++] ? ('NC' + ncPad++))
       pattern.pad number, pad
       if housing['holeDiameter' + suffix]?
         pad.shape = 'circle'
@@ -105,12 +106,15 @@ copperPads = (pattern, element, suffix = '') ->
         columnDY = columnDYs[column] ? columnDYs[0]
         pad.x = x + rowDX + columnDX
         pad.y = y + rowDY + columnDY
-        number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumber++] ? ('NC' + ncPad++))
+        number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else (numbers[pinNumberGroup++] ? ('NC' + ncPad++))
         pattern.pad number, pad
         if housing['holeDiameter' + suffix]?
           pad.shape = 'circle'
         x += horizontalPitch
       y += verticalPitch
+
+  pinNumber += pinNumberGroup
+  pinNumberGroup = 0
 
   hasPads
 

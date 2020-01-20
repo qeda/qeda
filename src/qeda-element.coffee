@@ -122,7 +122,7 @@ class QedaElement
   parsePinNumbers: (input) ->
     unless input? then return []
     result = []
-    numbers = input.replace(/\s+/g, '').split(',')
+    numbers = if input.toString().indexOf(',') == -1 then [input.toString()] else input.replace(/\s+/g, '').split(',')
     for number in numbers
       cap = /([A-Z]*)(\d+)-([A-Z]*)(\d+)/.exec number
       unless cap
