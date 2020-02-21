@@ -69,7 +69,7 @@ copperPads = (pattern, element, suffix = '') ->
       width: housing['padWidth' + suffix]
       height: housing['padHeight' + suffix]
       shape: if padDiameter? then 'circle' else 'rectangle'
-      layer: ['topCopper', 'topMask', 'topPaste']
+      layer: if housing['padBottom' + suffix] then ['bottomCopper', 'bottomMask', 'bottomPaste'] else ['topCopper', 'topMask', 'topPaste']
 
   if housing['padPosition' + suffix]?
     hasPads = true
