@@ -1,0 +1,405 @@
+# plastic shrink small outline package (SSOP) - multiple body width, multiple pitch, multiple lead length (R-PDSO-G)
+# dimensions from https://www.jedec.org/system/files/docs/Mo-152c.pdf
+pattern: SOP
+
+# dimension: A
+height: 2
+# dimension: L
+leadLength: 0.45-0.75
+# leadCount = dimension: N
+# pitch = dimension: e
+# bodyWidth = dimension: E1
+# bodyLength = dimension: D
+# leadWidth = dimension: b
+# leadSpan = dimension: E
+
+
+AA:
+  leadCount: 8
+  pitch: 0.65
+  bodyWidth: 4.3-4.5
+  bodyLength: 2.9-3.1
+  leadWidth: 0.19-0.30
+  leadSpan: 6.4
+
+AB-1:
+  leadCount: 14
+  pitch: 0.65
+  bodyWidth: 4.3-4.5
+  bodyLength: 4.9-5.1
+  leadWidth: 0.19-0.30
+  leadSpan: 6.4
+
+AB:
+  leadCount: 16
+  pitch: 0.65
+  bodyWidth: 4.3-4.5
+  bodyLength: 4.9-5.1
+  leadWidth: 0.19-0.30
+  leadSpan: 6.4
+
+AC:
+  leadCount: 20
+  pitch: 0.65
+  bodyWidth: 4.3-4.5
+  bodyLength: 6.4-6.6
+  leadWidth: 0.19-0.30
+  leadSpan: 6.4
+
+AD:
+  leadCount: 24
+  pitch: 0.65
+  bodyWidth: 4.3-4.5
+  bodyLength: 7.7-7.9
+  leadWidth: 0.19-0.30
+  leadSpan: 6.4
+
+AE:
+  leadCount: 28
+  pitch: 0.65
+  bodyWidth: 4.3-4.5
+  bodyLength: 9.6-9.8
+  leadWidth: 0.19-0.30
+  leadSpan: 6.4
+
+BA:
+  leadCount: 20
+  pitch: 0.50
+  bodyWidth: 4.3-4.5
+  bodyLength: 4.9-5.1
+  leadWidth: 0.17-0.27
+  leadSpan: 6.4
+
+BB:
+  leadCount: 24
+  pitch: 0.50
+  bodyWidth: 4.3-4.5
+  bodyLength: 6.4-6.6
+  leadWidth: 0.17-0.27
+  leadSpan: 6.4
+
+BC:
+  leadCount: 28
+  pitch: 0.50
+  bodyWidth: 4.3-4.5
+  bodyLength: 7.7-7.9
+  leadWidth: 0.17-0.27
+  leadSpan: 6.4
+
+BD:
+  leadCount: 36
+  pitch: 0.50
+  bodyWidth: 4.3-4.5
+  bodyLength: 9.6-9.8
+  leadWidth: 0.17-0.27
+  leadSpan: 6.4
+
+CA:
+  leadCount: 24
+  pitch: 0.40
+  bodyWidth: 4.3-4.5
+  bodyLength: 4.9-5.1
+  leadWidth: 0.13-0.23
+  leadSpan: 6.4
+
+CB:
+  leadCount: 32
+  pitch: 0.40
+  bodyWidth: 4.3-4.5
+  bodyLength: 6.4-6.6
+  leadWidth: 0.13-0.23
+  leadSpan: 6.4
+
+CC:
+  leadCount: 36
+  pitch: 0.40
+  bodyWidth: 4.3-4.5
+  bodyLength: 7.7-7.9
+  leadWidth: 0.13-0.23
+  leadSpan: 6.4
+
+CD:
+  leadCount: 48
+  pitch: 0.40
+  bodyWidth: 4.3-4.5
+  bodyLength: 9.6-9.8
+  leadWidth: 0.13-0.23
+  leadSpan: 6.4
+
+DA:
+  leadCount: 24
+  pitch: 0.65
+  bodyWidth: 6.0-6.2
+  bodyLength: 7.7-7.9
+  leadWidth: 0.19-0.30
+  leadSpan: 8.1
+
+DB:
+  leadCount: 28
+  pitch: 0.65
+  bodyWidth: 6.0-6.2
+  bodyLength: 9.6-9.8
+  leadWidth: 0.19-0.30
+  leadSpan: 8.1
+
+DB-1:
+  leadCount: 30
+  pitch: 0.65
+  bodyWidth: 6.0-6.2
+  bodyLength: 9.6-9.8
+  leadWidth: 0.19-0.30
+  leadSpan: 8.1
+
+DC:
+  leadCount: 32
+  pitch: 0.65
+  bodyWidth: 6.0-6.2
+  bodyLength: 10.9-11.1
+  leadWidth: 0.19-0.30
+  leadSpan: 8.1
+
+DD:
+  leadCount: 36
+  pitch: 0.65
+  bodyWidth: 6.0-6.2
+  bodyLength: 12.4-12.6
+  leadWidth: 0.19-0.30
+  leadSpan: 8.1
+
+DE:
+  leadCount: 40
+  pitch: 0.65
+  bodyWidth: 6.0-6.2
+  bodyLength: 13.8-14.1
+  leadWidth: 0.19-0.30
+  leadSpan: 8.1
+
+EA:
+  leadCount: 28
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 7.7-7.9
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+EB:
+  leadCount: 36
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 9.6-9.8
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+EC:
+  leadCount: 40
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 10.9-11.1
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+EC-1:
+  leadCount: 44
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 10.9-11.1
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+ED:
+  leadCount: 48
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 12.4-12.6
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+EE:
+  leadCount: 56
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 13.9-14.1
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+EF:
+  leadCount: 64
+  pitch: 0.50
+  bodyWidth: 6.0-6.2
+  bodyLength: 16.9-17.1
+  leadWidth: 0.17-0.27
+  leadSpan: 8.1
+
+FA:
+  leadCount: 36
+  bodyLength: 7.7-7.9
+  pitch: 0.40
+  bodyWidth: 6.0-6.2
+  leadWidth: 0.13-0.23
+  leadSpan: 8.1
+
+FB:
+  leadCount: 48
+  bodyLength: 9.6-9.8
+  pitch: 0.40
+  bodyWidth: 6.0-6.2
+  leadWidth: 0.13-0.23
+  leadSpan: 8.1
+
+FC:
+  leadCount: 52
+  bodyLength: 10.9-11.1
+  pitch: 0.40
+  bodyWidth: 6.0-6.2
+  leadWidth: 0.13-0.23
+  leadSpan: 8.1
+
+FD:
+  leadCount: 56
+  bodyLength: 12.4-12.6
+  pitch: 0.40
+  bodyWidth: 6.0-6.2
+  leadWidth: 0.13-0.23
+  leadSpan: 8.1
+
+FE:
+  leadCount: 64
+  bodyLength: 13.9-14.1
+  pitch: 0.40
+  bodyWidth: 6.0-6.2
+  leadWidth: 0.13-0.23
+  leadSpan: 8.1
+
+FF:
+  leadCount: 80
+  bodyLength: 16.9-17.1
+  pitch: 0.40
+  bodyWidth: 6.0-6.2
+  leadWidth: 0.13-0.23
+  leadSpan: 8.1
+
+GA:
+  leadCount: 28
+  bodyLength: 9.6-9.8
+  pitch: 0.65
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.19-0.30
+  leadSpan: 10.0
+
+GB:
+  leadCount: 32
+  bodyLength: 10.9-11.1
+  pitch: 0.65
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.19-0.30
+  leadSpan: 10.0
+
+GC:
+  leadCount: 36
+  bodyLength: 12.4-12.6
+  pitch: 0.65
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.19-0.30
+  leadSpan: 10.0
+
+GD:
+  leadCount: 40
+  bodyLength: 13.9-14.1
+  pitch: 0.65
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.19-0.30
+  leadSpan: 10.0
+
+HA:
+  leadCount: 36
+  bodyLength: 9.6-9.8
+  pitch: 0.50
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.17-0.27
+  leadSpan: 10.0
+
+HB:
+  leadCount: 40
+  bodyLength: 10.9-11.1
+  pitch: 0.50
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.17-0.27
+  leadSpan: 10.0
+
+HC:
+  leadCount: 48
+  bodyLength: 12.4-12.6
+  pitch: 0.50
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.17-0.27
+  leadSpan: 10.0
+
+HD:
+  leadCount: 56
+  bodyLength: 13.9-14.1
+  pitch: 0.50
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.17-0.27
+  leadSpan: 10.0
+
+JA:
+  leadCount: 48
+  bodyLength: 9.6-9.8
+  pitch: 0.40
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.13-0.23
+  leadSpan: 10.0
+
+JB:
+  leadCount: 52
+  bodyLength: 10.9-11.1
+  pitch: 0.40
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.13-0.23
+  leadSpan: 10.0
+
+JC:
+  leadCount: 56
+  bodyLength: 12.4-12.6
+  pitch: 0.40
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.13-0.23
+  leadSpan: 10.0
+
+JC-1:
+  leadCount: 60
+  bodyLength: 12.4-12.6
+  pitch: 0.40
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.13-0.23
+  leadSpan: 10.0
+
+JD:
+  leadCount: 54
+  bodyLength: 13.9-14.1
+  pitch: 0.40
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.13-0.23
+  leadSpan: 10.0
+
+JD-1:
+  leadCount: 64
+  bodyLength: 13.9-14.1
+  pitch: 0.40
+  bodyWidth: 7.9-8.1
+  leadWidth: 0.13-0.23
+  leadSpan: 10.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
