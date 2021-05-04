@@ -1,0 +1,11 @@
+pattern: SOP
+units: mm
+
+bodyWidth: 3.8-4.0 # E
+leadWidth: 0.36-0.49 # bp
+leadLength: 0.4-1.0 # Lp
+leadSpan: 5.8-6.2 # HE
+pitch: 1.27 # e
+height: 1.75 # A
+bodyLength: 9.8-10.0 # D
+leadCount: 16
