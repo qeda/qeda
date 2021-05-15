@@ -1,0 +1,27 @@
+pattern: SOP
+units: inches
+
+bodyWidth: 0.291-0.299 # E1
+leadWidth: 0.008-0.0135 # b
+leadLength: 0.02-0.04 # L
+leadSpan: 0.395-0.420 # E
+pitch: 0.025 # e
+
+A\w:
+  height: 0.069-0.110 # A
+
+AA:
+  bodyLength: 0.620-0.630 # D
+  leadCount: 48 # N
+
+AB:
+  bodyLength: 0.720-0.730 # D
+  leadCount: 56 # N
+
+AC:
+  bodyLength: 0.370-0.380 # D
+  leadCount: 28 # N
+
+AD:
+  bodyLength: 0.820-0.830 # D
+  leadCount: 64 # N
