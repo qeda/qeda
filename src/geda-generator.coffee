@@ -37,7 +37,7 @@ class GedaGenerator
 
     # Footprints
     for element in @library.elements
-      next if !element.pattern?
+      continue if !element.pattern?
       log.start "gEDA pcb footprint '#{element.pattern.name}.fp'"
       fd = fs.openSync "#{dir}/#{element.pattern.name}.fp", 'w'
       @_generatePattern fd, element.pattern
