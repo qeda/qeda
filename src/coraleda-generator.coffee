@@ -34,7 +34,7 @@ class CoraledaGenerator
 
     # patterns
     for element in @library.elements
-      next if !element.pattern?
+      continue if !element.pattern?
       log.start "coralEDA pcb-rnd subcircuit '#{element.pattern.name}.lht'"
       fd = fs.openSync("#{dir}/#{element.pattern.name}.lht", 'w')
       @_generatePattern(fd, element.pattern)
