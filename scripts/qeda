@@ -10,19 +10,24 @@
 # ... or:
 #     qeda completion > /etc/bash_completion.d/qeda
 #
-
-_qeda()
+_qeda() 
 {
     local cur prev opts base
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-
-    #
-    #  The basic options we'll complete.
-    #
     opts="--help --verbose --version reset add load power ground config generate test"
-    COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-    return 0
+
+    case "${prev}" in
+        add)
+            if [ -d "library" ]; then
+                _filedir
+            fi
+            ;;
+        *)
+            COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+            return 0
+        ;;
+    esac
 }
 complete -F _qeda qeda
