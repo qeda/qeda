@@ -335,19 +335,23 @@ class CoraledaGenerator
           when 'Courtyard'
             fs.writeSync(fd, "     purpose = ko.courtyard\n")
         fs.writeSync(fd, "     li:objects {\n")
+        polygon_lines = [] # to store line to convert to polygon
         for shape in pattern.shapes
           continue if !shape.layer.includes(side+type)
           continue if shape.visible? and !shape.visible
           switch shape.kind
             when 'line'
-              fs.writeSync(fd, "      ha:line.#{id++} {\n")
-              fs.writeSync(fd, sprintf("       x1 = #{@f}mm\n", shape.x1))
-              fs.writeSync(fd, sprintf("       y1 = #{@f}mm\n", shape.y1))
-              fs.writeSync(fd, sprintf("       x2 = #{@f}mm\n", shape.x2))
-              fs.writeSync(fd, sprintf("       y2 = #{@f}mm\n", shape.y2))
-              fs.writeSync(fd, sprintf("       thickness = #{@f}mm\n", shape.lineWidth || pattern.settings.lineWidth[type.toLowerCase()]))
-              fs.writeSync(fd, "       clearance = 0\n")
-              fs.writeSync(fd, "      }\n") # end line
+              if 'Courtyard' == type # courtyards should be polygons
+                polygon_lines.push shape # collect all lines
+              else
+                fs.writeSync(fd, "      ha:line.#{id++} {\n")
+                fs.writeSync(fd, sprintf("       x1 = #{@f}mm\n", shape.x1))
+                fs.writeSync(fd, sprintf("       y1 = #{@f}mm\n", shape.y1))
+                fs.writeSync(fd, sprintf("       x2 = #{@f}mm\n", shape.x2))
+                fs.writeSync(fd, sprintf("       y2 = #{@f}mm\n", shape.y2))
+                fs.writeSync(fd, sprintf("       thickness = #{@f}mm\n", shape.lineWidth || pattern.settings.lineWidth[type.toLowerCase()]))
+                fs.writeSync(fd, "       clearance = 0\n")
+                fs.writeSync(fd, "      }\n") # end line
             when 'circle'
               fs.writeSync(fd, "      ha:arc.#{id++} {\n")
               fs.writeSync(fd, sprintf("       x = #{@f}mm\n", shape.x))
@@ -381,6 +385,34 @@ class CoraledaGenerator
               fs.writeSync(fd, "         dyntext = 1\n") if shape.name == 'refDes'
               fs.writeSync(fd, "       }\n") # end flags
               fs.writeSync(fd, "      }\n") # end text
+        # end shapes
+        if polygon_lines.length > 0 # convert lines to polygon
+          points = []
+          points.push({x: polygon_lines[0].x1, y: polygon_lines[0].y1})
+          closed = false
+          next_found = true
+          while next_found and !closed
+            next_found = false
+            start_point = points[points.length - 1]
+            for line in polygon_lines
+              continue if not line?
+              if start_point.x == line.x1 and start_point.y == line.y1
+                end_point = {x: line.x2, y: line.y2}
+                if points[0].x == end_point.x and points[0].y == end_point.y
+                  closed = true
+                else
+                  points.push(end_point)
+                  next_found = true
+                polygon_lines = polygon_lines.filter (l) -> (l != line)
+          if closed
+            fs.writeSync(fd, "      ha:polygon.#{id++} {\n")
+            fs.writeSync(fd, "       li:geometry {\n")
+            fs.writeSync(fd, "        ta:contour {\n")
+            for point in points
+              fs.writeSync(fd, sprintf("         { #{@f}mm; #{@f}mm }\n", point.x, point.y))
+            fs.writeSync(fd, "        }\n") # end contour
+            fs.writeSync(fd, "       }\n") # end geometry
+            fs.writeSync(fd, "      }\n") # end polygon
         fs.writeSync(fd, "     }\n") # end objects
         fs.writeSync(fd, "    }\n") # end layer
         lid += 1
