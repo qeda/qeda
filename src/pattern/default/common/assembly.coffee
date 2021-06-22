@@ -103,7 +103,14 @@ module.exports =
           .lineTo -x + d, -y
         if diam? then  pattern.circle 0, 0, diam/2
       else if housing.polarized
-        @polarized pattern, housing
+        d = Math.min 1, bodyWidth/2, bodyLength/2
+        pattern
+          .moveTo -x + d, -y
+          .lineTo  x, -y
+          .lineTo  x,  y
+          .lineTo -x,  y
+          .lineTo -x, -y + d
+          .lineTo -x + d, -y
       else
         pattern.rectangle -x, -y, x, y
     else if housing.bodyDiameter?
