@@ -129,7 +129,11 @@ module.exports =
       .lineTo x1, y1
 
   preamble: (pattern, housing) ->
-    @_centroid pattern
+    settings = pattern.settings
+    lineWidth = settings.lineWidth.courtyard
+    pattern
+      .layer 'topCourtyard'
+      .lineWidth lineWidth
 
   quad: (pattern, housing, courtyard) ->
     bodyWidth = housing.bodyWidth.nom
@@ -207,14 +211,3 @@ module.exports =
     else if housing.bodyDiameter?
       @preamble pattern, housing
         .circle 0, 0, housing.bodyDiameter.nom/2 + courtyard
-
-  _centroid: (pattern) ->
-    settings = pattern.settings
-    lineWidth = settings.lineWidth.courtyard
-    pattern
-      .layer 'topCourtyard'
-      .lineWidth lineWidth
-      # Centroid origin marking
-      .circle 0, 0, 0.5
-      .line -0.7, 0, 0.7, 0
-      .line 0, -0.7, 0, 0.7

@@ -57,7 +57,7 @@ module.exports =
     maxFontSize = 0.66*Math.min(w, h)
     if fontSize > maxFontSize then fontSize = maxFontSize
     textLineWidth = Math.min(lineWidth, fontSize/5)
-    pattern
+    @_centroid pattern
       .layer 'topAssembly'
       .lineWidth textLineWidth
       .attribute 'value',
@@ -103,8 +103,26 @@ module.exports =
           .lineTo -x + d, -y
         if diam? then  pattern.circle 0, 0, diam/2
       else if housing.polarized
-        @polarized pattern, housing
+        d = Math.min 1, bodyWidth/2, bodyLength/2
+        pattern
+          .moveTo -x + d, -y
+          .lineTo  x, -y
+          .lineTo  x,  y
+          .lineTo -x,  y
+          .lineTo -x, -y + d
+          .lineTo -x + d, -y
       else
         pattern.rectangle -x, -y, x, y
     else if housing.bodyDiameter?
       pattern.circle 0, 0, housing.bodyDiameter.nom/2
+
+  _centroid: (pattern) ->
+    settings = pattern.settings
+    lineWidth = settings.lineWidth.assembly
+    pattern
+      .layer 'topAssembly'
+      .lineWidth lineWidth
+      # Centroid origin marking
+      .circle 0, 0, 0.5
+      .line -0.7, 0, 0.7, 0
+      .line 0, -0.7, 0, 0.7
