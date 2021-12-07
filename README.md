@@ -49,7 +49,7 @@ QEDA module for using in scripts as well as command line interface:
 Examples
 ========
 
-First example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad-pcb.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad-pcb.org/discover/pcbnew/)).
+First example will download component descriptions from [library repository](https://github.com/qeda/library/) then save them to disk and add to library manager. Last string is to generate component library in KiCad format (schematic symbols for [Eeschema](http://kicad.org/discover/eeschema/) as well as PCB footprints for [PcbNew](http://kicad.org/discover/pcbnew/)).
 
 CLI
 ---
