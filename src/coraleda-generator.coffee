@@ -313,6 +313,18 @@ class CoraledaGenerator
     fs.writeSync(fd, sprintf("       y1 = #{@f}mm\n", y_origin))
     fs.writeSync(fd, sprintf("       y2 = #{@f}mm\n", y_origin + 1.0))
     fs.writeSync(fd, "      }\n") # end line
+    # PnP origin
+    fs.writeSync(fd, "      ha:line.#{id++} {\n")
+    fs.writeSync(fd, "       clearance = 0\n")
+    fs.writeSync(fd, "       thickness = 0.1mm\n")
+    fs.writeSync(fd, "       ha:attributes {\n")
+    fs.writeSync(fd, "        subc-role = pnp-origin\n")
+    fs.writeSync(fd, "       }\n") # end attributes
+    fs.writeSync(fd, sprintf("       x1 = #{@f}mm\n", 0))
+    fs.writeSync(fd, sprintf("       x2 = #{@f}mm\n", 0))
+    fs.writeSync(fd, sprintf("       y1 = #{@f}mm\n", 0))
+    fs.writeSync(fd, sprintf("       y2 = #{@f}mm\n", 0))
+    fs.writeSync(fd, "      }\n") # end line
     fs.writeSync(fd, "     }\n") # end objects
     fs.writeSync(fd, "    }\n") # end subc-aux
     for side in ['top'] # bottom is not used AFAIK
