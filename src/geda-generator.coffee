@@ -78,7 +78,7 @@ class GedaGenerator
       fd = fs.openSync "#{dir}/#{element.name}#{part_name}.sym", 'w'
       fs.writeSync fd, "v 20150930 2\n"
 
-      for attribute in ['datasheet', 'keywords', 'aliases']
+      for attribute in ['description', 'datasheet', 'keywords', 'aliases']
         continue if not element[attribute]?
         if element[attribute] instanceof Array
           if element[attribute].length > 0
