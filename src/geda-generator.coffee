@@ -102,7 +102,7 @@ class GedaGenerator
           when 'circle'
             fs.writeSync fd, "V #{shape.x} #{shape.y} #{shape.radius} 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1\n"
           when 'arc'
-            fs.writeSync fd, "A #{shape.x} #{shape.y} #{shape.radius} #{shape.start} #{shape.end-shape.start} 3 0 0 0 -1 -1\n"
+            fs.writeSync fd, "A #{shape.x} #{shape.y} #{shape.radius} #{Math.round(shape.start)} #{Math.round(shape.end-shape.start)} 3 0 0 0 -1 -1\n"
           when 'pin'
             x1 = shape.x
             y1 = shape.y
