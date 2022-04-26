@@ -39,7 +39,7 @@ copperPads = (pattern, element, suffix = '') ->
       layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
     if (padWidth < slotWidth) and (padHeight < slotHeight)
       pad.type = 'mounting-hole'
-      pad.layer = ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
+      pad.layer = ['topMask', 'bottomMask']
       pad.width = slotWidth
       pad.height = slotHeight
       pad.shape = 'circle'
@@ -57,7 +57,7 @@ copperPads = (pattern, element, suffix = '') ->
       layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
     if (padWidth < holeDiameter) or (padHeight < holeDiameter)
       pad.type = 'mounting-hole'
-      pad.layer = ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
+      pad.layer = ['topMask', 'bottomMask']
       pad.width = holeDiameter
       pad.height = holeDiameter
       pad.shape = 'circle'
