@@ -168,6 +168,8 @@ class QedaPattern
         y += d/2
 
     switch @settings.polarityMark
+      when 'none'
+        this
       when 'dot'
         r = d/2
         oldLineWidth = @currentLineWidth
