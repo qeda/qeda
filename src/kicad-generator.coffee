@@ -22,10 +22,13 @@ class KicadGenerator
     mkdirp.sync "#{dir}/#{@name}.pretty"
     mkdirp.sync "#{dir}/#{@name}.3dshapes"
 
-    now = new Date
-    timestamp = sprintf "%02d/%02d/%d %02d:%02d:%02d",
-      now.getDate(), now.getMonth() + 1, now.getYear() + 1900,
-      now.getHours(), now.getMinutes(), now.getSeconds()
+    if @library.nodate
+      timestamp = "00/00/0000 00:00:00"
+    else
+      now = new Date
+      timestamp = sprintf "%02d/%02d/%d %02d:%02d:%02d",
+        now.getDate(), now.getMonth() + 1, now.getYear() + 1900,
+        now.getHours(), now.getMinutes(), now.getSeconds()
     log.start "KiCad library '#{@name}.lib'"
     fd = fs.openSync "#{dir}/#{@name}.lib", 'w'
     fs.writeSync fd, "EESchema-LIBRARY Version 2.3 Date: #{timestamp}\n"
