@@ -21,6 +21,8 @@ class QedaLibrary
     @connection =
       timeout: 5000
 
+    @nodate = false # don't put generated date in library (version control friendly)
+
     @symbol =
       style: 'default' # Options: default, GOST
       gridSize: 2.5 # Grid cell size
