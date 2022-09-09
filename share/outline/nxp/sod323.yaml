@@ -1,0 +1,12 @@
+pattern: SOD
+
+bodyWidth: 1.15-1.35 # E
+bodyLength: 1.6-1.8 # D
+height: 0.8-1.1 # A
+leadWidth: 0.25-0.40 # b
+leadLength: 0.15-0.45 # L
+leadSpan: 2.3-2.7 # H
+
+padWidth: 0.6
+padHeight: 0.6
+padDistance: 2.2
