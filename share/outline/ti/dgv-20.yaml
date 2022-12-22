@@ -1,0 +1,12 @@
+# https://www.ti.com/lit/pdf/MPDS006
+# TVSOP
+pattern: SOP
+
+bodyWidth: 4.3-4.5
+bodyLength: 4.9-5.1 # A
+height: 1.20
+leadWidth: 0.13-0.23
+leadLength: 0.50-0.75
+leadSpan: 6.20-6.60
+pitch: 0.4
+leadCount: 20

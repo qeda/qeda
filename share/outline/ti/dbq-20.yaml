@@ -1,0 +1,12 @@
+# https://www.ti.com/lit/pdf/MPDS210
+# QSOP
+pattern: SOP
+
+bodyWidth: 3.8-4.0
+bodyLength: 8.55-8.75
+height: 1.75
+leadWidth: 0.2-0.3
+leadLength: 0.40-0.89
+leadSpan: 5.80-6.20
+pitch: 0.635
+leadCount: 20

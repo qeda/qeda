@@ -1,0 +1,11 @@
+# https://www.ti.com/lit/pdf/MPDS362
+pattern: SOP
+
+bodyWidth: 4.3-4.5
+bodyLength: 6.4-6.6
+height: 1.20
+leadWidth: 0.19-0.30
+leadLength: 0.50-0.75
+leadSpan: 6.20-6.60
+pitch: 0.65
+leadCount: 20

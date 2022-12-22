@@ -1,0 +1,12 @@
+# https://www.ti.com/lit/pdf/MPBG634
+# UFBGA
+pattern: BGA
+
+bodyWidth: 2.9-3.1
+bodyLength: 2.4-2.6
+height: 0.61
+pitch: 0.5
+rowCount: 5
+columnCount: 4
+leadDiameter: 0.25-0.35
+leadCount: 20

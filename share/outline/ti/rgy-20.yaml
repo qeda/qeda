@@ -1,0 +1,52 @@
+# https://www.ti.com/lit/pdf/MPQF116
+# VQFN
+# needs to be custom because horizontal and vertical pitch are different, and pin 1 is on top
+pattern: custom
+
+bodyWidth: 3.35-3.65
+bodyLength: 4.35-4.65
+height: 0.8-1.0
+leadWidth: 0.18-0.30
+leadLength: 0.3-0.5
+silkscreen: M -1.85,-2.35 -1.85,-2.2
+
+numbers: 2,3,4,5,6,7,8,9 # left
+padWidth: 0.6
+padHeight: 0.24
+verticalPitch: 0.5
+horizontalPitch: 3.3
+rowCount: 8
+columnCount: 1
+columnDX: -1.65
+
+numbers1: 12,13,14,15,16,17,18,19 # right
+padWidth1: 0.6
+padHeight1: 0.24
+verticalPitch1: -0.5
+horizontalPitch1: 3.3
+rowCount1: 8
+columnCount1: 1
+columnDX1: 1.65
+
+numbers2: 1,20 # top
+padWidth2: 0.24
+padHeight2: 0.6
+verticalPitch2: 4.3
+horizontalPitch2: 1.5
+rowCount2: 1
+columnCount2: 2
+columnDY2: -2.15
+
+numbers3: 10,11 # bottom
+padWidth3: 0.24
+padHeight3: 0.6
+verticalPitch3: 4.3
+horizontalPitch3: 1.5
+rowCount3: 1
+columnCount3: 2
+columnDY3: 2.15
+
+numbers4: 21 # pad
+padWidth4: 2.05
+padHeight4: 3.05
+padPosition4: 0,0
