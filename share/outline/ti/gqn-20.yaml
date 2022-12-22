@@ -1,0 +1,12 @@
+# https://www.ti.com/lit/pdf/MPBG133
+# BGA
+pattern: BGA
+
+bodyWidth: 2.9-3.1
+bodyLength: 3.9-4.1
+height: 1.0
+pitch: 0.65
+rowCount: 5
+columnCount: 4
+leadDiameter: 0.35-0.45
+leadCount: 20
