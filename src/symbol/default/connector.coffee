@@ -12,7 +12,7 @@ class PinIcon extends Icon
       @symbol.poly x - @d.r, y - @d.r, x + @d.r, y - @d.r,
                    x + @d.r, y + @d.r, x - @d.r, y + @d.r,
                    x - @d.r, y - @d.r, 'background'
-    else
+    else if !@schematic['no-pin']
       @symbol.circle x, y, @d.r, 'background'
 
 module.exports = (symbol, element) ->
