@@ -1,0 +1,12 @@
+# https://www.ti.com/lit/pdf/MPDS050
+# VSSOP
+pattern: SOP
+
+bodyWidth: 2.2-2.4
+bodyLength: 1.9-2.1
+height: 0.6-0.9
+leadWidth: 0.20-0.35
+leadLength: 0.17-0.25
+leadSpan: 3.0-3.2
+pitch: 0.5
+leadCount: 8
