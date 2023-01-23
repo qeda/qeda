@@ -1,0 +1,16 @@
+# https://www.ti.com/lit/pdf/MPSS150
+# X1SON
+pattern: custom
+
+numbers: 1,8,2,7,3,6,4,5
+silkscreen: M -0.55,-1.1 0,-1.1
+bodyWidth: 0.95-1.05
+bodyLength: 1.9-2.0
+height: 0.5
+horizontalPitch: 0.6
+verticalPitch: 0.5
+rowCount: 4
+columnCount: 2
+leadCount: 8
+padWidth: 0.3
+padHeight: 0.2
