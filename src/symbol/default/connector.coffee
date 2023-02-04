@@ -8,12 +8,13 @@ class PinIcon extends Icon
       r: @width/4
 
   draw: (x, y) ->
-    if @schematic['square-pin']
-      @symbol.poly x - @d.r, y - @d.r, x + @d.r, y - @d.r,
-                   x + @d.r, y + @d.r, x - @d.r, y + @d.r,
-                   x - @d.r, y - @d.r, 'background'
-    else if !@schematic['no-pin']
-      @symbol.circle x, y, @d.r, 'background'
+    if @symbol.settings.pinIcon and !@schematic['no-pin']
+      if @schematic['square-pin']
+        @symbol.poly x - @d.r, y - @d.r, x + @d.r, y - @d.r,
+                     x + @d.r, y + @d.r, x - @d.r, y + @d.r,
+                     x - @d.r, y - @d.r, 'background'
+      else
+        @symbol.circle x, y, @d.r, 'background'
 
 module.exports = (symbol, element) ->
   schematic = element.schematic

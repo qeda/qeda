@@ -30,6 +30,7 @@ class QedaLibrary
       factor: 1 # Symbol factor
       pitch: 5 # Default pin pitch
       shortPinNames: false # Add alternate pin functions to pin name or not
+      pinIcon: true # Add shape next to pin (particularly for connectors)
       fill: 'foreground' # Options: none, background, foreground
       fontSize:
         default: 2.5
