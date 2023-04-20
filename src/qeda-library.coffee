@@ -238,7 +238,7 @@ class QedaLibrary
       for base in bases
         baseElement = base
         if path.dirname(baseElement) is '.' then baseElement = path.dirname(element) + '/' + baseElement
-        baseObj = @loadYaml baseElement, force
+        baseObj = (@loadYaml baseElement, force)[0]
         for exclusion in exclusions
           if baseObj[exclusion]? then delete baseObj[exclusion]
         @mergeObjects baseObj, obj

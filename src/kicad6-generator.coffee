@@ -230,7 +230,7 @@ class Kicad6Generator
             fs.writeSync fd, sprintf(" (stroke (width #{@f}) (type default) (color 0 0 0 0)) (fill (type #{symObj.fillStyle})))\n", symObj.lineWidth)
           when 'text'
             fs.writeSync fd, "    (text \"#{symObj.text}\"\n"
-            fs.writeSync fd, sprintf("      (at #{@f} #{@f}) #{nameObj.orientation * 10})\n", symObj.x, symObj.y)
+            fs.writeSync fd, sprintf("      (at #{@f} #{@f} #{nameObj.orientation * 10})\n", symObj.x, symObj.y)
             fs.writeSync fd, "      (effects (font (size #{symObj.fontSize} #{symObj.fontSize})"
             if symObj.bold then fs.writeSync fd, " bold"
             if symObj.italic then fs.writeSync fd, " italic"
