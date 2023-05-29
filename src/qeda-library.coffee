@@ -6,6 +6,7 @@ yaml = require 'js-yaml'
 
 KicadGenerator = require './kicad-generator'
 Kicad6Generator = require './kicad6-generator'
+Kicad7Generator = require './kicad7-generator'
 SvgGenerator = require './svg-generator'
 GedaGenerator = require './geda-generator'
 CoraledaGenerator = require './coraleda-generator'
@@ -158,6 +159,7 @@ class QedaLibrary
     switch @output
       when 'kicad' then generator = new KicadGenerator(this)
       when 'kicad6' then generator = new Kicad6Generator(this)
+      when 'kicad7' then generator = new Kicad7Generator(this)
       when 'svg' then generator = new SvgGenerator(this)
       when 'geda' then generator = new GedaGenerator(this)
       when 'coraleda' then generator = new CoraledaGenerator(this)
