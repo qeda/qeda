@@ -22,6 +22,7 @@ class QedaLibrary
 
     @connection =
       timeout: 5000
+      remote: 'https://raw.githubusercontent.com/qeda/library/master/'
 
     @nodate = false # don't put generated date in library (version control friendly)
 
@@ -211,7 +212,7 @@ class QedaLibrary
       log.start "Load '#{elementName}'"
       elementYaml = elementYaml.split('/').map((v) -> encodeURIComponent(v)).join('/')
       try
-        res = request 'GET', 'https://raw.githubusercontent.com/qeda/library/master/' + elementYaml,
+        res = request 'GET', @connection.remote + elementYaml,
           timeout: @connection.timeout
       catch error
         log.error error.message

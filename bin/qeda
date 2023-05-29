@@ -102,14 +102,17 @@ function resetConfig() {
 }
 
 function loadComponent(componentName) {
-  var lib = new QedaLibrary();
+  var qedaYaml = readYaml();
+  qedaYaml.config = qedaYaml.config || {};
+  var lib = new QedaLibrary(qedaYaml.config);
   lib.load(componentName, true);
 }
 
 function addComponent(componentName) {
-  var lib = new QedaLibrary();
-  lib.load(componentName);
   var qedaYaml = readYaml();
+  qedaYaml.config = qedaYaml.config || {};
+  var lib = new QedaLibrary(qedaYaml.config);
+  lib.load(componentName);
   qedaYaml.library = qedaYaml.library || [];
   qedaYaml.library.map(function (v) { return v.toLowerCase(); });
   componentName = componentName.toLowerCase();
