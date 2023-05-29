@@ -281,7 +281,7 @@ class QedaElement
         nom = (max + min) / 2
         tol = max - min
         housing[k] = { min: min,  max: max,  nom: nom, tol: tol }
-      else if dimensions.indexOf(k) isnt -1
+      else if dimensions.indexOf(k) isnt -1 and typeof v isnt 'object'
         min = nom = max = v
         tol = 0
         housing[k] = { min: min,  max: max,  nom: nom, tol: tol }
