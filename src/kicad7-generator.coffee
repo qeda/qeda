@@ -210,9 +210,9 @@ class Kicad7Generator
       fs.writeSync fd, "      (effects (font (size #{nameObj.fontSize} #{nameObj.fontSize})) hide)\n"
       fs.writeSync fd, "    )\n"
 
-    for symbol in element.symbols
+    for symbol, index in element.symbols
       # draw graphic items
-      fs.writeSync fd, "    (symbol \"#{element.name}_1_1\"\n"
+      fs.writeSync fd, "    (symbol \"#{element.name}_#{index+1}_1\"\n"
       for shape in symbol.shapes
         symObj = @_symbolObj shape
         switch symObj.kind
