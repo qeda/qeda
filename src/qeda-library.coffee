@@ -194,6 +194,12 @@ class QedaLibrary
           if modifier?
             if modifier.toLowerCase() is variation then varObj[param] = v # Replace
             delete varObj[k]
+          if typeof v is 'object' and (not Array.isArray v)
+            for k2, v2 of varObj[k]
+              [param, modifier] = k2.replace(/\s+/g, '').split('@')
+              if modifier?
+                if modifier.toLowerCase() is variation then varObj[k][param] = v2 # Replace
+                delete varObj[k][k2]
         objs.push varObj
     else
       objs.push obj
@@ -257,7 +263,9 @@ class QedaLibrary
   #
   mergeObjects: (dest, src) ->
     for k, v of src
-      if typeof v is 'object' and (not Array.isArray v) and dest.hasOwnProperty k
+      if typeof v is 'object' and (not Array.isArray v)
+        if not dest.hasOwnProperty k
+          dest[k] = {}
         @mergeObjects dest[k], v
       else
         dest[k] = v
