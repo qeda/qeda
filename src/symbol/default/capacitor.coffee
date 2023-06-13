@@ -6,8 +6,11 @@ module.exports = (symbol, element, icons = Icons) ->
   symbol.orientations = [0, 90, 180, 270]
   if element.schematic.polarized == true
     symbol.orientations = [0, 90]
-  icon = new icons.Capacitor(symbol, element)
+  if element.schematic.feedthrough
+    icon = new icons.CapacitorFeedthrough(symbol, element)
+  else
+    icon = new icons.Capacitor(symbol, element)
 
-  twoSided symbol, element, icon
+  twoSided symbol, element, icon, 'L', 'R', if element.schematic.feedthrough then 'B' else ''
 
   [icon.width, icon.height]
