@@ -48,6 +48,7 @@ module.exports = (symbol, element, icon, leftName = 'L', rightName = 'R') ->
     decorated = (left.length > 1) or (right.length > 1) or (nc?.length)
 
     schematic.showPinNumbers ?= if decorated then true else false
+    if !schematic.showPinNumbers then decorated = false
 
     width = icon.width
     height = icon.height
