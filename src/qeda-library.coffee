@@ -111,7 +111,7 @@ class QedaLibrary
       # Aliases
       aliases = []
       if obj.alias?
-        for alias in obj.alias.replace(/\s+/g, '').split(',')
+        for alias in obj.alias.toString().replace(/\s+/g, '').split(',')
           aliases = aliases.concat(suffixes.map (v) => alias + v)
       if suffixes.length > 1
         aliases = aliases.concat(suffixes[1..].map (v) => name + v)
