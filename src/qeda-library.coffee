@@ -277,6 +277,12 @@ class QedaLibrary
     @addSymbol 'power', name
 
   #
+  # Add power flag
+  #
+  powerflag: (name) ->
+    @addSymbol 'powerflag', name
+
+  #
   # Add port symbols
   #
   port: () ->
