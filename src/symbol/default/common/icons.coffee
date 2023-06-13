@@ -59,6 +59,39 @@ class CapacitorFeedthroughIcon extends Icon
       .center 0, 0 # Restore default center point
 
 #
+# Coaxial Connector
+#
+class CoaxialConnectorIcon extends Icon
+  constructor: (symbol, element) ->
+    super symbol, element, width=8, height=8
+    @d =
+      w: @width
+      h: @height
+      r: @width / 2
+      s: @width / 8
+
+  draw: (x, y) ->
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .arc 0, 0, @d.r, 160, if @schematic.switch then 20 else 0
+      .arc 0, 0, @d.r, 200, if @schematic.switch then 340 else 360
+      .circle 0, 0, @lineWidth, 'background'
+    if @schematic.switch
+      @symbol
+        .line 4*@d.s, 0, 3*@d.s, 0
+        .line 3*@d.s, 0, @d.s, -2*@d.s
+        .line @d.s, -2*@d.s, -@d.s, -2*@d.s
+        .line -4*@d.s, 0, -3*@d.s, 0
+        .line -3*@d.s, 0, -@d.s, -2*@d.s+@lineWidth
+        #.lineTo -@d.s, -2*@d.s
+        #.line -@d.s, 0, 0, 0
+        #.lineTo @d.s, -2*@d.s
+    else
+      @symbol.line -@d.r, 0, 0, 0
+    @symbol.center 0, 0 # Restore default center point
+
+#
 # Crystal
 #
 class CrystalIcon extends Icon
@@ -422,6 +455,7 @@ Icons = {}
 
 Icons.Capacitor = CapacitorIcon
 Icons.CapacitorFeedthrough = CapacitorFeedthroughIcon
+Icons.CoaxialConnector = CoaxialConnectorIcon
 Icons.Crystal = CrystalIcon
 Icons.Diode = DiodeIcon
 Icons.Fet = FetIcon
