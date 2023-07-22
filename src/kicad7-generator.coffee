@@ -30,7 +30,14 @@ class Kicad7Generator
     patterns = {}
     for element in @library.elements
       @_generateSymbol fd, element
-      if element.pattern? then patterns[element.pattern.name] = element.pattern
+      if element.pattern?
+        patterns[element.pattern.name] = element.pattern
+        if element.housing.model? and element.housing.model.file?
+          element.pattern.model = element.housing.model
+          element.pattern.model.extension = element.pattern.model.file.split('.').pop()
+          if element.pattern.model.position? then element.pattern.model.position = element.pattern.model.position.replaceAll(' ','').split(',')
+          if element.pattern.model.rotation? then element.pattern.model.rotation = element.pattern.model.rotation.replaceAll(' ','').split(',')
+          if element.pattern.model.scale? then element.pattern.model.scale = element.pattern.model.scale.replaceAll(' ','').split(',')
     fs.writeSync fd, ")\n"
     fs.closeSync fd
     log.ok()
@@ -45,10 +52,14 @@ class Kicad7Generator
 
     # 3D shapes
     for patternName, pattern of patterns
-      log.start "KiCad 3D shape '#{patternName}.wrl'"
-      fd = fs.openSync "#{dir}/#{@name}.3dshapes/#{patternName}.wrl", 'w'
-      @_generateVrml fd, pattern
-      fs.closeSync fd
+      if pattern.model?
+        log.start "KiCad 3D shape '#{patternName}.#{pattern.model.extension}'"
+        fs.copyFileSync "./#{pattern.model.file}", "#{dir}/#{@name}.3dshapes/#{patternName}.#{pattern.model.extension}"
+      else
+        log.start "KiCad 3D shape '#{patternName}.wrl'"
+        fd = fs.openSync "#{dir}/#{@name}.3dshapes/#{patternName}.wrl", 'w'
+        @_generateVrml fd, pattern
+        fs.closeSync fd
       log.ok()
 
   #
@@ -105,10 +116,25 @@ class Kicad7Generator
             fs.writeSync fd, sprintf("\n    (roundrect_rratio #{@f})", ratio)
           fs.writeSync fd, ")\n"
 
-    fs.writeSync fd, "  (model ../#{@name}.3dshapes/#{pattern.name}.wrl\n"
-    fs.writeSync fd, "    (at (xyz 0 0 0))\n"
-    fs.writeSync fd, "    (scale (xyz 0.3937 0.3937 0.3937))\n"
-    fs.writeSync fd, "    (rotate (xyz 0 0 0 ))\n"
+    if pattern.model?
+      fs.writeSync fd, "  (model ../#{@name}.3dshapes/#{pattern.name}.#{pattern.model.extension}\n"
+      if pattern.model.position? and pattern.model.position.length == 3
+        fs.writeSync fd, "    (at (xyz #{pattern.model.position.map((a) => a/25.4).join(' ')}))\n"
+      else
+        fs.writeSync fd, "    (at (xyz 0 0 0))\n"
+      if pattern.model.scale? and pattern.model.scale.length == 3
+        fs.writeSync fd, "    (scale (xyz #{pattern.model.scale.join(' ')}))\n"
+      else
+        fs.writeSync fd, "    (scale (xyz 1 1 1))\n"
+      if pattern.model.rotation? and pattern.model.rotation.length == 3
+        fs.writeSync fd, "    (rotate (xyz #{pattern.model.rotation.join(' ')}))\n"
+      else
+        fs.writeSync fd, "    (rotate (xyz 0 0 0))\n"
+    else
+      fs.writeSync fd, "  (model ../#{@name}.3dshapes/#{pattern.name}.wrl\n"
+      fs.writeSync fd, "    (at (xyz 0 0 0))\n"
+      fs.writeSync fd, "    (scale (xyz 0.3937 0.3937 0.3937))\n"
+      fs.writeSync fd, "    (rotate (xyz 0 0 0 ))\n"
     fs.writeSync fd, "  )\n" # model
 
     fs.writeSync fd, ")\n" # module
