@@ -25,6 +25,7 @@ Commands:\n\
                         if necessary)\n\
   load COMPONENT        Load component definition from global repository\n\
   power NET             Add power supply symbol to config\n\
+  powerflag NET         Add power flag symbol to config\n\
   ground NET            Add ground symbol to config\n\
   port                  Add port symbols to config\n\
   sort                  Sort components and nets in config alphabetically\n\
@@ -131,6 +132,15 @@ function addPower(netName) {
   }
 }
 
+function addPowerflag(netName) {
+  var qedaYaml = readYaml();
+  qedaYaml.powerflag = qedaYaml.powerflag || [];
+  if (qedaYaml.powerflag.indexOf(netName) === -1) {
+    qedaYaml.powerflag.push(netName);
+    writeYaml(qedaYaml);
+  }
+}
+
 function addGround(netName) {
   var qedaYaml = readYaml();
   qedaYaml.ground = qedaYaml.ground || [];
@@ -150,9 +160,11 @@ function generateLibrary(libraryName) {
   var qedaYaml = readYaml();
   qedaYaml.library = qedaYaml.library || [];
   qedaYaml.power = qedaYaml.power || [];
+  qedaYaml.powerflag = qedaYaml.powerflag || [];
   qedaYaml.ground = qedaYaml.ground || [];
   if (qedaYaml.library.length === 0 &&
       qedaYaml.power.length === 0 &&
+	  qedaYaml.powerflag.length === 0 &&
       qedaYaml.ground.length === 0) {
     console.error('Error: Nothing to generate');
     console.error('');
@@ -167,6 +179,9 @@ function generateLibrary(libraryName) {
   }
   for (var i = 0; i < qedaYaml.power.length; ++i) {
     lib.power(qedaYaml.power[i]);
+  }
+  for (var i = 0; i < qedaYaml.powerflag.length; ++i) {
+    lib.powerflag(qedaYaml.powerflag[i]);
   }
   for (var i = 0; i < qedaYaml.ground.length; ++i) {
     lib.ground(qedaYaml.ground[i]);
@@ -293,6 +308,12 @@ switch (command) {
       displayError('Missing net name after "power" command');
     }
     addPower(args.argv.original[1]);
+    break;
+  case 'powerflag':
+    if (args.argv.original.length < 2) {
+      displayError('Missing net name after "powerflag" command');
+    }
+    addPowerflag(args.argv.original[1]);
     break;
   case 'ground':
     if (args.argv.original.length < 2) {
