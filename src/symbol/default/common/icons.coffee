@@ -236,11 +236,19 @@ class FuseIcon extends Icon
 class InductorIcon extends Icon
   constructor: (symbol, element) ->
     width = 20
-    super symbol, element, width, height=width/8
+    if element.schematic.ferrite
+      super symbol, element, width=10, height=4
+    else
+      super symbol, element, width, height=width/8
     @d =
       w: @width
       h: @height
       r: @width/8
+      lw: Math.sqrt(Math.pow(@width,2)/2)
+      lh: Math.sqrt(Math.pow(@height,2)/2)
+    if @schematic.ferrite
+      @width = @d.lh * 2
+      @height = @d.lw + @d.lh
     @y1 = -@height
     @y2 = 0
 
@@ -249,10 +257,16 @@ class InductorIcon extends Icon
       .lineWidth @lineWidth
       .center x, y # Set center to (x, y)
 
-    x = -3*@d.r
-    for i in [1..4]
-      @symbol.arc x, 0, @d.r, 180, 0
-      x += 2*@d.r
+    if @schematic.ferrite
+      settings = @symbol.settings
+      x = (@d.lw + @d.lh)/2
+      y = x-@d.lw
+      @symbol.poly x, y, y, x, -x, -y, -y, -x, settings.fill
+    else
+      x = -3*@d.r
+      for i in [1..4]
+        @symbol.arc x, 0, @d.r, 180, 0
+        x += 2*@d.r
 
     @symbol.center 0, 0 # Restore default center point
 
