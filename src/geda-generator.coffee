@@ -139,8 +139,11 @@ class GedaGenerator
                 angle = 90
                 alignment = 6
             name = shape.name.toString()
-            if name.includes('~') or shape.inverted
-              name = name.replace(/^~/,'').replace(/~$/,'')
+            if name.includes('~')
+              name = name.replace /~{([^}]+)}/g, '\\_$1\\_'
+              name = name.replace /~([^~]+)~/g, '\\_$1\\_'
+              name = name.replace /~([^~]+)/g, '\\_$1\\_'
+            if shape.inverted
               name = "\\_#{name}\\_"
             fs.writeSync fd, "T #{xt} #{yt} 9 8 #{if element.schematic.showPinNames then 1 else 0} 1 #{angle} #{alignment} 1\n"
             fs.writeSync fd, "pinlabel=#{name}\n"

@@ -140,6 +140,14 @@ class Kicad7Generator
     fs.writeSync fd, ")\n" # module
 
   #
+  # Format pin names for KiCad 7
+  #
+  _formatPinName: (name) ->
+    formatted = name.replace /~([^~{}]+)~/g, '~{$1}'
+    formatted = formatted.replace /~([^~{}]+)/g, '~{$1}'
+    return formatted
+
+  #
   # Write symbol file
   #
   _generateSymbol: (fd, element) ->
@@ -310,7 +318,7 @@ class Kicad7Generator
               fs.writeSync fd, "line"
             fs.writeSync fd, sprintf(" (at #{@f} #{@f} #{symObj.orientation})", symObj.x, symObj.y)
             fs.writeSync fd, sprintf(" (length #{@f})\n", symObj.length)
-            fs.writeSync fd, "        (name \"#{symObj.name}\" (effects (font (size #{symObj.fontSize} #{symObj.fontSize})"
+            fs.writeSync fd, "        (name \"#{@_formatPinName(symObj.name)}\" (effects (font (size #{symObj.fontSize} #{symObj.fontSize})"
             if symObj.bold then fs.writeSync fd, " bold"
             if symObj.italic then fs.writeSync fd, " italic"
             fs.writeSync fd, ")"

@@ -149,6 +149,15 @@ class KicadGenerator
     fs.writeSync fd, ")\n" # module
 
   #
+  # Format pin names for KiCad
+  #
+  _formatPinName: (name) ->
+    formatted = name.replace /~{([^}]+)}/g, '~$1~'
+    if (formatted.match(/~/g) || []).length % 2 == 1
+      formatted += '~'
+    return formatted
+
+  #
   # Write symbol entry to library file
   #
   _generateSymbol: (fd, element) ->
@@ -199,7 +208,7 @@ class KicadGenerator
       for shape in symbol.shapes
         symObj = @_symbolObj shape
         switch symObj.kind
-          when 'pin' then fs.writeSync fd, "X #{symObj.name} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSize} #{symObj.fontSize} #{i} 1 #{symObj.type}#{symObj.shape}\n"
+          when 'pin' then fs.writeSync fd, "X #{@_formatPinName(symObj.name)} #{symObj.number} #{symObj.x} #{symObj.y} #{symObj.length} #{symObj.orientation} #{symObj.fontSize} #{symObj.fontSize} #{i} 1 #{symObj.type}#{symObj.shape}\n"
           when 'rectangle' then fs.writeSync fd, "S #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"
           when 'line' then fs.writeSync fd, "P 2 #{i} 1 #{symObj.lineWidth} #{symObj.x1} #{symObj.y1} #{symObj.x2} #{symObj.y2} N\n"
           when 'circle' then fs.writeSync fd, "C #{symObj.x} #{symObj.y} #{symObj.radius} #{i} 1 #{symObj.lineWidth} #{symObj.fillStyle}\n"

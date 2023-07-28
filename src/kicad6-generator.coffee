@@ -114,6 +114,14 @@ class Kicad6Generator
     fs.writeSync fd, ")\n" # module
 
   #
+  # Format pin names for KiCad 6
+  #
+  _formatPinName: (name) ->
+    formatted = name.replace /~([^~{}]+)~/g, '~{$1}'
+    formatted = formatted.replace /~([^~{}]+)/g, '~{$1}'
+    return formatted
+
+  #
   # Write symbol file
   #
   _generateSymbol: (fd, element) ->
@@ -261,7 +269,7 @@ class Kicad6Generator
             fs.writeSync fd, "\n"
             fs.writeSync fd, sprintf("      (at #{@f} #{@f} #{symObj.orientation})\n", symObj.x, symObj.y)
             fs.writeSync fd, sprintf("      (length #{@f})\n", symObj.length)
-            fs.writeSync fd, "      (name \"#{symObj.name}\"\n"
+            fs.writeSync fd, "      (name \"#{@_formatPinName(symObj.name)}\"\n"
             fs.writeSync fd, "        (effects (font (size #{symObj.fontSize} #{symObj.fontSize})"
             if symObj.bold then fs.writeSync fd, " bold"
             if symObj.italic then fs.writeSync fd, " italic"
