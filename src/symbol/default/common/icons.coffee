@@ -37,6 +37,28 @@ class CapacitorIcon extends Icon
     @symbol.center 0, 0 # Restore default center point
 
 #
+# Feedthrough Capacitor
+#
+class CapacitorFeedthroughIcon extends Icon
+  constructor: (symbol, element) ->
+    super symbol, element, width=8, height=3
+    @d =
+      w: @width
+      h: @height
+
+  draw: (x, y) ->
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      # Top plate
+      .line -@d.w/2, @d.h/2, @d.w/2, @d.h/2
+      # Bottom plate
+      .line -@d.w/2, -@d.h/2, @d.w/2, -@d.h/2
+      # Center plate
+      .line -@d.w/2, 0, @d.w/2, 0
+      .center 0, 0 # Restore default center point
+
+#
 # Crystal
 #
 class CrystalIcon extends Icon
@@ -399,6 +421,7 @@ class TransistorIcon extends Icon
 Icons = {}
 
 Icons.Capacitor = CapacitorIcon
+Icons.CapacitorFeedthrough = CapacitorFeedthroughIcon
 Icons.Crystal = CrystalIcon
 Icons.Diode = DiodeIcon
 Icons.Fet = FetIcon
