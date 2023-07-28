@@ -99,6 +99,9 @@ class Kicad7Generator
             cornerRadius = Math.min(patObj.width, patObj.height) * @library.pattern.ratio.cornerToWidth
             if cornerRadius > @library.pattern.maximum.cornerRadius then cornerRadius = @library.pattern.maximum.cornerRadius
             if cornerRadius > 0 then patObj.shape = 'roundrect'
+          else if patObj.chamfer?
+            cornerRadius = 0
+            patObj.shape = 'roundrect'
 
           fs.writeSync(fd,
             sprintf("  (pad %s %s %s (at #{@f} #{@f}) (size #{@f} #{@f}) (layers %s)"
@@ -114,6 +117,13 @@ class Kicad7Generator
           if patObj.shape is 'roundrect'
             ratio = cornerRadius / Math.min(patObj.width, patObj.height)
             fs.writeSync fd, sprintf("\n    (roundrect_rratio #{@f})", ratio)
+
+          if patObj.chamfer? and patObj.chamfer.length > 0
+            chamfer = patObj.chamfer_ratio
+            chamfer ?= 0.5
+            if chamfer > 1 then chamfer = 1
+            if chamfer < 0 then chamfer = 0
+            fs.writeSync fd, sprintf("\n    (chamfer_ratio #{@f}) (chamfer %s)", chamfer, @_formatChamfer patObj.chamfer)
 
           if patObj.property? and patObj.property is 'testpoint'
             fs.writeSync fd, sprintf("\n    (property pad_prop_testpoint)")
@@ -150,6 +160,20 @@ class Kicad7Generator
     formatted = String(name).replace /~([^~{}]+)~/g, '~{$1}'
     formatted = formatted.replace /~([^~{}]+)/g, '~{$1}'
     return formatted
+
+  #
+  # Format chamfer string for KiCad 7
+  _formatChamfer: (list) ->
+    ret = []
+    if 'TopLeft' in list
+      ret.push 'top_left'
+    if 'TopRight' in list
+      ret.push 'top_right'
+    if 'BotLeft' in list
+      ret.push 'bottom_left'
+    if 'BotRight' in list
+      ret.push 'bottom_right'
+    return ret.join ' '
 
   #
   # Write symbol file

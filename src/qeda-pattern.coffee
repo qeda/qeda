@@ -21,6 +21,22 @@ class QedaPattern
     @y = 0
     @cx = 0
     @cy = 0
+    @chamfer = {}
+    _chamfer = element.housing.chamfer
+    if typeof _chamfer is 'string'
+      _chamfer = @_parseMultiple _chamfer
+    _chamfer ?= []
+    if _chamfer? and not Array.isArray _chamfer
+      _chamfer = [_chamfer]
+    for pos in ['TopLeft', 'TopRight', 'BotLeft', 'BotRight']
+      @chamfer[pos] = element.housing['chamfer' + pos]
+      if typeof @chamfer[pos] is 'string'
+        @chamfer[pos] = @_parseMultiple @chamfer[pos]
+      @chamfer[pos] ?= [];
+      if not Array.isArray @chamfer[pos]
+        @chamfer[pos] = [@chamfer[pos]]
+      Array::push.apply @chamfer[pos], _chamfer
+      @chamfer[pos] = @chamfer[pos].map (a) -> String(a)
 
   #
   # Add attribute
@@ -107,6 +123,12 @@ class QedaPattern
     pad.name = name
     pad.x = @cx + pad.x
     pad.y = @cy + pad.y
+    pad.chamfer = []
+    for pos in ['TopLeft', 'TopRight', 'BotLeft', 'BotRight']
+      if String(pad.name) in @chamfer[pos]
+        pad.chamfer.push pos
+    if pad.chamfer.length < 1
+      delete pad.chamfer
     @pads[name] = @_addPad pad
     this
 
@@ -326,6 +348,24 @@ class QedaPattern
     dx = line.x2 - line.x1
     dy = line.y2- line.y1
     Math.sqrt(dx*dx + dy*dy)
+
+  #
+  # Parse pin/group list
+  #
+  _parseMultiple: (input) ->
+    unless input? then return [0]
+    result = []
+    groups = input.toString().replace(/\s+/g, '').split(',')
+    for group in groups
+      cap = /(\D*)(\d+)-(\d+)/.exec group
+      if cap
+        begin = parseInt cap[2]
+        end = parseInt cap[3]
+        for i in [begin..end]
+          result.push cap[1] + i
+      else
+        result.push group
+    result
 
   #
   # Merge two objects
