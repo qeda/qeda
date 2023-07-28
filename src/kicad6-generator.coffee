@@ -107,7 +107,7 @@ class Kicad6Generator
 
     fs.writeSync fd, "  (model #{pattern.name}.wrl\n"
     fs.writeSync fd, "    (at (xyz 0 0 0))\n"
-    fs.writeSync fd, "    (scale (xyz 0.3937 0.3937 0.3937))\n"
+    fs.writeSync fd, "    (scale (xyz 1 1 1))\n"
     fs.writeSync fd, "    (rotate (xyz 0 0 0 ))\n"
     fs.writeSync fd, "  )\n" # model
 
@@ -293,52 +293,32 @@ class Kicad6Generator
   # Write 3D shape file in VRML format
   #
   _generateVrml: (fd, pattern) ->
-    x1 =  pattern.box.x - pattern.box.width/2
-    x2 =  pattern.box.x + pattern.box.width/2
-    y1 =  pattern.box.y - pattern.box.length/2
-    y2 =  pattern.box.y + pattern.box.length/2
-    z1 = 0
-    z2 = pattern.box.height
+    xpos = pattern.box.x/2.54
+    ypos = pattern.box.y/2.54
+    zpos = pattern.box.height/2/2.54
+    width = pattern.box.width/2.54
+    length = pattern.box.length/2.54
+    height = pattern.box.height/2.54
 
     fs.writeSync fd, "#VRML V2.0 utf8\n"
-    fs.writeSync fd, "Shape {\n"
-    fs.writeSync fd, "  appearance Appearance {\n"
-    fs.writeSync fd, "    material Material {\n"
-    fs.writeSync fd, "    diffuseColor 0.37 0.37 0.37\n"
-    fs.writeSync fd, "    emissiveColor 0.0 0.0 0.0\n"
-    fs.writeSync fd, "    specularColor 1.0 1.0 1.0\n"
-    fs.writeSync fd, "    ambientIntensity 1.0\n"
-    fs.writeSync fd, "    transparency 0.5\n"
-    fs.writeSync fd, "    shininess 1.0\n"
-    fs.writeSync fd, "    }\n" # Material
-    fs.writeSync fd, "  }\n" # Appearance
-
-    fs.writeSync fd, "  geometry IndexedFaceSet {\n"
-    fs.writeSync fd, "    coord Coordinate {\n"
-    fs.writeSync fd, "      point [\n"
-    fs.writeSync fd, "        #{x1} #{y1} #{z1},\n"
-    fs.writeSync fd, "        #{x2} #{y1} #{z1},\n"
-    fs.writeSync fd, "        #{x2} #{y2} #{z1},\n"
-    fs.writeSync fd, "        #{x1} #{y2} #{z1},\n"
-    fs.writeSync fd, "        #{x1} #{y1} #{z2},\n"
-    fs.writeSync fd, "        #{x2} #{y1} #{z2},\n"
-    fs.writeSync fd, "        #{x2} #{y2} #{z2},\n"
-    fs.writeSync fd, "        #{x1} #{y2} #{z2}\n"
-    fs.writeSync fd, "      ]\n" # point
-    fs.writeSync fd, "    }\n" # Coordinate
-
-    fs.writeSync fd, "    coordIndex [\n"
-    fs.writeSync fd, "      0,1,2,3,-1\n" # bottom
-    fs.writeSync fd, "      4,5,6,7,-1\n" # top
-    fs.writeSync fd, "      0,1,5,4,-1\n" # front
-    fs.writeSync fd, "      2,3,7,6,-1\n" # back
-    fs.writeSync fd, "      0,3,7,4,-1\n" # left
-    fs.writeSync fd, "      1,2,6,5,-1\n" # right
-    fs.writeSync fd, "    ]\n" # coordIndex
-
-    fs.writeSync fd, "  }\n" # IndexedFaceSet
-
-    fs.writeSync fd, "}\n" # Shape
+    fs.writeSync fd, "Transform {\n"
+    fs.writeSync fd, "  translation #{xpos} #{ypos} #{zpos}\n"
+    fs.writeSync fd, "  children [\n"
+    fs.writeSync fd, "    Shape {\n"
+    fs.writeSync fd, "      geometry Box {size #{width} #{length} #{height}}\n"
+    fs.writeSync fd, "      appearance Appearance {\n"
+    fs.writeSync fd, "        material Material {\n"
+    fs.writeSync fd, "          diffuseColor 0.37 0.37 0.37\n"
+    fs.writeSync fd, "          emissiveColor 0.0 0.0 0.0\n"
+    fs.writeSync fd, "          specularColor 1.0 1.0 1.0\n"
+    fs.writeSync fd, "          ambientIntensity 1.0\n"
+    fs.writeSync fd, "          transparency 0.5\n"
+    fs.writeSync fd, "          shininess 1.0\n"
+    fs.writeSync fd, "        }\n" # Material
+    fs.writeSync fd, "      }\n" # Appearance
+    fs.writeSync fd, "    }\n" # Shape
+    fs.writeSync fd, "  ]\n" # children
+    fs.writeSync fd, "}\n" # Transform
 
   #
   # Convert definition to pattern object
