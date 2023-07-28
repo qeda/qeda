@@ -114,6 +114,10 @@ class Kicad7Generator
           if patObj.shape is 'roundrect'
             ratio = cornerRadius / Math.min(patObj.width, patObj.height)
             fs.writeSync fd, sprintf("\n    (roundrect_rratio #{@f})", ratio)
+
+          if patObj.property? and patObj.property is 'testpoint'
+            fs.writeSync fd, sprintf("\n    (property pad_prop_testpoint)")
+
           fs.writeSync fd, ")\n"
 
     if pattern.model?

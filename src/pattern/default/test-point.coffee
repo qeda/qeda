@@ -29,6 +29,7 @@ module.exports = (pattern, element) ->
   pad.shape = 'circle'
   pad.x = 0
   pad.y = 0
+  pad.property = 'testpoint'
   pattern.pad 1, pad
 
   copper.mask pattern
