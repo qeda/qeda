@@ -152,7 +152,7 @@ class KicadGenerator
   # Format pin names for KiCad
   #
   _formatPinName: (name) ->
-    formatted = name.replace /~{([^}]+)}/g, '~$1~'
+    formatted = String(name).replace /~{([^}]+)}/g, '~$1~'
     if (formatted.match(/~/g) || []).length % 2 == 1
       formatted += '~'
     return formatted
