@@ -4,6 +4,7 @@ assembly = require './common/assembly'
 calculator = require './common/calculator'
 copper = require './common/copper'
 courtyard = require './common/courtyard'
+mask = require './common/mask'
 silkscreen = require './common/silkscreen'
 sop = require './sop'
 log = require '../../qeda-log'
@@ -68,3 +69,4 @@ module.exports = (pattern, element) ->
     silkscreen.dual pattern, housing
     assembly.polarized pattern, housing
     courtyard.dual pattern, housing, padParams.courtyard
+    mask.dual pattern, housing
