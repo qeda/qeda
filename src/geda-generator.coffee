@@ -331,6 +331,24 @@ class GedaGenerator
                 sprintf("  Pad [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm \"\" \"%s\" \"%s\"]\n",
                   x1, y1, x2, y2, width, shape.clearance, mask, shape.name, flags.join(','))
               )
+        when 'rectangle'
+          continue if not shape.layer.includes("topSilkscreen")
+          fs.writeSync(fd,
+            sprintf("  ElementLine [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm]\n",
+              shape.x1, shape.y1, shape.x2, shape.y1, shape.lineWidth)
+          )
+          fs.writeSync(fd,
+            sprintf("  ElementLine [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm]\n",
+              shape.x2, shape.y1, shape.x2, shape.y2, shape.lineWidth)
+          )
+          fs.writeSync(fd,
+            sprintf("  ElementLine [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm]\n",
+              shape.x2, shape.y2, shape.x1, shape.y2, shape.lineWidth)
+          )
+          fs.writeSync(fd,
+            sprintf("  ElementLine [#{@f}mm #{@f}mm #{@f}mm #{@f}mm #{@f}mm]\n",
+              shape.x1, shape.y2, shape.x1, shape.y1, shape.lineWidth)
+          )
 
     fs.writeSync fd, ")\n" # end of Element
 module.exports = GedaGenerator

@@ -375,6 +375,23 @@ class CoraledaGenerator
               fs.writeSync(fd, "       adelta = 360\n")
               fs.writeSync(fd, "       clearance = 0\n")
               fs.writeSync(fd, "      }\n") # end arc
+            when 'rectangle'
+              for line in [
+                [shape.x1, shape.y1, shape.x2, shape.y1],
+                [shape.x2, shape.y1, shape.x2, shape.y2],
+                [shape.x2, shape.y2, shape.x1, shape.y2],
+                [shape.x1, shape.y2, shape.x1, shape.y1]]
+                if 'Courtyard' == type # courtyards should be polygons
+                  polygon_lines.push {x1: line[0], y1: line[1], x2: line[2], y2: line[3], lineWidth: shape.lineWidth} # collect all lines
+                else
+                  fs.writeSync(fd, "      ha:line.#{id++} {\n")
+                  fs.writeSync(fd, sprintf("       x1 = #{@f}mm\n", line[0]))
+                  fs.writeSync(fd, sprintf("       y1 = #{@f}mm\n", line[1]))
+                  fs.writeSync(fd, sprintf("       x2 = #{@f}mm\n", line[2]))
+                  fs.writeSync(fd, sprintf("       y2 = #{@f}mm\n", line[3]))
+                  fs.writeSync(fd, sprintf("       thickness = #{@f}mm\n", shape.lineWidth || pattern.settings.lineWidth[type.toLowerCase()]))
+                  fs.writeSync(fd, "       clearance = 0\n")
+                  fs.writeSync(fd, "      }\n") # end line
             when 'attribute'
               fs.writeSync(fd, "      ha:text.#{id++} {\n")
               fs.writeSync(fd, sprintf("       x = #{@f}mm\n", shape.x))

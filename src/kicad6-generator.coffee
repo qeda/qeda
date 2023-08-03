@@ -75,9 +75,12 @@ class Kicad6Generator
           fs.writeSync fd, "  )\n"
         when 'circle'
           fs.writeSync(fd,
-            sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n",
+            sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f})",
               patObj.x, patObj.y, patObj.x, patObj.y + patObj.radius, patObj.layer, patObj.lineWidth)
           )
+          if patObj.fill
+            fs.writeSync(fd, " (fill solid)")
+          fs.writeSync(fd, ")\n")
         when 'line'
           fs.writeSync(fd,
             sprintf("  (fp_line (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n"
@@ -104,6 +107,14 @@ class Kicad6Generator
             ratio = cornerRadius / Math.min(patObj.width, patObj.height)
             fs.writeSync fd, sprintf("\n    (roundrect_rratio #{@f})", ratio)
           fs.writeSync fd, ")\n"
+        when 'rectangle'
+          fs.writeSync(fd,
+            sprintf("  (fp_rect (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f})",
+              patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
+          )
+          if patObj.fill
+            fs.writeSync(fd, " (fill solid)")
+          fs.writeSync(fd, ")\n")
 
     fs.writeSync fd, "  (model #{pattern.name}.wrl\n"
     fs.writeSync fd, "    (at (xyz 0 0 0))\n"

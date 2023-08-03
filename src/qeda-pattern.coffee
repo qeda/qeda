@@ -14,6 +14,7 @@ class QedaPattern
     @shapes = []
     @currentLayer = ['topCopper']
     @currentLineWidth = 0
+    @currentFill = false
     @type = 'smd'
     @attributes = {}
     @pads = {}
@@ -71,6 +72,13 @@ class QedaPattern
     firstPad = @pads[numbers[0]]
     lastPad = @pads[numbers[numbers.length - 1]]
     [firstPad, lastPad]
+
+  #
+  # Set current fill
+  #
+  fill: (enable) ->
+    @_setFill enable
+    this
 
   #
   # Check whether two patterns are equal
@@ -203,13 +211,9 @@ class QedaPattern
   # Add rectangle
   #
   rectangle: (x1, y1, x2, y2) ->
-    @save()
-    @moveTo x1, y1
-    @lineTo x2, y1
-    @lineTo x2, y2
-    @lineTo x1, y2
-    @lineTo x1, y1
-    @restore()
+    if (x1 isnt x2) or (y1 isnt y2)
+      @_addShape 'rectangle', { x1: @cx + x1, y1: @cy + y1, x2: @cx + x2, y2: @cy + y2 }
+    this
 
   #
   # Rectangle to current position
@@ -271,6 +275,7 @@ class QedaPattern
       obj[prop] = shape[prop]
     obj.layer ?= @currentLayer
     obj.lineWidth ?= @currentLineWidth
+    obj.fill ?= @currentFill
     @shapes.push obj
     obj
 
@@ -382,5 +387,11 @@ class QedaPattern
   #
   _setLineWidth: (lineWidth) ->
     @currentLineWidth = lineWidth
+
+  #
+  # Set current fill
+  #
+  _setFill: (enable) ->
+    @currentFill = enable
 
 module.exports = QedaPattern

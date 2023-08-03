@@ -86,9 +86,12 @@ class Kicad7Generator
           fs.writeSync fd, "  )\n"
         when 'circle'
           fs.writeSync(fd,
-            sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n",
+            sprintf("  (fp_circle (center #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f})",
               patObj.x, patObj.y, patObj.x, patObj.y + patObj.radius, patObj.layer, patObj.lineWidth)
           )
+          if patObj.fill
+            fs.writeSync(fd, " (fill solid)")
+          fs.writeSync(fd, ")\n")
         when 'line'
           fs.writeSync(fd,
             sprintf("  (fp_line (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n"
@@ -129,6 +132,14 @@ class Kicad7Generator
             fs.writeSync fd, sprintf("\n    (property pad_prop_testpoint)")
 
           fs.writeSync fd, ")\n"
+        when 'rectangle'
+          fs.writeSync(fd,
+            sprintf("  (fp_rect (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f})",
+              patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
+          )
+          if patObj.fill
+            fs.writeSync(fd, " (fill solid)")
+          fs.writeSync(fd, ")\n")
 
     if pattern.model?
       fs.writeSync fd, "  (model ../#{@name}.3dshapes/#{pattern.name}.#{pattern.model.extension}\n"
