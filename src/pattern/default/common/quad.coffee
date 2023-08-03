@@ -4,6 +4,7 @@ assembly = require './assembly'
 calculator = require './calculator'
 copper = require './copper'
 courtyard = require './courtyard'
+mask = require './mask'
 silkscreen = require './silkscreen'
 
 module.exports = (pattern, element) ->
@@ -63,5 +64,6 @@ module.exports = (pattern, element) ->
   silkscreen.quad pattern, housing
   assembly.polarized pattern, housing
   courtyard.quad pattern, housing, padParams.courtyard
+  mask.quad pattern, housing
 
   copper.tab pattern, element

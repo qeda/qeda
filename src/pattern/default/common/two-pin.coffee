@@ -4,6 +4,7 @@ assembly = require './assembly'
 calculator = require './calculator'
 copper = require './copper'
 courtyard = require './courtyard'
+mask = require './mask'
 silkscreen = require './silkscreen'
 
 abbrs =
@@ -150,3 +151,4 @@ module.exports = (pattern, element) ->
   silkscreen.twoPin pattern, housing
   assembly.twoPin pattern, housing
   courtyard.twoPin pattern, housing, padParams.courtyard
+  mask.twoPin pattern, housing
