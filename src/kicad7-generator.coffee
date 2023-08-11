@@ -286,7 +286,7 @@ class Kicad7Generator
       fs.writeSync fd, "    )\n"
 
     if element.value?
-      fs.writeSync fd, "    (property \"Part#\" \"#{element.name}\" (at 0 0 0)\n"
+      fs.writeSync fd, "    (property \"MPN\" \"#{element.name}\" (at 0 0 0)\n"
       fs.writeSync fd, "      (effects (font (size #{nameObj.fontSize} #{nameObj.fontSize})) hide)\n"
       fs.writeSync fd, "    )\n"
 
