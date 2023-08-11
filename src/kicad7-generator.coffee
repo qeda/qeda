@@ -377,6 +377,9 @@ class Kicad7Generator
               fs.writeSync fd, ")"
             fs.writeSync fd, "))\n"
             fs.writeSync fd, "        (number \"#{symObj.number}\" (effects (font (size #{symObj.fontSize} #{symObj.fontSize}))))\n"
+            if symObj.alternates? and symObj.alternates.length > 0
+              for alternate in symObj.alternates
+                fs.writeSync fd, "        (alternate \"#{@_formatPinName(alternate.name)}\" #{alternate.type || symObj.type} line)\n"
             fs.writeSync fd, "      )\n"
       fs.writeSync fd, "    )\n"
     fs.writeSync fd, "  )\n"

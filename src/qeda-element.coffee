@@ -356,6 +356,9 @@ class QedaElement
     obj = @pins[number]
     if obj?
       unless @library.symbol.shortPinNames then obj.name += '/' +  name
+      if not obj.alternates?
+        obj.alternates = []
+      obj.alternates.push {name: name}
     else
       obj =
         name: name
