@@ -1,6 +1,32 @@
 Icon = require './icon'
 
 #
+# Amplifier
+#
+class AmplifierIcon extends Icon
+  constructor: (symbol, element) ->
+    super symbol, element, width=10, height=10
+    @d =
+      w: @width
+      h: @height
+      u: @height / 4
+      s: @height / 16
+
+  draw: (x, y) ->
+    settings = @symbol.settings
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .line -@d.w/2, -@d.h/2, @d.w/2, 0
+      .line @d.w/2, 0, -@d.w/2, @d.h/2
+      .line -@d.w/2, @d.h/2, -@d.w/2, -@d.h/2
+      .line -@d.w/2 + @d.s, -@d.h/2 + @d.u, -@d.w/2 + @d.u - @d.s, -@d.h/2 + @d.u
+      .line -@d.w/2 + @d.s, @d.h/2 - @d.u, -@d.w/2 + @d.u - @d.s, @d.h/2 - @d.u
+      .line -@d.w/2 + @d.u/2, @d.h/2 - @d.u/2 - @d.s, -@d.w/2 + @d.u/2, @d.h/2 - @d.u/2*3 + @d.s
+
+    @symbol.center 0, 0 # Restore default center point
+
+#
 # Capacitor
 #
 class CapacitorIcon extends Icon
@@ -453,6 +479,7 @@ class TransistorIcon extends Icon
 #
 Icons = {}
 
+Icons.Amplifier = AmplifierIcon
 Icons.Capacitor = CapacitorIcon
 Icons.CapacitorFeedthrough = CapacitorFeedthroughIcon
 Icons.CoaxialConnector = CoaxialConnectorIcon
