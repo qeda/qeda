@@ -6,6 +6,16 @@ module.exports = (symbol, element, icon, leftName = 'L', rightName = 'R', bottom
   pins = element.pins
   schematic.showPinNames ?= false
 
+  if bottomName.length == 0 and pins.length > 2
+    # Get a list of unique pin names (excluding leftName and rightName)
+    names = {}
+    for pin in pins
+      if pin? and pin.name? and pin.name isnt leftName and pin.name isnt rightName
+        names[pin.name] = 1
+    names = Object.keys names
+    if names.length is 1 and ['GND', 'LID', 'CASE', 'B'].indexOf names[0] is 0
+      bottomName = names[0]
+
   # Add pins if no any
   unless Object.keys(element.pinGroups).length
     element.pins[1] = { name: leftName, number: 1 }
