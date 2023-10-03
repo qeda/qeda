@@ -388,8 +388,8 @@ class Kicad7Generator
   # Write 3D shape file in STEP format
   #
   _generateStep: (fd, pattern, name) ->
-    xpos1 = @_formatStepVal 0
-    ypos1 = @_formatStepVal 0
+    xpos1 = @_formatStepVal pattern.box.x * -1
+    ypos1 = @_formatStepVal pattern.box.y * -1
     zpos1 = @_formatStepVal 0
     xpos2 = @_formatStepVal pattern.box.width
     ypos2 = @_formatStepVal pattern.box.length
