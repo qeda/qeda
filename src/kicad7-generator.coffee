@@ -398,7 +398,7 @@ class Kicad7Generator
     fs.writeSync fd, "ISO-10303-21;\r\n"
     fs.writeSync fd, "HEADER;\r\n"
     fs.writeSync fd, "FILE_DESCRIPTION(('Simplified model for #{name}'),'2;1');\r\n"
-    fs.writeSync fd, "FILE_NAME('#{name}','#{(new Date).toISOString().slice 0, -2}',(''),(''),\r\n"
+    fs.writeSync fd, "FILE_NAME('#{name}','#{(if @library.nodate then new Date(0) else new Date).toISOString().slice 0, -2}',(''),(''),\r\n"
     fs.writeSync fd, "  'QEDA','QEDA','Unknown');\r\n"
     fs.writeSync fd, "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));\r\n"
     fs.writeSync fd, "ENDSEC;\r\n"
