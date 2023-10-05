@@ -1,0 +1,13 @@
+# https://www.ti.com/lit/pdf/MPDS092
+pattern: SOP
+
+bodyWidth: 3.8-4.0
+bodyLength: 4.8-5.0
+height: 1.7
+leadWidth: 0.31-0.51
+leadLength: 0.40-1.27
+leadSpan: 5.8-6.2
+pitch: 1.27
+leadCount: 8
+tabWidth: 2.11-2.71
+tabLength: 2.8-3.4
