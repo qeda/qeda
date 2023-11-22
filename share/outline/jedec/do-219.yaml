@@ -1,0 +1,32 @@
+# https://www.jedec.org/system/files/docs/DO-219C.pdf
+# SOD-123FL uses that
+pattern: SODFL
+
+AA:
+  bodyWidth: 1.7-1.9 # E
+  bodyLength: 2.7-2.9 # D
+  height: 1.2-1.4 # A
+  leadLength: 0.66-0.96 # L
+  leadWidth: 0.8-1.35 # b
+  leadHeight: 0.1-0.3 # c
+  leadSpan: 3.5-3.9 # H
+
+AB:
+  bodyWidth: 1.7-1.9 # E
+  bodyLength: 2.7-2.9 # D
+  height: 0.81-1.15 # A
+  leadLength: 0.35-0.85 # L
+  leadWidth: 0.8-1.35 # b
+  leadHeight: 0.05-0.3 # c
+  leadSpan: 3.5-3.9 # H
+
+AC:
+  bodyWidth: 1.2-1.4 # E
+  bodyLength: 1.8-2.0 # D
+  height: 0.5-0.7 # A
+  leadLength: 0.3-0.7 # L
+  leadWidth: 0.5-0.75 # b
+  leadHeight: 0.05-0.3 # c
+  leadSpan: 2.3-2.7 # H
+
+# AD: I don't know to do different lead length
