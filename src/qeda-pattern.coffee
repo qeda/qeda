@@ -17,7 +17,7 @@ class QedaPattern
     @currentFill = false
     @type = 'smd'
     @attributes = {}
-    @pads = {}
+    @pads = []
     @x = 0
     @y = 0
     @cx = 0
@@ -68,9 +68,11 @@ class QedaPattern
   # Return first and last pads
   #
   extremePads: ->
-    numbers = Object.keys @pads
-    firstPad = @pads[numbers[0]]
-    lastPad = @pads[numbers[numbers.length - 1]]
+    firstPad = null
+    lastPad = null
+    for pad in @pads
+      firstPad = pad if !firstPad or pad.name < firstPad.name
+      lastPad = pad if !lastPad or pad.name < lastPad.name
     [firstPad, lastPad]
 
   #
@@ -137,7 +139,7 @@ class QedaPattern
         pad.chamfer.push pos
     if pad.chamfer.length < 1
       delete pad.chamfer
-    @pads[name] = @_addPad pad
+    @pads.push(@_addPad pad)
     this
 
   #
@@ -238,7 +240,7 @@ class QedaPattern
   silkLine: (x1, y1, x2, y2) ->
     if (x1 isnt x2) or (y1 isnt y2)
       lines = [{ x1: @cx + x1, y1: @cy + y1, x2: @cx + x2, y2: @cy + y2 }]
-      for n, pad of @pads
+      for pad in @pads
         newlines = []
         while lines.length
           line = lines.shift()
