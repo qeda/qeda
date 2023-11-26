@@ -72,7 +72,7 @@ class QedaPattern
     lastPad = null
     for pad in @pads
       firstPad = pad if !firstPad or pad.name < firstPad.name
-      lastPad = pad if !lastPad or pad.name < lastPad.name
+      lastPad = pad if !lastPad or pad.name > lastPad.name
     [firstPad, lastPad]
 
   #
