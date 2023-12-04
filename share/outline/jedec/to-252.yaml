@@ -1,0 +1,42 @@
+pattern: PAK
+
+# variations AD and AE not included
+
+AA:
+  bodyWidth: 5.969-6.223 # D
+  bodyLength: 6.350-6.731 # E
+  pitch: 2.54 # e
+  leadCount: 3 # N
+  leadWidth: 0.635-0.889 # b
+  leadLength: 1.397-1.778 # L
+  leadSpan: 9.398-10.414 # H
+  tabWidth: 4.953-5.461 # b3
+  tabLength: 5.207 # D1
+  tabLedge: 0.889-1.270 # L3
+  height: 2.184-2.388 # A
+
+AB:
+  bodyWidth: 5.334-5.588 # D
+  bodyLength: 6.350-6.731 # E
+  pitch: 2.54 # e
+  leadCount: 3 # N
+  leadWidth: 0.635-0.889 # b
+  leadLength: 1.397-1.778 # L
+  leadSpan: 9.398-10.414 # H
+  tabWidth: 4.953-5.461 # b3
+  tabLength: 4.572 # D1
+  tabLedge: 1.524-2.032 # L3
+  height: 2.184-2.388 # A
+
+AC:
+  bodyWidth: 6.020-6.274 # D
+  bodyLength: 5.918-6.172 # E
+  pitch: 2.54 # e
+  leadCount: 3 # N
+  leadWidth: 0.635-0.889 # b
+  leadLength: 0.940-1.194 # L
+  leadSpan: 9.398-9.906 # H
+  tabWidth: 5.537-5.791 # b3
+  tabLength: 4.064 # D1
+  tabLedge: 0.762-1.270 # L3
+  height: 1.778-2.032 # A
