@@ -183,7 +183,7 @@ class QedaLibrary
 
     objs = []
     if obj.variations?
-      variations = obj.variations.replace(/\s+/g, '').toLowerCase().split(',')
+      variations = String(obj.variations).replace(/\s+/g, '').toLowerCase().split(',')
       delete obj.variations
       for variation in variations
         if filterVariation? and (variation isnt filterVariation) then continue
