@@ -34,8 +34,12 @@ module.exports = (pattern, element) ->
 
   copper.mask pattern
 
+  courtyard =  housing.courtyard ? { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
+  pad = pattern.pads[1]
+  pad.clearance = housing.padClearance || pad.mask + courtyard
+
   r = Math.max(housing.padWidth, housing.padHeight) / 2
-  r += settings.clearance.padToSilk + settings.lineWidth.silkscreen/2
+  r += Math.max(settings.clearance.padToSilk, pad.mask + settings.lineWidth.silkscreen/2) + settings.lineWidth.silkscreen/2
   silkscreen
     .preamble pattern, housing
     .attribute 'value',
@@ -49,3 +53,10 @@ module.exports = (pattern, element) ->
     pattern
       .layer 'bottomSilkscreen'
       .circle 0, 0, r
+
+  r = Math.max(housing.padWidth, housing.padHeight) / 2
+  r += Math.max(pad.mask + courtyard, pad.clearance)
+  pattern
+    .layer 'topCourtyard'
+    .lineWidth pattern.settings.lineWidth.courtyard
+    .circle 0, 0, r
