@@ -116,6 +116,7 @@ class Kicad7Generator
             fs.writeSync fd, sprintf("\n    (drill #{@f})", patObj.hole)
           if patObj.mask? then fs.writeSync fd, sprintf("\n    (solder_mask_margin #{@f})", patObj.mask)
           if patObj.paste? then fs.writeSync fd, sprintf("\n    (solder_paste_margin #{@f})", patObj.paste)
+          if patObj.clearance? then fs.writeSync fd, sprintf("\n    (clearance #{@f})", patObj.clearance)
 
           if patObj.shape is 'roundrect'
             ratio = cornerRadius / Math.min(patObj.width, patObj.height)
@@ -650,9 +651,6 @@ class Kicad7Generator
       bottomAssembly: 'B.Fab'
       bottomCourtyard: 'B.CrtYd'
     obj.layer = obj.layer.map((v) => layers[v]).join(' ')
-
-    if obj.mask? and (obj.mask < 0.001) then obj.mask = 0.001 # KiCad does not support zero value
-    if obj.paste? and (obj.paste > -0.001) then obj.paste = -0.001 # KiCad does not support zero value
 
     if obj.kind is 'attribute'
       switch obj.name
