@@ -55,7 +55,7 @@ class Kicad7Generator
       if pattern.model?
         log.start "KiCad 3D shape '#{patternName}.#{pattern.model.extension}'"
         fs.copyFileSync "./#{pattern.model.file}", "#{dir}/#{@name}.3dshapes/#{patternName}.#{pattern.model.extension}"
-      else
+      else if pattern.box.height > 0
         log.start "KiCad 3D shape '#{patternName}.stp'"
         fd = fs.openSync "#{dir}/#{@name}.3dshapes/#{patternName}.stp", 'w'
         @_generateStep fd, pattern, patternName
@@ -156,7 +156,7 @@ class Kicad7Generator
         fs.writeSync fd, "    (rotate (xyz #{pattern.model.rotation.join(' ')}))\n"
       else
         fs.writeSync fd, "    (rotate (xyz 0 0 0))\n"
-    else
+    else if pattern.box.height > 0
       xpos = pattern.box.x - pattern.box.width / 2
       ypos = pattern.box.y - pattern.box.length / 2
       fs.writeSync fd, "  (model ../#{@name}.3dshapes/#{pattern.name}.stp\n"
