@@ -35,7 +35,7 @@ module.exports = (pattern, element) ->
   copper.mask pattern
 
   courtyard =  housing.courtyard ? { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
-  pad = pattern.pads[1]
+  pad = pattern.pads[0]
   pad.clearance = housing.padClearance || pad.mask + courtyard
 
   r = Math.max(housing.padWidth, housing.padHeight) / 2
