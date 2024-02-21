@@ -32,7 +32,10 @@ module.exports = (pattern, element) ->
   pad.property = 'testpoint'
   pattern.pad 1, pad
 
-  copper.mask pattern
+  if housing.mask?
+    pattern.pads[0].mask = housing.mask
+  else
+    copper.mask pattern
 
   courtyard =  housing.courtyard ? { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
   pad = pattern.pads[0]
