@@ -264,7 +264,7 @@ class QedaPattern
   # Add pad object
   #
   _addPad: (pad) ->
-    if pad.type isnt 'smd' then @type = 'through-hole'
+    if pad.type isnt 'smd' and pad.type isnt 'mounting-hole' then @type = 'through-hole'
     @_addShape 'pad', pad
 
   #
