@@ -72,6 +72,15 @@ class QedaElement
       for option in options
         @schematic[option] = true;
 
+    if @library?.symbol?.fixPowerERC? is true
+      poweroutpins = []
+      for pin in @pins
+        if pin?.power? is true and pin.out? is true and pin.name?
+          if pin.name in poweroutpins
+            delete pin.out
+          else
+            poweroutpins.push(pin.name)
+
     # Create symbol(s)
     if @parts? # Multi-part element
       for name, part of @parts
