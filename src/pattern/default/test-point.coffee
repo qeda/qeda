@@ -19,10 +19,16 @@ module.exports = (pattern, element) ->
   else
     housing.padWidth ?= housing.padDiameter
     housing.padHeight ?= housing.padDiameter
-    pad =
-      type: 'smd'
-      shape: 'circle'
-      layer: ['topCopper', 'topMask', 'topPaste']
+    if housing.options? and housing.options.indexOf('nopaste') > -1
+      pad =
+        type: 'smd'
+        shape: 'circle'
+        layer: ['topCopper', 'topMask']
+    else
+      pad =
+        type: 'smd'
+        shape: 'circle'
+        layer: ['topCopper', 'topMask', 'topPaste']
 
   pad.width = housing.padWidth
   pad.height = housing.padHeight
