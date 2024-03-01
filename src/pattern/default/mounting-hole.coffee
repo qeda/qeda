@@ -27,6 +27,10 @@ module.exports = (pattern, element) ->
     pad.width = housing.holeDiameter
     pad.height = housing.holeDiameter
     pad.shape = 'circle'
+  if housing.toppaste?
+    pad.layer.push 'topPaste'
+  if housing.bottompaste?
+    pad.layer.push 'bottomPaste'
 
   pattern.pad 1, pad
 
