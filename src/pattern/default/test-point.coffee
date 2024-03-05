@@ -19,7 +19,7 @@ module.exports = (pattern, element) ->
   else
     housing.padWidth ?= housing.padDiameter
     housing.padHeight ?= housing.padDiameter
-    if housing.options? and housing.options.indexOf('nopaste') > -1
+    if housing.nopaste?
       pad =
         type: 'smd'
         shape: 'circle'

@@ -72,11 +72,6 @@ class QedaElement
       for option in options
         @schematic[option] = true;
     
-    if @housing?.options?
-      options = @housing.options.replace(/\s+/g, '').toLowerCase().split(',')
-      for option in options
-        @housing[option] = true;
-
     if @library?.symbol?.fixPowerERC? is true
       poweroutpins = []
       for pin in @pins
