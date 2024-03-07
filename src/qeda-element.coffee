@@ -12,7 +12,7 @@ class QedaElement
   #
   # Constructor
   #
-  constructor: (@library, description) ->
+  constructor: (@library, description, path) ->
     @mergeObjects this, description
 
     if @suffix?
@@ -83,6 +83,21 @@ class QedaElement
             delete pin.out
           else
             poweroutpins.push(pin.name)
+
+    if path && @library?.manufacturer?.source?
+      if @library.manufacturer.override? or not @manufacturer?
+        level = @library.manufacturer.level || 0
+        if @library.manufacturer.source.toLowerCase() == 'path'
+          parts = path.split(/[\\/]/)
+          if parts.length >= level
+            @manufacturer = parts[level]
+          else if @library.manufacturer.clamplevel?
+            @manufacturer = parts.pop()
+        else if @library.manufacturer.source.toLowerCase().startsWith('readme')
+          path = path.split(/[\\/]/).slice(0, level + 1).join('/')
+          name = @loadReadme(path)
+          if name
+            @manufacturer = name
 
     # Create symbol(s)
     if @parts? # Multi-part element
@@ -229,6 +244,46 @@ class QedaElement
       log.ok()
 
     @_rendered = true
+
+  #
+  # Load and parse README.md
+  #
+  loadReadme: (path, force = false) ->
+    readme = path.toLowerCase() + '/README.md'
+    localFile = './library/' + readme
+    if (not fs.existsSync localFile) or force
+      log.start "Load '#{readme}'"
+      readme = readme.split('/').map((v) -> encodeURIComponent(v)).join('/')
+      try
+        res = request 'GET', @library.connection.remote + readme,
+          timeout: @library.connection.timeout
+      catch error
+        log.error error.message
+      if res.statusCode is 200
+        mkdirp.sync (path.dirname localFile)
+        fs.writeFileSync localFile, res.body
+        log.ok()
+      else
+        log.warning res.statusCode
+    log.start "Read '#{readme}'"
+    try
+      lines = fs.readFileSync(localFile, 'utf-8').split('\n');
+    catch error
+      log.error "#{error.message}"
+    log.ok()
+
+    for line in lines
+      chars = ' \t\r\n-=#*'
+      start = 0
+      end = line.length
+      while start < end && chars.indexOf(line[start]) >= 0
+        ++start
+      while end > start && chars.indexOf(line[end - 1]) >= 0
+        --end
+      if start != end
+        trimmed = if start > 0 or end < line.length then line.substring(start, end) else line
+        return trimmed
+    return false
 
   #
   # Add pin objects

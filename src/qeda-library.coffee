@@ -117,7 +117,7 @@ class QedaLibrary
         aliases = aliases.concat(suffixes[1..].map (v) => name + v)
       obj.aliases = aliases
 
-      newElement = new QedaElement(this, obj)
+      newElement = new QedaElement(this, obj, element)
       @elements.push newElement
       elements.push newElement
 
@@ -138,7 +138,7 @@ class QedaLibrary
     def =
       name: name
       schematic: schematic
-    newElement = new QedaElement(this, def)
+    newElement = new QedaElement(this, def, false)
     @elements.push newElement
     newElement
 

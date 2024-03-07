@@ -298,6 +298,11 @@ class Kicad7Generator
       fs.writeSync fd, "      (effects (font (size #{nameObj.fontSize} #{nameObj.fontSize})) hide)\n"
       fs.writeSync fd, "    )\n"
 
+    if element.manufacturer?
+      fs.writeSync fd, "    (property \"Manufacturer\" \"#{element.manufacturer}\" (at 0 0 0)\n"
+      fs.writeSync fd, "      (effects (font (size #{nameObj.fontSize} #{nameObj.fontSize})) hide)\n"
+      fs.writeSync fd, "    )\n"
+
     for symbol, index in element.symbols
       # draw graphic items
       fs.writeSync fd, "    (symbol \"#{element.name}_#{index+1}_1\"\n"
