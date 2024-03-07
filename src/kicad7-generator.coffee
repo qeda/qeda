@@ -67,7 +67,12 @@ class Kicad7Generator
   #
   _generatePattern: (fd, pattern) ->
     fs.writeSync fd, "(module #{pattern.name} (layer F.Cu)\n"
-    if pattern.type is 'smd' then fs.writeSync fd, "  (attr smd)\n"
+    attrs = []
+    if pattern.type is 'smd' then attrs.push 'smd'
+    else if pattern.type.endsWith('hole') then attrs.push 'through_hole'
+    if pattern.nobom? then attrs.push 'exclude_from_bom'
+    if attrs.length > 0
+      fs.writeSync fd, sprintf "  (attr #{attrs.join(' ')})\n"
     for shape in pattern.shapes
       patObj = @_patternObj shape
       switch patObj.kind
@@ -212,6 +217,8 @@ class Kicad7Generator
       fs.writeSync fd, " (pin_names hide)"
     if element.power == true
       fs.writeSync fd, " (in_bom no) (on_board no)\n"
+    else if element.schematic.nobom?
+      fs.writeSync fd, " (in_bom no) (on_board yes)\n"
     else
       fs.writeSync fd, " (in_bom yes) (on_board yes)\n"
 

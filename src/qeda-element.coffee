@@ -211,6 +211,9 @@ class QedaElement
       if error then log.exception error
       handler @pattern, this
 
+      if @housing?.nobom?
+        @pattern.nobom = @housing.nobom
+
       # Box
       @pattern.box =
         x: 0

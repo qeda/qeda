@@ -11,6 +11,7 @@ class QedaSymbol
     @attributes = []
     @orientations = [0]
     @currentLineWidth = 0
+    @nobom = element.nobom
     sides = ['left', 'right', 'top', 'bottom']
     schematic = element.schematic
     pins = element.pins
