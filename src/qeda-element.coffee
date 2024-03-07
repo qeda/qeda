@@ -67,6 +67,11 @@ class QedaElement
 
     @_parseProperties()
 
+    if @options?
+      options = @options.replace(/\s+/g, '').toLowerCase().split(',')
+      for option in options
+        @schematic[option] = true;
+
     if @schematic?
       for key, value of @schematic
         if not key.startsWith 'options'
@@ -189,6 +194,11 @@ class QedaElement
     # Pattern processing
     if @pattern?
       log.start "Land pattern for '#{@name}'"
+
+      if @options?
+        options = @options.replace(/\s+/g, '').toLowerCase().split(',')
+        for option in options
+          @housing[option] = true;
 
       if @housing?
         for key, value of @housing
