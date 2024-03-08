@@ -207,11 +207,12 @@ class Kicad7Generator
       symbol.resize 50 * 0.0254, false # Resize to grid 50 mil, in mm
       symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
 
-    # Write symbol name
-    fs.writeSync fd, "  (symbol \"#{element.name}"
+    basename = element.name
     if element.overriden?
-      fs.writeSync fd, "_#{element.overriden}"
-    fs.writeSync fd, "\""
+      basename += "_#{element.overriden}"
+
+    # Write symbol name
+    fs.writeSync fd, "  (symbol \"#{basename}\""
     if element.power == true
       fs.writeSync fd, " (power)"
     if element.schematic?.showPinNumbers == false
@@ -308,7 +309,7 @@ class Kicad7Generator
 
     for symbol, index in element.symbols
       # draw graphic items
-      fs.writeSync fd, "    (symbol \"#{element.name}_#{index+1}_1\"\n"
+      fs.writeSync fd, "    (symbol \"#{basename}_#{index+1}_1\"\n"
       for shape in symbol.shapes
         symObj = @_symbolObj shape
         switch symObj.kind
