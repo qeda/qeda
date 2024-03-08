@@ -1,5 +1,6 @@
 fs = require 'fs'
 yaml = require 'js-yaml'
+request = require 'sync-request'
 
 QedaSymbol = require './qeda-symbol'
 QedaPattern = require './qeda-pattern'
