@@ -208,7 +208,10 @@ class Kicad7Generator
       symbol.invertVertical() # Positive vertical axis is pointing up in KiCad
 
     # Write symbol name
-    fs.writeSync fd, "  (symbol \"#{element.name}\""
+    fs.writeSync fd, "  (symbol \"#{element.name}"
+    if element.overriden?
+      fs.writeSync fd, "_#{element.overriden}"
+    fs.writeSync fd, "\""
     if element.power == true
       fs.writeSync fd, " (power)"
     if element.schematic?.showPinNumbers == false

@@ -179,7 +179,7 @@ class QedaLibrary
   # Load element description from remote repository
   #
   load: (element, force = false) ->
-    [obj, filterVariation] = @loadYaml element, force
+    [obj, filterVariation, override] = @loadYaml element, force
 
     objs = []
     if obj.variations?
@@ -200,8 +200,14 @@ class QedaLibrary
               if modifier?
                 if modifier.toLowerCase() is variation then varObj[k][param] = v2 # Replace
                 delete varObj[k][k2]
+        if override? and @overrides?.hasOwnProperty override
+          @mergeObjects varObj, @overrides[override]
+          varObj.overriden = override
         objs.push varObj
     else
+      if override? and @overrides?.hasOwnProperty override
+        @mergeObjects varObj, @overrides[override]
+        varObj.overriden = override
       objs.push obj
 
     objs
@@ -211,7 +217,7 @@ class QedaLibrary
   #
   loadYaml: (element, force = false) ->
     element = element.toLowerCase()
-    [elementName, filterVariation] = element.split '@'
+    [, elementName, , filterVariation, , override] = element.match(/^([^@~]+)(@([^@~]+))?(~([^@~]+))?/)
     elementYaml = elementName + '.yaml'
     localFile = './library/' + elementYaml
     if (not fs.existsSync localFile) or force
@@ -257,7 +263,7 @@ class QedaLibrary
     if element.indexOf('/') isnt -1
       obj.group ?= element.substr(0, element.indexOf('/')).toUpperCase()
 
-    [obj, filterVariation]
+    [obj, filterVariation, override]
 
   #
   # Merge two objects
