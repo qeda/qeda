@@ -276,11 +276,14 @@ class QedaElement
         log.ok()
       else
         log.warning res.statusCode
+        log.ok()
     log.start "Read '#{readme}'"
     try
       lines = fs.readFileSync(localFile, 'utf-8').split('\n');
     catch error
-      log.error "#{error.message}"
+      log.warning "#{error.message}"
+      log.ok()
+      return false
     log.ok()
 
     for line in lines

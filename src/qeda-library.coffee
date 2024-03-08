@@ -228,6 +228,7 @@ class QedaLibrary
         log.ok()
       else
         log.warning res.statusCode
+        log.ok()
     log.start "Read '#{elementName}'"
     try
       obj = yaml.safeLoad fs.readFileSync(localFile)
