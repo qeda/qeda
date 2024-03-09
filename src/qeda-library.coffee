@@ -200,14 +200,20 @@ class QedaLibrary
               if modifier?
                 if modifier.toLowerCase() is variation then varObj[k][param] = v2 # Replace
                 delete varObj[k][k2]
-        if override? and @overrides?.hasOwnProperty override
+        if varObj.overrides?.hasOwnProperty override
+          @mergeObjects varObj, varObj.overrides[override]
+          varObj.overriden = override
+        else if override? and @overrides?.hasOwnProperty override
           @mergeObjects varObj, @overrides[override]
           varObj.overriden = override
         objs.push varObj
     else
-      if override? and @overrides?.hasOwnProperty override
-        @mergeObjects varObj, @overrides[override]
-        varObj.overriden = override
+      if obj.overrides?.hasOwnProperty override
+        @mergeObjects obj, obj.overrides[override]
+        pbj.overriden = override
+      else if override? and @overrides?.hasOwnProperty override
+        @mergeObjects obj, @overrides[override]
+        obj.overriden = override
       objs.push obj
 
     objs
