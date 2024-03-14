@@ -37,6 +37,11 @@ copperPads = (pattern, element, suffix = '') ->
       height: padHeight
       shape: if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle'
       layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
+    if (housing['pinInPaste' + suffix])
+      if housing['padBottom' + suffix]
+        pad.layer.push('bottomPaste')
+      else
+        pad.layer.push('topPaste')
     if (padWidth < slotWidth) and (padHeight < slotHeight)
       pad.type = 'mounting-hole'
       pad.layer = ['topMask', 'bottomMask']
@@ -55,6 +60,11 @@ copperPads = (pattern, element, suffix = '') ->
       height: padHeight
       shape: if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle'
       layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
+    if (housing['pinInPaste' + suffix])
+      if housing['padBottom' + suffix]
+        pad.layer.push('bottomPaste')
+      else
+        pad.layer.push('topPaste')
     if (padWidth < holeDiameter) or (padHeight < holeDiameter)
       pad.type = 'mounting-hole'
       pad.layer = ['topMask', 'bottomMask']
