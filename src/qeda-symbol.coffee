@@ -32,6 +32,8 @@ class QedaSymbol
             if @[side].length and (not schematic.simpified)
               @[side].push '--' # Insert gap
             @[side] = @[side].concat pinGroup
+          else if group = '--' # Insert user specified gap
+            @[side].push group
     # Divide common pins between left and right evenly
     both = @left.filter((v) => (v isnt '--') and (@right.indexOf(v) isnt -1))
     delta = Math.ceil((@right.length - @left.length + both.length) / 2)
