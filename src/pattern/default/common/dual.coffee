@@ -10,9 +10,11 @@ silkscreen = require './silkscreen'
 module.exports = (pattern, element) ->
   housing = element.housing
   settings = pattern.settings
-  leadCount = housing.leadCount
+  leadCount = 0
   hasTab = housing.tabWidth? and housing.tabLength?
-  if hasTab then ++leadCount
+
+  for i in [0..housing.leadCount + hasTab]
+    if element.pins[i]? then ++leadCount
 
   if housing.cfp
     abbr = 'CFP'
