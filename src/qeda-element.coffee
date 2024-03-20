@@ -429,12 +429,14 @@ class QedaElement
   #
   _parseProperties: () ->
     if @properties?
-      props = ['analog', 'bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z']
+      props = ['analog', 'bidir', 'ground', 'in', 'inverted', 'nc', 'out', 'passive', 'power', 'z', 'hidden']
       for prop in props
         if @properties[prop]?
           groups = @parseMultiple @properties[prop]
           for group in groups
             @pinGroups[group]?.map((v) => @pins[v]?[prop] = true)
+            if prop == 'hidden'
+              @pinGroups[group]?.map((v) => @pins[v]?['nc'] = true)
 
   #
   # Generate pin object

@@ -21,6 +21,7 @@ module.exports = (symbol, element, icon) ->
   right = symbol.right
   top = symbol.top
   bottom = symbol.bottom
+  hidden = symbol.hidden
   pins = element.pins
 
   width = pitch * (Math.max(top.length, bottom.length) + 1)
@@ -50,6 +51,20 @@ module.exports = (symbol, element, icon) ->
     pinSpace += schematic.pinIcon.width
     pinIconWidth = schematic.pinIcon.width
     pinIconHeight = schematic.pinIcon.height
+
+  # Hidden pins
+  y = pitch / 2
+  for i in hidden
+    pin = pins[i]
+    unless pin? then continue
+    pin.x = pitch
+    pin.y = y
+    y += pitch
+    pin.length = 0
+    pin.orientation = 'left'
+    pin.nc = true
+    pin.hidden = true
+    symbol.pin pin
 
   # Pins on the top side
   dx = settings.fontSize.pin/2 + space

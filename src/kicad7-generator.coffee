@@ -381,6 +381,8 @@ class Kicad7Generator
               fs.writeSync fd, "line"
             fs.writeSync fd, sprintf(" (at #{@f} #{@f} #{symObj.orientation})", symObj.x, symObj.y)
             fs.writeSync fd, sprintf(" (length #{@f})\n", symObj.length)
+            if symObj.hidden
+              fs.writeSync fd, sprintf(" hide\n", symObj.length)
             fs.writeSync fd, "        (name \"#{@_formatPinName(symObj.name)}\" (effects (font (size #{symObj.fontSize} #{symObj.fontSize})"
             if symObj.bold then fs.writeSync fd, " bold"
             if symObj.italic then fs.writeSync fd, " italic"
