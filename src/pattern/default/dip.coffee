@@ -12,6 +12,10 @@ module.exports = (pattern, element) ->
   housing.leadWidth ?= housing.leadDiameter
   housing.leadHeight ?= housing.leadDiameter
 
+  leadCount = 0
+  for i in [0..housing.leadCount]
+    if element.pins[i]? then ++leadCount
+ 
   pattern.name ?= sprintf "%sDIP%s%dW%dP%dL%dH%dQ%d",
     if housing.ceramic? then 'C' else '',
     if housing.socket? then 'S' else '',
@@ -20,7 +24,7 @@ module.exports = (pattern, element) ->
     housing.pitch*100
     housing.bodyLength.nom*100
     housing.height.nom*100
-    housing.leadCount]
+    leadCount]
     .map((v) => Math.round v)...,
 
   # Calculate pad dimensions according to IPC-7351
