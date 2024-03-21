@@ -23,7 +23,11 @@ module.exports = (symbol, element) ->
       halign: 'left'
       valign: 'center'
       visible: false
-    .pin
+    .lineWidth settings.lineWidth.thick
+    .circle 0, 0, r, settings.fill
+    .circle 0, 0, r - d, 'none'
+  if element.housing?.padDiameter? or element.housing?.padWidth? or element.housing?.padHeight?
+    symbol.pin
       number: 1
       name: 1
       x: 0
@@ -31,8 +35,5 @@ module.exports = (symbol, element) ->
       length: pinLength
       orientation: 'up'
       passive: true
-    .lineWidth settings.lineWidth.thick
-    .circle 0, 0, r, settings.fill
-    .circle 0, 0, r - d, 'none'
 
   [2*r, 2*r]
