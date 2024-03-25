@@ -27,6 +27,29 @@ class AmplifierIcon extends Icon
     @symbol.center 0, 0 # Restore default center point
 
 #
+# Barrier
+#
+class BarrierIcon extends Icon
+  constructor: (symbol, element) ->
+    super symbol, element, width=2, height=10
+    @d =
+      w: @width
+      h: @height
+      on: 2
+      off: 1
+
+  draw: (x, y) ->
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+    for ypos in [-@d.h..(@d.h - @d.off)] by (@d.on + @d.off)
+      @symbol
+        .line @d.w, ypos, @d.w, ypos + @d.on
+        .line 0, ypos, 0, ypos + @d.on
+
+    @symbol.center 0, 0 # Restore default center point
+
+#
 # Capacitor
 #
 class CapacitorIcon extends Icon
@@ -480,6 +503,7 @@ class TransistorIcon extends Icon
 Icons = {}
 
 Icons.Amplifier = AmplifierIcon
+Icons.Barrier = BarrierIcon
 Icons.Capacitor = CapacitorIcon
 Icons.CapacitorFeedthrough = CapacitorFeedthroughIcon
 Icons.CoaxialConnector = CoaxialConnectorIcon
