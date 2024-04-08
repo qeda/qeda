@@ -335,6 +335,34 @@ class FuseIcon extends Icon
     @symbol.center 0, 0 # Restore default center point
 
 #
+# Gas Discharge Tube
+#
+class GDTIcon extends Icon
+  constructor: (symbol, element, ground) ->
+    super symbol, element, width=10, height=10
+    @d =
+      w: @width
+      h: @height
+      gndpin: ground
+
+  draw: (x, y) ->
+    settings = @symbol.settings
+    @symbol
+      .lineWidth @lineWidth
+      .center x, y # Set center to (x, y)
+      .circle 0, 0, @d.w/2, 'none'
+      .lineWidth 0
+      .line @d.w/2, 0, @d.w/10, 0 
+      .line -@d.w/2, 0, -@d.w/10, 0
+      .poly -@d.w/10, 0, -@d.w/4, -@d.h/15, -@d.w/4, @d.h/15, 'background'
+      .poly @d.w/10, 0, @d.w/4, -@d.h/15, @d.w/4, @d.h/15, 'background'
+    if @d.gndpin == true
+      @symbol.line 0, @d.h/2, 0, @d.h/4
+    @symbol
+      .circle 0, -@d.h/4, @d.h/15, 'background'
+      .center 0, 0 # Restore default center point
+
+#
 # Inductor
 #
 class InductorIcon extends Icon
@@ -511,6 +539,7 @@ Icons.Crystal = CrystalIcon
 Icons.Diode = DiodeIcon
 Icons.Fet = FetIcon
 Icons.Fuse = FuseIcon
+Icons.GDT = GDTIcon
 Icons.Inductor = InductorIcon
 Icons.Pushbutton = PushbuttonIcon
 Icons.Resistor = ResistorIcon
