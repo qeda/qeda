@@ -2,7 +2,7 @@ Icons = require './common/icons'
 twoSided = require './common/two-sided'
 
 module.exports = (symbol, element, icons = Icons) ->
-  element.refDes = 'C'
+  element.refDes = 'GT'
   symbol.orientations = [0, 90, 180, 270]
   icon = new icons.GDT(symbol, element, element.schematic.ground)
 
