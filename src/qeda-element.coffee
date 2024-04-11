@@ -362,14 +362,31 @@ class QedaElement
     ]
 
     for k, v of housing
-      if typeof v is 'string' and (/^\d+(\.\d+)?-\d+(\.\d+)?$/.test v)
-        v = v.replace(/\s+/g, '').split('-').map((v) -> parseFloat(v))
-      if Array.isArray(v) and v.length > 0
-        min = v[0]
-        max = if v.length > 1 then v[1] else min
-        nom = (max + min) / 2
-        tol = max - min
-        housing[k] = { min: min,  max: max,  nom: nom, tol: tol }
+      if typeof v is 'string' and (m = v.match /^(\d+(\.\d*)?)((\+\-?)(\d+(\.\d*)?))?(-(\d+(\.\d*)?))?$/)
+        if m[4] == '+-'
+          nom = parseFloat(m[1])
+          tol = parseFloat(m[5])
+          min = nom - tol
+          max = nom + tol
+          housing[k] = { min: min, max: max, nom: nom, tol: tol }
+        else if m[4]
+          nom = parseFloat(m[1])
+          max = nom + parseFloat(m[5])
+          if m[8]
+            min = nom - parseFloat(m[8])
+          else
+            min = nom
+          tol = max - min
+          housing[k] = { min: min, max: max, nom: nom, tol: tol }
+        else if m[8]
+          min = parseFloat(m[1])
+          max = parseFloat(m[8])
+          nom = (max + min) / 2
+          tol = max - min
+          housing[k] = { min: min, max: max, nom: nom, tol: tol }
+        else
+          min = nom = max = parseFloat(m[1])
+          tol = 0
       else if dimensions.indexOf(k) isnt -1 and typeof v isnt 'object'
         min = nom = max = v
         tol = 0
