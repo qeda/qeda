@@ -2,7 +2,16 @@ twoPin = require './common/two-pin'
 
 module.exports = (pattern, element) ->
   housing = element.housing
-  unless housing.leadSpan?
+  if housing.leadSpan?
+    nom = (housing.leadSpan.nom - housing.leadSpace.nom) / 2
+    min = (housing.leadSpan.min - housing.leadSpace.max) / 2
+    max = (housing.leadSpan.max - housing.leadSpace.min) / 2
+    housing.leadLength ?=
+      min: min
+      nom: nom
+      max: max
+      tol: max - min
+  else
     tol = Math.sqrt(housing.leadLength.tol*housing.leadLength.tol + housing.leadSpace.tol*housing.leadSpace.tol)
     nom = 2*housing.leadLength.nom + housing.leadSpace.nom
     housing.leadSpan ?=
