@@ -1,14 +1,27 @@
 {
   "name": "qeda",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "QEDA — a tool for creating libraries of electronic components",
   "main": "lib/qeda.js",
   "bin": {
     "qeda": "bin/qeda"
   },
+  "scripts": {
+    "prepublish": "coffee -o lib -c src/",
+    "postpublish": "rm -rf lib",
+    "premakedeb": "npm install",
+    "makedeb": "node-deb -- bin/ lib/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qeda/qeda.git"
+  },
+  "node_deb": {
+    "install_strategy": "copy",
+    "init": "none",
+    "entrypoints": {
+      "cli": "bin/qeda"
+    }
   },
   "keywords": [
     "EDA",
@@ -20,16 +33,13 @@
   ],
   "author": "QEDA Authors",
   "contributors": [
+    "Matthias Breithaupt <m.breithaupt@vogl-electronic.com>",
     "Filippo Savi <filssavi@gmail.com>"
   ],
   "homepage": "http://qeda.org",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/qeda/qeda/issues"
-  },
-  "scripts": {
-    "prepublish": "coffee -o lib -c src/",
-    "postpublish": "rm -rf lib"
   },
   "devDependencies": {
     "coffeescript": "^2.7.0",

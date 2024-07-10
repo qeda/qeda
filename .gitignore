@@ -8,3 +8,4 @@ test/svg/*
 test/library/*
 *.bak
 *-cache.lib
+*.deb
