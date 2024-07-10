@@ -243,7 +243,7 @@ class QedaLibrary
         log.ok()
     log.start "Read '#{elementName}'"
     try
-      obj = yaml.safeLoad fs.readFileSync(localFile)
+      obj = yaml.load fs.readFileSync(localFile)
       # TODO: YAML Schema validation
     catch error
       log.error "#{error.message}"

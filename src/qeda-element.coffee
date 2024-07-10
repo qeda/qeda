@@ -219,7 +219,7 @@ class QedaElement
         fileName = cap.shift().toLowerCase()
         log.start "Outline '#{@housing.outline}'"
         try
-          outline = yaml.safeLoad fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
+          outline = yaml.load fs.readFileSync(__dirname + "/../share/outline/#{dirName}/#{fileName}.yaml")
         catch error
           log.error error.message
         dims = @_processOutline outline, cap

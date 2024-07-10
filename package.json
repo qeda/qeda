@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "crc": "^3.8.0",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^4.1.0",
     "mkdirp": "^0.5.1",
     "nopt": "^4.0.1",
     "sprintf-js": "^1.1.1",

@@ -71,7 +71,7 @@ function readYaml() {
   var res = {};
   if (fs.existsSync(yamlName)) {
     try {
-      res = yaml.safeLoad(fs.readFileSync(yamlName));
+      res = yaml.load(fs.readFileSync(yamlName));
     } catch(error) {
       console.error(yamlName + ': ' + error.message);
       process.exit(1);
@@ -83,7 +83,7 @@ function readYaml() {
 function writeYaml(obj) {
   var yamlName = '.qeda.yaml';
   try {
-    var data = yaml.safeDump(obj, {sortKeys: true});
+    var data = yaml.dump(obj, {sortKeys: true});
     fs.writeFileSync(yamlName, data);
   } catch(error) {
     console.error(yamlName + ': ' + error.message);
