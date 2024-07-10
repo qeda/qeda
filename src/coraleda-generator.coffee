@@ -1,5 +1,4 @@
 fs = require('fs')
-mkdirp = require('mkdirp')
 sprintf = require('sprintf-js').sprintf
 log = require('./qeda-log')
 pkg = require('../package.json')
@@ -30,7 +29,7 @@ class CoraledaGenerator
 
     # output directory for subcircuit (e.g. pattern/footprint)
     dir = "./coraleda/subc/#{@name}/"
-    mkdirp.sync("#{dir}")
+    fs.mkdirSync "#{dir}", {recursive: true}
 
     # patterns
     for element in @library.elements

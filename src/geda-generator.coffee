@@ -1,5 +1,4 @@
 fs = require 'fs'
-mkdirp = require 'mkdirp'
 sprintf = require('sprintf-js').sprintf
 
 log = require './qeda-log'
@@ -22,7 +21,7 @@ class GedaGenerator
   generate: (@name) ->
     # output directory for symbols
     dir = "./geda/symbols/#{@name}/"
-    mkdirp.sync "#{dir}"
+    fs.mkdirSync "#{dir}", {recursive: true}
 
     # Symbols
     for element in @library.elements
@@ -33,7 +32,7 @@ class GedaGenerator
 
     # output directory for footprints
     dir = "./geda/footprints/#{@name}/"
-    mkdirp.sync "#{dir}"
+    fs.mkdirSync "#{dir}", {recursive: true}
 
     # Footprints
     for element in @library.elements

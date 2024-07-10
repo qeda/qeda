@@ -1,5 +1,4 @@
 fs = require 'fs'
-mkdirp = require 'mkdirp'
 sprintf = require('sprintf-js').sprintf
 
 log = require './qeda-log'
@@ -312,7 +311,7 @@ class SvgGenerator
 
     # Symbols
     log.start "SVG symbols skin '#{@name}.svg'"
-    mkdirp.sync "#{@dir}"
+    fs.mkdirSync "#{@dir}", {recursive: true}
     fd = fs.openSync "#{@dir}/#{@name}.svg", 'w'
     fs.writeSync fd, svg_head + '>\n'
     fs.writeSync fd, netlistsvg_properties
@@ -331,7 +330,7 @@ class SvgGenerator
     # Footprints
     for patternName, pattern of patterns
       log.start "SVG footprint '#{patternName}.svg'"
-      mkdirp.sync "#{@dir}/#{@name}"
+      fs.mkdirSync "#{@dir}/#{@name}", {recursive: true}
       fd = fs.openSync "#{@dir}/#{@name}/#{patternName}.svg", 'w'
       @_generatePattern fd, pattern
       fs.writeSync fd, svg_tail

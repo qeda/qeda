@@ -1,5 +1,4 @@
 fs = require 'fs'
-mkdirp = require 'mkdirp'
 fspath = require 'path'
 request = require 'sync-request'
 yaml = require 'js-yaml'
@@ -273,7 +272,7 @@ class QedaElement
       catch error
         log.error error.message
       if res.statusCode is 200
-        mkdirp.sync (fspath.dirname localFile)
+        fs.mkdirSync (fspath.dirname localFile), {recursive: true}
         fs.writeFileSync localFile, res.body
         log.ok()
       else

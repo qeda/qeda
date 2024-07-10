@@ -1,5 +1,4 @@
 fs = require 'fs'
-mkdirp = require 'mkdirp'
 sprintf = require('sprintf-js').sprintf
 
 log = require './qeda-log'
@@ -19,8 +18,8 @@ class Kicad7Generator
   #
   generate: (@name) ->
     dir = './kicad'
-    mkdirp.sync "#{dir}/#{@name}.pretty"
-    mkdirp.sync "#{dir}/#{@name}.3dshapes"
+    fs.mkdirSync "#{dir}/#{@name}.pretty", {recursive: true}
+    fs.mkdirSync "#{dir}/#{@name}.3dshapes", {recursive: true}
 
     # Symbols
     # https://dev-docs.kicad.org/en/file-formats/sexpr-symbol-lib/

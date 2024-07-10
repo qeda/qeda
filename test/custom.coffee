@@ -1,10 +1,9 @@
 fs = require 'fs'
-mkdirp = require 'mkdirp'
 Qeda = require '../src/qeda'
 
 process.chdir __dirname
 
-mkdirp 'library'
+fs.mkdirSync 'library'
 
 dummy = fs.readFileSync '../examples/custom/library/dummy.yaml'
 fs.writeFileSync 'library/dummy.yaml', dummy
