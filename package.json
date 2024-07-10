@@ -10,7 +10,7 @@
     "prepublish": "coffee -o lib -c src/",
     "postpublish": "rm -rf lib",
     "premakedeb": "npm install",
-    "makedeb": "node-deb -- bin/ lib/"
+    "makedeb": "node-deb -- bin/ lib/ share/ scripts/"
   },
   "repository": {
     "type": "git",
