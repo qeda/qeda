@@ -226,7 +226,7 @@ module.exports =
       x = Math.max x1, x2
       y = bodyLength/2 + lineWidth/2
       @preamble pattern, housing
-      if housing.cae
+      if housing.cae and not housing.nosilk?
         d = x2 - x1
         pattern
           .moveTo -x1, -y
@@ -237,7 +237,7 @@ module.exports =
           .lineTo x2, -y + d
           .lineTo x2, y
           .lineTo x1, y
-      else
+      else if not housing.nosilk?
         pattern
           .line -x, -y, -x, y
           .line x, -y, x, y
@@ -261,7 +261,9 @@ module.exports =
     else if housing.bodyDiameter? # Cylindrical
       r = housing.bodyDiameter.nom/2 + lineWidth/2
       @preamble pattern, housing
-        .circle 0, 0, r
+      if not housing.nosilk?
+        pattern
+          .circle 0, 0, r
       if housing.polarized
         y = firstPad.y + firstPad.height/2 + gap
         pattern
