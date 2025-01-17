@@ -35,7 +35,7 @@ copperPads = (pattern, element, suffix = '') ->
       slotHeight: slotHeight
       width: padWidth
       height: padHeight
-      shape: if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle'
+      shape: housing['padShape' + suffix] || (if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle')
       layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
     if (housing['pinInPaste' + suffix])
       if housing['padBottom' + suffix]
@@ -47,7 +47,7 @@ copperPads = (pattern, element, suffix = '') ->
       pad.layer = ['topMask', 'bottomMask']
       pad.width = slotWidth
       pad.height = slotHeight
-      pad.shape = 'circle'
+      pad.shape = housing['padShape' + suffix] || 'circle'
   else if housing['holeDiameter' + suffix]?
     holeDiameter = housing['holeDiameter' + suffix]
     padDiameter = housing['padDiameter' + suffix] ? calculator.padDiameter pattern, housing, holeDiameter
@@ -70,7 +70,7 @@ copperPads = (pattern, element, suffix = '') ->
       pad.layer = ['topMask', 'bottomMask']
       pad.width = holeDiameter
       pad.height = holeDiameter
-      pad.shape = 'circle'
+      pad.shape = housing['padShape' + suffix] || 'circle'
   else if (housing['padDiameter' + suffix]?) or (housing['padWidth' + suffix]? and housing['padHeight' + suffix]?)
     padDiameter = housing['padDiameter' + suffix]
     padWidth = housing['padWidth' + suffix] ? padDiameter
@@ -99,7 +99,7 @@ copperPads = (pattern, element, suffix = '') ->
       number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else ((if housing['numbers' + suffix] then numbers[pinNumberGroup++] else numbers[pinNumber + pinNumberGroup++]) ? ('NC' + ncPad++))
       pattern.pad number, pad
       if housing['holeDiameter' + suffix]?
-        pad.shape = 'circle'
+        pad.shape = housing['padShape' + suffix] || 'circle'
   else if housing['rowCount' + suffix]? and housing['columnCount' + suffix]?
     hasPads = true
     rowCount = housing['rowCount' + suffix]
@@ -127,7 +127,7 @@ copperPads = (pattern, element, suffix = '') ->
         number = if pad.type is 'mounting-hole' then ('MH' + mountingHole++) else ((if housing['numbers' + suffix] then numbers[pinNumberGroup++] else numbers[pinNumber + pinNumberGroup++]) ? ('NC' + ncPad++))
         pattern.pad number, pad
         if housing['holeDiameter' + suffix]?
-          pad.shape = 'circle'
+          pad.shape = housing['padShape' + suffix] || 'circle'
         x += horizontalPitch
       y += verticalPitch
 
