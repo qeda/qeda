@@ -58,7 +58,7 @@ copperPads = (pattern, element, suffix = '') ->
       hole: housing['holeDiameter' + suffix]
       width: padWidth
       height: padHeight
-      shape: if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle'
+      shape: housing['padShape' + suffix] || (if (pinNumber is 0) and housing.polarized then 'rectangle' else 'circle')
       layer: ['topCopper', 'topMask', 'intCopper', 'bottomCopper', 'bottomMask']
     if (housing['pinInPaste' + suffix])
       if housing['padBottom' + suffix]
