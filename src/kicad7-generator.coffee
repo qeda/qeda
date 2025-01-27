@@ -53,7 +53,7 @@ class Kicad7Generator
     for patternName, pattern of patterns
       if pattern.model?
         log.start "KiCad 3D shape '#{patternName}.#{pattern.model.extension}'"
-        fs.copyFileSync "./#{pattern.model.file}", "#{dir}/#{@name}.3dshapes/#{patternName}.#{pattern.model.extension}"
+        fs.copyFileSync "#{pattern.model.file}", "#{dir}/#{@name}.3dshapes/#{patternName}.#{pattern.model.extension}"
       else if pattern.box.height > 0
         log.start "KiCad 3D shape '#{patternName}.stp'"
         fd = fs.openSync "#{dir}/#{@name}.3dshapes/#{patternName}.stp", 'w'
