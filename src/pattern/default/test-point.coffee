@@ -47,21 +47,22 @@ module.exports = (pattern, element) ->
   pad = pattern.pads[0]
   pad.clearance = housing.padClearance || pad.mask + courtyard
 
-  r = Math.max(housing.padWidth, housing.padHeight) / 2
-  r += Math.max(settings.clearance.padToSilk, pad.mask + settings.lineWidth.silkscreen/2) + settings.lineWidth.silkscreen/2
-  silkscreen
-    .preamble pattern, housing
-    .attribute 'value',
-      text: pattern.name
-      x: 0
-      y: 0
-      halign: 'center'
-      valign: 'center'
-    .circle 0, 0, r
-  if pad.type is 'through-hole'
-    pattern
-      .layer 'bottomSilkscreen'
+  if !housing.nosilk?
+    r = Math.max(housing.padWidth, housing.padHeight) / 2
+    r += Math.max(settings.clearance.padToSilk, pad.mask + settings.lineWidth.silkscreen/2) + settings.lineWidth.silkscreen/2
+    silkscreen
+      .preamble pattern, housing
+      .attribute 'value',
+        text: pattern.name
+        x: 0
+        y: 0
+        halign: 'center'
+        valign: 'center'
       .circle 0, 0, r
+    if pad.type is 'through-hole'
+      pattern
+        .layer 'bottomSilkscreen'
+        .circle 0, 0, r
 
   r = Math.max(housing.padWidth, housing.padHeight) / 2
   r += Math.max(pad.mask + courtyard, pad.clearance)
