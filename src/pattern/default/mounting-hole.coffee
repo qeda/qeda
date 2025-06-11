@@ -55,11 +55,17 @@ module.exports = (pattern, element) ->
 
   housing.keepout ?= { M: 0.5, N: 0.25, L: 0.12 }[settings.densityLevel]
 
+  housing.bodyWidth ?= housing.bodyDiameter
+
+  courtyardsize =
+    radius: (housing.bodyWidth?.max ? pad.width) / 2
+    halfwidth: (housing.bodyWidth?.max ? pad.width) / 2
+    halfheight: (housing.bodyHeight?.max ? pad.height) / 2
   courtyard.preamble pattern, housing
   if pad.shape is 'circle'
-    pattern.circle 0, 0, pad.width/2 + housing.keepout
+    pattern.circle 0, 0, courtyardsize.radius + housing.keepout
   else
-    pattern.rectangle -pad.width/2 - housing.keepout, -pad.height/2 - housing.keepout, pad.width/2 + housing.keepout, pad.height/2 + housing.keepout
+    pattern.rectangle -courtyardsize.halfwidth - housing.keepout, -courtyardsize.halfheight - housing.keepout, courtyardsize.halfwidth/2 + housing.keepout, courtyardsize.halfheight + housing.keepout
 
   # Assembly layer
   pattern
