@@ -18,6 +18,7 @@ class QedaPattern
     @type = 'smd'
     @attributes = {}
     @pads = []
+    @dieLength = element.dieLength || element.dielength || {}
     @x = 0
     @y = 0
     @cx = 0
@@ -139,6 +140,8 @@ class QedaPattern
         pad.chamfer.push pos
     if pad.chamfer.length < 1
       delete pad.chamfer
+    if @dieLength? and @dieLength[name]?
+      pad.dieLength = @dieLength[name]
     @pads.push(@_addPad pad)
     this
 
