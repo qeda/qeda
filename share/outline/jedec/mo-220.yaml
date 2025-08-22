@@ -22,7 +22,7 @@ W\w\w\w(-\d)?:
 \wD\w\w(-\d)?:
   bodyWidth: 2.5
 
-\wEw\w(-\d)?:
+\wE\w\w(-\d)?:
   bodyWidth: 3
 
 \wF\w\w(-\d)?:
@@ -77,7 +77,7 @@ W\w\w\w(-\d)?:
 \w\wD\w(-\d)?:
   bodyLength: 2.5
 
-\w\wEw(-\d)?:
+\w\wE\w(-\d)?:
   bodyLength: 3
 
 \w\wF\w(-\d)?:
