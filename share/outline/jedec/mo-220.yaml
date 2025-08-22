@@ -98,7 +98,7 @@ W\w\w\w(-\d)?:
 \w\wL\w(-\d)?:
   bodyLength: 8
 
-\w\wM\w\w(-\d)?:
+\w\wM\w(-\d)?:
   bodyLength: 9
 
 \w\wN\w(-\d)?:
