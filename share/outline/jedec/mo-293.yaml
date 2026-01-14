@@ -1,0 +1,87 @@
+pattern: SOTFL
+
+# First digit code
+U\w{3}(-\d)?:
+  height: 0.6 # A
+  
+X1\w{3}(-\d)?:
+  height: 0.5 # A
+
+X2\w{3}(-\d)?:
+  height: 0.4 # A
+
+# Second digit code
+\w(\d)?A\w{2}(-\d)?:
+  bodyLength: 1.6 # D
+
+\w(\d)?B\w{2}(-\d)?:
+  bodyLength: 1.0 # D
+
+\w(\d)?C\w{2}(-\d)?:
+  bodyLength: 2.0 # D
+
+\w(\d)?D\w{2}(-\d)?:
+  bodyLength: 2.1 # D
+
+# Third digit code
+\w(\d)?\wA\w(-\d)?:
+  leadSpan: 1.6 # E
+  bodyWidth: 1.2 # E1
+
+\w(\d)?\wB\w(-\d)?:
+  leadSpan: 1.0 # E
+  bodyWidth: 0.8 # E1
+
+\w(\d)?\wD\w(-\d)?:
+  leadSpan: 2.35 # E
+  bodyWidth: 1.8 # E1
+
+# Fourth digit code
+\w(\d)?\w{2}D(-\d)?:
+  pitch: 0.50 # e
+  leadWidth: 0.15-0.31 # b
+  leadLength: 0.2-0.46 # L
+
+\w(\d)?\w{2}E(-\d)?:
+  pitch: 0.35 # e
+  leadWidth: 0.10-0.20 # b
+  leadLength: 0.12-0.17 # L
+
+\w(\d)?\w{2}F(-\d)?:
+  pitch: 0.65 # e
+  leadWidth: 0.15-0.30 # b
+  leadLength: 0.3-0.5 # L
+
+# Exposed heat sink
+# using larger cornered dimension, not smaller F2/G2
+\w(\d)?\w{3}-1:
+  tabLength: 0.8-1.0 # F1
+  tabWidth: 1.15-1.35 # G1
+
+# Variations
+X1BBE:
+  leadCount: 6
+
+X1BBE-1:
+  leadCount: 5
+
+UAAD:
+  leadCount: 6
+
+UAAD-1:
+  leadCount: 5
+
+UDAD:
+  leadCount: 8
+
+X2CDF:
+  leadCount: 6
+
+X2CDF-1:
+  leadCount: 5
+
+X2CCF:
+  leadCount: 6
+
+X2CCF-1:
+  leadCount: 5
