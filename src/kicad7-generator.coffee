@@ -57,7 +57,10 @@ class Kicad7Generator
       else if pattern.box.height > 0
         log.start "KiCad 3D shape '#{patternName}.stp'"
         fd = fs.openSync "#{dir}/#{@name}.3dshapes/#{patternName}.stp", 'w'
-        @_generateStep fd, pattern, patternName
+        if pattern.box.diameter > 0
+          @_generateStepCylinder fd, pattern, patternName
+        else
+          @_generateStep fd, pattern, patternName
         fs.closeSync fd
       log.ok()
 
@@ -162,8 +165,12 @@ class Kicad7Generator
       else
         fs.writeSync fd, "    (rotate (xyz 0 0 0))\n"
     else if pattern.box.height > 0
-      xpos = pattern.box.x - pattern.box.width / 2
-      ypos = pattern.box.y - pattern.box.length / 2
+      if pattern.box.diameter > 0
+        xpos = pattern.box.x
+        ypos = pattern.box.y
+      else
+        xpos = pattern.box.x - pattern.box.width / 2
+        ypos = pattern.box.y - pattern.box.length / 2
       fs.writeSync fd, "  (model ../#{@name}.3dshapes/#{pattern.name}.stp\n"
       fs.writeSync fd, "    (at (xyz #{xpos / 25.4} #{ypos / 25.4} 0))\n"
       fs.writeSync fd, "    (scale (xyz 1 1 1))\n"
@@ -611,6 +618,105 @@ class Kicad7Generator
     fs.writeSync fd, "#180 = CURVE_STYLE('',#181,POSITIVE_LENGTH_MEASURE(0.1),#182);\r\n"
     fs.writeSync fd, "#181 = DRAUGHTING_PRE_DEFINED_CURVE_FONT('continuous');\r\n"
     fs.writeSync fd, "#182 = DRAUGHTING_PRE_DEFINED_COLOUR('black');\r\n"
+    fs.writeSync fd, "ENDSEC;\r\n"
+    fs.writeSync fd, "END-ISO-10303-21;\r\n"
+
+  #
+  # Write 3D shape file in STEP format (cylinder)
+  #
+  _generateStepCylinder: (fd, pattern, name) ->
+    radius = @_formatStepVal pattern.box.diameter / 2
+    height = @_formatStepVal pattern.box.height
+
+    fs.writeSync fd, "ISO-10303-21;\r\n"
+    fs.writeSync fd, "HEADER;\r\n"
+    fs.writeSync fd, "FILE_DESCRIPTION(('Simplified model for #{name}'),'2;1');\r\n"
+    fs.writeSync fd, "FILE_NAME('#{name}','#{(if @library.nodate then new Date(0) else new Date).toISOString().slice 0, -2}',(''),(''),\r\n"
+    fs.writeSync fd, "  'QEDA','QEDA','Unknown');\r\n"
+    fs.writeSync fd, "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));\r\n"
+    fs.writeSync fd, "ENDSEC;\r\n"
+    fs.writeSync fd, "DATA;\r\n"
+    fs.writeSync fd, "#1 = APPLICATION_PROTOCOL_DEFINITION('international standard',\r\n"
+    fs.writeSync fd, "  'automotive_design',2000,#2);\r\n"
+    fs.writeSync fd, "#2 = APPLICATION_CONTEXT(\r\n"
+    fs.writeSync fd, "  'core data for automotive mechanical design processes');\r\n"
+    fs.writeSync fd, "#3 = SHAPE_DEFINITION_REPRESENTATION(#4,#10);\r\n"
+    fs.writeSync fd, "#4 = PRODUCT_DEFINITION_SHAPE('','',#5);\r\n"
+    fs.writeSync fd, "#5 = PRODUCT_DEFINITION('design','',#6,#9);\r\n"
+    fs.writeSync fd, "#6 = PRODUCT_DEFINITION_FORMATION('','',#7);\r\n"
+    fs.writeSync fd, "#7 = PRODUCT('#{name}','#{name}','',(#8));\r\n"
+    fs.writeSync fd, "#8 = PRODUCT_CONTEXT('',#2,'mechanical');\r\n"
+    fs.writeSync fd, "#9 = PRODUCT_DEFINITION_CONTEXT('part definition',#2,'design');\r\n"
+    fs.writeSync fd, "#10 = ADVANCED_BREP_SHAPE_REPRESENTATION('',(#11,#15),#100);\r\n"
+    fs.writeSync fd, "#11 = AXIS2_PLACEMENT_3D('',#12,#13,#14);\r\n"
+    fs.writeSync fd, "#12 = CARTESIAN_POINT('',(0.,0.,0.));\r\n"
+    fs.writeSync fd, "#13 = DIRECTION('',(0.,0.,1.));\r\n"
+    fs.writeSync fd, "#14 = DIRECTION('',(1.,0.,0.));\r\n"
+    fs.writeSync fd, "#15 = MANIFOLD_SOLID_BREP('',#16);\r\n"
+    fs.writeSync fd, "#16 = CLOSED_SHELL('',(#17,#37,#54));\r\n"
+    # Bottom face
+    fs.writeSync fd, "#17 = ADVANCED_FACE('',(#18),#35,.F.);\r\n"
+    fs.writeSync fd, "#18 = FACE_BOUND('',#19,.T.);\r\n"
+    fs.writeSync fd, "#19 = EDGE_LOOP('',(#20));\r\n"
+    fs.writeSync fd, "#20 = ORIENTED_EDGE('',*,*,#21,.T.);\r\n"
+    fs.writeSync fd, "#21 = EDGE_CURVE('',#22,#22,#24,.T.);\r\n"
+    fs.writeSync fd, "#22 = VERTEX_POINT('',#23);\r\n"
+    fs.writeSync fd, "#23 = CARTESIAN_POINT('',(#{radius},0.,0.));\r\n"
+    fs.writeSync fd, "#24 = CIRCLE('',#25,#{radius});\r\n"
+    fs.writeSync fd, "#25 = AXIS2_PLACEMENT_3D('',#26,#27,#28);\r\n"
+    fs.writeSync fd, "#26 = CARTESIAN_POINT('',(0.,0.,0.));\r\n"
+    fs.writeSync fd, "#27 = DIRECTION('',(0.,0.,1.));\r\n"
+    fs.writeSync fd, "#28 = DIRECTION('',(1.,0.,0.));\r\n"
+    fs.writeSync fd, "#35 = PLANE('',#36);\r\n"
+    fs.writeSync fd, "#36 = AXIS2_PLACEMENT_3D('',#26,#27,#28);\r\n"
+    # Top face
+    fs.writeSync fd, "#37 = ADVANCED_FACE('',(#38),#52,.T.);\r\n"
+    fs.writeSync fd, "#38 = FACE_BOUND('',#39,.T.);\r\n"
+    fs.writeSync fd, "#39 = EDGE_LOOP('',(#40));\r\n"
+    fs.writeSync fd, "#40 = ORIENTED_EDGE('',*,*,#41,.F.);\r\n"
+    fs.writeSync fd, "#41 = EDGE_CURVE('',#42,#42,#44,.T.);\r\n"
+    fs.writeSync fd, "#42 = VERTEX_POINT('',#43);\r\n"
+    fs.writeSync fd, "#43 = CARTESIAN_POINT('',(#{radius},0.,#{height}));\r\n"
+    fs.writeSync fd, "#44 = CIRCLE('',#45,#{radius});\r\n"
+    fs.writeSync fd, "#45 = AXIS2_PLACEMENT_3D('',#46,#47,#48);\r\n"
+    fs.writeSync fd, "#46 = CARTESIAN_POINT('',(0.,0.,#{height}));\r\n"
+    fs.writeSync fd, "#47 = DIRECTION('',(0.,0.,1.));\r\n"
+    fs.writeSync fd, "#48 = DIRECTION('',(1.,0.,0.));\r\n"
+    fs.writeSync fd, "#52 = PLANE('',#53);\r\n"
+    fs.writeSync fd, "#53 = AXIS2_PLACEMENT_3D('',#46,#47,#48);\r\n"
+    # Cylindrical face
+    fs.writeSync fd, "#54 = ADVANCED_FACE('',(#55),#70,.T.);\r\n"
+    fs.writeSync fd, "#55 = FACE_BOUND('',#56,.T.);\r\n"
+    fs.writeSync fd, "#56 = EDGE_LOOP('',(#57,#63));\r\n"
+    fs.writeSync fd, "#57 = ORIENTED_EDGE('',*,*,#21,.F.);\r\n"
+    fs.writeSync fd, "#63 = ORIENTED_EDGE('',*,*,#41,.T.);\r\n"
+    fs.writeSync fd, "#70 = CYLINDRICAL_SURFACE('',#71,#{radius});\r\n"
+    fs.writeSync fd, "#71 = AXIS2_PLACEMENT_3D('',#26,#27,#28);\r\n"
+    # Units and context
+    fs.writeSync fd, "#100 = ( GEOMETRIC_REPRESENTATION_CONTEXT(3) \r\n"
+    fs.writeSync fd, "GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#104)) GLOBAL_UNIT_ASSIGNED_CONTEXT\r\n"
+    fs.writeSync fd, "((#101,#102,#103)) REPRESENTATION_CONTEXT('Context #1',\r\n"
+    fs.writeSync fd, "  '3D Context with UNIT and UNCERTAINTY') );\r\n"
+    fs.writeSync fd, "#101 = ( LENGTH_UNIT() NAMED_UNIT(*) SI_UNIT(.MILLI.,.METRE.) );\r\n"
+    fs.writeSync fd, "#102 = ( NAMED_UNIT(*) PLANE_ANGLE_UNIT() SI_UNIT($,.RADIAN.) );\r\n"
+    fs.writeSync fd, "#103 = ( NAMED_UNIT(*) SI_UNIT($,.STERADIAN.) SOLID_ANGLE_UNIT() );\r\n"
+    fs.writeSync fd, "#104 = UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.E-07),#101,\r\n"
+    fs.writeSync fd, "  'distance_accuracy_value','confusion accuracy');\r\n"
+    fs.writeSync fd, "#105 = PRODUCT_RELATED_PRODUCT_CATEGORY('part',$,(#7));\r\n"
+    # Styling
+    fs.writeSync fd, "#106 = MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(#107)\r\n"
+    fs.writeSync fd, "  ,#100);\r\n"
+    fs.writeSync fd, "#107 = STYLED_ITEM('color',(#108),#15);\r\n"
+    fs.writeSync fd, "#108 = PRESENTATION_STYLE_ASSIGNMENT((#109,#115));\r\n"
+    fs.writeSync fd, "#109 = SURFACE_STYLE_USAGE(.BOTH.,#110);\r\n"
+    fs.writeSync fd, "#110 = SURFACE_SIDE_STYLE('',(#111));\r\n"
+    fs.writeSync fd, "#111 = SURFACE_STYLE_FILL_AREA(#112);\r\n"
+    fs.writeSync fd, "#112 = FILL_AREA_STYLE('',(#113));\r\n"
+    fs.writeSync fd, "#113 = FILL_AREA_STYLE_COLOUR('',#114);\r\n"
+    fs.writeSync fd, "#114 = COLOUR_RGB('',0.23,0.23,0.23);\r\n"
+    fs.writeSync fd, "#115 = CURVE_STYLE('',#116,POSITIVE_LENGTH_MEASURE(0.1),#117);\r\n"
+    fs.writeSync fd, "#116 = DRAUGHTING_PRE_DEFINED_CURVE_FONT('continuous');\r\n"
+    fs.writeSync fd, "#117 = DRAUGHTING_PRE_DEFINED_COLOUR('black');\r\n"
     fs.writeSync fd, "ENDSEC;\r\n"
     fs.writeSync fd, "END-ISO-10303-21;\r\n"
 

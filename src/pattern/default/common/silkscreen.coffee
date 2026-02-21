@@ -2,49 +2,73 @@ module.exports =
   body: (pattern, housing) ->
     settings = pattern.settings
     lineWidth = settings.lineWidth.silkscreen
-    bodyWidth = housing.bodyWidth.nom
-    bodyLength = housing.bodyLength.nom
+    if housing.bodyWidth? and housing.bodyLength? # Rectangular
+      bodyWidth = housing.bodyWidth.nom
+      bodyLength = housing.bodyLength.nom
 
-    x = bodyWidth/2 + lineWidth/2
-    y = bodyLength/2 + lineWidth/2
+      x = bodyWidth/2 + lineWidth/2
+      y = bodyLength/2 + lineWidth/2
 
-    @preamble pattern, housing
-      .silkRectangle -x, -y, x, y
+      @preamble pattern, housing
+        .silkRectangle -x, -y, x, y
 
-    if housing.polarized
-      [firstPad, lastPad] = pattern.extremePads()
-      gap = lineWidth/2 + settings.clearance.padToSilk
-      xl = -bodyWidth/2
-      xr = -xl
-      yt = -bodyLength/2
-      yb = -yt
-      x = firstPad.x
-      y = firstPad.y
-      w = firstPad.width
-      h = firstPad.height
-      dxl = Math.abs(x - xl)
-      dxr = Math.abs(x - xr)
-      dyt = Math.abs(y - yt)
-      dyb = Math.abs(y - yb)
-      pos = 'top'
-      delta = dyt
-      xp = x
-      yp = Math.min(yt - 1.5*lineWidth, y - h/2 - gap)
-      if dxl < delta
-        delta = dxl
-        pos = 'left'
-        xp = Math.min(xl - 1.5*lineWidth, x - w/2 - gap)
-        yp = y
-      if dxr < delta
-        delta = dxr
-        pos = 'right'
-        xp = Math.max(xr + 1.5*lineWidth, x + w/2 + gap)
-        yp = y
-      if dyb < delta
-        pos = 'bottom'
+      if housing.polarized
+        [firstPad, lastPad] = pattern.extremePads()
+        gap = lineWidth/2 + settings.clearance.padToSilk
+        xl = -bodyWidth/2
+        xr = -xl
+        yt = -bodyLength/2
+        yb = -yt
+        x = firstPad.x
+        y = firstPad.y
+        w = firstPad.width
+        h = firstPad.height
+        dxl = Math.abs(x - xl)
+        dxr = Math.abs(x - xr)
+        dyt = Math.abs(y - yt)
+        dyb = Math.abs(y - yb)
+        pos = 'top'
+        delta = dyt
         xp = x
-        yp = Math.max(yb + 1.5*lineWidth, y + h/2 + gap)
-      pattern.polarityMark xp, yp, pos
+        yp = Math.min(yt - 1.5*lineWidth, y - h/2 - gap)
+        if dxl < delta
+          delta = dxl
+          pos = 'left'
+          xp = Math.min(xl - 1.5*lineWidth, x - w/2 - gap)
+          yp = y
+        if dxr < delta
+          delta = dxr
+          pos = 'right'
+          xp = Math.max(xr + 1.5*lineWidth, x + w/2 + gap)
+          yp = y
+        if dyb < delta
+          pos = 'bottom'
+          xp = x
+          yp = Math.max(yb + 1.5*lineWidth, y + h/2 + gap)
+        pattern.polarityMark xp, yp, pos
+    else if housing.bodyDiameter? # Cylindrical
+      r = housing.bodyDiameter.nom/2 + lineWidth/2
+      @preamble pattern, housing
+      if not housing.nosilk?
+        pattern
+          .circle 0, 0, r
+      if housing.polarized
+        [firstPad, lastPad] = pattern.extremePads()
+        angle = Math.atan2(firstPad.y, firstPad.x)
+        offset = r + 1.5*lineWidth
+        xp = offset * Math.cos(angle)
+        yp = offset * Math.sin(angle)
+        # Determine position label based on angle quadrant
+        absAngle = Math.abs(angle)
+        if absAngle <= Math.PI/4
+          pos = 'right'
+        else if absAngle >= 3*Math.PI/4
+          pos = 'left'
+        else if angle < 0
+          pos = 'top'
+        else
+          pos = 'bottom'
+        pattern.polarityMark xp, yp, pos
 
   connector: (pattern, housing) ->
     settings = pattern.settings

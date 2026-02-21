@@ -1,13 +1,14 @@
 module.exports =
   body: (pattern, housing) ->
-    bodyWidth = housing.bodyWidth.nom
-    bodyLength = housing.bodyLength.nom
-
-    x = bodyWidth/2
-    y = bodyLength/2
-
     @preamble pattern, housing
-      .rectangle -x, -y, x, y
+    if housing.bodyWidth? and housing.bodyLength?
+      bodyWidth = housing.bodyWidth.nom
+      bodyLength = housing.bodyLength.nom
+      x = bodyWidth/2
+      y = bodyLength/2
+      pattern.rectangle -x, -y, x, y
+    else if housing.bodyDiameter?
+      pattern.circle 0, 0, housing.bodyDiameter.nom/2
 
   pak: (pattern, element) ->
     housing = element.housing
