@@ -120,6 +120,17 @@ class KicadGenerator
             sprintf("  (fp_line (start #{@f} #{@f}) (end #{@f} #{@f}) (layer %s) (width #{@f}))\n"
               patObj.x1, patObj.y1, patObj.x2, patObj.y2, patObj.layer, patObj.lineWidth)
           )
+        when 'poly'
+          polyPoints = ""
+          for i in [0..(patObj.points.length / 2 - 1)]
+            polyPoints += sprintf(" (xy #{@f} #{@f})", patObj.points[i * 2 + 0], patObj.points[i * 2 + 1])
+          fs.writeSync(fd,
+            sprintf("  (fp_poly (pts%s) (layer %s) (width #{@f})",
+              polyPoints, patObj.layer, patObj.lineWidth)
+          )
+          if patObj.fill
+            fs.writeSync(fd, " (fill solid)")
+          fs.writeSync(fd, ")\n")
         when 'pad'
           if patObj.shape is 'rect' and @library.pattern.smoothPadCorners
             cornerRadius = Math.min(patObj.width, patObj.height) * @library.pattern.ratio.cornerToWidth
