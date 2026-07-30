@@ -1,6 +1,7 @@
 assert = require 'assert'
 custom = require '../src/pattern/default/custom'
 log = require '../src/qeda-log'
+mountingHole = require '../src/pattern/default/mounting-hole'
 
 makePattern = ->
   pattern =
@@ -101,3 +102,32 @@ assert.throws ->
     pinInPasteSplitOuterDiameterOffset: -0.3
 , /offsets collapse or invert/
 log.error = originalError
+
+pattern = makePattern()
+mountingHole pattern,
+  name: 'mounting-hole-split-paste-test'
+  housing:
+    holeDiameter: 1
+    padDiameter: 2
+    toppaste: true
+    bottompaste: true
+    pinInPasteSplit: true
+    pinInPasteSplitSegments: 3
+    pinInPasteSplitGap: 0.2
+assert.strictEqual pattern.pads[0].layer.indexOf('topPaste'), -1
+assert.strictEqual pattern.pads[0].layer.indexOf('bottomPaste'), -1
+assert.strictEqual pattern.shapes.filter((shape) ->
+  shape.kind is 'poly' and shape.layer?[0] is 'topPaste'
+).length, 3
+assert.strictEqual pattern.shapes.filter((shape) ->
+  shape.kind is 'poly' and shape.layer?[0] is 'bottomPaste'
+).length, 3
+
+pattern = makePattern()
+mountingHole pattern,
+  name: 'mounting-hole-default-split-paste-test'
+  housing:
+    holeDiameter: 1
+    padDiameter: 2
+    pinInPasteSplit: true
+assert.strictEqual pasteShapes(pattern).length, 2

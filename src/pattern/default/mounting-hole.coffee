@@ -1,6 +1,7 @@
 calculator = require './common/calculator'
 copper = require './common/copper'
 courtyard = require './common/courtyard'
+addPinInPasteSplit = require './common/pin-in-paste-split'
 silkscreen = require './common/silkscreen'
 
 module.exports = (pattern, element) ->
@@ -27,12 +28,26 @@ module.exports = (pattern, element) ->
     pad.width = housing.holeDiameter
     pad.height = housing.holeDiameter
     pad.shape = 'circle'
-  if housing.toppaste?
+  if housing.toppaste? and not housing.pinInPasteSplit
     pad.layer.push 'topPaste'
-  if housing.bottompaste?
+  if housing.bottompaste? and not housing.pinInPasteSplit
     pad.layer.push 'bottomPaste'
 
   pattern.pad 1, pad
+
+  if housing.pinInPasteSplit
+    splitPasteOptions =
+      segments: housing.pinInPasteSplitSegments
+      gap: housing.pinInPasteSplitGap
+      innerDiameterOffset: housing.pinInPasteSplitInnerDiameterOffset
+      outerDiameterOffset: housing.pinInPasteSplitOuterDiameterOffset
+    pasteLayers = []
+    pasteLayers.push 'topPaste' if housing.toppaste?
+    pasteLayers.push 'bottomPaste' if housing.bottompaste?
+    pasteLayers.push 'topPaste' unless pasteLayers.length
+    for layer in pasteLayers
+      splitPasteOptions.layer = [layer]
+      addPinInPasteSplit pattern, pad, pad.hole, pad.hole, splitPasteOptions
 
   copper.mask pattern
 
